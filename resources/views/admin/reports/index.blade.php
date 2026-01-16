@@ -7,8 +7,9 @@
         <div class="text">
             Reports
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#addReportModal"><i class="bx bx-plus"></i> <span>Generate Report</span></button>
+                <button type="button" class="btn btn-default btn-sm" onclick="openAddModal()">
+                    <i class="bx bx-plus"></i> <span>Generate Report</span>
+                </button>
             </div>
         </div>
         <div class="container-fluid">
@@ -22,6 +23,7 @@
                                 <th>Store ID</th>
                                 <th>Details</th>
                                 <th>Created At</th>
+                                <th width="100px">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,6 +34,12 @@
                                     <td>{{ $report->store_id }}</td>
                                     <td>{{ $report->details }}</td>
                                     <td>{{ $report->created_at }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ route('reports.delete', $report->id) }}" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure?')">
+                                            <i class="bx bx-trash"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -45,7 +53,7 @@
     <div class="modal fade" id="addReportModal" tabindex="-1" aria-labelledby="addReportModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('reports.generate') }}" method="POST">
+                <form action="{{ route('reports.generate') }}" method="POST" id="reportForm">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="addReportModalLabel">Generate Report</h5>
@@ -79,3 +87,12 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function openAddModal() {
+            $('#reportForm')[0].reset();
+            $('#addReportModal').modal('show');
+        }
+    </script>
+@endpush

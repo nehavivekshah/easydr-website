@@ -99,11 +99,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/reports', [WebPharmacyController::class, 'reports'])->name('reports.index');
 
     /* POST Routes for Pharmacy Management */
+    /* POST Routes for Pharmacy Management */
     Route::post('/admin/inventory/update', [WebPharmacyController::class, 'updateInventory'])->name('inventory.update');
+    Route::get('/admin/inventory/edit/{id}', [WebPharmacyController::class, 'editInventory']);
+    Route::get('/admin/inventory/delete/{id}', [WebPharmacyController::class, 'deleteInventory'])->name('inventory.delete');
+
     Route::post('/admin/suppliers/add', [WebPharmacyController::class, 'addSupplier'])->name('suppliers.add');
+    Route::get('/admin/suppliers/edit/{id}', [WebPharmacyController::class, 'editSupplier']);
+    Route::get('/admin/suppliers/delete/{id}', [WebPharmacyController::class, 'deleteSupplier'])->name('suppliers.delete');
+
     Route::post('/admin/orders/place', [WebPharmacyController::class, 'placeOrder'])->name('orders.place');
+    Route::get('/admin/orders/edit/{id}', [WebPharmacyController::class, 'editOrder']);
+    Route::get('/admin/orders/delete/{id}', [WebPharmacyController::class, 'deleteOrder'])->name('orders.delete');
+
     Route::post('/admin/billing/process', [WebPharmacyController::class, 'processPayment'])->name('billing.process');
+    Route::get('/admin/billing/edit/{id}', [WebPharmacyController::class, 'editBilling']);
+    Route::get('/admin/billing/delete/{id}', [WebPharmacyController::class, 'deleteBilling'])->name('billing.delete');
+
     Route::post('/admin/reports/generate', [WebPharmacyController::class, 'generateReport'])->name('reports.generate');
+    Route::get('/admin/reports/delete/{id}', [WebPharmacyController::class, 'deleteReport'])->name('reports.delete');
 
     /*Appointments Management Router*/
     Route::get('/admin/upcoming-appointments', [WebAppointmentController::class, 'upcomingAppointments']);

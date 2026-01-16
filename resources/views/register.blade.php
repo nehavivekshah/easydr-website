@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <!--<label for="name" class="text-muted">Name*:</label>-->
                         <div class="input-group">
-                            <img src="{{ asset('/public/assets/icons/user.svg'); }}" class="input-icon" />
+                            <img src="{{ asset('/public/assets/icons/user.svg') }}" class="input-icon" />
                             <input type="text" name="reg_name" class="form-control" placeholder="Enter your name" required />
                         </div>
                     </div>

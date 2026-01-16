@@ -408,14 +408,21 @@ class WebPharmacyController extends Controller
 
     // ========================= Inventory Management =========================
 
-    // 7. Get Store Inventory
+    // List Inventory (Store specific)
     public function inventory($store_id)
     {
         $inventory = Inventory::where('store_id', $store_id)->get();
         return view('admin.inventory.index', compact('inventory', 'store_id'));
     }
 
-    // 8. Update Inventory Stock
+    // Edit Inventory
+    public function editInventory($id)
+    {
+        $inventory = Inventory::find($id);
+        return response()->json($inventory);
+    }
+
+    // Update Inventory Stock
     public function updateInventory(Request $request)
     {
         $request->validate([
@@ -424,12 +431,29 @@ class WebPharmacyController extends Controller
             'quantity' => 'required|integer',
         ]);
 
-        Inventory::updateOrCreate(
-            ['medicine_id' => $request->medicine_id, 'store_id' => $request->store_id],
-            ['quantity' => $request->quantity]
-        );
+        if ($request->id) {
+            $inventory = Inventory::find($request->id);
+            $inventory->quantity = $request->quantity;
+            $inventory->save();
+        } else {
+            Inventory::updateOrCreate(
+                ['medicine_id' => $request->medicine_id, 'store_id' => $request->store_id],
+                ['quantity' => $request->quantity]
+            );
+        }
 
         return back()->with('success', 'Inventory updated successfully.');
+    }
+
+    // Delete Inventory Item
+    public function deleteInventory($id)
+    {
+        $inventory = Inventory::find($id);
+        if ($inventory) {
+            $inventory->delete();
+            return back()->with('success', 'Inventory item deleted successfully.');
+        }
+        return back()->with('error', 'Item not found.');
     }
 
     // ========================= Supplier Management =========================
@@ -441,19 +465,42 @@ class WebPharmacyController extends Controller
         return view('admin.suppliers.index', compact('suppliers'));
     }
 
-    // 10. Add a Supplier
+    // 10. Add/Update Supplier
     public function addSupplier(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'contact' => 'required|string|max:20',
-            'email' => 'required|email|unique:suppliers,email',
+            'email' => 'required|email' . ($request->id ? '' : '|unique:suppliers,email'),
             'address' => 'required|string',
         ]);
 
-        Suppliers::create($request->all());
+        if ($request->id) {
+            $supplier = Suppliers::find($request->id);
+            $supplier->update($request->all());
+            return back()->with('success', 'Supplier updated successfully.');
+        } else {
+            Suppliers::create($request->all());
+            return back()->with('success', 'Supplier added successfully.');
+        }
+    }
 
-        return back()->with('success', 'Supplier added successfully.');
+    // Edit Supplier
+    public function editSupplier($id)
+    {
+        $supplier = Suppliers::find($id);
+        return response()->json($supplier);
+    }
+
+    // Delete Supplier
+    public function deleteSupplier($id)
+    {
+        $supplier = Suppliers::find($id);
+        if ($supplier) {
+            $supplier->delete();
+            return back()->with('success', 'Supplier deleted successfully.');
+        }
+        return back()->with('error', 'Supplier not found.');
     }
 
     // ========================= Order Management =========================
@@ -465,7 +512,7 @@ class WebPharmacyController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
-    // 12. Place an Order
+    // 12. Place/Update Order
     public function placeOrder(Request $request)
     {
         $request->validate([
@@ -474,13 +521,40 @@ class WebPharmacyController extends Controller
             'total_amount' => 'required|numeric',
         ]);
 
-        $order = Orders::create([
-            'store_id' => $request->store_id,
-            'supplier_id' => $request->supplier_id,
-            'total_amount' => $request->total_amount,
-        ]);
+        if ($request->id) {
+            $order = Orders::find($request->id);
+            $order->update([
+                'store_id' => $request->store_id,
+                'supplier_id' => $request->supplier_id,
+                'total_amount' => $request->total_amount,
+            ]);
+            return back()->with('success', 'Order updated successfully.');
+        } else {
+            Orders::create([
+                'store_id' => $request->store_id,
+                'supplier_id' => $request->supplier_id,
+                'total_amount' => $request->total_amount,
+            ]);
+            return back()->with('success', 'Order placed successfully.');
+        }
+    }
 
-        return back()->with('success', 'Order placed successfully.');
+    // Edit Order
+    public function editOrder($id)
+    {
+        $order = Orders::find($id);
+        return response()->json($order);
+    }
+
+    // Delete Order
+    public function deleteOrder($id)
+    {
+        $order = Orders::find($id);
+        if ($order) {
+            $order->delete();
+            return back()->with('success', 'Order deleted successfully.');
+        }
+        return back()->with('error', 'Order not found.');
     }
 
     // ========================= Billing Management =========================
@@ -492,7 +566,7 @@ class WebPharmacyController extends Controller
         return view('admin.billing.index', compact('billings'));
     }
 
-    // 14. Process Payment
+    // 14. Process/Update Payment
     public function processPayment(Request $request)
     {
         $request->validate([
@@ -502,9 +576,32 @@ class WebPharmacyController extends Controller
             'payment_status' => 'required|in:Paid,Pending,Failed',
         ]);
 
-        Billings::create($request->all());
+        if ($request->id) {
+            $billing = Billings::find($request->id);
+            $billing->update($request->all());
+            return back()->with('success', 'Payment details updated successfully.');
+        } else {
+            Billings::create($request->all());
+            return back()->with('success', 'Payment processed successfully.');
+        }
+    }
 
-        return back()->with('success', 'Payment processed successfully.');
+    // Edit Billing
+    public function editBilling($id)
+    {
+        $billing = Billings::find($id);
+        return response()->json($billing);
+    }
+
+    // Delete Billing
+    public function deleteBilling($id)
+    {
+        $billing = Billings::find($id);
+        if ($billing) {
+            $billing->delete();
+            return back()->with('success', 'Billing record deleted successfully.');
+        }
+        return back()->with('error', 'Record not found.');
     }
 
     // ========================= Reports =========================
@@ -525,9 +622,26 @@ class WebPharmacyController extends Controller
             'details' => 'required|string',
         ]);
 
-        Reports::create($request->all());
+        if ($request->id) {
+            // Report updates usually not standard but implemented for consistency
+            $report = Reports::find($request->id);
+            $report->update($request->all());
+            return back()->with('success', 'Report updated successfully.');
+        } else {
+            Reports::create($request->all());
+            return back()->with('success', 'Report generated successfully.');
+        }
+    }
 
-        return back()->with('success', 'Report generated successfully.');
+    // Delete Report
+    public function deleteReport($id)
+    {
+        $report = Reports::find($id);
+        if ($report) {
+            $report->delete();
+            return back()->with('success', 'Report deleted successfully.');
+        }
+        return back()->with('error', 'Report not found.');
     }
 }
 

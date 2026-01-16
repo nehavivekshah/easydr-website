@@ -7,8 +7,9 @@
         <div class="text">
             Inventory (Store ID: {{ $store_id ?? 'N/A' }})
             <div class="btn-group">
-                <button type="button" class="btn btn-default btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#updateInventoryModal"><i class="bx bx-plus"></i> <span>Update Stock</span></button>
+                <button type="button" class="btn btn-default btn-sm" onclick="openAddModal()">
+                    <i class="bx bx-plus"></i> <span>Update Stock</span>
+                </button>
             </div>
         </div>
         <div class="container-fluid">
@@ -21,6 +22,7 @@
                                 <th>Medicine ID</th>
                                 <th>Quantity</th>
                                 <th>Updated At</th>
+                                <th width="150px">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,6 +32,15 @@
                                     <td>{{ $item->medicine_id }}</td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ $item->updated_at }}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-info text-white" onclick="editInventory({{ $item->id }})">
+                                            <i class="bx bx-edit"></i>
+                                        </button>
+                                        <a href="{{ route('inventory.delete', $item->id) }}" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure?')">
+                                            <i class="bx bx-trash"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -44,9 +55,10 @@
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('inventory.update') }}" method="POST">
+                <form action="{{ route('inventory.update') }}" method="POST" id="inventoryForm">
                     @csrf
-                    <input type="hidden" name="store_id" value="{{ $store_id ?? '' }}">
+                    <input type="hidden" name="id" id="inventoryId">
+                    <input type="hidden" name="store_id" value="{{ $store_id ?? '' }}" id="hidden_store_id_primary">
                     <div class="modal-header">
                         <h5 class="modal-title" id="updateInventoryModalLabel">Update Inventory</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -57,29 +69,53 @@
                             <input type="number" name="store_id_display" class="form-control" value="{{ $store_id ?? '' }}"
                                 {{ isset($store_id) ? 'disabled' : '' }}>
                             @if(!isset($store_id))
-                                <input type="hidden" name="store_id" id="hidden_store_id">
                                 <script>
                                     document.querySelector('input[name="store_id_display"]').addEventListener('input', function (e) {
-                                        document.getElementById('hidden_store_id').value = e.target.value;
+                                        document.getElementById('hidden_store_id_primary').value = e.target.value;
                                     });
                                 </script>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Medicine ID</label>
-                            <input type="number" name="medicine_id" class="form-control" required>
+                            <input type="number" name="medicine_id" id="medicine_id" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Quantity</label>
-                            <input type="number" name="quantity" class="form-control" required>
+                            <input type="number" name="quantity" id="quantity" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-primary" id="saveBtn">Update</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function openAddModal() {
+            $('#inventoryForm')[0].reset();
+            $('#inventoryId').val('');
+            $('#updateInventoryModalLabel').text('Add Inventory Item');
+            $('#saveBtn').text('Add Item');
+            $('#updateInventoryModal').modal('show');
+        }
+
+        function editInventory(id) {
+            $.get('/admin/inventory/edit/' + id, function (data) {
+                $('#updateInventoryModalLabel').text('Edit Inventory Item');
+                $('#saveBtn').text('Update Item');
+                $('#updateInventoryModal').modal('show');
+
+                $('#inventoryId').val(data.id);
+                $('#medicine_id').val(data.medicine_id);
+                $('#quantity').val(data.quantity);
+                // Store ID logic is a bit complex due to view dependency, assuming current store context or data.store_id
+            });
+        }
+    </script>
+@endpush
