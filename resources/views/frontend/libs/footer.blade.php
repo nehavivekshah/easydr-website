@@ -1,0 +1,21 @@
+<!-- JS here -->
+<script src="/public/assets/frontend/js/vendor/modernizr-3.5.0.min.js"></script>
+<script src="/public/assets/frontend/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/public/assets/frontend/js/popper.min.js"></script>
+<script src="/public/assets/frontend/js/bootstrap.min.js"></script>
+<script src="/public/assets/frontend/js/one-page-nav-min.js"></script>
+<script src="/public/assets/frontend/js/jquery.meanmenu.min.js"></script>
+<script src="/public/assets/frontend/js/slick.min.js"></script>
+<script src="/public/assets/frontend/js/ajax-form.js"></script>
+<script src="/public/assets/frontend/js/paroller.js"></script>
+<script src="/public/assets/frontend/js/wow.min.js"></script>
+<script src="/public/assets/frontend/js/js_isotope.pkgd.min.js"></script>
+<script src="/public/assets/frontend/js/imagesloaded.min.js"></script>
+<script src="/public/assets/frontend/js/parallax.min.js"></script>
+<script src="/public/assets/frontend/js/jquery.waypoints.min.js"></script>
+<script src="/public/assets/frontend/js/jquery.counterup.min.js"></script>
+<script src="/public/assets/frontend/js/jquery.scrollUp.min.js"></script>
+<script src="/public/assets/frontend/js/parallax-scroll.js"></script>
+<script src="/public/assets/frontend/js/jquery.magnific-popup.min.js"></script>
+<script src="/public/assets/frontend/js/element-in-view.js"></script>
+<script src="/public/assets/frontend/js/main.js"></script>
