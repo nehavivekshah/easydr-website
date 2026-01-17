@@ -57,6 +57,16 @@
                                                                 <span class="badge bg-secondary">Completed</span>
                                                             @endif
 
+                                                            @if($appointment->status == '0')
+                                                                <form action="{{ route('cancelAppointment', $appointment->id) }}"
+                                                                    method="POST" class="d-inline-block ms-2"
+                                                                    onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                                                                    @csrf
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-outline-danger">Cancel</button>
+                                                                </form>
+                                                            @endif
+
                                                             @if(!empty($appointment->meeting_link) && $appointment->status == '1')
                                                                 <div class="mt-2">
                                                                     @if($appointment->meeting_provider == 'google_meet')

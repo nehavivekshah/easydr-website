@@ -482,6 +482,33 @@ class FrontendController extends Controller
         return view('frontend/appointments', compact('appointments'));
     }
 
+    public function cancelAppointment($id)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        // Find the appointment and ensure it belongs to the logged-in user
+        $appointment = DB::table('appointments')
+            ->where('id', $id)
+            ->where('pid', $user->id)
+            ->first();
+
+        if (!$appointment) {
+            return back()->with('error', 'Appointment not found or unauthorized.');
+        }
+
+        if ($appointment->status != '0') {
+            return back()->with('error', 'Only pending appointments can be cancelled.');
+        }
+
+        // status '2' = Cancelled
+        DB::table('appointments')->where('id', $id)->update(['status' => '2']);
+
+        return back()->with('success', 'Appointment cancelled successfully.');
+    }
+
     public function manageAppointment(Request $request)
     {
         $user = Auth::user();

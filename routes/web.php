@@ -9,6 +9,7 @@ use App\Http\Controllers\WebUserController;
 use App\Http\Controllers\WebAppointmentController;
 use App\Http\Controllers\WebDoctorController;
 use App\Http\Controllers\WebPharmacyController;
+use App\Http\Controllers\WebReportController;
 use App\Http\Controllers\WebTagsListingController;
 
 /* Website Router */
@@ -31,6 +32,7 @@ Route::get('/logout', [FrontendController::class, 'logout']);
 Route::get('/my-account', [FrontendController::class, 'myAccount']);
 Route::get('/my-profile', [FrontendController::class, 'myProfile']);
 Route::get('/appointments', [FrontendController::class, 'appointments']);
+Route::post('/cancel-appointment/{id}', [FrontendController::class, 'cancelAppointment'])->name('cancelAppointment');
 Route::get('/manage-appointment', [FrontendController::class, 'manageAppointment']);
 
 /*Website Informative Pages*/
@@ -231,6 +233,12 @@ Route::group(['middleware' => 'auth'], function () {
     //Logout Router
     Route::delete('/admin/logout', [WebAuthController::class, 'logout'])->name('logout');
     Route::get('/admin/logout', [WebAuthController::class, 'logout'])->name('logout');
+
+    /* Analytical Reports */
+    Route::get('/admin/patient-reports', [WebReportController::class, 'patientReports']);
+    Route::get('/admin/patient-statistics', [WebReportController::class, 'patientStatistics']);
+    Route::get('/admin/appointment-reports', [WebReportController::class, 'appointmentReports']);
+    Route::get('/admin/revenue-reports', [WebReportController::class, 'revenueReports']);
 
 });
 
