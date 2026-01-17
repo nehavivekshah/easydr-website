@@ -582,7 +582,66 @@ class FrontendController extends Controller
 
         $appointment->save();
 
+        if ($appointment->payment_mode == 'online') {
+            session(['appointment_id' => $appointment->id]);
+            return redirect()->route('payment');
+        }
+
+        // Send Email Notification
+        $user = Auth::user();
+        $this->sendAppointmentEmail($appointment, $user, $doc);
+
         return redirect('/my-account')->with('success', 'Appointment booked successfully.');
+    }
+
+    // Helper to send SMS
+    private function sendAppointmentSms($user, $appointment, $doctor)
+    {
+        try {
+            $smsService = new \App\Services\SmsService();
+            $docName = $doctor ? $doctor->first_name . ' ' . $doctor->last_name : 'Doctor';
+            $date = date('d M Y', strtotime($appointment->date));
+            $time = $appointment->time;
+
+            $message = "Hello " . $user->first_name . ", Appointment confirmed with Dr. " . $docName . " on " . $date . " at " . $time . ". - EasyDoctor";
+
+            $smsService->send($user->mobile, $message);
+        } catch (\Exception $e) {
+            // Log error
+        }
+    }
+
+    private function sendAppointmentEmail($appointment, $user, $doctor)
+    {
+        // Send SMS as well
+        $this->sendAppointmentSms($user, $appointment, $doctor);
+
+        try {
+            $to = $user->email;
+            $subject = "Appointment Confirmation - EasyDoctor";
+
+            $docName = $doctor ? $doctor->first_name . ' ' . $doctor->last_name : 'Doctor';
+            $date = date('d M Y', strtotime($appointment->date));
+            $time = $appointment->time; // Assuming time is stored as readable string or logic to format it
+
+            $message = "Dear " . $user->first_name . ",<br><br>";
+            $message .= "Your appointment has been successfully booked.<br><br>";
+            $message .= "<strong>Details:</strong><br>";
+            $message .= "Doctor: Dr. " . $docName . "<br>";
+            $message .= "Date: " . $date . "<br>";
+            $message .= "Time: " . $time . "<br>";
+            $message .= "Status: " . ($appointment->payment_mode == 'online' ? 'Paid' : 'Confirmed') . "<br><br>";
+            $message .= "Please reach 15 minutes prior to your appointment time.<br><br>";
+            $message .= "Regards,<br>Easy Doctor Team";
+
+            $viewName = 'inc.sendmail'; // Reusing existing view
+            $viewData = ['name' => $user->first_name, 'messages' => $message];
+
+            Mail::to($to)->send(new SendMail($subject, $viewName, $viewData));
+        } catch (\Exception $e) {
+            // Log error but don't stop the flow
+            // \Log::error("Email sending failed: " . $e->getMessage());
+        }
     }
     // Website pharmacy controllers
     public function pharmacy()

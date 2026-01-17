@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\WebAuthController;
 use App\Http\Controllers\WebHomeController;
 use App\Http\Controllers\WebUserController;
+use App\Http\Controllers\WebPaymentController;
 use App\Http\Controllers\WebAppointmentController;
 use App\Http\Controllers\WebDoctorController;
 use App\Http\Controllers\WebPharmacyController;
@@ -56,6 +57,11 @@ Route::get('/contact-us', [FrontendController::class, 'contact']);
 Route::post('/contact-us', [FrontendController::class, 'contactPost']);
 Route::get('/help', [FrontendController::class, 'help']);
 Route::post('/appointment', [FrontendController::class, 'bookAppointment']);
+
+// Payment Routes
+Route::get('/payment', [WebPaymentController::class, 'payment'])->name('payment');
+Route::get('/payment/success', [WebPaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/cancel', [WebPaymentController::class, 'paymentCancel'])->name('payment.cancel');
 
 /* Dashboard Login / regiter routers */
 Route::group(['middleware' => 'guest'], function () {
@@ -255,6 +261,16 @@ Route::get('/test-email', function () {
     } catch (\Exception $e) {
         \Log::error('Mail send error: ' . $e->getMessage());
         return 'Failed to send mail: ' . $e->getMessage();
+    }
+});
+
+Route::get('/test-sms', function () {
+    try {
+        $sms = new \App\Services\SmsService();
+        $result = $sms->send('+1234567890', 'Test SMS from Laravel');
+        return $result ? 'SMS Sent' : 'SMS Failed (Check Logs)';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
     }
 });
 
