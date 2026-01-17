@@ -7,13 +7,14 @@
     <main>
 
         <!-- breadcrumb-area -->
-        <section class="breadcrumb-area d-flex align-items-center" style="background-image:url(public/assets/frontend/img/testimonial/test-bg.jpg)">
+        <section class="breadcrumb-area d-flex align-items-center"
+            style="background-image:url(public/assets/frontend/img/testimonial/test-bg.jpg)">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
                         <div class="breadcrumb-wrap text-center">
                             <div class="breadcrumb-title mb-30">
-                                <h2>Specialties</h2>                                    
+                                <h2>Specialties</h2>
                             </div>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
@@ -37,17 +38,17 @@
                     @forelse ($specialists as $speciality)
                         <div class="col-lg-2 col-md-3 col-sm-6 px-2">
                             <div class="single-specialists shadow mt-30">
-                                <a href="/doctors/{{ Str::slug($speciality->title ?? '') }}" class="specialists-icon">
+                                <a href="/doctors?specialty={{ $speciality->title }}" class="specialists-icon">
                                     @if (!empty($speciality->icons))
                                         <img src="{{ asset('/public/assets/images/specialists/' . $speciality->icons) }}" alt="img">
-                                    @else 
+                                    @else
                                         <img src="/public/assets/icons/image.svg" alt="img">
                                     @endif
                                 </a>
                                 <div class="specialists-content">
-                                    <h6 class="title"><a href="/doctors/{{ Str::slug($speciality->title ?? '') }}">
-                                    {!! strlen($speciality->title ?? '') > 15 ? substr($speciality->title, 0, 15) . '...' : $speciality->title !!}
-                                    </a></h6>
+                                    <h6 class="title"><a href="/doctors?specialty={{ $speciality->title }}">
+                                            {!! strlen($speciality->title ?? '') > 15 ? substr($speciality->title, 0, 15) . '...' : $speciality->title !!}
+                                        </a></h6>
                                 </div>
                             </div>
                         </div>
@@ -67,8 +68,8 @@
 
                 {{-- No pagination typically needed for a fixed list like specialties --}}
                 {{-- You can add a message or leave this section out --}}
-                 <div class="row">
-                     <div class="col-12 text-center mt-40">
+                <div class="row">
+                    <div class="col-12 text-center mt-40">
                         {{-- Optional message --}}
                         {{-- <p class="text-muted">Click on a specialty to find relevant doctors.</p> --}}
                     </div>

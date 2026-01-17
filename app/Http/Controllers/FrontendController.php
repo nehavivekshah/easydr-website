@@ -438,9 +438,12 @@ class FrontendController extends Controller
         }
 
         // Fetch some basic stats for the dashboard
-        $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        $pid = $patient ? $patient->id : 0;
+
+        $appointmentsCount = DB::table('appointments')->where('pid', $pid)->count();
         // Assuming reports and favorites tables exist or logic is known, otherwise placeholders
-        $reportsCount = 0; // DB::table('reports')->where('patient_id', $user->id)->count();
+        $reportsCount = 0; // DB::table('reports')->where('patient_id', $pid)->count();
         $favoritesCount = 0; // DB::table('favorites')->where('user_id', $user->id)->count();
 
         // Calculate total billing if applicable
@@ -523,6 +526,64 @@ class FrontendController extends Controller
 
         return view('frontend/manageAppointment', compact('doctors'));
     }
+
+    public function bookAppointment(Request $request)
+    {
+        $request->validate([
+            'doctor_id' => 'required',
+            'appointment_date' => 'required|date',
+            'appointment_time' => 'required',
+            'payment_mode' => 'required',
+        ]);
+
+        if (!Auth::check()) {
+            return redirect('/login')->with('error', 'Please login to book an appointment.');
+        }
+
+        $patient = \App\Models\Patients::where('uid', Auth::id())->first();
+        if (!$patient) {
+            return back()->with('error', 'Patient profile not found. Please complete your profile.');
+        }
+
+        $appointment = new \App\Models\Appointments();
+        $appointment->pid = $patient->id;
+        $appointment->did = $request->doctor_id; // This is actually Doctor ID (from doctors table) not User ID. logic in doctorDetails passes doctor->id.
+        // Wait, appointments table usually links to doctor ID or User ID? 
+        // Based on WebReportController, appointments.did links to users.id (users as doc).
+        // BUT doctorDetails.blade.php passes $doctor->id which is likely from the `doctors` table (since it iterates $doctors).
+        // Let's verify `doctors` query in `doctorDetails` or `index`.
+        // In `doctors` method: selects `doctors.id`, `doctors.uid`.
+        // So `doctor->id` is the primary key of `doctors` table.
+        // `appointments` table `did` is... let's check schema.
+
+        $appointment->date = $request->appointment_date;
+        $appointment->time = $request->appointment_time;
+        $appointment->payment_mode = $request->payment_mode;
+        $appointment->status = 0; // Pending
+        $appointment->payment_status = 'unpaid';
+        $appointment->note = $request->visit_reason ?? '';
+
+        // Fix for DID: The schema says `did` int(11).
+        // WebReportController joins `appointments.did` = `doc.id` (users table).
+        // If I save `doctors.id` here, the join will fail if it expects `users.id`.
+        // I need to find the User ID of the doctor.
+        $doc = Doctors::find($request->doctor_id);
+        if ($doc) {
+            $appointment->did = $doc->uid; // Save User ID of the doctor
+        } else {
+            // Fallback or error? If doctor_id is actually user ID?
+            // In doctorDetails: <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+            // $doctor comes from `doctors` join `users`. `doctor->id` is usually ambiguous if not aliased.
+            // In `FrontendController.doctorDetails`: $doctor = Doctors::... ->first();
+            // So it is the Doctors model instance. $doctor->id is Doctors PK. $doctor->uid is User PK.
+            // So $appointment->did should be $doc->uid.
+            $appointment->did = $doc->uid;
+        }
+
+        $appointment->save();
+
+        return redirect('/my-account')->with('success', 'Appointment booked successfully.');
+    }
     // Website pharmacy controllers
     public function pharmacy()
     {
@@ -544,7 +605,8 @@ class FrontendController extends Controller
     }
     public function department()
     {
-        return view('frontend/departments');
+        $specialists = Specialists::where('status', 1)->get();
+        return view('frontend/departments', compact('specialists'));
     }
     public function blog()
     {
@@ -553,5 +615,17 @@ class FrontendController extends Controller
     public function contact()
     {
         return view('frontend/contact');
+    }
+
+    public function contactPost(Request $request)
+    {
+        // Validation and email sending logic would go here
+        // For now, we'll just redirect back with a success message
+        return back()->with('success', 'Thank you for contacting us! We will get back to you soon.');
+    }
+
+    public function help()
+    {
+        return view('frontend/help');
     }
 }

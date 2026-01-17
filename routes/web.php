@@ -53,6 +53,9 @@ Route::get('/services', [FrontendController::class, 'service']);
 Route::get('/departments', [FrontendController::class, 'department']);
 Route::get('/blog', [FrontendController::class, 'blog']);
 Route::get('/contact-us', [FrontendController::class, 'contact']);
+Route::post('/contact-us', [FrontendController::class, 'contactPost']);
+Route::get('/help', [FrontendController::class, 'help']);
+Route::post('/appointment', [FrontendController::class, 'bookAppointment']);
 
 /* Dashboard Login / regiter routers */
 Route::group(['middleware' => 'guest'], function () {
