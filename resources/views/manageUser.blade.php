@@ -256,17 +256,22 @@
                             </div>
 
                             @if(!$isProfile)
-                            <div class="col-md-4 form-group">
-                                <label>Role*</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class='bx bx-briefcase'></i></span>
-                                    <select class="form-control" name="role" required>
-                                        @foreach($roles as $role)
-                                        <option value="{{$role->id}}" @if(($users->role ?? '') == $role->id) selected @endif>{{$role->title}}</option>
-                                        @endforeach
-                                    </select>
+                                @if($isPatient || $isDoctor)
+                                    <input type="hidden" name="role" value="{{ $roles[0]->id ?? '' }}">
+                                @else
+                                <div class="col-md-4 form-group">
+                                    <label>Role*</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class='bx bx-briefcase'></i></span>
+                                        <select class="form-control" name="role" required>
+                                            @foreach($roles as $role)
+                                            <option value="{{$role->id}}" @if(($users->role ?? '') == $role->id) selected @endif>{{$role->title}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                                @endif
+                            @endif
                             <div class="col-md-4 form-group">
                                 <label>Status*</label>
                                 <div class="input-group">

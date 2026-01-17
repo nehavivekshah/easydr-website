@@ -145,6 +145,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/manage-user/{type}', [WebUserController::class, 'manageNewUser'])->name('manageNewUser');
     Route::get('/admin/manage-user/{type}/{id}', [WebUserController::class, 'manageUser'])->name('manageUser');
     Route::post('/admin/manage-user', [WebUserController::class, 'manageUserPost'])->name('manageUser');
+    Route::get('/admin/users/delete/{id}', [WebUserController::class, 'deleteUser'])->name('deleteUser');
 
     /*patient-health-card Management Router*/
     Route::get('/admin/patient-health-card', [WebUserController::class, 'patientHealthCard'])->name('patientHealthCard');
