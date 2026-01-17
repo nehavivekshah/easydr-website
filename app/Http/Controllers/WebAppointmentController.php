@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AuthController; 
+use App\Http\Controllers\AuthController;
 
 use App\Models\Branches;
 use App\Models\Roles;
@@ -27,7 +27,7 @@ class WebAppointmentController extends Controller
     {
         // Define the current date and time
         $currentDateTime = Carbon::now();
-    
+
         $appointments = Appointments::leftJoin('users as pet', 'appointments.pid', '=', 'pet.id') // Join patient users
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id') // Join doctor users
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid') // Join doctors
@@ -59,23 +59,24 @@ class WebAppointmentController extends Controller
                             ->whereTime('appointments.time', '>', $currentDateTime->toTimeString()); // Future times
                     });
             })
-            ->orderBy('appointments.date','DESC')
-            ->orderBy('appointments.time','DESC')
+            ->orderBy('appointments.date', 'DESC')
+            ->orderBy('appointments.time', 'DESC')
             ->get();
 
-    
+
         // Pass appointments and page name to the view
         return view('appointments', [
             'appointments' => $appointments,
             'pagename' => 'Upcoming Appointments',
         ]);
     }
-    
-    function appointmentHistory(){
-        
+
+    function appointmentHistory()
+    {
+
         // Define the current date and time
         $currentDateTime = Carbon::now();
-    
+
         $appointments = Appointments::leftJoin('users as pet', 'appointments.pid', '=', 'pet.id') // Join patient users
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id') // Join doctor users
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid') // Join doctors
@@ -107,18 +108,19 @@ class WebAppointmentController extends Controller
                             ->whereTime('appointments.time', '<', $currentDateTime->toTimeString()); // Future times
                     });
             })
-            ->orderBy('appointments.date','DESC')
-            ->orderBy('appointments.time','DESC')
+            ->orderBy('appointments.date', 'DESC')
+            ->orderBy('appointments.time', 'DESC')
             ->get();
-        
-        return view('appointments',['appointments'=>$appointments,'pagename'=>'Appointment History']);
+
+        return view('appointments', ['appointments' => $appointments, 'pagename' => 'Appointment History']);
     }
-    
-    function appointmentCalendar(){
-        
+
+    function appointmentCalendar()
+    {
+
         // Define the current date and time
         $currentDateTime = Carbon::now();
-    
+
         $appointments = Appointments::leftJoin('users as pet', 'appointments.pid', '=', 'pet.id') // Join patient users
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id') // Join doctor users
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid') // Join doctors
@@ -153,10 +155,10 @@ class WebAppointmentController extends Controller
             ->orderBy('appointments.date')
             ->orderBy('appointments.time')
             ->get();
-        
-        return view('appointmentCalendar',['appointments'=>$appointments]);
+
+        return view('appointmentCalendar', ['appointments' => $appointments]);
     }
-    
+
     public function getDoctorAvailability($doctorId)
     {
         $availabilities = Doctor_availables::where('doctor_id', $doctorId)
@@ -164,27 +166,27 @@ class WebAppointmentController extends Controller
             ->where('status', 1) // Only active slots
             ->orderBy('from_date', 'ASC') // Order by date in ascending order
             ->get();
-    
+
         $slots = [];
-    
+
         foreach ($availabilities as $availability) {
             // Set the starting date for the loop
             $currentDate = Carbon::parse($availability->from_date);
-    
+
             // If from_date is in the past, start from today
             if ($currentDate->lessThan(Carbon::now())) {
                 $currentDate = Carbon::now();
             }
-    
+
             // Define the end date
             $endDate = Carbon::parse($availability->to_date);
-    
+
             // Loop through each date, including the end date
             while ($currentDate->lessThanOrEqualTo($endDate)) {
                 // Generate time slots for the current date
                 $startTime = Carbon::createFromTimeString($availability->start_time);
                 $endTime = Carbon::createFromTimeString($availability->end_time);
-    
+
                 while ($startTime->lessThan($endTime)) {
                     $slots[] = [
                         'date' => $currentDate->format('Y-m-d'),
@@ -192,33 +194,35 @@ class WebAppointmentController extends Controller
                     ];
                     $startTime->addMinutes($availability->duration);
                 }
-    
+
                 // Move to the next date
                 $currentDate->addDay();
             }
         }
-    
+
         return response()->json($slots);
     }
 
-    function manageAppointment(Request $request){
-        
-        $appointments = Appointments::where('id','=',($request->id ?? ''))->first();
-        $patients = User::where('role','=','5')->where('status','=','1')->get();
-        $doctors = User::where('role','=','4')->where('status','=','1')->get();
-        
-        return view('manageAppointment',['appointments'=>$appointments,'doctors'=>$doctors,'patients'=>$patients]);
+    function manageAppointment(Request $request)
+    {
+
+        $appointments = Appointments::where('id', '=', ($request->id ?? ''))->first();
+        $patients = User::where('role', '=', '5')->where('status', '=', '1')->get();
+        $doctors = User::where('role', '=', '4')->where('status', '=', '1')->get();
+
+        return view('manageAppointment', ['appointments' => $appointments, 'doctors' => $doctors, 'patients' => $patients]);
     }
-    
-    public function cancelAppointmentPost($appointmentId){
-        
-        $bookAppointment = Appointments::where('id','=',($appointmentId ?? ''))->first();
+
+    public function cancelAppointmentPost($appointmentId)
+    {
+
+        $bookAppointment = Appointments::where('id', '=', ($appointmentId ?? ''))->first();
         $bookAppointment->status = '2';
         $bookAppointment->save();
-        
+
         return back()->with('success', 'Sorry, your health card is not valid or expired.');
     }
-    
+
     // public function manageAppointmentPost(Request $request){
     //     // Validate input
     //     $request->validate([
@@ -229,15 +233,15 @@ class WebAppointmentController extends Controller
     //         'problems' => 'nullable|string|max:500', // Optional problems field, max 500 characters
     //         'payment_status' => 'required|string|in:paid,unpaid,health_card', // Ensure valid payment_status
     //     ]);
-        
+
     //     $patients = Patients::where('uid','=',($request->patient_id ?? ''))->first();
-        
+
     //     if ($request->payment_status == 'health_card' && (empty($patients->health_card) || $patients->health_card_file <= now())) {
     //         return back()->with('error', 'Sorry, your health card is not valid or expired.');
     //     }
-        
+
     //     $getappointment = Appointments::where('id','=',($request->id ?? ''))->first();
-    
+
     //     // Create appointment
     //     $bookAppointment = $getappointment ? $getappointment : new Appointments(); // Fixed typo in variable name
     //     $bookAppointment->pid = $request->patient_id;
@@ -251,12 +255,12 @@ class WebAppointmentController extends Controller
     //     $bookAppointment->payment_status = $request->payment_status;
     //     $bookAppointment->status = '0'; // Default status for new appointment
     //     $bookAppointment->save();
-    
+
     //     if($getappointment){
     //         // Redirect with success message
     //         return redirect('/admin/upcoming-appointments')->with('success', 'Appointment booking details successfully updated.');
     //     }
-        
+
     //     // Redirect with success message
     //     return redirect('/admin/upcoming-appointments')->with('success', 'Appointment booked successfully.');
     // }
@@ -270,45 +274,49 @@ class WebAppointmentController extends Controller
             'appointment_time' => 'required|date_format:h:i A',
             'problems' => 'nullable|string|max:500',
             'payment_status' => 'required|string|in:paid,unpaid,health_card',
+            'meeting_provider' => 'nullable|string',
+            'meeting_link' => 'nullable|string',
         ]);
-        
+
         $patients = Patients::where('uid', $request->patient_id)->first();
         $docs = Doctors::where('uid', $request->doctor_id)->first();
-        
+
         if (!$patients) {
             return back()->with('error', 'Patient not found.');
         }
-        
+
         if ($request->payment_status == 'health_card' && (empty($patients->health_card) || $patients->health_card_file <= now())) {
             return back()->with('error', 'Sorry, your health card is not valid or expired.');
         }
-        
+
         $getAppointment = Appointments::where('id', $request->id ?? null)->first();
         $bookAppointment = $getAppointment ?? new Appointments();
-        
+
         $bookAppointment->pid = $request->patient_id;
         $bookAppointment->did = $request->doctor_id;
         $bookAppointment->date = $request->appointment_date;
-        
+
         $appointmentTime = date_create($request->appointment_time);
         $bookAppointment->time = $appointmentTime->format('H:i');
         $bookAppointment->note = $request->problems;
         $bookAppointment->medical_file = $patients->medical_file ?? null;
         $bookAppointment->payment_mode = $request->payment_mode ?? null;
-        
+        $bookAppointment->meeting_provider = $request->meeting_provider;
+        $bookAppointment->meeting_link = $request->meeting_link;
+
         if (($getAppointment->payment_status != 'paid')) {
-        $bookAppointment->payment_status = $request->payment_status;
+            $bookAppointment->payment_status = $request->payment_status;
         }
-        
+
         $bookAppointment->status = '0';
         $bookAppointment->save();
-        
+
         //dd($bookAppointment);
-        
+
         if ($request->payment_status == 'paid') {
             $doctor = Doctors::find($docs->id);
             $appointmentFee = $doctor->fees ?? 0;
-    
+
             $doctor->wallet += $appointmentFee ?? 0;
             $doctor->save();
 
@@ -319,9 +327,9 @@ class WebAppointmentController extends Controller
                 'amount' => $appointmentFee,
                 'status' => 'credit',
             ]);
-            
+
         }
-        
+
         // elseif ($request->payment_status == 'unpaid') {
         //     Wallets::create([
         //         'did' => $request->doctor_id,
@@ -339,7 +347,7 @@ class WebAppointmentController extends Controller
         //         'status' => 'health_card',
         //     ]);
         // }
-        
+
         $msg = $getAppointment ? 'Appointment booking details successfully updated.' : 'Appointment booked successfully.';
         return redirect('/admin/upcoming-appointments')->with('success', $msg);
     }

@@ -56,6 +56,22 @@
                                                             @else
                                                                 <span class="badge bg-secondary">Completed</span>
                                                             @endif
+
+                                                            @if(!empty($appointment->meeting_link) && $appointment->status == '1')
+                                                                <div class="mt-2">
+                                                                    @if($appointment->meeting_provider == 'google_meet')
+                                                                        <a href="{{ $appointment->meeting_link }}" target="_blank"
+                                                                            class="btn btn-sm btn-outline-primary">
+                                                                            <i class="bi bi-camera-video"></i> Join Meet
+                                                                        </a>
+                                                                    @elseif($appointment->meeting_provider == 'whatsapp')
+                                                                        <a href="https://wa.me/{{ $appointment->meeting_link }}"
+                                                                            target="_blank" class="btn btn-sm btn-outline-success">
+                                                                            <i class="bi bi-whatsapp"></i> WhatsApp Call
+                                                                        </a>
+                                                                    @endif
+                                                                </div>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
