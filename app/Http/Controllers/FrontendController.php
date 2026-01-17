@@ -205,20 +205,20 @@ class FrontendController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ];
-        
-        if(Auth::attempt($credetials)){
-            
+
+        if (Auth::attempt($credetials)) {
+
             // Get the authenticated user
             $user = Auth::user();
-            
-            $company = Branches::where('id','=',($user->branch ?? ''))->first();
-            
-            $roles = Roles::where('id','=',($user->role ?? ''))->first();
-            
+
+            $company = Branches::where('id', '=', ($user->branch ?? ''))->first();
+
+            $roles = Roles::where('id', '=', ($user->role ?? ''))->first();
+
             // Store companies in session
             session(['companies' => $company]);
             session(['roles' => $roles]);
-            
+
             return redirect('/')->with('success', 'Successfully Login.');
         }
 
@@ -310,10 +310,10 @@ class FrontendController extends Controller
             return back()->with('error', 'No OTP session found. Please request a new code or register again.');
         }
 
-        $uid       = $otpSession['uid'];
+        $uid = $otpSession['uid'];
         $storedOtp = $otpSession['otp'];
-        $redir     = $otpSession['redir'] ?? '';
-        
+        $redir = $otpSession['redir'] ?? '';
+
         // 3. Compare submitted OTP with the stored OTP
         if ($request->otp_code == $storedOtp) {
             // 4. If matched, mark the user as verified in the database
@@ -330,7 +330,7 @@ class FrontendController extends Controller
             // 5. Clear OTP session to prevent reuse
             session()->forget('otpSession');
 
-            if(($redir ?? '') == 'redirPassword'){
+            if (($redir ?? '') == 'redirPassword') {
 
                 session([
                     'userSession' => [
@@ -340,11 +340,11 @@ class FrontendController extends Controller
 
                 return redirect('/create-new-password')
                     ->with('success', 'OTP verified successfully! You can create a new password.');
-            }else{
+            } else {
                 return redirect('/login')
                     ->with('success', 'OTP verified successfully! You can now access the dashboard.');
             }
-            
+
         }
 
         // If the OTP doesn't match, return an error
@@ -357,11 +357,11 @@ class FrontendController extends Controller
     public function forgotPasswordPost(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-        
+
         $otp = rand(100000, 999999);
         $to = $user->email ?? '';
         $subject = $otp . " Account Verification Code";
-        
+
         $message = "
         <p>Dear User,</p>
         <p>We have received a request to reset the password for your account. Please use the verification code below to complete the process:</p>
@@ -369,10 +369,10 @@ class FrontendController extends Controller
         <p>If you did not request a password reset, please ignore this email or contact support.</p>
         <p><b>Regards,</b><br>Easy Doctor Team</p>
         ";
-        
+
         $viewName = 'inc.sendmail';
         $viewData = ["name" => "Sir/Ma'am", "messages" => $message];
-        
+
         try {
             Mail::to($to)->send(new SendMail($subject, $viewName, $viewData));
         } catch (\Exception $e) {
@@ -380,7 +380,7 @@ class FrontendController extends Controller
             //$user->delete();
             return back()->with('error', 'Failed to send verification email');
         }
-        
+
         // 5. Store OTP and user ID in session
         session([
             'otpSession' => [
@@ -389,7 +389,7 @@ class FrontendController extends Controller
                 'redir' => 'redirPassword'
             ]
         ]);
-        
+
         return redirect('/otp')->with('success', 'Reset password sent your registed email id.');
     }
     public function createNewPassword()
@@ -422,28 +422,79 @@ class FrontendController extends Controller
 
         return redirect('/login')->with('success', 'Password updated successfully! You can now log in.');
     }
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
 
         return back()->with('success', 'Successfully Logout.');
     }
-    
+
     /*Website My Account Controllers*/
     public function myAccount()
     {
-        return view('frontend/myAccount');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        // Fetch some basic stats for the dashboard
+        $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
+        // Assuming reports and favorites tables exist or logic is known, otherwise placeholders
+        $reportsCount = 0; // DB::table('reports')->where('patient_id', $user->id)->count();
+        $favoritesCount = 0; // DB::table('favorites')->where('user_id', $user->id)->count();
+
+        // Calculate total billing if applicable
+        $billingAmount = 0; // Logic to sum billing
+
+        return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount'));
     }
+
     public function myProfile()
     {
-        return view('frontend/myProfile');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+        return view('frontend/myProfile', compact('user'));
     }
+
     public function appointments()
     {
-        return view('frontend/appointments');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        $appointments = DB::table('appointments')
+            ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
+            ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
+            ->select(
+                'appointments.*',
+                'doc.first_name as doctor_first_name',
+                'doc.last_name as doctor_last_name',
+                'doctors.specialist'
+            )
+            ->where('appointments.pid', $user->id)
+            ->orderBy('appointments.date', 'desc')
+            ->orderBy('appointments.time', 'desc')
+            ->get();
+
+        return view('frontend/appointments', compact('appointments'));
     }
-    public function manageAppointment()
+
+    public function manageAppointment(Request $request)
     {
-        return view('frontend/manageAppointment');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        $doctors = Doctors::leftJoin('users', 'doctors.uid', '=', 'users.id')
+            ->select('doctors.*', 'users.first_name', 'users.last_name')
+            ->where('users.status', 1) // Active doctors
+            ->get();
+
+        return view('frontend/manageAppointment', compact('doctors'));
     }
     // Website pharmacy controllers
     public function pharmacy()
