@@ -22,16 +22,39 @@
             @else
                 {{ucwords($pagename[0] ?? "User") . "s"}}
             @endif
+            <div class="bradcrum">
+                Home / Users /
+                @if($pagename[0] == 'doctor' || $pagename[0] == 'patient')
+                    {{ucwords($pagename[0] . ' ' . $pagename[1] ?? "")}}
+                @else
+                    {{ucwords($pagename[0] ?? "User") . "s"}}
+                @endif
+            </div>
+        </div>
 
-            @if(
-                    in_array('users_add', $roleArray) || in_array('patients_add', $roleArray) || in_array('doctors_add', $roleArray)
-                    || in_array('admin_accounts_add', $roleArray) || in_array('staff_accounts_add', $roleArray) || in_array('All', $roleArray)
-                )
-                <div class="btn-group">
-                    <a href="/admin/manage-user/{{$type}}" class="btn btn-default btn-sm"><i class="bx bx-plus"></i> <span>Add
-                            New</span></a>
+        <div class="container-fluid mb-3">
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-between align-items-center">
+                    @if(
+                            in_array('users_add', $roleArray) || in_array('patients_add', $roleArray) || in_array('doctors_add', $roleArray)
+                            || in_array('admin_accounts_add', $roleArray) || in_array('staff_accounts_add', $roleArray) || in_array('All', $roleArray)
+                        )
+                        <div class="btn-group">
+                            <a href="/admin/manage-user/{{$type}}" class="btn btn-default btn-sm">
+                                <i class="bx bx-plus"></i> <span>Add New</span>
+                            </a>
+                        </div>
+                    @else
+                        <div></div>
+                    @endif
+
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-secondary" title="Export to CSV">
+                            <i class="bx bx-download"></i> Export
+                        </button>
+                    </div>
                 </div>
-            @endif
+            </div>
         </div>
         <div class="container-fluid">
             <div class="row">

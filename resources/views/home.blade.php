@@ -14,63 +14,57 @@
                 <div class="col-md-12">
                     <div class="dashboard-overview">
                         <div class="overview-box appointments">
-                            <a href="/admin/upcoming-appointments" class="overview-link">
-                                <i class="bx bx-calendar-check"></i>
-                                <div class="overview-details">
-                                    <div class="overview-count">{{ $appointments ?? 0 }}</div>
-                                    <div class="overview-label">Appointments</div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="overview-box medicines">
-                            <a href="/admin/reports" class="overview-link">
-                                <i class="bx bx-spreadsheet"></i>
-                                <div class="overview-details">
-                                    <div class="overview-count">{{ $reports ?? 0 }}</div>
-                                    <div class="overview-label">Reports</div>
-                                </div>
-                            </a>
+                            <a href="/admin/upcoming-appointments" class="overview-link"></a>
+                            <i class="bx bx-calendar-check"></i>
+                            <div class="overview-details">
+                                <div class="overview-count">{{ $appointments ?? 0 }}</div>
+                                <div class="overview-label">Appointments</div>
+                            </div>
                         </div>
 
                         <div class="overview-box patients">
-                            <a href="/admin/users/patient-directory" class="overview-link">
-                                <i class="bx bx-group"></i>
-                                <div class="overview-details">
-                                    <div class="overview-count">{{ $patients ?? 0 }}</div>
-                                    <div class="overview-label">Patients</div>
-                                </div>
-                            </a>
+                            <a href="/admin/users/patient-directory" class="overview-link"></a>
+                            <i class="bx bx-group"></i>
+                            <div class="overview-details">
+                                <div class="overview-count">{{ $patients ?? 0 }}</div>
+                                <div class="overview-label">Patients</div>
+                            </div>
                         </div>
 
                         <div class="overview-box doctors">
-                            <a href="/admin/users/doctor-directory" class="overview-link">
-                                <i class="bx bx-heart-circle"></i>
-                                <div class="overview-details">
-                                    <div class="overview-count">{{ $doctors ?? 0 }}</div>
-                                    <div class="overview-label">Doctors</div>
-                                </div>
-                            </a>
+                            <a href="/admin/users/doctor-directory" class="overview-link"></a>
+                            <i class="bx bx-heart-circle"></i>
+                            <div class="overview-details">
+                                <div class="overview-count">{{ $doctors ?? 0 }}</div>
+                                <div class="overview-label">Doctors</div>
+                            </div>
                         </div>
 
                         <div class="overview-box medicines">
-                            <a href="/admin/medicine-listings" class="overview-link">
-                                <i class="bx bx-capsule"></i>
-                                <div class="overview-details">
-                                    <div class="overview-count">{{ $medicines ?? 0 }}</div>
-                                    <div class="overview-label">Medicines</div>
-                                </div>
-                            </a>
+                            <a href="/admin/medicine-listings" class="overview-link"></a>
+                            <i class="bx bx-capsule"></i>
+                            <div class="overview-details">
+                                <div class="overview-count">{{ $medicines ?? 0 }}</div>
+                                <div class="overview-label">Medicines</div>
+                            </div>
                         </div>
 
                         <div class="overview-box medical-stores">
-                            <a href="/admin/pharmacy" class="overview-link">
-                                <i class="bx bx-store"></i>
-                                <div class="overview-details">
-                                    <div class="overview-count">{{ $medicalStores ?? 0 }}</div>
-                                    <div class="overview-label">Medical Stores</div>
-                                </div>
-                            </a>
+                            <a href="/admin/pharmacy" class="overview-link"></a>
+                            <i class="bx bx-store"></i>
+                            <div class="overview-details">
+                                <div class="overview-count">{{ $medicalStores ?? 0 }}</div>
+                                <div class="overview-label">Medical Stores</div>
+                            </div>
+                        </div>
+
+                        <div class="overview-box medicines">
+                            <a href="/admin/reports" class="overview-link"></a>
+                            <i class="bx bx-spreadsheet"></i>
+                            <div class="overview-details">
+                                <div class="overview-count">{{ $reports ?? 0 }}</div>
+                                <div class="overview-label">Reports</div>
+                            </div>
                         </div>
                     </div>
                 </div>
