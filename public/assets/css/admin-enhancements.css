@@ -306,6 +306,8 @@
         /* Ensure dark bg */
         z-index: 1000;
         transition: all 0.5s ease;
+        height: 100vh;
+        overflow-y: auto;
     }
 
     .sidebar.open {
@@ -327,11 +329,46 @@
 
     /* Content area adjustments */
     .task__section {
+        position: relative;
         left: 0 !important;
         width: 100% !important;
         padding: 1rem;
         margin-top: 60px;
         /* Space for fixed header */
+        margin-left: 0 !important;
+        /* Force no margin on mobile */
+        transition: all 0.5s ease;
+    }
+}
+
+@media (min-width: 769px) {
+
+    /* Desktop Sidebar & Content Logic */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 260px;
+        z-index: 100;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.close {
+        width: 78px;
+    }
+
+    .task__section {
+        position: relative;
+        width: calc(100% - 260px);
+        left: 260px;
+        padding: 2rem;
+        transition: all 0.5s ease;
+    }
+
+    .sidebar.close~.task__section {
+        left: 78px;
+        width: calc(100% - 78px);
     }
 
     /* Dashboard grid */
