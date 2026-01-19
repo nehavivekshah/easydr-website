@@ -8,31 +8,51 @@
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-.sidebar li.active > a {
+.sidebar li.active>a {
     color: #fff;
     font-weight: 600;
 }
 
-.sidebar li.active > a i {
+.sidebar li.active>a i {
     color: #fff;
+}
+
+/* Fix sidebar submenu padding as requested */
+.sidebar ul.sb_submenu {
+    padding: 5px 5px 5px 10px !important;
 }
 
 /* ==================== Improved Animations ==================== */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideIn {
-    from { transform: translateX(-20px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .task__section {
     animation: fadeIn 0.3s ease-out;
 }
 
-.card, .overview-box {
+.card,
+.overview-box {
     animation: fadeIn 0.4s ease-out;
 }
 
@@ -241,24 +261,30 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ==================== Responsive Design ==================== */
 @media (max-width: 768px) {
+
     /* Mobile sidebar overlay */
     .sidebar {
         position: fixed;
         left: -260px;
         width: 260px !important;
+        background-color: #11101d;
+        /* Ensure dark bg */
         z-index: 1000;
+        transition: all 0.5s ease;
     }
-    
+
     .sidebar.open {
         left: 0;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
     }
-    
+
     /* Overlay backdrop */
     .sidebar.open::before {
         content: '';
@@ -270,75 +296,98 @@
         background: rgba(0, 0, 0, 0.5);
         z-index: -1;
     }
-    
+
     /* Content area adjustments */
     .task__section {
         left: 0 !important;
         width: 100% !important;
         padding: 1rem;
+        margin-top: 60px;
+        /* Space for fixed header */
     }
-    
+
     /* Dashboard grid */
     .dashboard-overview {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1rem;
     }
-    
+
     .overview-box {
         padding: 1rem;
     }
-    
+
     .overview-box i {
         font-size: 2rem;
         padding: 10px;
     }
-    
+
     .overview-count {
         font-size: 1.5rem;
     }
-    
+
     /* Table mobile view */
     .table-responsive {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        margin-bottom: 1rem;
     }
-    
+
     table.dataTable {
         font-size: 0.85rem;
+        width: 100% !important;
     }
-    
+
     table.dataTable thead th,
     table.dataTable tbody td {
         padding: 8px 10px;
+        white-space: nowrap;
+        /* Prevent ugly wrapping */
     }
-    
+
     /* Hide less important columns on mobile */
     .m-none {
         display: none !important;
     }
-    
+
     /* Form adjustments */
-    .form-step .row > [class*="col-"] {
+    .form-step .row>[class*="col-"] {
         margin-bottom: 1rem;
     }
-    
+
     /* Button groups */
     .btn-group {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .btn-group .btn {
         width: 100%;
+        margin-bottom: 5px;
+    }
+
+    /* Adjust navbar specific for mobile */
+    .navbar {
+        width: 100% !important;
+        padding: 0 10px;
+    }
+
+    .left-side-header .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    /* Modal Mobile Adjustments */
+    .modal-dialog {
+        margin: 0.5rem;
     }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
+
     /* Tablet adjustments */
     .dashboard-overview {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
-    
+
     .task__section {
         padding: 1.5rem;
     }
@@ -369,25 +418,26 @@
 
 /* ==================== Print Styles ==================== */
 @media print {
+
     .sidebar,
     .navbar,
     .btn,
     .header-icon {
         display: none !important;
     }
-    
+
     .task__section {
         left: 0 !important;
         width: 100% !important;
         padding: 0;
     }
-    
+
     .card {
         break-inside: avoid;
         box-shadow: none;
         border: 1px solid #ddd;
     }
-    
+
     table {
         font-size: 0.85rem;
     }
@@ -483,25 +533,35 @@
 }
 
 .alert-success::before {
-    content: '\eb7e'; /* bx-check-circle */
+    content: '\eb7e';
+    /* bx-check-circle */
 }
 
 .alert-danger::before {
-    content: '\eb90'; /* bx-error */
+    content: '\eb90';
+    /* bx-error */
 }
 
 .alert-warning::before {
-    content: '\ec44'; /* bx-error-circle */
+    content: '\ec44';
+    /* bx-error-circle */
 }
 
 .alert-info::before {
-    content: '\ec2c'; /* bx-info-circle */
+    content: '\ec2c';
+    /* bx-info-circle */
 }
 
 /* Auto-hide animation */
 @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; transform: translateY(20px); }
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 }
 
 .response-msg.hiding {
