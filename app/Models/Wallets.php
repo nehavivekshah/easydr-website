@@ -18,4 +18,9 @@ class Wallets extends Model
         'amount',      // Transaction amount
         'status',      // Status: credit / pending / health_card
     ];
+
+    public function doctor()
+    {
+        return $this->belongsTo(User::class, 'did', 'id');
+    }
 }

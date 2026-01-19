@@ -67,8 +67,9 @@ class WebReportController extends Controller
         // Appointments by Specialist (via Doctor)
         $bySpecialist = Appointments::join('users as doc', 'appointments.did', '=', 'doc.id')
             ->join('doctors', 'doc.id', '=', 'doctors.uid')
-            ->select('doctors.specialist', DB::raw('count(*) as total'))
-            ->groupBy('doctors.specialist')
+            ->join('specialists', 'doctors.specialist', '=', 'specialists.id')
+            ->select('specialists.name as specialist', DB::raw('count(*) as total'))
+            ->groupBy('specialists.id', 'specialists.name')
             ->get();
 
         return view('admin.analytics.appointment_reports', compact('totalAppointments', 'pending', 'confirmed', 'cancelled', 'completed', 'bySpecialist'));
@@ -94,8 +95,7 @@ class WebReportController extends Controller
             ->get();
 
         // Recent Transactions
-        $recentTransactions = Wallets::with('doctor') // Assuming relationship exists or we can join
-            ->join('users', 'wallets.did', '=', 'users.id')
+        $recentTransactions = Wallets::join('users', 'wallets.did', '=', 'users.id')
             ->select('wallets.*', 'users.first_name', 'users.last_name')
             ->orderBy('wallets.created_at', 'desc')
             ->take(20)
