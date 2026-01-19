@@ -17,6 +17,10 @@
 <link rel="stylesheet" href="/public/assets/frontend/css/slick.css">
 <link rel="stylesheet" href="/public/assets/frontend/css/default.css">
 <link rel="stylesheet" href="/public/assets/frontend/css/meanmenu.css">
+
+<!-- CSS Variables - Load First -->
+<link rel="stylesheet" href="/public/assets/frontend/css/css-variables.css">
+
 <link rel="stylesheet" href="/public/assets/frontend/css/style.css">
 <link rel="stylesheet" href="/public/assets/frontend/css/responsive.css">
 
