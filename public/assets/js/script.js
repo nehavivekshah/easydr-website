@@ -5,21 +5,21 @@ function setCookie(name, value, days) {
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
 function getCookie(name) {
     const nameEQ = name + "=";
     const ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) === ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
-window.onload = function() {
-    
+window.onload = function () {
+
     const sidebar = document.querySelector(".sidebar");
     const closeBtn = document.querySelector("#btn");
     const closemBtn = document.querySelector("#mbtn");
@@ -37,14 +37,14 @@ window.onload = function() {
         sidebar.classList.remove("open");
         closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
     }
-    
-    closeBtn.addEventListener("click", function() {
+
+    closeBtn.addEventListener("click", function () {
         sidebar.classList.toggle("open");
         menuBtnChange();
         saveSidebarState();
     });
 
-    closemBtn.addEventListener("click", function() {
+    closemBtn.addEventListener("click", function () {
         sidebar.classList.toggle("open");
         menuBtnChange();
         saveSidebarState();
@@ -71,10 +71,10 @@ $(document).ready(function () {
     // Listen for clicks on delete buttons
     $(document).on('click', '.delete', function (event) {
         event.preventDefault(); // Prevent default action
-        
+
         const recordId = $(this).data('id'); // Get the record ID
         const pageName = $(this).data('page'); // Get the page name
-        
+
         // Show confirmation dialog using SweetAlert
         Swal.fire({
             title: 'Are you sure?',
