@@ -88,8 +88,8 @@
                             @foreach($users as $k => $user)
                                 <tr>
                                     <td class="text-center">{{ $k + 1 }}</td>
-                                    <td class="m-none"><img src="/public/assets/images/profiles/{{$user->photo ?? '--'}}"
-                                            class="media-icon" /></td>
+                                    <td><img src="/public/assets/images/profiles/{{$user->photo ?? '--'}}" class="media-icon" />
+                                    </td>
                                     <td>{{$user->first_name . ' ' . $user->last_name ?? '--'}}<br>
                                         <span class="small font-weight-bold">
                                             @if($type == 'doctor-directory')
@@ -140,7 +140,7 @@
                                         </td>
 
                                     @endif
-                                    <td class="m-none">{{$user->city . ' - ' . $user->country ?? '--'}}</td>
+                                    <td>{{$user->city . ' - ' . $user->country ?? '--'}}</td>
                                     @if($user->role != '4' && $user->role != '5')
                                         <td class="m-none">
                                             {{ $user->title ?? '--' }}

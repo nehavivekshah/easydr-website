@@ -271,7 +271,7 @@
                                     </div>
                                 </div>
                                 @endif
-                            @endif
+
                             <div class="col-md-4 form-group">
                                 <label>Status*</label>
                                 <div class="input-group">
