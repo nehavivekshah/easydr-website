@@ -168,14 +168,15 @@ class WebAppointmentController extends Controller
             ->get();
 
         $slots = [];
+        $now = Carbon::now(); // Current date and time
 
         foreach ($availabilities as $availability) {
             // Set the starting date for the loop
             $currentDate = Carbon::parse($availability->from_date);
 
             // If from_date is in the past, start from today
-            if ($currentDate->lessThan(Carbon::now())) {
-                $currentDate = Carbon::now();
+            if ($currentDate->lessThan($now->copy()->startOfDay())) {
+                $currentDate = $now->copy()->startOfDay();
             }
 
             // Define the end date
@@ -187,11 +188,22 @@ class WebAppointmentController extends Controller
                 $startTime = Carbon::createFromTimeString($availability->start_time);
                 $endTime = Carbon::createFromTimeString($availability->end_time);
 
+                // Set the date for time comparison
+                $startTime->setDate($currentDate->year, $currentDate->month, $currentDate->day);
+                $endTime->setDate($currentDate->year, $currentDate->month, $currentDate->day);
+
                 while ($startTime->lessThan($endTime)) {
-                    $slots[] = [
-                        'date' => $currentDate->format('Y-m-d'),
-                        'time' => $startTime->format('h:i A'),
-                    ];
+                    // Only add slot if it's in the future (for today) or if it's a future date
+                    $isToday = $currentDate->isSameDay($now);
+                    $isFutureTime = $startTime->greaterThan($now);
+
+                    if (!$isToday || $isFutureTime) {
+                        $slots[] = [
+                            'date' => $currentDate->format('Y-m-d'),
+                            'time' => $startTime->format('h:i A'),
+                        ];
+                    }
+
                     $startTime->addMinutes($availability->duration);
                 }
 
@@ -268,6 +280,7 @@ class WebAppointmentController extends Controller
     public function manageAppointmentPost(Request $request)
     {
         $request->validate([
+            'id' => 'nullable|integer', // Added validation for ID
             'patient_id' => 'required|integer',
             'doctor_id' => 'required|integer',
             'appointment_date' => 'required|date',
@@ -285,70 +298,67 @@ class WebAppointmentController extends Controller
             return back()->with('error', 'Patient not found.');
         }
 
-        if ($request->payment_status == 'health_card' && (empty($patients->health_card) || $patients->health_card_file <= now())) {
-            return back()->with('error', 'Sorry, your health card is not valid or expired.');
+        if (!$docs) {
+            return back()->with('error', 'Doctor not found.');
         }
 
-        $getAppointment = Appointments::where('id', $request->id ?? null)->first();
+        // Health Card Validation
+        if ($request->payment_status == 'health_card') {
+            // Ensure the field exists and is compared as a date
+            if (empty($patients->health_card) || \Carbon\Carbon::parse($patients->health_card_file)->isPast()) {
+                return back()->with('error', 'Sorry, your health card is not valid or expired.');
+            }
+        }
+
+        // Find existing or create new
+        $getAppointment = Appointments::find($request->id);
         $bookAppointment = $getAppointment ?? new Appointments();
 
         $bookAppointment->pid = $request->patient_id;
         $bookAppointment->did = $request->doctor_id;
         $bookAppointment->date = $request->appointment_date;
 
-        $appointmentTime = date_create($request->appointment_time);
+        // Time formatting
+        $appointmentTime = \Carbon\Carbon::createFromFormat('h:i A', $request->appointment_time);
         $bookAppointment->time = $appointmentTime->format('H:i');
+
         $bookAppointment->note = $request->problems;
         $bookAppointment->medical_file = $patients->medical_file ?? null;
-        $bookAppointment->payment_mode = $request->payment_mode ?? null;
+        $bookAppointment->payment_mode = $request->payment_mode ?? 'offline'; // Default if null
         $bookAppointment->meeting_provider = $request->meeting_provider;
         $bookAppointment->meeting_link = $request->meeting_link;
+        $bookAppointment->fees = $docs->fees ?? 0; // Set fees from doctor profile
 
-        if (($getAppointment->payment_status != 'paid')) {
+        // FIXED: Only check payment_status if $getAppointment exists
+        if (!$getAppointment || $getAppointment->payment_status != 'paid') {
             $bookAppointment->payment_status = $request->payment_status;
         }
 
         $bookAppointment->status = '0';
         $bookAppointment->save();
 
-        //dd($bookAppointment);
-
+        // Handle Wallet logic if newly paid
         if ($request->payment_status == 'paid') {
-            $doctor = Doctors::find($docs->id);
-            $appointmentFee = $doctor->fees ?? 0;
+            // Logic: Only credit doctor if it wasn't already paid (to prevent double-pay on updates)
+            $alreadyPaid = $getAppointment && $getAppointment->payment_status == 'paid';
 
-            $doctor->wallet += $appointmentFee ?? 0;
-            $doctor->save();
+            if (!$alreadyPaid) {
+                $appointmentFee = $docs->fees ?? 0;
 
-            Wallets::create([
-                'did' => $doctor->id,
-                'aid' => $bookAppointment->id,
-                'details' => 'Appointment payment received for patient ID: ' . $request->patient_id,
-                'amount' => $appointmentFee,
-                'status' => 'credit',
-            ]);
+                // Update doctor wallet
+                $docs->increment('wallet', $appointmentFee);
 
+                Wallets::create([
+                    'did' => $docs->id,
+                    'aid' => $bookAppointment->id,
+                    'details' => 'Appointment payment received for patient ID: ' . $request->patient_id,
+                    'amount' => $appointmentFee,
+                    'status' => 'credit',
+                ]);
+            }
         }
 
-        // elseif ($request->payment_status == 'unpaid') {
-        //     Wallets::create([
-        //         'did' => $request->doctor_id,
-        //         'aid' => $bookAppointment->id,
-        //         'details' => 'Appointment booked but not yet paid.',
-        //         'amount' => 0,
-        //         'status' => 'pending',
-        //     ]);
-        // } elseif ($request->payment_status == 'health_card') {
-        //     Wallets::create([
-        //         'did' => $request->doctor_id,
-        //         'aid' => $bookAppointment->id,
-        //         'details' => 'Appointment covered under patient health card.',
-        //         'amount' => 0,
-        //         'status' => 'health_card',
-        //     ]);
-        // }
-
-        $msg = $getAppointment ? 'Appointment booking details successfully updated.' : 'Appointment booked successfully.';
+        $msg = $getAppointment ? 'Appointment details updated successfully.' : 'Appointment booked successfully.';
         return redirect('/admin/upcoming-appointments')->with('success', $msg);
     }
 

@@ -24,7 +24,8 @@
                                         <select class="form-control" id="patient_id" name="patient_id" required>
                                             <option value="">Select Patient</option>
                                             @foreach($patients as $patient)
-                                                <option value="{{ $patient->id }}" @if(($appointments->pid ?? '') == ($patient->id ?? '')) selected @endif>{{ $patient->first_name . ' ' . $patient->last_name }}
+                                                <option value="{{ $patient->id }}" @if(($appointments->pid ?? '') == ($patient->id ?? '')) selected @endif>
+                                                    {{ $patient->first_name . ' ' . $patient->last_name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -58,7 +59,8 @@
                                             <option value="">Select Date</option>
                                             @if(!empty($appointments->date))
                                                 <option class="{{$appointments->date ?? ''}}" selected>
-                                                    {{ $appointments->date ?? '' }}</option>
+                                                    {{ $appointments->date ?? '' }}
+                                                </option>
                                             @endif
                                         </select>
                                     </div>
@@ -157,4 +159,132 @@
             </div>
         </div>
     </section>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+                let doctorSlots = []; // Store all slots for the selected doctor
+
+                // Handle doctor selection change
+                $('#doctor_id').on('change', function () {
+                    const doctorId = $(this).val();
+                    const $dateSelect = $('#appointment_date');
+                    const $timeSelect = $('#appointment_time');
+
+                    // Reset dropdowns
+                    $dateSelect.html('<option value="">Select Date</option>').prop('disabled', true);
+                    $timeSelect.html('<option value="">Select Time</option>').prop('disabled', true);
+
+                    if (!doctorId) {
+                        doctorSlots = [];
+                        return;
+                    }
+
+                    // Show loading state
+                    $dateSelect.html('<option value="">Loading dates...</option>');
+
+                    // Fetch doctor availability
+                    $.ajax({
+                        url: `/admin/get-doctor-availability/${doctorId}`,
+                        method: 'GET',
+                        success: function (response) {
+                            doctorSlots = response;
+
+                            if (doctorSlots.length === 0) {
+                                $dateSelect.html('<option value="">No availability</option>');
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'No Availability',
+                                    text: 'This doctor has no available time slots.',
+                                    confirmButtonColor: '#006666'
+                                });
+                                return;
+                            }
+
+                            // Extract unique dates
+                            const uniqueDates = [...new Set(doctorSlots.map(slot => slot.date))];
+
+                            // Populate date dropdown
+                            let dateOptions = '<option value="">Select Date</option>';
+                            uniqueDates.forEach(date => {
+                                const dateObj = new Date(date);
+                                const formattedDate = dateObj.toLocaleDateString('en-US', {
+                                    weekday: 'short',
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                });
+                                dateOptions += `<option value="${date}">${formattedDate}</option>`;
+                            });
+
+                            $dateSelect.html(dateOptions).prop('disabled', false);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching doctor availability:', error);
+                            $dateSelect.html('<option value="">Error loading dates</option>');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to load doctor availability. Please try again.',
+                                confirmButtonColor: '#006666'
+                            });
+                        }
+                    });
+                });
+
+                // Handle date selection change
+                $('#appointment_date').on('change', function () {
+                    const selectedDate = $(this).val();
+                    const $timeSelect = $('#appointment_time');
+
+                    // Reset time dropdown
+                    $timeSelect.html('<option value="">Select Time</option>').prop('disabled', true);
+
+                    if (!selectedDate) {
+                        return;
+                    }
+
+                    // Filter slots for selected date
+                    const timeSlotsForDate = doctorSlots.filter(slot => slot.date === selectedDate);
+
+                    if (timeSlotsForDate.length === 0) {
+                        $timeSelect.html('<option value="">No times available</option>');
+                        return;
+                    }
+
+                    // Populate time dropdown
+                    let timeOptions = '<option value="">Select Time</option>';
+                    timeSlotsForDate.forEach(slot => {
+                        timeOptions += `<option value="${slot.time}">${slot.time}</option>`;
+                    });
+
+                    $timeSelect.html(timeOptions).prop('disabled', false);
+                });
+
+                // If editing an appointment, trigger doctor change to load availability
+                @if(!empty($appointments->did))
+                    const existingDoctorId = $('#doctor_id').val();
+                    if (existingDoctorId) {
+                        $('#doctor_id').trigger('change');
+
+                        // Wait for slots to load, then set the date and time
+                        setTimeout(function () {
+                            const existingDate = '{{ $appointments->date ?? '' }}';
+                            const existingTime = '{{ !empty($appointments->time) ? date_format(date_create($appointments->time), "h:i A") : "" }}';
+
+                            if (existingDate) {
+                                $('#appointment_date').val(existingDate).trigger('change');
+
+                                setTimeout(function () {
+                                    if (existingTime) {
+                                        $('#appointment_time').val(existingTime);
+                                    }
+                                }, 500);
+                            }
+                        }, 1000);
+                    }
+                @endif
+        });
+        </script>
+    @endpush
 @endsection
