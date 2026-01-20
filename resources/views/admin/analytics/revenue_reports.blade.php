@@ -12,16 +12,17 @@
 
             <!-- Revenue Overview Card -->
             <div class="row mb-4">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="card text-white shadow border-0 overflow-hidden"
                         style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
                         <div class="card-body p-4 position-relative">
                             <div class="d-flex align-items-center justify-content-between z-1"
                                 style="position: relative; z-index: 2;">
                                 <div>
-                                    <h6 class="mb-1 text-white-50 text-uppercase fw-bold ls-1"
+                                    <h6 class="mb-1 text-white text-uppercase fw-bold ls-1"
                                         style="letter-spacing: 1px; font-size: 0.85rem;">Total Revenue Collected</h6>
-                                    <h2 class="display-4 fw-bold mb-0">${{ number_format($totalRevenue, 2) }}</h2>
+                                    <h2 class="display-4 fw-bold mb-0 text-white">${{ number_format($totalRevenue, 2) }}
+                                    </h2>
                                 </div>
                                 <div
                                     class="p-3 bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center">
@@ -30,7 +31,7 @@
                             </div>
                             <!-- Decorative background icon -->
                             <i class='bx bx-line-chart'
-                                style="position: absolute; bottom: -20px; right: -20px; font-size: 10rem; opacity: 0.15; z-index: 1;"></i>
+                                style="position: absolute; bottom: -20px; right: -20px; font-size: 10rem; opacity: 0.1; z-index: 1;"></i>
                         </div>
                     </div>
                 </div>
@@ -94,7 +95,8 @@
                                             <td>Dr. {{ $trans->first_name }}</td>
                                             <td class="fw-bold text-dark">${{ number_format($trans->amount, 2) }}</td>
                                             <td class="text-muted small">
-                                                {{ \Carbon\Carbon::parse($trans->created_at)->format('d M, Y') }}</td>
+                                                {{ \Carbon\Carbon::parse($trans->created_at)->format('d M, Y') }}
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
