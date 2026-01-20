@@ -3,43 +3,45 @@
 @section('title', 'Patient Statistics')
 
 @section('content')
-    <div class="container-fluid p-4">
-        <h3 class="mb-4">Patient Statistics</h3>
+    <section class="task__section">
+        <div class="container-fluid p-4">
+            <h3 class="mb-4">Patient Statistics</h3>
 
-        <div class="row">
-            <!-- Gender Distribution -->
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Gender Distribution</h5>
-                    </div>
-                    <div class="card-body">
-                        @if($genderDist->count() > 0)
-                            <canvas id="genderChart"></canvas>
-                        @else
-                            <p class="text-muted">No data available.</p>
-                        @endif
+            <div class="row">
+                <!-- Gender Distribution -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Gender Distribution</h5>
+                        </div>
+                        <div class="card-body">
+                            @if($genderDist->count() > 0)
+                                <canvas id="genderChart"></canvas>
+                            @else
+                                <p class="text-muted">No data available.</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Monthly Registrations -->
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Registrations this Year</h5>
-                    </div>
-                    <div class="card-body">
-                        @if($registrations->count() > 0)
-                            <canvas id="regChart"></canvas>
-                        @else
-                            <p class="text-muted">No data available.</p>
-                        @endif
+                <!-- Monthly Registrations -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Registrations this Year</h5>
+                        </div>
+                        <div class="card-body">
+                            @if($registrations->count() > 0)
+                                <canvas id="regChart"></canvas>
+                            @else
+                                <p class="text-muted">No data available.</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
