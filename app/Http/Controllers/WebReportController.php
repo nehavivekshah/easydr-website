@@ -58,26 +58,20 @@ class WebReportController extends Controller
     // 3. Appointment Reports
     public function appointmentReports()
     {
-        try {
-            $totalAppointments = Appointments::count();
-            $pending = Appointments::where('status', '0')->count();
-            $confirmed = Appointments::where('status', '1')->count();
-            $cancelled = Appointments::where('status', '2')->count();
-            $completed = Appointments::where('status', '3')->count(); // Assuming 3 is completed
+        $totalAppointments = Appointments::count();
+        $pending = Appointments::where('status', '0')->count();
+        $confirmed = Appointments::where('status', '1')->count();
+        $cancelled = Appointments::where('status', '2')->count();
+        $completed = Appointments::where('status', '3')->count(); // Assuming 3 is completed
 
-            // Appointments by Specialist (via Doctor)
-            $bySpecialist = Appointments::join('users as doc', 'appointments.did', '=', 'doc.id')
-                ->join('doctors', 'doc.id', '=', 'doctors.uid')
-                ->join('specialists', 'doctors.specialist', '=', 'specialists.id')
-                ->select('specialists.name as specialist', DB::raw('count(*) as total'))
-                ->groupBy('specialists.id', 'specialists.name')
-                ->get();
+        // Appointments by Specialist (via Doctor)
+        $bySpecialist = Appointments::join('users as doc', 'appointments.did', '=', 'doc.id')
+            ->join('doctors', 'doc.id', '=', 'doctors.uid')
+            ->select('doctors.specialist', DB::raw('count(*) as total'))
+            ->groupBy('doctors.specialist')
+            ->get();
 
-            $view = view('admin.analytics.appointment_reports', compact('totalAppointments', 'pending', 'confirmed', 'cancelled', 'completed', 'bySpecialist'));
-            return $view->render(); // Force render to catch View errors
-        } catch (\Throwable $e) { // Catch Throwable to include Errors and Exceptions
-            dd($e->getMessage(), $e->getTraceAsString());
-        }
+        return view('admin.analytics.appointment_reports', compact('totalAppointments', 'pending', 'confirmed', 'cancelled', 'completed', 'bySpecialist'));
     }
 
     // 4. Revenue Reports
