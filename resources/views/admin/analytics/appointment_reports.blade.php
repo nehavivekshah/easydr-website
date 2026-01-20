@@ -50,7 +50,9 @@
                             <h5 class="mb-0">Appointments by Specialist</h5>
                         </div>
                         <div class="card-body">
-                            <canvas id="specialistChart"></canvas>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="specialistChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -70,6 +72,10 @@
                         data: {!! json_encode($bySpecialist->pluck('total')) !!},
                         backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff'],
                     }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                 }
             });
         }

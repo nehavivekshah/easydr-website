@@ -16,7 +16,9 @@
                         </div>
                         <div class="card-body">
                             @if($genderDist->count() > 0)
-                                <canvas id="genderChart"></canvas>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="genderChart"></canvas>
+                                </div>
                             @else
                                 <p class="text-muted">No data available.</p>
                             @endif
@@ -32,7 +34,9 @@
                         </div>
                         <div class="card-body">
                             @if($registrations->count() > 0)
-                                <canvas id="regChart"></canvas>
+                                <div style="height: 300px; position: relative;">
+                                    <canvas id="regChart"></canvas>
+                                </div>
                             @else
                                 <p class="text-muted">No data available.</p>
                             @endif
@@ -56,6 +60,10 @@
                         data: {!! json_encode($genderDist->pluck('total')) !!},
                         backgroundColor: ['#36a2eb', '#ff6384', '#ffcd56'],
                     }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                 }
             });
         }
@@ -72,6 +80,10 @@
                         data: {!! json_encode($registrations->pluck('count')) !!},
                         backgroundColor: '#4bc0c0'
                     }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                 }
             });
         }
