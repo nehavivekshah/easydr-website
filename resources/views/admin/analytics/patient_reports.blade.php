@@ -31,8 +31,8 @@
                 <!-- Blood Group Distribution -->
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm h-100">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">Blood Group Distribution</h5>
+                        <div class="card-header">
+                            <h5 class="mb-0 text-white">Blood Group Distribution</h5>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
@@ -50,8 +50,8 @@
                 <!-- Recent Patients -->
                 <div class="col-md-8 mb-4">
                     <div class="card shadow-sm h-100">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">Recently Registered Patients</h5>
+                        <div class="card-header">
+                            <h5 class="mb-0 text-white">Recently Registered Patients</h5>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">

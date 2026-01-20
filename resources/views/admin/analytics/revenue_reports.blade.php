@@ -22,8 +22,8 @@
                 <!-- Revenue by Doctor -->
                 <div class="col-md-6 mb-4">
                     <div class="card shadow-sm h-100">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">Top Earning Doctors</h5>
+                        <div class="card-header">
+                            <h5 class="mb-0 text-white">Top Earning Doctors</h5>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
@@ -49,8 +49,8 @@
                 <!-- Recent Transactions -->
                 <div class="col-md-6 mb-4">
                     <div class="card shadow-sm h-100">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">Recent Transactions</h5>
+                        <div class="card-header">
+                            <h5 class="mb-0 text-white">Recent Transactions</h5>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-sm table-striped mb-0">

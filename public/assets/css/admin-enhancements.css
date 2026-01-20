@@ -799,6 +799,32 @@
     /* bx-info-circle */
 }
 
+/* ==================== Checkbox Alignment Fix ==================== */
+.form-check {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+    min-height: 1.5rem;
+}
+
+.form-check .form-check-input {
+    float: none;
+    margin-left: 0;
+    margin-right: 0.5rem;
+    margin-top: 0;
+    position: static;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+}
+
+.form-check .form-check-label {
+    cursor: pointer;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
 /* Auto-hide animation */
 @keyframes fadeOut {
     from {

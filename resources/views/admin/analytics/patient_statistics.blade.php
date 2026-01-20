@@ -11,12 +11,12 @@
                 <!-- Gender Distribution -->
                 <div class="col-md-6 mb-4">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">Gender Distribution</h5>
+                        <div class="card-header">
+                            <h5 class="mb-0 text-white">Gender Distribution</h5>
                         </div>
                         <div class="card-body">
                             @if($genderDist->count() > 0)
-                                <div style="height: 300px; position: relative;">
+                                <div style="height: 250px; position: relative;">
                                     <canvas id="genderChart"></canvas>
                                 </div>
                             @else
@@ -29,12 +29,12 @@
                 <!-- Monthly Registrations -->
                 <div class="col-md-6 mb-4">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-white">
-                            <h5 class="mb-0">Registrations this Year</h5>
+                        <div class="card-header">
+                            <h5 class="mb-0 text-white">Registrations this Year</h5>
                         </div>
                         <div class="card-body">
                             @if($registrations->count() > 0)
-                                <div style="height: 300px; position: relative;">
+                                <div style="height: 250px; position: relative;">
                                     <canvas id="regChart"></canvas>
                                 </div>
                             @else
