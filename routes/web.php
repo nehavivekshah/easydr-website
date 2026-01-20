@@ -251,6 +251,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/appointment-reports', [WebReportController::class, 'appointmentReports']);
     Route::get('/admin/revenue-reports', [WebReportController::class, 'revenueReports']);
 
+    Route::get('/admin/revenue-reports', [WebReportController::class, 'revenueReports']);
+
+    /* Notifications */
+    Route::get('/admin/notifications/fetch', [App\Http\Controllers\WebNotificationController::class, 'fetchNotifications']);
+
 });
 
 Route::get('/test-email', function () {

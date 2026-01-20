@@ -52,14 +52,24 @@
                 <ul class="header-icon d-flex align-items-center">
                     <!-- Notification Icon -->
                     <li class="position-relative">
-                        <a href="#" class="budge-warning" aria-label="Notifications" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Notifications">
+                        <a href="javascript:void(0)" class="budge-warning" id="notifDropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <i class="bx bx-bell"></i>
-                            <!-- Notification Badge -->
-                            <!--<span class="badge position-absolute top-0 start-100 translate-middle badge-warning" style="background-color: var(--color-second); color: var(--color-white); border-radius: 50%; font-size: 0.75rem; padding: 0.2rem 0.35rem;">
-                                    3
-                                </span>-->
+                            <span
+                                class="badge position-absolute top-0 start-100 translate-middle badge-warning bg-danger rounded-circle p-1 d-none"
+                                id="notifBadge">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end p-0 shadow border-0" aria-labelledby="notifDropdown"
+                            style="width: 320px; max-height: 400px; overflow-y: auto;">
+                            <li class="p-3 border-bottom bg-light">
+                                <h6 class="m-0">Notifications</h6>
+                            </li>
+                            <div id="notifList">
+                                <li class="p-3 text-center text-muted">Loading...</li>
+                            </div>
+                        </ul>
                     </li>
                     <!-- Settings Icon -->
                     <li>
@@ -138,6 +148,59 @@
     </script>
 
     @stack('scripts')
+
+    <script>
+        $(document).ready(function () {
+            // Fetch notifications on page load
+            fetchNotifications();
+
+            // Refresh every 60 seconds
+            setInterval(fetchNotifications, 60000);
+
+            function fetchNotifications() {
+                $.ajax({
+                    url: '/admin/notifications/fetch',
+                    method: 'GET',
+                    success: function (response) {
+                        // Update Badge
+                        if (response.unread_count > 0) {
+                            $('#notifBadge').removeClass('d-none');
+                        } else {
+                            $('#notifBadge').addClass('d-none');
+                        }
+
+                        // Update List
+                        let html = '';
+                        if (response.notifications.length > 0) {
+                            response.notifications.forEach(function (notif) {
+                                html += `
+                                    <li>
+                                        <a class="dropdown-item p-3 border-bottom d-flex align-items-start" href="#">
+                                            <div class="me-3">
+                                                <div class="avatar-sm bg-light rounded-circle text-center">
+                                                    <i class="bx bx-info-circle fs-4 text-primary mt-2"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1">${notif.title}</h6>
+                                                <div class="font-size-12 text-muted">
+                                                    <p class="mb-1">${notif.message}</p>
+                                                    <p class="mb-0"><i class="bx bx-time"></i> ${new Date(notif.created_at).toLocaleTimeString()}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                `;
+                            });
+                        } else {
+                            html = '<li class="p-3 text-center text-muted">No new notifications</li>';
+                        }
+                        $('#notifList').html(html);
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
 
