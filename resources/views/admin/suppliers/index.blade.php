@@ -55,30 +55,30 @@
 
     <!-- Modal -->
     <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ route('suppliers.add') }}" method="POST" id="supplierForm">
-                    @csrf
-                    <input type="hidden" name="id" id="supplierId">
+        <div class="modal-dialog modal-dialog-centered">
+            <form action="{{ route('suppliers.add') }}" method="POST" id="supplierForm">
+                @csrf
+                <input type="hidden" name="id" id="supplierId">
+                <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addSupplierModalLabel">Add Supplier</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label">Name</label>
+                            <label class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" name="name" id="name" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Contact</label>
+                            <label class="form-label">Contact <span class="text-danger">*</span></label>
                             <input type="text" name="contact" id="contact" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Email</label>
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="email" name="email" id="email" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Address</label>
+                            <label class="form-label">Address <span class="text-danger">*</span></label>
                             <textarea name="address" id="address" class="form-control" rows="3" required></textarea>
                         </div>
                     </div>
@@ -86,8 +86,8 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="saveBtn">Add Supplier</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
