@@ -137,7 +137,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/manage-appointment', [WebAppointmentController::class, 'manageAppointment'])->name('manageAppointment');
     Route::post('/admin/manage-appointment', [WebAppointmentController::class, 'manageAppointmentPost'])->name('manageAppointment');
     Route::post('/admin/cancel-appointment/{appointmentId}', [WebAppointmentController::class, 'cancelAppointmentPost']);
-    Route::get('/admin/doctor-availability/{doctorId}', [WebAppointmentController::class, 'getDoctorAvailability']);
+    Route::get('/admin/get-doctor-availability/{doctorId}', [WebAppointmentController::class, 'getDoctorAvailability']);
 
     /*Doctors Availability Slots*/
     Route::get('/admin/doctor-appointment-history', [WebAppointmentController::class, 'appointmentHistory']);
