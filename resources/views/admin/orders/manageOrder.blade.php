@@ -28,8 +28,8 @@
                                 <select name="store_id" class="form-select" required>
                                     <option value="">Select Store</option>
                                     @foreach($stores as $store)
-                                        <option value="{{ $store->id }}" {{ (isset($order) && $order->store_id == $store->id) ? 'selected' : '' }}>
-                                            {{ $store->name ?? $store->LocationName }}
+                                        <option value="{{ $store->LocationID }}" {{ (isset($order) && $order->store_id == $store->LocationID) ? 'selected' : '' }}>
+                                            {{ $store->LocationName }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -182,27 +182,27 @@
             // Add new row
             $('#addItemBtn').click(function () {
                 let row = `<tr>
-                    <td>
-                        <select name="items[medicine_id][]" class="form-select medicine-select" required>
-                            <option value="">Select Medicine</option>
-                            @foreach($medicines as $med)
-                                <option value="{{ $med->id }}" data-price="{{ $med->cost }}">{{ $med->name }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" name="items[quantity][]" class="form-control qty-input" min="1" value="1" required>
-                    </td>
-                    <td>
-                        <input type="number" name="items[price][]" class="form-control price-input" step="0.01" value="0.00" required>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control row-total" readonly value="0.00">
-                    </td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-danger btn-sm remove-row"><i class="bx bx-trash"></i></button>
-                    </td>
-                </tr>`;
+                        <td>
+                            <select name="items[medicine_id][]" class="form-select medicine-select" required>
+                                <option value="">Select Medicine</option>
+                                @foreach($medicines as $med)
+                                    <option value="{{ $med->id }}" data-price="{{ $med->cost }}">{{ $med->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" name="items[quantity][]" class="form-control qty-input" min="1" value="1" required>
+                        </td>
+                        <td>
+                            <input type="number" name="items[price][]" class="form-control price-input" step="0.01" value="0.00" required>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control row-total" readonly value="0.00">
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-danger btn-sm remove-row"><i class="bx bx-trash"></i></button>
+                        </td>
+                    </tr>`;
                 $('#itemsTable tbody').append(row);
             });
 
