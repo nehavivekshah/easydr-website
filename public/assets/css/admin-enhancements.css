@@ -333,7 +333,7 @@
         left: 0 !important;
         width: 100% !important;
         padding: 1rem;
-        margin-top: 60px;
+        margin-top: 0px;
         /* Space for fixed header */
         margin-left: 0 !important;
         /* Force no margin on mobile */
@@ -362,7 +362,7 @@
         position: relative;
         width: calc(100% - 260px);
         left: 260px;
-        padding: 2rem;
+        padding: 15px;
         transition: all 0.5s ease;
     }
 
