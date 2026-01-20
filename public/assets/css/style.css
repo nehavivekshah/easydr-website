@@ -170,7 +170,7 @@ a {
 .sidebar li a .link_name {
     font-size: 0.95rem;
     font-weight: 500;
-    opacity: 0;
+    opacity: .8;
     transition: opacity 0.2s;
 }
 
@@ -211,7 +211,7 @@ a {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: rgba(255, 255, 255, 0.5);
-    margin: 10px 0 5px 15px;
+    margin: 10px 0 5px 5px;
     display: block;
 }
 
