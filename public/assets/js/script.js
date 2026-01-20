@@ -18,6 +18,7 @@ function getCookie(name) {
     }
     return null;
 }
+
 window.onload = function () {
 
     const sidebar = document.querySelector(".sidebar");
