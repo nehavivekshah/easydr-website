@@ -243,15 +243,42 @@ class WebUserController extends Controller
     public function verifyHealthCard(Request $request)
     {
         $patient = Patients::where('uid', $request->user_id)->firstOrFail();
-        if ($patient->hc_verified_at) {
-            $patient->hc_verified_at = null; // Not verified
+
+        // If trying to VERIFY (currently not verified)
+        if (!$patient->hc_verified_at) {
+
+            // 1. Check if Health Card Number exists
+            if (empty($patient->health_card)) {
+                return back()->with('error', 'Cannot verify: Health Card Number is missing.');
+            }
+
+            // 2. Check if Health Card File exists
+            if (empty($patient->health_card_file)) {
+                return back()->with('error', 'Cannot verify: Health Card File is missing.');
+            }
+
+            // 3. Check for Expiry
+            if (empty($patient->hc_expairy_date)) {
+                return back()->with('error', 'Cannot verify: Expiry Date is missing.');
+            }
+
+            $expiryDate = Carbon::parse($patient->hc_expairy_date);
+            if ($expiryDate->isPast()) {
+                return back()->with('error', 'Cannot verify: Health Card has expired.');
+            }
+
+            $patient->hc_verified_at = Carbon::now(); // Verify
+            $message = 'Health card successfully verified.';
+
         } else {
-            $patient->hc_verified_at = Carbon::now(); // Verified
+            // Un-verify
+            $patient->hc_verified_at = null;
+            $message = 'Health card verification removed.';
         }
 
         $patient->save();
 
-        return redirect('/admin/patient-health-card')->with('success', 'Health card status updated');
+        return redirect('/admin/patient-health-card')->with('success', $message);
     }
     public function editPatientHealthCard($id)
     {
