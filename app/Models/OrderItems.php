@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItems extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'order_id',
+        'medicine_id',
+        'quantity',
+        'price',
+    ];
+
+    public function order()
+    {
+        return $this->belongsTo(Orders::class, 'order_id');
+    }
+
+    public function medicine()
+    {
+        return $this->belongsTo(Medicines::class, 'medicine_id'); // Assuming Medicines model exists
+    }
 }
