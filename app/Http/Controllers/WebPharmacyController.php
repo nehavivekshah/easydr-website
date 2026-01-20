@@ -508,8 +508,24 @@ class WebPharmacyController extends Controller
     // 11. List Orders
     public function orders()
     {
-        $orders = Orders::latest()->get();
+        $orders = Orders::with('items')->latest()->get();
         return view('admin.orders.index', compact('orders'));
+    }
+
+    // Manage Order (Create/Edit View)
+    public function manageOrder(Request $request)
+    {
+        $id = $request->id;
+        $order = null;
+        if ($id) {
+            $order = Orders::with('items')->find($id);
+        }
+
+        $stores = Store_locations::all();
+        $suppliers = Suppliers::all();
+        $medicines = Medicines::all();
+
+        return view('admin.orders.manageOrder', compact('order', 'stores', 'suppliers', 'medicines'));
     }
 
     // 12. Place/Update Order
@@ -518,31 +534,61 @@ class WebPharmacyController extends Controller
         $request->validate([
             'store_id' => 'required|integer',
             'supplier_id' => 'required|integer',
-            'total_amount' => 'required|numeric',
+            'order_date' => 'required|date',
+            'status' => 'required|string',
+            'items' => 'required|array',
+            'items.medicine_id' => 'required|array',
+            'items.quantity' => 'required|array',
+            'items.price' => 'required|array',
         ]);
 
-        if ($request->id) {
-            $order = Orders::find($request->id);
-            $order->update([
-                'store_id' => $request->store_id,
-                'supplier_id' => $request->supplier_id,
-                'total_amount' => $request->total_amount,
-            ]);
-            return back()->with('success', 'Order updated successfully.');
-        } else {
-            Orders::create([
-                'store_id' => $request->store_id,
-                'supplier_id' => $request->supplier_id,
-                'total_amount' => $request->total_amount,
-            ]);
-            return back()->with('success', 'Order placed successfully.');
+        try {
+            \DB::transaction(function () use ($request) {
+
+                $data = [
+                    'user_id' => Auth::id() ?? 1, // Fallback to 1 if not auth (should be auth)
+                    'store_id' => $request->store_id,
+                    'supplier_id' => $request->supplier_id,
+                    'order_date' => $request->order_date,
+                    'status' => $request->status,
+                    'shipping_address' => $request->shipping_address ?? '',
+                    'total_amount' => $request->total_amount,
+                ];
+
+                if ($request->id) {
+                    $order = Orders::find($request->id);
+                    $order->update($data);
+                    // Clear existing items to rewrite (simpler than syncing for now)
+                    OrderItems::where('order_id', $order->id)->delete();
+                } else {
+                    $order = Orders::create($data);
+                }
+
+                // Save Items
+                $items = $request->items;
+                for ($i = 0; $i < count($items['medicine_id']); $i++) {
+                    if (!empty($items['medicine_id'][$i])) {
+                        OrderItems::create([
+                            'order_id' => $order->id,
+                            'medicine_id' => $items['medicine_id'][$i],
+                            'quantity' => $items['quantity'][$i],
+                            'price' => $items['price'][$i],
+                        ]);
+                    }
+                }
+            });
+
+            return redirect()->route('orders.index')->with('success', 'Order saved successfully.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to save order: ' . $e->getMessage())->withInput();
         }
     }
 
-    // Edit Order
+    // Edit Order (JSON - Deprecated but kept for backward compatibility if needed)
     public function editOrder($id)
     {
-        $order = Orders::find($id);
+        $order = Orders::with('items')->find($id);
         return response()->json($order);
     }
 

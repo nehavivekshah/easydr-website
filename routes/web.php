@@ -119,6 +119,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/suppliers/edit/{id}', [WebPharmacyController::class, 'editSupplier']);
     Route::get('/admin/suppliers/delete/{id}', [WebPharmacyController::class, 'deleteSupplier'])->name('suppliers.delete');
 
+    Route::get('/admin/manage-order', [WebPharmacyController::class, 'manageOrder'])->name('orders.manage');
     Route::post('/admin/orders/place', [WebPharmacyController::class, 'placeOrder'])->name('orders.place');
     Route::get('/admin/orders/edit/{id}', [WebPharmacyController::class, 'editOrder']);
     Route::get('/admin/orders/delete/{id}', [WebPharmacyController::class, 'deleteOrder'])->name('orders.delete');
