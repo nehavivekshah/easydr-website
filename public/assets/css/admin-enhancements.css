@@ -840,3 +840,12 @@
 .response-msg.hiding {
     animation: fadeOut 0.3s ease-out forwards;
 }
+
+.input-icon {
+    width: 45px;
+    padding: 8px 10px;
+    background: #e6f4f4;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-color: #ccc !important;
+}
