@@ -1,0 +1,408 @@
+/* Responsive Design for EasyDoctor Frontend */
+
+@media (max-width: 991px) {
+    .slider-content h2 {
+        font-size: 36px;
+    }
+
+    .slider-content p {
+        font-size: 16px;
+    }
+
+    .navbar-brand {
+        font-size: 20px;
+    }
+
+    .section-title h2 {
+        font-size: 28px;
+    }
+
+    .header-contact-info ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header-social-icons {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 767px) {
+    .slider-content h2 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .slider-content p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .section-title h2 {
+        font-size: 24px;
+    }
+
+    .navbar {
+        padding: 10px 0;
+    }
+
+    .navbar-brand {
+        font-size: 18px;
+    }
+
+    .nav-link {
+        padding: 10px 0 !important;
+        margin: 5px 0 !important;
+    }
+
+    .dropdown-menu {
+        background-color: #f8f9fa;
+        border: none;
+    }
+
+    .dropdown-item {
+        padding: 8px 15px;
+    }
+
+    .slider-area {
+        min-height: 400px;
+        padding: 40px 0;
+    }
+
+    .slider-content {
+        text-align: center;
+    }
+
+    .slider-content a {
+        display: block;
+        margin-top: 20px;
+    }
+
+    .doctor-active {
+        gap: 15px;
+    }
+
+    .doctor-card {
+        margin-bottom: 20px;
+    }
+
+    .doctor-card img {
+        height: 200px;
+    }
+
+    .form-control {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .form-label {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .btn-sm {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .pt-80,
+    .pt-100 {
+        padding-top: 40px;
+    }
+
+    .pb-80,
+    .pb-100 {
+        padding-bottom: 40px;
+    }
+
+    .pt-60 {
+        padding-top: 30px;
+    }
+
+    .pb-40 {
+        padding-bottom: 20px;
+    }
+
+    .footer-widgets-area {
+        padding: 40px 0 30px;
+    }
+
+    .footer-widget {
+        margin-bottom: 30px;
+    }
+
+    .footer-social-icons {
+        text-align: center;
+    }
+
+    .footer-social-icons a {
+        margin: 0 5px;
+    }
+
+    .footer-copy-right {
+        padding: 20px 0;
+        font-size: 14px;
+    }
+
+    .footer-bottom-link a {
+        display: block;
+        margin: 10px 0;
+        font-size: 13px;
+    }
+
+    .header-top {
+        padding: 5px 0;
+    }
+
+    .header-contact-info {
+        text-align: center;
+    }
+
+    .header-contact-info a {
+        font-size: 12px;
+    }
+
+    .header-social-icons {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .header-social-icons span {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .header-social-icons a {
+        font-size: 14px;
+    }
+
+    .single-specialists {
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    .specialists-icon img {
+        height: 50px;
+        width: 50px;
+    }
+
+    .specialists-content h6 {
+        font-size: 14px;
+    }
+
+    .table {
+        font-size: 12px;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px 5px;
+    }
+
+    .table-responsive {
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+    }
+
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    .doctor-search-filter {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .doctor-search-filter form {
+        gap: 0;
+    }
+
+    .doctor-search-filter .form-control,
+    .doctor-search-filter .btn {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .breadcrumb-area h2 {
+        font-size: 24px;
+    }
+
+    .appointment-form {
+        padding: 15px;
+    }
+
+    .appointment-form h4 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .scroll-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .mb-30 {
+        margin-bottom: 20px;
+    }
+
+    .mt-30 {
+        margin-top: 20px;
+    }
+
+    .mt-25 {
+        margin-top: 20px;
+    }
+
+    .fw-bold {
+        font-weight: 600;
+    }
+
+    .alert {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .card {
+        margin-bottom: 15px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 16px;
+    }
+
+    .col-md-6,
+    .col-sm-6 {
+        display: block;
+        width: 100% !important;
+    }
+
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .text-right {
+        text-align: center;
+    }
+
+    .text-left {
+        text-align: center;
+    }
+}
+
+@media (max-width: 359px) {
+    .slider-content h2 {
+        font-size: 20px;
+    }
+
+    .slider-content p {
+        font-size: 12px;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .navbar-brand {
+        font-size: 16px;
+    }
+
+    .section-title h2 {
+        font-size: 20px;
+    }
+
+    .form-control {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .table {
+        font-size: 11px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px 3px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+
+    .slider-content h2 {
+        font-size: 52px;
+    }
+
+    .slider-content p {
+        font-size: 18px;
+    }
+
+    .section-title h2 {
+        font-size: 40px;
+    }
+
+    .col-xl-3 {
+        flex: 0 0 calc(25% - 15px);
+    }
+
+    .col-xl-4 {
+        flex: 0 0 calc(33.333333% - 15px);
+    }
+
+    .col-xl-6 {
+        flex: 0 0 calc(50% - 15px);
+    }
+}
+
+@media print {
+    .navbar,
+    .footer-area,
+    .footer-widgets-area,
+    .header-area,
+    .btn,
+    .alert {
+        display: none !important;
+    }
+
+    body {
+        background-color: #fff;
+        color: #000;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #1a1a2e;
+        --text-color: #e0e0e0;
+    }
+}
