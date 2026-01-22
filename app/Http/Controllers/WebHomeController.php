@@ -10,6 +10,7 @@ use App\Models\Appointments;
 use App\Models\Medicines;
 use App\Models\PharmacyMaster;
 use App\Models\Store_locations;
+use App\Models\Reports;
 
 use Carbon\Carbon;
 
@@ -17,64 +18,102 @@ class WebHomeController extends Controller
 {
     function home()
     {
+        $user = Auth::user();
+        $roles = \App\Models\Roles::find($user->role);
+        $rolePermissions = explode(',', $roles->features ?? '');
+
         // Define the current date and time
         $currentDateTime = Carbon::now();
-    
-        $upcomingAppointmentCount = Appointments::where(function ($query) use ($currentDateTime) {
-                $query->whereDate('date', '>', $currentDateTime->toDateString())
-                      ->orWhere(function ($query) use ($currentDateTime) {
-                          $query->whereDate('date', '=', $currentDateTime->toDateString())
-                                ->whereTime('time', '>', $currentDateTime->toTimeString());
-                      });
-            })
-            ->count();
-    
-        $patientCount = User::where('branch', Auth::user()->branch ?? '')
+
+        // Base Flags
+        $isDoctor = ($user->role == '4');
+        $isAdmin = ($user->role == '1'); // Assuming 1 is Admin
+        $hasPharmacyAccess = in_array('stores', $rolePermissions) || in_array('All', $rolePermissions);
+        $hasAppointmentAccess = in_array('appointments', $rolePermissions) || in_array('All', $rolePermissions);
+
+        // --- Appointments ---
+        $upcomingAppointmentCount = 0;
+        if ($hasAppointmentAccess || $isDoctor) {
+            $query = Appointments::query();
+            if ($isDoctor) {
+                $query->where('did', $user->id);
+            }
+            $query->where(function ($q) use ($currentDateTime) {
+                $q->whereDate('date', '>', $currentDateTime->toDateString())
+                    ->orWhere(function ($q2) use ($currentDateTime) {
+                        $q2->whereDate('date', '=', $currentDateTime->toDateString())
+                            ->whereTime('time', '>', $currentDateTime->toTimeString());
+                    });
+            });
+            $upcomingAppointmentCount = $query->count();
+        }
+
+        // --- Patients ---
+        $patientCount = User::where('branch', $user->branch ?? '')
             ->where('role', '5')
             ->count();
-    
-        $doctorCount = User::where('branch', Auth::user()->branch ?? '')
-            ->where('role', '4')
-            ->count();
-    
-        $medicineCount = Medicines::where('branch', Auth::user()->branch ?? '')
-            ->where('status', '1')
-            ->count();
-    
-        $pharmacyCount = PharmacyMaster::where('branch', Auth::user()->branch ?? '')
-            ->where('status', '1')
-            ->count();
-    
-        $storesCount = Store_locations::where('status', '1')
-            ->count();
-    
-        // Appointment Chart Data (Example: Appointments per month for the last 6 months)
+
+        // --- Doctors ---
+        $doctorCount = 0;
+        if ($isAdmin) {
+            $doctorCount = User::where('branch', $user->branch ?? '')
+                ->where('role', '4')
+                ->count();
+        }
+
+        // --- Pharmacy / Medicines ---
+        $medicineCount = 0;
+        $pharmacyCount = 0;
+        $storesCount = 0;
+        if ($hasPharmacyAccess) {
+            $medicineCount = Medicines::where('branch', $user->branch ?? '')
+                ->where('status', '1')
+                ->count();
+
+            $pharmacyCount = PharmacyMaster::where('branch', $user->branch ?? '')
+                ->where('status', '1')
+                ->count();
+
+            $storesCount = Store_locations::where('status', '1')
+                ->count();
+        }
+
+        // --- Reports ---
+        $reportsCount = 0;
+        if (in_array('reports', $rolePermissions) || in_array('All', $rolePermissions)) {
+            $reportsCount = \App\Models\Reports::count();
+        }
+
+        // --- Appointment Chart Data ---
         $appointmentData = [];
         $appointmentLabels = [];
-    
-        $start = Carbon::now()->subMonths(5)->startOfMonth(); // Get data for the last 6 months
-        $end = Carbon::now()->endOfMonth();
-    
-        while ($start <= $end) {
-            $month = $start->format('M'); // Month name (e.g., Jan, Feb)
-            $count = Appointments::whereMonth('date', $start->month)
-                                 ->whereYear('date', $start->year)
-                                 ->count();
-    
-            $appointmentLabels[] = $month;
-            $appointmentData[] = $count;
-            $start->addMonth();
+        if ($hasAppointmentAccess || $isDoctor) {
+            $start = Carbon::now()->subMonths(5)->startOfMonth();
+            $end = Carbon::now()->endOfMonth();
+
+            while ($start <= $end) {
+                $month = $start->format('M');
+                $q = Appointments::whereMonth('date', $start->month)->whereYear('date', $start->year);
+                if ($isDoctor) {
+                    $q->where('did', $user->id);
+                }
+                $count = $q->count();
+
+                $appointmentLabels[] = $month;
+                $appointmentData[] = $count;
+                $start->addMonth();
+            }
         }
-    
-        // Patient Chart Data (Example: Patient gender distribution)
-        $patientChartLabels = ['Male', 'Female', 'Other'];  // Replace with relevant categories
+
+        // --- Patient Chart Data ---
+        $patientChartLabels = ['Male', 'Female', 'Other'];
         $patientChartData = [
-            User::where('branch', Auth::user()->branch ?? '')->where('role', '5')->where('gender', '1')->count(), // Replace 'gender' with actual column
-            User::where('branch', Auth::user()->branch ?? '')->where('role', '5')->where('gender', '2')->count(),// Replace 'gender' with actual column
-            User::where('branch', Auth::user()->branch ?? '')->where('role', '5')->where('gender', '3')->count(), // Replace 'gender' with actual column
+            User::where('branch', $user->branch ?? '')->where('role', '5')->where('gender', '1')->count(),
+            User::where('branch', $user->branch ?? '')->where('role', '5')->where('gender', '2')->count(),
+            User::where('branch', $user->branch ?? '')->where('role', '5')->where('gender', '3')->count(),
         ];
-    
-    
+
+
         return view('home', [
             'appointments' => $upcomingAppointmentCount,
             'patients' => $patientCount,
@@ -82,10 +121,14 @@ class WebHomeController extends Controller
             'medicines' => $medicineCount,
             'pharmacyCount' => $pharmacyCount,
             'medicalStores' => $storesCount,
+            'reports' => $reportsCount,
             'appointmentChartLabels' => $appointmentLabels,
             'appointmentChartData' => $appointmentData,
             'patientChartLabels' => $patientChartLabels,
             'patientChartData' => $patientChartData,
+            'isDoctor' => $isDoctor,
+            'isAdmin' => $isAdmin,
+            'hasPharmacyAccess' => $hasPharmacyAccess
         ]);
     }
 }

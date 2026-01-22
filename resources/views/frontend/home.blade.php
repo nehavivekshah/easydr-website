@@ -114,59 +114,94 @@
         style="background: #e8f1fc8a; background-image:url(public/assets/frontend/img/an-bg/an-bg13.png); background-size: contain;background-position: center center;background-repeat: no-repeat;">
           
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-8">
+                <div class="row justify-content-center align-items-center mb-50">
+                    <div class="col-lg-6 col-md-8">
                         <div class="section-title text-left">
-                            <h2 class="h4 mb-0">Our Doctors</h2>
+                            <h2 class="h3 mb-2 fw-bold">Our Expert Doctors</h2>
+                            <p class="text-muted mb-0">Consult with our board-certified specialists</p>
                         </div>
                     </div>
-                    <div class="col-4 text-right">
-                        <a href="/doctors" class="btn ss-btn float-right">See All <i class="fas fa-chevron-right"></i></a>
+                    <div class="col-lg-6 col-md-4 text-md-right text-lg-end">
+                        <a href="/doctors" class="btn ss-btn">See All Doctors <i class="fas fa-arrow-right ms-2"></i></a>
                     </div>
                 </div>
+
                 <div class="row doctor-active">
                     @foreach ($doctors as $doctor)
-                    <div class="col-xl-3 col-lg-3 col-md-4 mt-4">
-                        <div class="card h-100 shadow-sm border-0 rounded-10 overflow-hidden">
-
-                            {{-- Doctor Image --}}
-                            <div class="position-relative text-center bg-light">
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <div class="card doctor-card h-100 border-0 overflow-hidden transition-all" style="border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                            
+                            {{-- Doctor Image Container --}}
+                            <div class="position-relative bg-light overflow-hidden doctor-image-wrapper" style="height: 240px; background: linear-gradient(135deg, #e8f1fc 0%, #f2f9fb 100%);">
                                 <img src="{{ asset( !empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png' ) }}"
-                                    class="card-img-top"
+                                    class="card-img-top w-100 h-100"
                                     alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
-                                    style="height: 195px; object-fit: contain; width: 100%;">
+                                    style="object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
+                                
+                                {{-- Badge for experience --}}
+                                @if(!empty($doctor->experience))
+                                <div class="position-absolute top-3 end-3" style="z-index: 10;">
+                                    <span class="badge bg-primary rounded-pill px-3 py-2 font-weight-600">
+                                        <i class="fas fa-briefcase-medical me-1"></i>{{ $doctor->experience }}
+                                    </span>
+                                </div>
+                                @endif
                             </div>
 
-                            {{-- Doctor Info --}}
-                            <div class="card-body d-flex flex-column line-height-1">
+                            {{-- Doctor Info Body --}}
+                            <div class="card-body d-flex flex-column pt-4 pb-3 px-4" style="flex-grow: 1;">
+                                
                                 {{-- Name --}}
-                                <h5 class="card-title mb-0">
-                                    <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}" class="text-decoration-none stretched-link text-dark fw-bold">
-                                        Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }} {{-- Added "Dr." prefix --}}
+                                <h5 class="card-title mb-1">
+                                    <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}" class="text-decoration-none text-dark fw-bold" style="font-size: 1.1rem; transition: color 0.3s ease;">
+                                        Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}
                                     </a>
                                 </h5>
 
                                 {{-- Specialization --}}
-                                <p class="text-mute mb-0 fw-medium font-14">{{ $doctor->specialist ?? 'Specialist' }}</p>
+                                <p class="text-primary mb-3 fw-500 font-13" style="font-size: 0.9rem;">
+                                    <i class="fas fa-stethoscope me-1"></i>{{ $doctor->specialist ?? 'Specialist' }}
+                                </p>
 
-                                {{-- Rating - Using Font Awesome Stars --}}
-                                <div class="font-11">
+                                {{-- Rating Section --}}
+                                <div class="mb-3 pb-2" style="border-bottom: 1px solid #eee;">
                                     @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
                                         @php
                                             $rating = round($doctor->avg_rating);
                                             $maxRating = 5;
                                         @endphp
-                                        <span class="text-warning"> {{-- Yellow stars --}}
-                                            @for ($i = 1; $i <= $maxRating; $i++)
-                                                <i class="{{ $i <= $rating ? 'fas' : 'far' }} fa-star"></i>
-                                            @endfor
-                                        </span>
-                                        <span class="ms-1 text-muted">({{ number_format($doctor->avg_rating, 1) }})</span>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <span class="text-warning">
+                                                @for ($i = 1; $i <= $maxRating; $i++)
+                                                    <i class="{{ $i <= $rating ? 'fas' : 'far' }} fa-star font-12"></i>
+                                                @endfor
+                                            </span>
+                                            <span class="badge bg-light text-dark font-12">{{ number_format($doctor->avg_rating, 1) }}/5</span>
+                                        </div>
                                     @else
-                                        <span class="text-muted fst-italic">No ratings yet</span>
+                                        <span class="text-muted fst-italic font-12">
+                                            <i class="fas fa-star me-1 text-warning"></i>No ratings yet
+                                        </span>
                                     @endif
                                 </div>
+
+                                {{-- Fees --}}
+                                @if(!empty($doctor->fees))
+                                <div class="mb-3">
+                                    <p class="text-muted mb-0 font-12">Consultation Fee</p>
+                                    <h6 class="text-success mb-0 fw-bold">₹{{ number_format($doctor->fees, 0) }}</h6>
+                                </div>
+                                @endif
+
                             </div>
+
+                            {{-- Action Button --}}
+                            <div class="card-footer bg-white border-top px-4 py-3">
+                                <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}" class="btn btn-sm btn-primary w-100 fw-600 py-2" style="border-radius: 8px; transition: all 0.3s ease;">
+                                    <i class="fas fa-calendar-check me-2"></i>View Profile & Book
+                                </a>
+                            </div>
+
                         </div>
                     </div>
                     @endforeach

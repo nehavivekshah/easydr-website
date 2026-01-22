@@ -55,6 +55,94 @@ body {
     opacity: 1;
 }
 
+/* ==================== Doctor Card Enhancements ==================== */
+.doctor-card {
+    border: none !important;
+    background: #fff;
+    border-radius: 15px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+}
+
+.doctor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.doctor-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 240px;
+    background: linear-gradient(135deg, #e8f1fc 0%, #f2f9fb 100%);
+}
+
+.doctor-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.doctor-card:hover .doctor-image-wrapper img {
+    transform: scale(1.08);
+}
+
+.doctor-card .card-body {
+    padding-top: 1.5rem;
+    padding-bottom: 0.75rem;
+    flex-grow: 1;
+}
+
+.doctor-card .card-title {
+    margin-bottom: 0.5rem;
+}
+
+.doctor-card .card-title a {
+    color: #2d3748;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.doctor-card .card-title a:hover {
+    color: var(--color-primary);
+}
+
+.doctor-card .card-footer {
+    border-top: 1px solid #eee;
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+}
+
+.doctor-card .card-footer .btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+}
+
+.doctor-card .card-footer .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(30, 11, 155, 0.3);
+}
+
+/* Badge Styling */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 20px !important;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.badge.bg-primary {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) !important;
+    box-shadow: 0 4px 12px rgba(30, 11, 155, 0.3);
+}
+
 /* ==================== Card Enhancements ==================== */
 /* Specialists & Doctors Cards */
 .single-specialists,
@@ -111,6 +199,54 @@ select:focus {
     outline: none;
 }
 
+/* ==================== Search & Filter Section ==================== */
+.doctor-search-filter {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.input-group {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.input-group .form-control {
+    border: 2px solid #eee;
+    padding: 12px 18px;
+    font-size: 1rem;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: none;
+}
+
+.form-select {
+    border: 2px solid #eee !important;
+    border-radius: 8px !important;
+    padding: 12px 18px !important;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23007bff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem !important;
+    appearance: none;
+}
+
+.form-select:focus {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15) !important;
+}
+
 /* ==================== Navigation Enhancements ==================== */
 .main-menu ul li a {
     position: relative;
@@ -141,6 +277,10 @@ select:focus {
     padding-bottom: 100px !important;
 }
 
+.py-80 {
+    padding: 100px 0 !important;
+}
+
 .section-title h2 {
     position: relative;
     display: inline-block;
@@ -161,6 +301,30 @@ select:focus {
 .section-title.center-align h2::after {
     left: 50%;
     transform: translateX(-50%);
+}
+
+/* ==================== Alert Styling ==================== */
+.alert {
+    border: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.alert-info {
+    background-color: #e3f2fd;
+    color: #1565c0;
+    border: 2px solid #90caf9;
+}
+
+.alert-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #81c784;
+}
+
+.alert-light {
+    background-color: #f5f5f5;
+    border: 2px solid #e0e0e0;
 }
 
 /* ==================== Animations ==================== */
@@ -211,7 +375,51 @@ select:focus {
         padding-bottom: 60px !important;
     }
 
+    .py-80 {
+        padding: 60px 0 !important;
+    }
+
     .single-specialists {
         margin-bottom: 20px;
+    }
+
+    .doctor-card {
+        margin-bottom: 20px;
+    }
+
+    .doctor-search-filter {
+        padding: 20px;
+    }
+
+    .doctor-image-wrapper {
+        height: 200px;
+    }
+
+    .breadcrumb-area {
+        min-height: auto !important;
+        padding: 40px 0 !important;
+    }
+
+    .doctor-card:hover {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 576px) {
+    .doctor-image-wrapper {
+        height: 180px;
+    }
+
+    .doctor-card .card-body {
+        padding: 1rem 1rem;
+    }
+
+    .doctor-card .card-title a {
+        font-size: 1rem;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem !important;
     }
 }

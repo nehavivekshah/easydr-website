@@ -13,14 +13,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="dashboard-overview">
-                        <div class="overview-box appointments">
-                            <a href="/admin/upcoming-appointments" class="overview-link"></a>
-                            <i class="bx bx-calendar-check"></i>
-                            <div class="overview-details">
-                                <div class="overview-count">{{ $appointments ?? 0 }}</div>
-                                <div class="overview-label">Appointments</div>
+                        @if($appointments > 0 || $isDoctor || $isAdmin)
+                            <div class="overview-box appointments">
+                                <a href="/admin/upcoming-appointments" class="overview-link"></a>
+                                <i class="bx bx-calendar-check"></i>
+                                <div class="overview-details">
+                                    <div class="overview-count">{{ $appointments ?? 0 }}</div>
+                                    <div class="overview-label">Appointments</div>
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                         <div class="overview-box patients">
                             <a href="/admin/users/patient-directory" class="overview-link"></a>
@@ -31,41 +33,47 @@
                             </div>
                         </div>
 
-                        <div class="overview-box doctors">
-                            <a href="/admin/users/doctor-directory" class="overview-link"></a>
-                            <i class="bx bx-heart-circle"></i>
-                            <div class="overview-details">
-                                <div class="overview-count">{{ $doctors ?? 0 }}</div>
-                                <div class="overview-label">Doctors</div>
+                        @if($isAdmin)
+                            <div class="overview-box doctors">
+                                <a href="/admin/users/doctor-directory" class="overview-link"></a>
+                                <i class="bx bx-heart-circle"></i>
+                                <div class="overview-details">
+                                    <div class="overview-count">{{ $doctors ?? 0 }}</div>
+                                    <div class="overview-label">Doctors</div>
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
-                        <div class="overview-box medicines">
-                            <a href="/admin/medicine-listings" class="overview-link"></a>
-                            <i class="bx bx-capsule"></i>
-                            <div class="overview-details">
-                                <div class="overview-count">{{ $medicines ?? 0 }}</div>
-                                <div class="overview-label">Medicines</div>
+                        @if($hasPharmacyAccess || $isAdmin)
+                            <div class="overview-box medicines">
+                                <a href="/admin/medicine-listings" class="overview-link"></a>
+                                <i class="bx bx-capsule"></i>
+                                <div class="overview-details">
+                                    <div class="overview-count">{{ $medicines ?? 0 }}</div>
+                                    <div class="overview-label">Medicines</div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="overview-box medical-stores">
-                            <a href="/admin/pharmacy" class="overview-link"></a>
-                            <i class="bx bx-store"></i>
-                            <div class="overview-details">
-                                <div class="overview-count">{{ $medicalStores ?? 0 }}</div>
-                                <div class="overview-label">Medical Stores</div>
+                            <div class="overview-box medical-stores">
+                                <a href="/admin/pharmacy" class="overview-link"></a>
+                                <i class="bx bx-store"></i>
+                                <div class="overview-details">
+                                    <div class="overview-count">{{ $medicalStores ?? 0 }}</div>
+                                    <div class="overview-label">Medical Stores</div>
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
-                        <div class="overview-box medicines">
-                            <a href="/admin/reports" class="overview-link"></a>
-                            <i class="bx bx-spreadsheet"></i>
-                            <div class="overview-details">
-                                <div class="overview-count">{{ $reports ?? 0 }}</div>
-                                <div class="overview-label">Reports</div>
+                        @if($reports > 0 || $isAdmin)
+                            <div class="overview-box medicines">
+                                <a href="/admin/reports" class="overview-link"></a>
+                                <i class="bx bx-spreadsheet"></i>
+                                <div class="overview-details">
+                                    <div class="overview-count">{{ $reports ?? 0 }}</div>
+                                    <div class="overview-label">Reports</div>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -76,7 +84,11 @@
                     <div class="card mb-4">
                         <div class="card-header">Appointment Chart</div>
                         <div class="card-body">
-                            <canvas id="appointmentChart"></canvas>
+                            @if(count($appointmentChartData) > 0)
+                                <canvas id="appointmentChart"></canvas>
+                            @else
+                                <p class="text-center text-muted m-5">No appointment data available.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
