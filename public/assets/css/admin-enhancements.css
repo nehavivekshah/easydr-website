@@ -847,7 +847,8 @@
     background: #e6f4f4;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    border-color: #ccc !important;
+    border: 2px solid #e2e8f0 !important;
+    border-right: 0px;
 }
 
 .modal-body {
