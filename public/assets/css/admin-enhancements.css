@@ -624,7 +624,7 @@
 
     /* Modal Mobile Adjustments */
     .modal-dialog {
-        margin: 0.5rem;
+        margin: 1.75rem auto;
     }
 }
 
