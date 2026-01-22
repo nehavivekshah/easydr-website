@@ -152,22 +152,21 @@
                                 </div>
 
                                 {{-- Fees --}}
-                                @if(!empty($doctor->fees))
-                                <div class="mb-3">
-                                    <p class="text-muted mb-0 font-12">Consultation Fee</p>
-                                    <h6 class="text-success mb-0 fw-bold">₹{{ number_format($doctor->fees, 0) }}</h6>
+                                <div class="mt-auto">
+                                    @if(!empty($doctor->fees))
+                                    <div class="mb-3">
+                                        <p class="text-muted mb-0 font-12">Consultation Fee</p>
+                                        <h6 class="text-success mb-0 fw-bold">₹{{ number_format($doctor->fees, 0) }}</h6>
+                                    </div>
+                                    @endif
+                                    
+                                    <div class="d-grid gap-2">
+                                        <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}" class="btn btn-primary fw-600 py-2" style="border-radius: 8px; transition: all 0.3s ease; font-size: 0.9rem;">
+                                            <i class="fas fa-calendar-check me-2"></i>Book Appointment
+                                        </a>
+                                    </div>
                                 </div>
-                                @endif
 
-                            </div>
-
-                            {{-- Action Buttons --}}
-                            <div class="card-footer bg-white border-top px-4 py-3">
-                                <div class="d-grid gap-2">
-                                    <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}" class="btn btn-primary fw-600 py-2" style="border-radius: 8px; transition: all 0.3s ease; font-size: 0.9rem;">
-                                        <i class="fas fa-calendar-check me-2"></i>Book Appointment
-                                    </a>
-                                </div>
                             </div>
 
                         </div>
