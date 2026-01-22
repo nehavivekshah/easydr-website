@@ -70,24 +70,38 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Store ID</label>
-                            <input type="number" name="store_id" id="store_id" class="form-control" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-store'></i></span>
+                                <input type="number" name="store_id" id="store_id" class="form-control"
+                                    placeholder="Enter store ID" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Order ID</label>
-                            <input type="number" name="order_id" id="order_id" class="form-control" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-receipt'></i></span>
+                                <input type="number" name="order_id" id="order_id" class="form-control"
+                                    placeholder="Enter order ID" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Total Amount</label>
-                            <input type="number" step="0.01" name="total_amount" id="total_amount" class="form-control"
-                                required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-dollar'></i></span>
+                                <input type="number" step="0.01" name="total_amount" id="total_amount" class="form-control"
+                                    placeholder="Enter amount" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Payment Status</label>
-                            <select name="payment_status" id="payment_status" class="form-select" required>
-                                <option value="Paid">Paid</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Failed">Failed</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-check-circle'></i></span>
+                                <select name="payment_status" id="payment_status" class="form-select" required>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Failed">Failed</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

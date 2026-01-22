@@ -66,8 +66,11 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Store ID</label>
-                            <input type="number" name="store_id_display" class="form-control" value="{{ $store_id ?? '' }}"
-                                {{ isset($store_id) ? 'disabled' : '' }}>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-store'></i></span>
+                                <input type="number" name="store_id_display" class="form-control" placeholder="Enter store ID" value="{{ $store_id ?? '' }}"
+                                    {{ isset($store_id) ? 'disabled' : '' }}>
+                            </div>
                             @if(!isset($store_id))
                                 <script>
                                     document.querySelector('input[name="store_id_display"]').addEventListener('input', function (e) {
@@ -78,11 +81,17 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Medicine ID</label>
-                            <input type="number" name="medicine_id" id="medicine_id" class="form-control" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-capsule'></i></span>
+                                <input type="number" name="medicine_id" id="medicine_id" class="form-control" placeholder="Enter medicine ID" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Quantity</label>
-                            <input type="number" name="quantity" id="quantity" class="form-control" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-package'></i></span>
+                                <input type="number" name="quantity" id="quantity" class="form-control" placeholder="Enter quantity" required>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
