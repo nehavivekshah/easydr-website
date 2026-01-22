@@ -67,19 +67,31 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" id="name" class="form-control" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-user'></i></span>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter supplier name" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Contact <span class="text-danger">*</span></label>
-                            <input type="text" name="contact" id="contact" class="form-control" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-phone'></i></span>
+                                <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter contact number" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" id="email" class="form-control" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-envelope'></i></span>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Enter email address" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Address <span class="text-danger">*</span></label>
-                            <textarea name="address" id="address" class="form-control" rows="3" required></textarea>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-map'></i></span>
+                                <textarea name="address" id="address" class="form-control" rows="3" placeholder="Enter address" required></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
