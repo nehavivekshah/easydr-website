@@ -69,7 +69,78 @@
                 margin: 0 -15px; /* Counteract row margin if needed for slider */
                 padding: 10px; /* Space for shadow */
             }
+
+            /* Equal Height Fix for Slick Slider */
+            .doctor-active .slick-track {
+                display: flex !important;
+            }
+
+            .doctor-active .slick-slide {
+                height: inherit !important;
+                display: flex !important;
+                padding: 0 10px; /* Add gap between slides */
+            }
+
+            .doctor-active .slick-slide > div {
+                flex: 1;
+                display: flex;
+                width: 100%;
+            }
+            
+            .doctor-card {
+                 width: 100%;
+            }
         </style>
+
+        @push('scripts')
+        <script>
+            $(document).ready(function(){
+                // Re-initialize if not already active or override defaults
+                // We check if it's already initialized to avoid double init, 
+                // but since we want to FORCE new settings, we might need to unslick first if app.js runs first.
+                // However, app.js usually runs at the end. 
+                // Let's rely on the fact that we can target the class specifically.
+                
+                var $slider = $('.doctor-active');
+                
+                if ($slider.hasClass('slick-initialized')) {
+                    $slider.slick('unslick');
+                }
+
+                $slider.slick({
+                    infinite: false,
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                    // Custom Arrows using FontAwesome Icons
+                    prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+                    nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>',
+                    responsive: [
+                        {
+                            breakpoint: 1024,
+                            settings: {
+                                slidesToShow: 3,
+                                slidesToScroll: 1
+                            }
+                        },
+                        {
+                            breakpoint: 768,
+                            settings: {
+                                slidesToShow: 2,
+                                slidesToScroll: 1
+                            }
+                        },
+                        {
+                            breakpoint: 480,
+                            settings: {
+                                slidesToShow: 1,
+                                slidesToScroll: 1
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+        @endpush
 
         <!-- specialists-area -->
         <section id="specialists" class="specialists-area p-relative pt-80 pb-80">
