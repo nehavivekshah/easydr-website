@@ -5,24 +5,31 @@
     <main>
         <!-- slider-area -->
         <section id="home" class="slider-area fix p-relative">
-           
+
             <div class="slider-active2">
-			    <div class="single-slider slider-bg d-flex align-items-center" style="background-image:url(public/assets/frontend/img/an-bg/header-bg.png)">
+                <div class="single-slider slider-bg d-flex align-items-center"
+                    style="background-image:url(public/assets/frontend/img/an-bg/header-bg.png)">
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col-lg-6">
                                 <div class="slider-content s-slider-content text-left">
-                                    <h2 data-animation="fadeInUp" data-delay=".4s">Access HealthCare <span>Anywhere</span></h2>
-                                    <p data-animation="fadeInUp" data-delay=".6s">Connect with your Doctor and Pharmacy from your Laptop, PC, Mobile or Tablet.
-                                        <br>Schedule and Attend Appointment with your medical practicenor<br>Share & Generate Reports, Track Appointments</p>
-                                    <div class="slider-btn mt-25">                                          
-                                        <a href="/about-us" class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s">Learn More <i class="fas fa-chevron-right"></i></a>					
+                                    <h2 data-animation="fadeInUp" data-delay=".4s">Access HealthCare <span>Anywhere</span>
+                                    </h2>
+                                    <p data-animation="fadeInUp" data-delay=".6s">Connect with your Doctor and Pharmacy from
+                                        your Laptop, PC, Mobile or Tablet.
+                                        <br>Schedule and Attend Appointment with your medical practicenor<br>Share &
+                                        Generate Reports, Track Appointments
+                                    </p>
+                                    <div class="slider-btn mt-25">
+                                        <a href="/about-us" class="btn ss-btn" data-animation="fadeInRight"
+                                            data-delay=".8s">Learn More <i class="fas fa-chevron-right"></i></a>
                                     </div>
                                 </div>
                             </div>
-							<div class="col-lg-6">
-								<img src="public/assets/frontend/img/bg/header-img.png" alt="header-img" class="header-img"/>
-							</div>
+                            <div class="col-lg-6">
+                                <img src="public/assets/frontend/img/bg/header-img.png" alt="header-img"
+                                    class="header-img" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -30,440 +37,287 @@
         </section>
         <!-- slider-area-end -->
 
-        <style>
-            /* Custom CSS for Doctor Slider Arrows */
-            .doctor-active .slick-arrow {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 10;
-                width: 40px;
-                height: 40px;
-                border: none;
-                border-radius: 50%;
-                background-color: #fff;
-                color: #2e3876; /* Primary Color */
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-            .doctor-active .slick-arrow:hover {
-                background-color: #2e3876;
-                color: #fff;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            }
-            .doctor-active .slick-prev {
-                left: -20px;
-            }
-            .doctor-active .slick-next {
-                right: -20px;
-            }
-            /* Adjust for container padding if needed */
-            .doctors-area .container {
-                position: relative;
-            }
-            .doctor-active {
-                margin: 0 -15px; /* Counteract row margin if needed for slider */
-                padding: 10px; /* Space for shadow */
-            }
+        <div class="row">
+            @foreach ($doctors as $doctor)
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <div class="card doctor-card h-100 border-0 overflow-hidden transition-all"
+                        style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;">
 
-            /* Equal Height Fix for Slick Slider */
-            .doctor-active .slick-track {
-                display: flex !important;
-            }
+                        {{-- Doctor Image Container --}}
+                        <div class="position-relative bg-light overflow-hidden doctor-image-wrapper" style="height: 250px;">
+                            <img src="{{ asset(!empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png') }}"
+                                class="card-img-top w-100 h-100"
+                                alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
+                                style="object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
 
-            .doctor-active .slick-slide {
-                height: inherit !important;
-                display: flex !important;
-                padding: 0 10px; /* Add gap between slides */
-            }
-
-            .doctor-active .slick-slide > div {
-                flex: 1;
-                display: flex;
-                width: 100%;
-            }
-            
-            .doctor-card {
-                 width: 100%;
-            }
-        </style>
-
-        @push('scripts')
-        <script>
-            $(document).ready(function(){
-                // Re-initialize if not already active or override defaults
-                // We check if it's already initialized to avoid double init, 
-                // but since we want to FORCE new settings, we might need to unslick first if app.js runs first.
-                // However, app.js usually runs at the end. 
-                // Let's rely on the fact that we can target the class specifically.
-                
-                var $slider = $('.doctor-active');
-                
-                if ($slider.hasClass('slick-initialized')) {
-                    $slider.slick('unslick');
-                }
-
-                $slider.slick({
-                    infinite: false,
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                    // Custom Arrows using FontAwesome Icons
-                    prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
-                    nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>',
-                    responsive: [
-                        {
-                            breakpoint: 1024,
-                            settings: {
-                                slidesToShow: 3,
-                                slidesToScroll: 1
-                            }
-                        },
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                slidesToShow: 2,
-                                slidesToScroll: 1
-                            }
-                        },
-                        {
-                            breakpoint: 480,
-                            settings: {
-                                slidesToShow: 1,
-                                slidesToScroll: 1
-                            }
-                        }
-                    ]
-                });
-            });
-        </script>
-        @endpush
-
-        <!-- specialists-area -->
-        <section id="specialists" class="specialists-area p-relative pt-80 pb-80">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-8">
-                        <div class="section-title text-left">
-                            <h2 class="h4 mb-0">Specialists</h2>
-                        </div>
-                    </div>
-                    <div class="col-4 text-right">
-                        <a href="/specialists" class="btn ss-btn float-right">See All <i class="fas fa-chevron-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-xl-12 col-lg-12">
-                    <div class="row justify-content-center px-0">
-                        @foreach($specialists as $speciality)
-                        <div class="col-lg-2 col-md-3 col-sm-6 px-2">
-                            <div class="single-specialists shadow mt-30">
-                                <a href="/doctors/{{ Str::slug($speciality->title ?? '') }}" class="specialists-icon">
-                                    @if (!empty($speciality->icons))
-                                        <img src="{{ asset('/public/assets/images/specialists/' . $speciality->icons) }}" alt="img">
-                                    @else 
-                                        <img src="/public/assets/icons/image.svg" alt="img">
-                                    @endif
+                            {{-- Hover Overlay with Button --}}
+                            <div class="doctor-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                style="background: rgba(30, 41, 99, 0.7); opacity: 0; transition: all 0.3s ease;">
+                                <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
+                                    class="btn btn-light rounded-pill px-4 py-2 fw-bold transform-scale"
+                                    style="transform: scale(0.9); transition: all 0.3s ease;">
+                                    View Profile
                                 </a>
-                                <div class="specialists-content">
-                                    <h6 class="title"><a href="/doctors/{{ Str::slug($speciality->title ?? '') }}">
-                                    {!! strlen($speciality->title ?? '') > 15 ? substr($speciality->title, 0, 15) . '...' : $speciality->title !!}
-                                    </a></h6>
-                                </div>
                             </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                <!-- <form action="#" class="contact-form" >
-						<div class="row">
-                            <div class="col-lg-12"> 
-                                <ul>
-                                    <li> 
-                                        <div class="contact-field p-relative c-name">  
-                                            <input type="text" placeholder="Enter Name">
-                                        </div>      
-                                    </li>
-                                    <li>
-                                        <div class="contact-field p-relative c-email">    
-                                             <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                                        <option selected>Select Doctor...</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                        </div> 
-                                    </li>
-                                    <li>
-                                         <div class="contact-field p-relative c-subject mb-20">                     <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                                        <option selected>Select Department...</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                      </select>
-                                        </div>
-                                    
-                                    </li>
-                                    <li>
-                                        <div class="slider-btn">                                          
-                                        <a href="#" class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s">Submit Now <i class="fas fa-chevron-right"></i></a>
-                                    </div>     
-                                    </li>
-                                </ul>
-                            </div>
-                      
-                        </div>
-                    
-                </form> -->
-            </div>
-        </section>
-        <!-- specialists-area-end -->
 
-        <!-- doctors-area-->
-        <section id="doctors" class="doctors-area pt-80 pb-80" 
-        style="background: #e8f1fc8a; background-image:url(public/assets/frontend/img/an-bg/an-bg13.png); background-size: contain;background-position: center center;background-repeat: no-repeat;">
-          
-            <div class="container">
-                <div class="row justify-content-center align-items-center mb-50">
-                    <div class="col-lg-6 col-md-8">
-                        <div class="section-title text-left">
-                            <h2 class="h3 mb-2 fw-bold">Our Expert Doctors</h2>
-                            <p class="text-muted mb-0">Consult with our board-certified specialists</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-4 text-md-right text-lg-end">
-                        <a href="/doctors" class="btn ss-btn">See All Doctors <i class="fas fa-arrow-right ms-2"></i></a>
-                    </div>
-                </div>
-
-                <div class="row doctor-active">
-                    @foreach ($doctors as $doctor)
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <div class="card doctor-card h-100 border-0 overflow-hidden transition-all" style="border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
-                            
-                            {{-- Doctor Image Container --}}
-                            <div class="position-relative bg-light overflow-hidden doctor-image-wrapper" style="height: 240px; background: linear-gradient(135deg, #e8f1fc 0%, #f2f9fb 100%);">
-                                <img src="{{ asset( !empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png' ) }}"
-                                    class="card-img-top w-100 h-100"
-                                    alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
-                                    style="object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
-                                
-                                {{-- Badge for experience --}}
-                                @if(!empty($doctor->experience))
-                                <div class="position-absolute top-3 end-3" style="z-index: 10;">
-                                    <span class="badge bg-primary rounded-pill px-3 py-2 font-weight-600">
+                            {{-- Experience Badge --}}
+                            @if(!empty($doctor->experience))
+                                <div class="position-absolute bottom-0 start-0 w-100 p-2"
+                                    style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);">
+                                    <span class="badge bg-primary rounded-pill px-2 py-1 font-12 fw-500">
                                         <i class="fas fa-briefcase-medical me-1"></i>{{ $doctor->experience }}
                                     </span>
                                 </div>
+                            @endif
+                        </div>
+
+                        {{-- Doctor Info Body --}}
+                        <div class="card-body d-flex flex-column pt-3 pb-3 px-3 text-center" style="flex-grow: 1;">
+
+                            {{-- Name --}}
+                            <h5 class="card-title mb-1">
+                                <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
+                                    class="text-decoration-none text-dark fw-bold" style="font-size: 1.1rem;">
+                                    Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}
+                                </a>
+                            </h5>
+
+                            {{-- Specialization --}}
+                            <p class="text-primary mb-2 fw-600 font-13 text-uppercase"
+                                style="font-size: 0.8rem; letter-spacing: 0.5px;">
+                                {{ $doctor->specialist ?? 'Specialist' }}
+                            </p>
+
+                            {{-- Spacer --}}
+                            <div class="w-100 my-2 border-bottom opacity-50"></div>
+
+                            {{-- Rating --}}
+                            <div class="mb-2">
+                                @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
+                                    <div
+                                        class="d-inline-flex align-items-center justify-content-center bg-light rounded-pill px-3 py-1">
+                                        <i class="fas fa-star text-warning font-12 me-1"></i>
+                                        <span class="fw-bold font-13 text-dark">{{ number_format($doctor->avg_rating, 1) }}</span>
+                                    </div>
+                                @else
+                                    <span class="text-muted font-12"><i class="far fa-star me-1"></i>No ratings</span>
                                 @endif
                             </div>
 
-                            {{-- Doctor Info Body --}}
-                            <div class="card-body d-flex flex-column pt-4 pb-3 px-4" style="flex-grow: 1;">
-                                
-                                {{-- Name --}}
-                                <h5 class="card-title mb-1">
-                                    <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}" class="text-decoration-none text-dark fw-bold" style="font-size: 1.1rem; transition: color 0.3s ease;">
-                                        Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}
-                                    </a>
-                                </h5>
-
-                                {{-- Specialization --}}
-                                <p class="text-primary mb-3 fw-500 font-13" style="font-size: 0.9rem;">
-                                    <i class="fas fa-stethoscope me-1"></i>{{ $doctor->specialist ?? 'Specialist' }}
-                                </p>
-
-                                {{-- Rating Section --}}
-                                <div class="mb-3 pb-2" style="border-bottom: 1px solid #eee;">
-                                    @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
-                                        @php
-                                            $rating = round($doctor->avg_rating);
-                                            $maxRating = 5;
-                                        @endphp
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <span class="text-warning">
-                                                @for ($i = 1; $i <= $maxRating; $i++)
-                                                    <i class="{{ $i <= $rating ? 'fas' : 'far' }} fa-star font-12"></i>
-                                                @endfor
-                                            </span>
-                                            <span class="badge bg-light text-dark font-12">{{ number_format($doctor->avg_rating, 1) }}/5</span>
-                                        </div>
-                                    @else
-                                        <span class="text-muted fst-italic font-12">
-                                            <i class="fas fa-star me-1 text-warning"></i>No ratings yet
-                                        </span>
-                                    @endif
-                                </div>
-
-                                {{-- Fees --}}
+                            {{-- Fees --}}
+                            <div class="mt-auto">
                                 @if(!empty($doctor->fees))
-                                <div class="mb-3">
-                                    <p class="text-muted mb-0 font-12">Consultation Fee</p>
-                                    <h6 class="text-success mb-0 fw-bold">₹{{ number_format($doctor->fees, 0) }}</h6>
-                                </div>
+                                    <h6 class="text-dark mb-3 fw-bold">
+                                        <span class="text-muted font-12 fw-normal me-1">Consultation:</span>
+                                        ₹{{ number_format($doctor->fees, 0) }}
+                                    </h6>
                                 @endif
 
-                            </div>
-
-                            {{-- Action Button --}}
-                            <div class="card-footer bg-white border-top px-4 py-3">
-                                <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}" class="btn btn-sm btn-primary w-100 fw-600 py-2" style="border-radius: 8px; transition: all 0.3s ease;">
-                                    <i class="fas fa-calendar-check me-2"></i>View Profile & Book
+                                <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
+                                    class="btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift">
+                                    Book Now
                                 </a>
                             </div>
 
                         </div>
                     </div>
-                    @endforeach
                 </div>
-            </div>
+            @endforeach
+        </div>
+        </div>
         </section>
         <!-- doctors-area-end -->
 
+        {{-- Custom Styles for this section --}}
+        <style>
+            .doctor-card:hover .doctor-overlay {
+                opacity: 1 !important;
+            }
+
+            .doctor-card:hover .doctor-overlay .btn {
+                transform: scale(1) !important;
+            }
+
+            .doctor-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+            }
+
+            .hover-y-shift {
+                transition: transform 0.2s;
+            }
+
+            .hover-y-shift:hover {
+                transform: translateY(-2px);
+            }
+        </style>
+
         <!-- about-area -->
-        <section id="about" class="about-area about-p pt-80 pb-80 p-relative" style="background-image:url(public/assets/frontend/img/an-bg/an-bg03.png); background-size: contain; background-repeat: no-repeat;background-position: center center;">
+        <section id="about" class="about-area about-p pt-80 pb-80 p-relative"
+            style="background-image:url(public/assets/frontend/img/an-bg/an-bg03.png); background-size: contain; background-repeat: no-repeat;background-position: center center;">
             <div class="container">
-                <div class="row align-items-center">					
-                  <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="s-about-img p-relative">
                             <img src="public/assets/frontend/img/bg/illlustration.png" alt="img">
-                            
+
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="about-content s-about-content pl-30">
                             <div class="section-title mb-20">
                                 <span>About Us</span>
-                                <h2>We Are Specialize in Medical Diagnositics</h2>                                  
+                                <h2>We Are Specialize in Medical Diagnositics</h2>
                             </div>
-                            <p>Nulla lacinia sapien a diam ullamcorper, sed congue leo vulputate. Phasellus et ante ultrices, sagittis purus vitae, sagittis quam. Quisque urna lectus, auctor quis tristique tincidunt, semper vel lectus. Mauris eget eleifend massa. Praesent ex felis, laoreet nec tellus in, laoreet commodo ipsum.</p>
-                            
+                            <p>Nulla lacinia sapien a diam ullamcorper, sed congue leo vulputate. Phasellus et ante
+                                ultrices, sagittis purus vitae, sagittis quam. Quisque urna lectus, auctor quis tristique
+                                tincidunt, semper vel lectus. Mauris eget eleifend massa. Praesent ex felis, laoreet nec
+                                tellus in, laoreet commodo ipsum.</p>
+
                             <ul>
                                 <li>
-                                    <div class="icon"><i class="fas fa-chevron-right"></i></div> 
+                                    <div class="icon"><i class="fas fa-chevron-right"></i></div>
                                     <div class="text">Pellentesque placerat, nisi congue vehicula efficitur.
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="icon"><i class="fas fa-chevron-right"></i></div> 
+                                    <div class="icon"><i class="fas fa-chevron-right"></i></div>
                                     <div class="text">Pellentesque placerat, nisi congue vehicula efficitur.
                                     </div>
                                 </li>
                             </ul>
-                           
-                           <div class="slider-btn mt-30">                                          
-                                <a href="/about-us" class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s">Read More <i class="fas fa-chevron-right"></i></a>					
+
+                            <div class="slider-btn mt-30">
+                                <a href="/about-us" class="btn ss-btn" data-animation="fadeInRight" data-delay=".8s">Read
+                                    More <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </section>
         <!-- about-area-end -->
 
         <!-- testimonial-area -->
-        <section id="testimonios" class="testimonial-area testimonial-p pt-80 pb-80 fix" style="background: #e8f1fc8a;background-image: url(public/assets/frontend/img/an-bg/an-bg07.png);background-position: center; background-repeat: no-repeat;background-size: contain;" >
+        <section id="testimonios" class="testimonial-area testimonial-p pt-80 pb-80 fix"
+            style="background: #e8f1fc8a;background-image: url(public/assets/frontend/img/an-bg/an-bg07.png);background-position: center; background-repeat: no-repeat;background-size: contain;">
             <div class="container">
-                  <div class="row justify-content-center">
-                    
-                    <div class="col-lg-8"> 
-                 <div class="section-title center-align mb-60 text-center">
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-8">
+                        <div class="section-title center-align mb-60 text-center">
                             <span>TESTIMONIAL</span>
                             <h2>What Our Client’s Say’s</h2>
-                           <p>Fusce pharetra odio in urna laoreet laoreet. Aliquam erat volutpat. Phasellus nec ligula arcu. Aliquam eu urna pulvinar, iaculis ipsum in, porta massa.</p>
-                        </div>
-                        </div>
-                        </div>
-                
-               <div class="row justify-content-center">
-                    
-                    <div class="col-lg-10">                           
-                        <div class="testimonial-active">
-                          
-                     
-                            <div class="single-testimonial">
-                                 <div class="testi-img">
-                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">                                        
-                                </div>
-                                <div class="single-testimonial-bg">
-							    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png" alt="img"></div>
-                                    <div class="testi-author">
-                                                 <div class="ta-info">                                          
-                                        <h6>Adam McWilliams</h6>
-                                        <span>CEO & Founder</span>
-                                        
-                                    </div>
-                                </div>
-                                <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula. Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                                    </div>
-                               
-                            </div>
-                            <div class="single-testimonial">
-                                 <div class="testi-img">
-                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">                                        
-                                </div>
-                                <div class="single-testimonial-bg">
-							    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png" alt="img"></div>
-                                    <div class="testi-author">
-                                                 <div class="ta-info">                                          
-                                        <h6>Rose Dose</h6>
-                                        <span>Sale Executive</span>
-                                        
-                                    </div>
-                                </div>
-                                <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula. Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                                    </div>
-                               
-                            </div>
-                                <div class="single-testimonial">
-                                 <div class="testi-img">
-                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">                                        
-                                </div>
-                                <div class="single-testimonial-bg">
-							    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png" alt="img"></div>
-                                    <div class="testi-author">
-                                                 <div class="ta-info">                                          
-                                        <h6>Margie R. Robinson</h6>
-                                        <span>Web Developer</span>
-                                        
-                                    </div>
-                                </div>
-                                <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula. Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                                    </div>
-                               
-                            </div>
-                                 <div class="single-testimonial">
-                                 <div class="testi-img">
-                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">                                        
-                                </div>
-                                <div class="single-testimonial-bg">
-							    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png" alt="img"></div>
-                                    <div class="testi-author">
-                                                 <div class="ta-info">                                          
-                                        <h6>Jone Dose</h6>
-                                        <span>MD & Founder</span>
-                                        
-                                    </div>
-                                </div>
-                                <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula. Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-                                    </div>
-                               
-                            </div>
-                        
-                            
+                            <p>Fusce pharetra odio in urna laoreet laoreet. Aliquam erat volutpat. Phasellus nec ligula
+                                arcu. Aliquam eu urna pulvinar, iaculis ipsum in, porta massa.</p>
                         </div>
                     </div>
-                    
+                </div>
+
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-10">
+                        <div class="testimonial-active">
+
+
+                            <div class="single-testimonial">
+                                <div class="testi-img">
+                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">
+                                </div>
+                                <div class="single-testimonial-bg">
+                                    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png"
+                                            alt="img"></div>
+                                    <div class="testi-author">
+                                        <div class="ta-info">
+                                            <h6>Adam McWilliams</h6>
+                                            <span>CEO & Founder</span>
+
+                                        </div>
+                                    </div>
+                                    <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis
+                                        aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula.
+                                        Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique
+                                        senectus et netus et malesuada fames ac turpis egestas.</p>
+                                </div>
+
+                            </div>
+                            <div class="single-testimonial">
+                                <div class="testi-img">
+                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">
+                                </div>
+                                <div class="single-testimonial-bg">
+                                    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png"
+                                            alt="img"></div>
+                                    <div class="testi-author">
+                                        <div class="ta-info">
+                                            <h6>Rose Dose</h6>
+                                            <span>Sale Executive</span>
+
+                                        </div>
+                                    </div>
+                                    <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis
+                                        aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula.
+                                        Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique
+                                        senectus et netus et malesuada fames ac turpis egestas.</p>
+                                </div>
+
+                            </div>
+                            <div class="single-testimonial">
+                                <div class="testi-img">
+                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">
+                                </div>
+                                <div class="single-testimonial-bg">
+                                    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png"
+                                            alt="img"></div>
+                                    <div class="testi-author">
+                                        <div class="ta-info">
+                                            <h6>Margie R. Robinson</h6>
+                                            <span>Web Developer</span>
+
+                                        </div>
+                                    </div>
+                                    <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis
+                                        aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula.
+                                        Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique
+                                        senectus et netus et malesuada fames ac turpis egestas.</p>
+                                </div>
+
+                            </div>
+                            <div class="single-testimonial">
+                                <div class="testi-img">
+                                    <img src="public/assets/frontend/img/testimonial/testimonial-img.png" alt="img">
+                                </div>
+                                <div class="single-testimonial-bg">
+                                    <div class="com-icon"><img src="public/assets/frontend/img/testimonial/qutation.png"
+                                            alt="img"></div>
+                                    <div class="testi-author">
+                                        <div class="ta-info">
+                                            <h6>Jone Dose</h6>
+                                            <span>MD & Founder</span>
+
+                                        </div>
+                                    </div>
+                                    <p>Nullam metus mi, sollicitudin eu elit non, laoreet consectetur urna. Nullam quis
+                                        aliquet elit. Cras augue tortor, lacinia et fermentum eget, suscipit id ligula.
+                                        Donec id mollis sem, nec tincidunt neque. Pellentesque habitant morbi tristique
+                                        senectus et netus et malesuada fames ac turpis egestas.</p>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
         <!-- testimonial-area-end -->
 
         <!-- mobile-app-area -->
-        <div class="call-area pt-80 pb-80" style="background: #e8f1fc8a;background-image:url(public/assets/frontend/img/an-bg/an-bg09.png); background-repeat: no-repeat; background-position: center;background-size: cover;">
+        <div class="call-area pt-80 pb-80"
+            style="background: #e8f1fc8a;background-image:url(public/assets/frontend/img/an-bg/an-bg09.png); background-repeat: no-repeat; background-position: center;background-size: cover;">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-4 col-md-4 col-sm-12">
@@ -474,7 +328,8 @@
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="section-title mt-0">
                             <h2>Download the easyDoctor app</h2>
-                            <p class="text-dark">Access video consultation with expert doctors anytime, anywhere. Download the easyDoctor app for 24/7 healthcare at your fingertips.</p>
+                            <p class="text-dark">Access video consultation with expert doctors anytime, anywhere. Download
+                                the easyDoctor app for 24/7 healthcare at your fingertips.</p>
                             <div class="app-buttons mt-3">
                                 <a href="#" class="btn ss-btn mx-1">
                                     <i class="fab fa-google-play"></i> Google Play
@@ -489,6 +344,6 @@
             </div>
         </div>
         <!-- counter-area-end -->
-        
+
     </main>
 @endsection
