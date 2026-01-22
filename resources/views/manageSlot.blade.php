@@ -21,7 +21,7 @@
             <div class="col-md-12 bg-white rounded border shadow-sm p-4">
                 <form action="manage-slot" method="POST" class="row">
                     @csrf
-                    <input type="hidden" name="id" value="{{ $_GET['id'] ?? '' }}" required>
+                    <input type="hidden" name="id" value="{{ request('id') ?? '' }}" required>
 
                     <!-- Doctor Selection -->
                     <div class="col-md-6 form-group">

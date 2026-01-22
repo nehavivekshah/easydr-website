@@ -30,6 +30,47 @@
         </section>
         <!-- slider-area-end -->
 
+        <style>
+            /* Custom CSS for Doctor Slider Arrows */
+            .doctor-active .slick-arrow {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+                width: 40px;
+                height: 40px;
+                border: none;
+                border-radius: 50%;
+                background-color: #fff;
+                color: #2e3876; /* Primary Color */
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .doctor-active .slick-arrow:hover {
+                background-color: #2e3876;
+                color: #fff;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            }
+            .doctor-active .slick-prev {
+                left: -20px;
+            }
+            .doctor-active .slick-next {
+                right: -20px;
+            }
+            /* Adjust for container padding if needed */
+            .doctors-area .container {
+                position: relative;
+            }
+            .doctor-active {
+                margin: 0 -15px; /* Counteract row margin if needed for slider */
+                padding: 10px; /* Space for shadow */
+            }
+        </style>
+
         <!-- specialists-area -->
         <section id="specialists" class="specialists-area p-relative pt-80 pb-80">
             <div class="container">
