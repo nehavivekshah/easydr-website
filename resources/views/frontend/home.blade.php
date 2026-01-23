@@ -87,7 +87,7 @@
                                     </h5>
 
                                     {{-- Specialization --}}
-                                    <p class="text-primary mb-2 fw-600 font-13 text-uppercase"
+                                    <p class="text-primary mb-1 fw-600 font-13 text-uppercase"
                                         style="font-size: 0.8rem; letter-spacing: 0.5px;">
                                         {{ $doctor->specialist ?? 'Specialist' }}
                                     </p>
@@ -112,14 +112,14 @@
                                     {{-- Fees --}}
                                     <div class="mt-auto">
                                         @if(!empty($doctor->fees))
-                                            <h6 class="text-dark mb-3 fw-bold">
+                                            <h6 class="text-dark mb-3 fw-bold d-flex align-items-center">
                                                 <span class="text-muted font-12 fw-normal me-1">Consultation:</span>
                                                 ₹{{ number_format($doctor->fees, 0) }}
                                             </h6>
                                         @endif
 
                                         <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
-                                            class="btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift">
+                                            class="btn ss-btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift">
                                             Book Now
                                         </a>
                                     </div>
@@ -135,6 +135,13 @@
 
         {{-- Custom Styles for this section --}}
         <style>
+            .doctor-card .text-muted {
+                gap: 7px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
             .doctor-card:hover .doctor-overlay {
                 opacity: 1 !important;
             }
