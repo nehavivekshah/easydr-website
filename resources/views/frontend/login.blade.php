@@ -4,7 +4,7 @@
     <!-- main-area -->
     <main>
         <!-- login-area -->
-        <section id="login" class="team-area pt-100 pb-40">
+        <section id="login" class="team-area pt-100 pb-20">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-4 col-lg-5 col-md-6">
