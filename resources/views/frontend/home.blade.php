@@ -112,14 +112,14 @@
                                     {{-- Fees --}}
                                     <div class="mt-auto">
                                         @if(!empty($doctor->fees))
-                                            <h6 class="text-dark mb-3 fw-bold d-flex align-items-center">
+                                            <h6 class="text-dark mb-3 fw-bold d-flex align-items-center justify-content-center">
                                                 <span class="text-muted font-12 fw-normal me-1">Consultation:</span>
                                                 ₹{{ number_format($doctor->fees, 0) }}
                                             </h6>
                                         @endif
 
                                         <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
-                                            class="btn ss-btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift">
+                                            class="btn ss-btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift text-center">
                                             Book Now
                                         </a>
                                     </div>
