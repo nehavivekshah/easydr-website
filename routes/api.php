@@ -18,6 +18,9 @@ Route::get('/user', function (Request $request) {
     return response()->json('hello');
 });*/
 
+// Route for fetching available slots (matches frontend request /api/doctor/{id}/available-slots)
+Route::get('/doctor/{id}/available-slots', [DoctorController::class, 'availableSlots']);
+
 Route::prefix('/v1')->group(function () {
     //User list display, edit, insert router
     Route::apiResource('users', UserController::class);

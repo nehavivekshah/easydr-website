@@ -31,13 +31,13 @@ class DoctorController extends ApiController
 {
     public function walletHistory(Request $request, $id)
     {
-        
-        $doctor = Doctors::where('uid',$id)->first();
+
+        $doctor = Doctors::where('uid', $id)->first();
         $id = $doctor->id;
         //dd($id);
         // Page size (default 10)
         $perPage = $request->input('page', 10);
-    
+
         $walletHistory = Wallets::leftJoin('appointments', 'wallets.aid', '=', 'appointments.id')
             ->leftJoin('users', 'appointments.pid', '=', 'users.id')
             ->select(
@@ -52,11 +52,11 @@ class DoctorController extends ApiController
             ->where('wallets.did', $id)
             ->orderBy('wallets.id', 'desc')
             ->paginate($perPage);
-    
+
         if ($walletHistory->isEmpty()) {
             return $this->successResponse([], 'No wallet history found.');
         }
-    
+
         return $this->successResponse([
             'data' => $walletHistory->items(),
             'current_page' => $walletHistory->currentPage(),
@@ -71,7 +71,7 @@ class DoctorController extends ApiController
     {
         // Page size (default 10)
         $perPage = $request->input('page', 10);
-    
+
         $paymentHistory = Appointments::leftJoin('users', 'appointments.pid', '=', 'users.id')
             ->select(
                 'users.first_name',
@@ -87,11 +87,11 @@ class DoctorController extends ApiController
             ->where('appointments.did', $id)
             ->orderBy('appointments.id', 'desc')
             ->paginate($perPage);   // <-- Pagination added
-    
+
         if ($paymentHistory->isEmpty()) {
             return $this->successResponse([], 'No payment found.');
         }
-    
+
         return $this->successResponse([
             'data' => $paymentHistory->items(),
             'current_page' => $paymentHistory->currentPage(),
@@ -104,36 +104,38 @@ class DoctorController extends ApiController
     public function medicines(Request $request, $uid = null)
     {
         $query = Medicines::query();
-    
+
         if ($uid) {
-            $query->withExists(['cart_items as in_cart' => function ($q) use ($uid) {
-                $q->where('user_id', $uid);
-            }]);
+            $query->withExists([
+                'cart_items as in_cart' => function ($q) use ($uid) {
+                    $q->where('user_id', $uid);
+                }
+            ]);
         } else {
             $query->selectRaw('*, 0 as in_cart');
         }
-    
+
         // Change .get() to .paginate(10)
         $medicines = $query->paginate(10);
-    
+
         // Transform the collection inside the paginator
         $medicines->getCollection()->transform(function ($item) {
             $item->in_cart = $item->in_cart ? 1 : 0;
             return $item;
         });
-    
+
         // Return the whole paginated object
         return $this->successResponse($medicines, 'Medicines retrieved successfully.');
     }
-    
+
     public function medicine($id)
     {
-        
+
         // Fetch Medicines details between the patient and doctor
         $medicines = Medicines::where(function ($query) use ($id) {
             $query->where('id', '=', $id);
         })
-        ->get();
+            ->get();
 
         // Check if there are any medicine records
         if ($medicines->isEmpty()) {
@@ -142,9 +144,9 @@ class DoctorController extends ApiController
 
         // Return the medicine details
         return $this->successResponse($medicines, 'Medicine details retrieved successfully.');
-        
+
     }
-    
+
     public function chats($pid, $did, $aid = null)
     {
         $query = Chats::leftJoin('appointments', 'chats.aid', '=', 'appointments.id')
@@ -152,24 +154,24 @@ class DoctorController extends ApiController
             ->where(function ($query) use ($pid, $did) {
                 $query->where(function ($q) use ($pid, $did) {
                     $q->where('chats.pid', '=', $pid)
-                      ->where('chats.did', '=', $did);
+                        ->where('chats.did', '=', $did);
                 })
-                ->orWhere(function ($q) use ($pid, $did) {
-                    $q->where('chats.pid', '=', $did)
-                      ->where('chats.did', '=', $pid);
-                });
+                    ->orWhere(function ($q) use ($pid, $did) {
+                        $q->where('chats.pid', '=', $did)
+                            ->where('chats.did', '=', $pid);
+                    });
             });
-    
+
         if (!is_null($aid)) {
             $query->where('chats.aid', '=', $aid);
         }
-    
+
         $chats = $query->get();
-    
+
         if ($chats->isEmpty()) {
             return $this->successResponse([], 'No chat history found.');
         }
-    
+
         return $this->successResponse($chats, 'Chat history retrieved successfully.');
     }
 
@@ -180,26 +182,26 @@ class DoctorController extends ApiController
             'message' => 'nullable|string|max:500',
             'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,pdf,doc,docx,txt|max:2048', // Adjust MIME types as needed
         ]);
-    
+
         // Create a new chat entry
         $chat = new Chats();
         $chat->pid = $id; // Patient ID
         $chat->did = $did; // Doctor ID
         $chat->aid = $aid; // Doctor ID
         $chat->msg = $request->input('message', null);
-    
+
         // Handle file attachment
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $filename = time() . '_' . $file->getClientOriginalName();
             $path = $file->move(public_path('assets/images/uploads'), $filename); // Move to the public directory
-    
+
             $chat->file = 'assets/images/uploads/' . $filename; // Save the relative file path in the database
         }
-    
+
         $chat->status = $request->input('status', '0'); // Default status
         $chat->save();
-    
+
         // Return the saved chat entry
         return response()->json([
             'success' => true,
@@ -212,7 +214,7 @@ class DoctorController extends ApiController
     {
         // Find the appointment by ID
         $cancelAppointment = Appointments::find($id);
-    
+
         // Check if the appointment exists
         if (!$cancelAppointment) {
             return response()->json([
@@ -220,11 +222,11 @@ class DoctorController extends ApiController
                 'message' => 'Appointment not found.',
             ], 404);
         }
-    
+
         // Update the status to '2' (Cancelled)
         $cancelAppointment->status = '2';
         $cancelAppointment->save();
-    
+
         // Return a success response
         return response()->json([
             'success' => true,
@@ -237,16 +239,16 @@ class DoctorController extends ApiController
     {
         try {
             // Fetch wishlist entries for the given user ID
-            $wishlists = Wishlists::leftjoin('doctors','wishlists.did','=','doctors.uid')
-                ->leftjoin('users','doctors.uid','=','users.id')
+            $wishlists = Wishlists::leftjoin('doctors', 'wishlists.did', '=', 'doctors.uid')
+                ->leftjoin('users', 'doctors.uid', '=', 'users.id')
                 ->where('wishlists.uid', '=', $uid)
                 ->get();
-    
+
             // Check if the wishlist is empty
             if ($wishlists->isEmpty()) {
                 return $this->successResponse([], 'No wishlist doctors found.');
             }
-    
+
             // Return the wishlist data
             return $this->successResponse($wishlists, 'List of wishlist doctors retrieved successfully.');
         } catch (\Exception $e) {
@@ -258,16 +260,16 @@ class DoctorController extends ApiController
             ], 500);
         }
     }
-    
+
     public function wishlistPost($uid, $did)
     {
         // Check if the wishlist entry exists
         $existingWishlist = Wishlists::where('uid', '=', $uid)->where('did', '=', $did)->first();
-    
+
         if ($existingWishlist) {
             // If the entry exists, delete it
             $existingWishlist->delete();
-    
+
             return $this->successResponse(null, 'Wishlist entry removed successfully.');
         } else {
             // If no entry exists, create a new one
@@ -275,7 +277,7 @@ class DoctorController extends ApiController
             $wishlist->uid = $uid;
             $wishlist->did = $did;
             $wishlist->save();
-    
+
             return $this->successResponse($wishlist, 'Wishlist entry added successfully.');
         }
     }
@@ -287,10 +289,10 @@ class DoctorController extends ApiController
             ->select('doctors.specialist', 'specialists.*')
             ->distinct()
             ->get();
-        
+
         return $this->successResponse($specialists, 'List of available registered specialists');
     }
-    
+
     public function doctorAvailable($id)
     {
         $now = Carbon::now();
@@ -311,10 +313,10 @@ class DoctorController extends ApiController
     public function doctors(Request $request)
     {
         $search = $request->search ?? '';
-    
+
         // Assuming the logged-in user's ID is accessible via Auth::id()
         $userId = $request->uid ?? '';
-    
+
         $doctors = Doctors::leftJoin('users', 'doctors.uid', '=', 'users.id')
             ->leftJoin('doctor_reviews', 'doctors.uid', '=', 'doctor_reviews.doctor_id')
             // Left join with the wishlists table to check if the doctor is in the user's wishlist
@@ -365,7 +367,7 @@ class DoctorController extends ApiController
                 });
             })->get();
 
-    
+
         return $this->successResponse($doctors, 'List of available registered doctors');
     }
 
@@ -373,7 +375,7 @@ class DoctorController extends ApiController
     {
         $doctorId = intval($doctorId);
         $userId = Auth::id(); // Assuming the user is authenticated
-    
+
         // Fetch doctor details
         $doctor = Doctors::leftJoin('users', 'doctors.uid', '=', 'users.id')
             ->leftJoin('usermetas', 'doctors.uid', '=', 'usermetas.uid')
@@ -447,11 +449,11 @@ class DoctorController extends ApiController
                 'users.updated_at'
             )
             ->first();
-    
+
         if (!$doctor) {
             return $this->errorResponse('Doctor not found', 404);
         }
-        
+
         $now = Carbon::now();
         $currentDay = $now->format('l');
 
@@ -461,10 +463,10 @@ class DoctorController extends ApiController
             ->where('to_date', '>=', $now->toDateString())
             ->orderBy('from_date')
             ->get();
-            
+
         /*->where('start_time', '<=', $now->toTimeString())
         ->where('end_time', '>=', $now->toTimeString())*/
-            
+
         // Format the response
         $doctorData = [
             'id' => $doctor->id,
@@ -498,74 +500,74 @@ class DoctorController extends ApiController
             'appointment_count' => $doctor->appointment_count ?? 0,
             'available_times' => $availableTimes,
         ];
-    
+
         return $this->successResponse($doctorData, 'Doctor Details with Available Times');
     }
-    
+
     public function wallet($doctorId)
     {
         $doctorId = intval($doctorId);
         $userId = Auth::id(); // Assuming the user is authenticated
-    
+
         // Fetch doctor details
         $doctor = Doctors::where([
-                ['doctors.uid', '=', $doctorId],
-            ])
+            ['doctors.uid', '=', $doctorId],
+        ])
             ->first();
-    
+
         if (!$doctor) {
             return $this->errorResponse('Doctor not found', 404);
         }
-        
+
         // Format the response
         $doctorData = [
             'id' => $doctor->id,
             'wallet_amount' => $doctor->wallet,
         ];
-    
+
         return $this->successResponse($doctorData, 'Doctor Details with Available Times');
     }
-    
+
     public function doctorPost($doctorId, Request $request)
     {
         // Retrieve the user record
         $user = User::find($doctorId);
-    
+
         $name = explode(' ', $request->name);
-    
+
         $user->first_name = $name[0] ?? '';
         $user->last_name = $name[1] ?? '';
         $user->email = $request->email ?? '';
         $user->mobile = $request->mobile ?? '';
         $user->altr_mobile = $request->alternative_mobile ?? '';
-        $user->dob    = $request->dob ?? '';
+        $user->dob = $request->dob ?? '';
         $user->gender = $request->gender ?? '';
-    
+
         // Save (or update) the user. save() works on both new and existing models.
         $user->save();
-    
+
         // Save additional user metadata if provided. `id`, `uid`, ``, ``, ``, ``, ``, ``, ``, ``
         if (!empty($request->country) || !empty($request->pincode)) {
-            
+
             $um = Usermetas::where('uid', $doctorId)->first();
-            
+
             $usermeta = $um ? $um : new Usermetas();
-            
+
             $usermeta->uid = $user->id;
             $usermeta->designation = $request->designation ?? '';
-            
+
             if (!empty($request->adhar)) {
                 $usermeta->adhar = $request->adhar;
                 $usermeta->adhar_verified_at = NOW();
             }
-            
+
             $usermeta->address = $request->address ?? '';
             $usermeta->city = $request->city ?? '';
             $usermeta->state = $request->state ?? '';
             $usermeta->country = $request->country ?? '';
             $usermeta->pincode = $request->pincode ?? '';
             $usermeta->save();
-            
+
         }
 
         // Here, we use $doctorId if available; otherwise, you might consider $request->id.
@@ -578,7 +580,7 @@ class DoctorController extends ApiController
         $doctor->about = $request->about ?? '';
         $doctor->extra = $request->extra ?? '';
         $doctor->save();
-    
+
         // Return a JSON response. Adjust the 'data' field as needed.
         return response()->json([
             'success' => true,
@@ -625,7 +627,7 @@ class DoctorController extends ApiController
                 'users.updated_at'
             )
             ->first(); // Fetch single record for the doctor
-    
+
         // Fetch appointments for the doctor
         $appointments = Appointments::leftJoin('users', 'appointments.pid', '=', 'users.id')
             ->select(
@@ -636,15 +638,15 @@ class DoctorController extends ApiController
             )
             ->where('appointments.did', '=', $id) // Doctor ID in appointments
             ->get();
-    
+
         // Get the count of unique patients
         $patientCount = Appointments::where('did', '=', $id)
             ->distinct('pid') // Count distinct patient IDs
             ->count('pid');
-    
+
         // Get the count of total appointments
         $appointmentCount = Appointments::where('did', '=', $id)->count();
-    
+
         // Return response with doctor details, appointments, patient count, and appointment count
         return $this->successResponse([
             'doctorDetails' => $doctor,
@@ -654,16 +656,16 @@ class DoctorController extends ApiController
             'appointmentCount' => $appointmentCount,
         ], 'Doctor Details');
     }
-    
+
     public function appointmentsOverview($id, Request $request)
     {
         // Get the filter from the query parameters. Default to 'all' if not provided.
         $filter = strtolower($request->query('filter', 'all'));
-    
+
         // Get the current date/time.
         $currentDateTime = Carbon::now();
         $yesterdayDate = Carbon::yesterday();
-        
+
         // Determine the date range based on the filter.
         switch ($filter) {
             case 'today':
@@ -692,29 +694,29 @@ class DoctorController extends ApiController
                 $endDate = Carbon::parse('3000-12-31');
                 break;
         }
-    
+
         // Log the selected date range for debugging.
         \Log::info("Filter: {$filter}. Start Date: " . $startDate->toDateTimeString() . ", End Date: " . $endDate->toDateTimeString());
-    
+
         // Fetch all appointments within the selected date range.
         // Adjust the where clause if $id should only match a specific column.
         $appointments = Appointments::where(function ($query) use ($id) {
-                $query->where('appointments.pid', $id)
-                      ->orWhere('appointments.did', $id);
-            })
+            $query->where('appointments.pid', $id)
+                ->orWhere('appointments.did', $id);
+        })
             // Ensure that your "date" column is stored in a compatible format.
             ->whereBetween('appointments.date', [$startDate->toDateString(), $endDate->toDateString()])
             ->orderBy('appointments.date', 'desc')
             ->orderBy('appointments.time', 'desc')
             ->get();
-    
+
         // Optional: Log the number of appointments returned.
         \Log::info("Total appointments fetched: " . $appointments->count());
-    
+
         // Count different appointment statuses.
         $completedCount = $appointments->where('status', 1)->count(); // Status 1 = Completed
         $cancelledCount = $appointments->where('status', 2)->count(); // Status 2 = Cancelled
-    
+
         // For appointments with status 0, differentiate based on the date.
         $upcomingCount = 0;
         $notAttendedCount = 0;
@@ -730,27 +732,27 @@ class DoctorController extends ApiController
                 }
             }
         }
-    
+
         // Debug: Log the status counts.
         \Log::info("Upcoming: {$upcomingCount}, Completed: {$completedCount}, Cancelled: {$cancelledCount}, Not Attended: {$notAttendedCount}");
-    
+
         // Response data
         return $this->successResponse([
             'overview' => [
-                'upcoming_count'   => $upcomingCount,
-                'completed_count'  => $completedCount,
-                'cancelled_count'  => $cancelledCount,
+                'upcoming_count' => $upcomingCount,
+                'completed_count' => $completedCount,
+                'cancelled_count' => $cancelledCount,
                 'not_attended_count' => $notAttendedCount,
             ],
         ], "Appointment overview for {$filter}");
     }
-    
+
     public function appointments($id, $did = null)
     {
         $currentDateTime = Carbon::now();
         $todayDate = $currentDateTime->toDateString();
         $todayTime = $currentDateTime->toTimeString();
-    
+
         // Build base query
         $query = Appointments::leftJoin('users as pet', 'appointments.pid', '=', 'pet.id')
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
@@ -778,27 +780,27 @@ class DoctorController extends ApiController
             )
             ->where(function ($query) use ($id) {
                 $query->where('appointments.pid', $id)
-                      ->orWhere('appointments.did', $id);
+                    ->orWhere('appointments.did', $id);
             });
-    
+
         // Apply this condition only if $did is not null
         if (!is_null($did)) {
             $query->where(function ($query) use ($did) {
                 $query->where('appointments.pid', $did)
-                      ->orWhere('appointments.did', $did);
+                    ->orWhere('appointments.did', $did);
             });
         }
-    
+
         // Get results sorted by date and time
         $appointments = $query->orderBy('appointments.date', 'desc')
             ->orderBy('appointments.time', 'desc')
             ->get();
-    
+
         // Categorize
         $today = collect();
         $upcoming = collect();
         $past = collect();
-    
+
         foreach ($appointments as $appointment) {
             if ($appointment->date === $todayDate) {
                 if ($appointment->time >= $todayTime) {
@@ -812,53 +814,53 @@ class DoctorController extends ApiController
                 $past->push($appointment);
             }
         }
-    
+
         return $this->successResponse([
             'upcoming' => $upcoming->values(),
             'today' => $today->values(),
             'past' => $past->values(),
         ], 'List of appointments categorized by time.');
     }
-    
-    public function myDoctors(Request $request)  
-    {  
+
+    public function myDoctors(Request $request)
+    {
         // Retrieve the user ID from the request  
-        $id = $request->user_id ?? '';  
-          
+        $id = $request->user_id ?? '';
+
         // Fetch all appointments with joins  
-        $doctors = Appointments::leftJoin('users as doc', 'appointments.did', '=', 'doc.id')  
+        $doctors = Appointments::leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
             ->select(
                 'appointments.id',
                 'appointments.did',
-                'doc.first_name as doctor_first_name',  
-                'doc.last_name as doctor_last_name',  
-                'doc.mobile as doctor_mobile',  
-                'doc.email as doctor_email',  
-                'doc.photo',  
-                'doctors.specialist',  
+                'doc.first_name as doctor_first_name',
+                'doc.last_name as doctor_last_name',
+                'doc.mobile as doctor_mobile',
+                'doc.email as doctor_email',
+                'doc.photo',
+                'doctors.specialist',
                 'doctors.education',
                 'appointments.date',
-                'appointments.time',  
-                'appointments.status'  
-            )  
+                'appointments.time',
+                'appointments.status'
+            )
             ->where('appointments.pid', $id)
             ->orderBy('appointments.created_at', 'desc')
-            ->get();  
-          
+            ->get();
+
         // Get unique patients by ID  
-        $uniqueDoctors = $doctors->unique('did')->values();  
-          
+        $uniqueDoctors = $doctors->unique('did')->values();
+
         // Return the success response with the list of unique doctors for the patient  
-        return $this->successResponse([  
-            'Doctors' => $uniqueDoctors  
-        ], 'List of unique doctors for the patient.');  
+        return $this->successResponse([
+            'Doctors' => $uniqueDoctors
+        ], 'List of unique doctors for the patient.');
     }
-    
+
     public function patients($id)
     {
         $currentDateTime = Carbon::now();
-    
+
         // Fetch all patients with joins
         $patients = Appointments::leftJoin('users as pet', 'appointments.pid', '=', 'pet.id')
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
@@ -892,20 +894,20 @@ class DoctorController extends ApiController
             ->orderBy('appointments.date', 'desc')
             ->orderBy('appointments.time', 'desc')
             ->get();
-    
+
         // Get unique patients by ID
         $uniquePatients = $patients->unique('pid')->values();
-    
+
         return $this->successResponse([
             'patients' => $uniquePatients
         ], 'List of unique patients for the doctor.');
     }
 
-    public function patientDetails($patientId,$doctorId)
+    public function patientDetails($patientId, $doctorId)
     {
         $currentDateTime = Carbon::now();
         $nextDateTime = $currentDateTime->copy()->addDay()->startOfDay();
-    
+
         // Fetch all appointments with joins  `date`, `time`, `note`, `medical_file`, `health_card_file`, `fees`, `payment_mode`, `payment_status`, `is_completed`, `status`
         $appointments = Appointments::leftJoin('users as pet', 'appointments.pid', '=', 'pet.id')
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
@@ -949,18 +951,18 @@ class DoctorController extends ApiController
             ->orderBy('appointments.date', 'desc')
             ->orderBy('appointments.time', 'desc')
             ->get();  // Remove the groupBy here!  We'll group later.
-            
+
         // Categorize appointments
         $todayDate = $currentDateTime->toDateString();
         $todayTime = $currentDateTime->toTimeString();
-    
+
         $past = $appointments->filter(fn($appointment) => $appointment->date < $todayDate ||
             ($appointment->date === $todayDate && $appointment->time < $todayTime));
-    
+
         $groupedPast = $past->groupBy('pid')->map(function ($appointmentsForPatient) {
             return $appointmentsForPatient->first();
         })->values();
-    
+
         // Return response
         return $this->successResponse($groupedPast, 'List of appointments categorized by time and grouped by patient.');
     }
@@ -976,16 +978,16 @@ class DoctorController extends ApiController
             'problem_description' => 'nullable|string|max:255',
             'payment_option' => 'required|string',
         ]);
-    
+
         // Check for upcoming appointments
         $upcomingAppointment = Appointments::where('pid', $request->pid)
             ->where('did', $request->doctor_id)
             ->whereDate('date', $request->date)
             ->where('time', $request->time)
             ->exists();
-            
+
         $getFees = Doctors::where('uid','=',$request->doctor_id)->first();
-    
+
         if (!$upcomingAppointment) {
             // Create a new appointment doctor_id: 2, pid: 24, date: 2025-01-20, time: 12:00, problem_description: cncj, payment_option: Cash Payment
             $bookAppointment = new Appointments();
@@ -996,19 +998,19 @@ class DoctorController extends ApiController
             $bookAppointment->note = $request->problem_description;
             $bookAppointment->fees = $getFees->fees ?? 0;
             $bookAppointment->payment = $request->payment_option;
-            
+
             if(!empty($request->health_card_number)){
                 $bookAppointment->health_card_file = $request->health_card_number;
             }
-            
+
             $bookAppointment->save();
-    
+
             return $this->successResponse($bookAppointment, 'Appointment booked successfully!');
         } else {
             return $this->successResponse(null, 'Already appointment scheduled.');
         }
     }*/
-    
+
     // A helper function for success responses
     protected function successResponse($data, $message = null, $code = 200)
     {
@@ -1027,8 +1029,8 @@ class DoctorController extends ApiController
     public function getPaymentGateways()
     {
         $gateways = Payment_gateway_configs::where('is_active', true)
-                                        ->get(['id', 'gateway_name']);
-        
+            ->get(['id', 'gateway_name']);
+
         return $this->successResponse($gateways, 'Payment gateways fetched successfully.');
     }
 
@@ -1066,16 +1068,18 @@ class DoctorController extends ApiController
         }
 
         $doctor = Doctors::where('uid', $request->doctor_id)->first();
-        if (!$doctor) { return $this->errorResponse('Doctor not found.', 404); }
+        if (!$doctor) {
+            return $this->errorResponse('Doctor not found.', 404);
+        }
         $fees = $doctor->fees ?? 0;
 
         // --- Logic Branch based on Payment Option ---
         if ($request->payment_option == 'Online Payment') {
-            
+
             // MODIFIED: Fetch gateway config from the database
             $gatewayConfig = Payment_gateway_configs::where('gateway_name', $request->payment_gateway)
-                                                 ->where('is_active', true)
-                                                 ->first();
+                ->where('is_active', true)
+                ->first();
 
             if (!$gatewayConfig) {
                 return $this->errorResponse('The selected payment gateway is not available.', 404);
@@ -1090,75 +1094,72 @@ class DoctorController extends ApiController
                     // MODIFIED: Use keys from the database
                     $api = new RazorpayApi($gatewayConfig->api_key, $gatewayConfig->api_secret);
                     $orderData = [
-                        'amount'   => $fees * 100,
+                        'amount' => $fees * 100,
                         'currency' => 'INR',
-                        'receipt'  => 'appt_' . time(),
+                        'receipt' => 'appt_' . time(),
                     ];
                     $razorpayOrder = $api->order->create($orderData);
 
                     $dataToReturn = [
-                        'gateway'           => 'Razorpay',
+                        'gateway' => 'Razorpay',
                         'razorpay_order_id' => $razorpayOrder['id'],
-                        'merchant_key'      => $gatewayConfig->api_key, // Send public API key
-                        'amount'            => $fees * 100,
+                        'merchant_key' => $gatewayConfig->api_key, // Send public API key
+                        'amount' => $fees * 100,
                     ];
-                    
+
                     return $this->successResponse($dataToReturn, 'Payment order created.');
                 } catch (Exception $e) {
                     return $this->errorResponse('Razorpay Error: ' . $e->getMessage(), 500);
                 }
-            }
-            elseif ($request->payment_gateway == 'Paypal') {
+            } elseif ($request->payment_gateway == 'Paypal') {
                 try {
                     // Assume you're using a PayPal SDK or API wrapper
                     // These are placeholder variables for PayPal API calls
-            
+
                     $paypalClientId = $gatewayConfig->api_key;
-                    $paypalSecret   = $gatewayConfig->api_secret;
-            
+                    $paypalSecret = $gatewayConfig->api_secret;
+
                     // Normally you'd initialize your PayPal SDK here
                     // and create an order (use sandbox/live as per your config)
-            
+
                     $orderId = 'PAYPAL_' . uniqid(); // Simulated order ID
                     $approvalUrl = 'https://www.sandbox.paypal.com/checkoutnow?token=' . $orderId;
-            
+
                     $dataToReturn = [
-                        'gateway'      => 'Paypal',
+                        'gateway' => 'Paypal',
                         'paypal_order_id' => $orderId,
                         'approval_url' => $approvalUrl,
-                        'amount'       => $fees,
+                        'amount' => $fees,
                     ];
-            
+
                     return $this->successResponse($dataToReturn, 'PayPal payment order created.');
                 } catch (Exception $e) {
                     return $this->errorResponse('PayPal Error: ' . $e->getMessage(), 500);
                 }
-            }
-            elseif ($request->payment_gateway == 'Stripe') {
+            } elseif ($request->payment_gateway == 'Stripe') {
                 try {
                     $orderId = 'STRIPE_' . uniqid();
                     $checkoutUrl = 'https://checkout.stripe.com/pay/' . $orderId; // Replace with real API call
-            
+
                     return $this->successResponse([
-                        'gateway'       => 'Stripe',
+                        'gateway' => 'Stripe',
                         'stripe_order_id' => $orderId,
-                        'checkout_url'  => $checkoutUrl,
-                        'amount'        => $fees * 100,
+                        'checkout_url' => $checkoutUrl,
+                        'amount' => $fees * 100,
                     ], 'Stripe payment session created.');
                 } catch (Exception $e) {
                     return $this->errorResponse('Stripe Error: ' . $e->getMessage(), 500);
                 }
-            }
-            elseif ($request->payment_gateway == 'CCAvenue') {
+            } elseif ($request->payment_gateway == 'CCAvenue') {
                 try {
                     $orderId = 'CCA_' . uniqid();
                     $redirectUrl = route('ccavenue.redirect', ['order_id' => $orderId]); // Your route
-            
+
                     return $this->successResponse([
-                        'gateway'      => 'CCAvenue',
-                        'order_id'     => $orderId,
+                        'gateway' => 'CCAvenue',
+                        'order_id' => $orderId,
                         'redirect_url' => $redirectUrl,
-                        'amount'       => $fees,
+                        'amount' => $fees,
                     ], 'CCAvenue redirect URL generated.');
                 } catch (Exception $e) {
                     return $this->errorResponse('CCAvenue Error: ' . $e->getMessage(), 500);
@@ -1179,13 +1180,13 @@ class DoctorController extends ApiController
             $bookAppointment->fees = $fees;
             $bookAppointment->payment_mode = $request->payment_option;
             $bookAppointment->status = '0';
-            
-            if(!empty($request->health_card_number)){
+
+            if (!empty($request->health_card_number)) {
                 $bookAppointment->health_card_file = $request->health_card_number;
             }
-            
+
             $bookAppointment->save();
-    
+
             return $this->successResponse($bookAppointment, 'Appointment booked successfully!');
         }
     }
@@ -1196,17 +1197,25 @@ class DoctorController extends ApiController
     public function verifyPaymentAndBook(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'pid' => 'required|integer', 'doctor_id' => 'required|integer', 'date' => 'required|date', 'time' => 'required|date_format:H:i', 'problem_description' => 'nullable|string',
+            'pid' => 'required|integer',
+            'doctor_id' => 'required|integer',
+            'date' => 'required|date',
+            'time' => 'required|date_format:H:i',
+            'problem_description' => 'nullable|string',
             'gateway' => 'required|string',
-            'razorpay_payment_id' => 'required_if:gateway,Razorpay|string', 'razorpay_order_id' => 'required_if:gateway,Razorpay|string', 'razorpay_signature' => 'required_if:gateway,Razorpay|string',
+            'razorpay_payment_id' => 'required_if:gateway,Razorpay|string',
+            'razorpay_order_id' => 'required_if:gateway,Razorpay|string',
+            'razorpay_signature' => 'required_if:gateway,Razorpay|string',
         ]);
-        
-        if ($validator->fails()) { return $this->errorResponse($validator->errors()->first(), 422); }
-        
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors()->first(), 422);
+        }
+
         // MODIFIED: Fetch gateway config from DB for verification
         $gatewayConfig = Payment_gateway_configs::where('gateway_name', $request->gateway)
-                                             ->where('is_active', true)
-                                             ->first();
+            ->where('is_active', true)
+            ->first();
 
         if (!$gatewayConfig) {
             return $this->errorResponse('The payment gateway is not available for verification.', 404);
@@ -1217,17 +1226,17 @@ class DoctorController extends ApiController
                 // MODIFIED: Use keys from the database
                 $api = new RazorpayApi($gatewayConfig->api_key, $gatewayConfig->api_secret);
                 $api->utility->verifyPaymentSignature([
-                    'razorpay_order_id'   => $request->razorpay_order_id,
+                    'razorpay_order_id' => $request->razorpay_order_id,
                     'razorpay_payment_id' => $request->razorpay_payment_id,
-                    'razorpay_signature'  => $request->razorpay_signature
+                    'razorpay_signature' => $request->razorpay_signature
                 ]);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 return $this->errorResponse('Payment verification failed: ' . $e->getMessage(), 400);
             }
         }
 
         $doctor = Doctors::where('uid', $request->doctor_id)->first();
-        
+
         // Create the appointment now that payment is confirmed
         $bookAppointment = new Appointments();
         $bookAppointment->pid = $request->pid;
@@ -1242,7 +1251,7 @@ class DoctorController extends ApiController
         $bookAppointment->order_id = $request->razorpay_order_id;
         $bookAppointment->status = 'Confirmed';
         $bookAppointment->save();
-        
+
         return $this->successResponse($bookAppointment, 'Appointment booked successfully!');
     }
 
@@ -1253,23 +1262,23 @@ class DoctorController extends ApiController
             'appointment_id' => 'required|integer',
             'user_id' => 'required|integer',
         ]);
-    
+
         // Find appointment
         $appointment = Appointments::find($validated['appointment_id']);
-    
+
         if (!$appointment) {
             return $this->errorResponse('Appointment not found.', 404);
         }
-    
+
         // Initialize is_completed as array with default values
         $isCompletedArray = explode(',', $appointment->is_completed ?? '0,0');
-    
+
         // Ensure the array has exactly two elements
         $isCompletedArray = array_pad($isCompletedArray, 2, '0');
-    
+
         // Update completion status based on user_id
         $updated = false;
-    
+
         if ($appointment->did == $validated['user_id']) {
             $isCompletedArray[0] = '1';
             $updated = true;
@@ -1277,21 +1286,21 @@ class DoctorController extends ApiController
             $isCompletedArray[1] = '1';
             $updated = true;
         }
-    
+
         if (!$updated) {
             return $this->errorResponse('User is not authorized to complete this appointment.', 403);
         }
-    
+
         // Update fields
         $appointment->is_completed = implode(',', $isCompletedArray);
-        
+
         // If both have marked complete, set status = 1
         if ($isCompletedArray[0] === '1' && $isCompletedArray[1] === '1') {
             $appointment->status = 1;
         }
-    
+
         $appointment->save();
-    
+
         return $this->successResponse($appointment, 'Appointment completion updated successfully!');
     }
 
@@ -1300,12 +1309,12 @@ class DoctorController extends ApiController
         try {
             $now = Carbon::now();
             $filter = $request->query('filter', 'weekly'); // Default filter is weekly
-    
+
             if ($filter === 'weekly') {
                 // WEEKLY REVENUE
                 $startOfWeek = $now->copy()->startOfWeek();
                 $endOfWeek = $now->copy()->endOfWeek();
-    
+
                 $weeklyData = DB::table('appointments')
                     ->selectRaw('DATE(date) as day, SUM(fees) as amount')
                     ->where('did', $id)
@@ -1313,7 +1322,7 @@ class DoctorController extends ApiController
                     ->groupBy(DB::raw('DATE(date)'))
                     ->orderBy('day')
                     ->get();
-    
+
                 $weeklyRevenue = [];
                 $currentDate = $startOfWeek->copy();
                 while ($currentDate <= $endOfWeek) {
@@ -1322,15 +1331,15 @@ class DoctorController extends ApiController
                     $weeklyRevenue[] = ['time' => $day, 'amount' => $revenue];
                     $currentDate->addDay();
                 }
-    
+
                 return response()->json(['weekly' => $weeklyRevenue], 200);
             }
-    
+
             if ($filter === 'monthly') {
                 // MONTHLY REVENUE
                 $startOfMonth = $now->copy()->startOfMonth();
                 $endOfMonth = $now->copy()->endOfMonth();
-    
+
                 $monthlyData = DB::table('appointments')
                     ->selectRaw('DATE(date) as day, SUM(fees) as amount')
                     ->where('did', $id)
@@ -1338,7 +1347,7 @@ class DoctorController extends ApiController
                     ->groupBy(DB::raw('DATE(date)'))
                     ->orderBy('day')
                     ->get();
-    
+
                 $monthlyRevenue = [];
                 $currentDate = $startOfMonth->copy();
                 while ($currentDate <= $endOfMonth) {
@@ -1347,15 +1356,15 @@ class DoctorController extends ApiController
                     $monthlyRevenue[] = ['time' => $day, 'amount' => $revenue];
                     $currentDate->addDay();
                 }
-    
+
                 return response()->json(['monthly' => $monthlyRevenue], 200);
             }
-    
+
             if ($filter === 'yearly') {
                 // YEARLY REVENUE
                 $startOfYear = $now->copy()->startOfYear();
                 $endOfYear = $now->copy()->endOfYear();
-    
+
                 $yearlyData = DB::table('appointments')
                     ->selectRaw('DATE_FORMAT(date, "%Y-%m") as month, SUM(fees) as amount')
                     ->where('did', $id)
@@ -1363,28 +1372,28 @@ class DoctorController extends ApiController
                     ->groupBy(DB::raw('DATE_FORMAT(date, "%Y-%m")'))
                     ->orderBy('month')
                     ->get();
-    
+
                 $yearlyRevenue = [];
                 for ($m = 1; $m <= 12; $m++) {
                     $month = $now->copy()->month($m)->format('Y-m');
                     $revenue = $yearlyData->firstWhere('month', $month)->amount ?? 0;
                     $yearlyRevenue[] = ['time' => $month, 'amount' => $revenue];
                 }
-    
+
                 return response()->json(['yearly' => $yearlyRevenue], 200);
             }
-    
+
             return response()->json(['error' => 'Invalid filter. Use weekly, monthly, or yearly'], 400);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
+
     public function slots($id)
     {
         // Retrieve the slot by its ID.
-        $slot = Doctor_availables::where('doctor_id','=',$id)->orderBy('id','desc')->get();
-    
+        $slot = Doctor_availables::where('doctor_id', '=', $id)->orderBy('id', 'desc')->get();
+
         // If the slot is not found, return a 404 error response.
         if (!$slot) {
             return response()->json([
@@ -1392,17 +1401,17 @@ class DoctorController extends ApiController
                 'message' => 'Slot not found.'
             ], 404);
         }
-    
+
         // Return a JSON response with the slot details.
         return response()->json([
             'success' => true,
-            'data'    => $slot
+            'data' => $slot
         ], 200);
     }
 
     public function manageSlot(Request $request)
     {
-        
+
         // If a day is not provided, an empty string is used.
         $selectedDays = [];
 
@@ -1427,37 +1436,37 @@ class DoctorController extends ApiController
         if ($request->sunday == 1) {
             $selectedDays[] = "Sunday";
         }
-        
+
         $days = implode(',', $selectedDays);
 
         try {
-            
+
             $startTime = date("H:i:s", strtotime($request->start_time));
-            $endTime   = date("H:i:s", strtotime($request->end_time));
-            
+            $endTime = date("H:i:s", strtotime($request->end_time));
+
             // Check if a slot with the same doctor and to_date already exists.
             $existingSlot = Doctor_availables::where('doctor_id', $request->doctor_id)
                 ->where('to_date', '>', $request->from_date)
                 ->first();
-            
+
             if ($existingSlot) {
                 return response()->json([
                     'success' => false,
                     'message' => 'A slot for the given to_date already exists.'
                 ], 409); // 409 Conflict
             }
-            
+
             // Create a new instance of the Doctor_availables model.
             $slot = new Doctor_availables();
 
             // Assign values to the model.
-            $slot->doctor_id       = $request->doctor_id;
-            $slot->from_date       = $request->from_date;
-            $slot->to_date         = $request->to_date;
-            $slot->available_days  = $days ?? '';
-            $slot->start_time      = $startTime;
-            $slot->end_time        = $endTime;
-            $slot->duration        = $request->appointment_duration;
+            $slot->doctor_id = $request->doctor_id;
+            $slot->from_date = $request->from_date;
+            $slot->to_date = $request->to_date;
+            $slot->available_days = $days ?? '';
+            $slot->start_time = $startTime;
+            $slot->end_time = $endTime;
+            $slot->duration = $request->appointment_duration;
 
             // Save the slot into the database.
             $slot->save();
@@ -1466,11 +1475,11 @@ class DoctorController extends ApiController
             return response()->json([
                 'success' => true,
                 'message' => 'New Slot Created.',
-                'data'    => $slot
+                'data' => $slot
             ], 200);
-            
+
         } catch (\Exception $e) {
-            
+
             // Log the exception for debugging.
             Log::error('Error in manageSlot: ' . $e->getMessage());
 
@@ -1478,12 +1487,12 @@ class DoctorController extends ApiController
             return response()->json([
                 'success' => false,
                 'message' => 'There was an error creating the slot.',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
-            
+
         }
     }
-    
+
     /**
      * Get user's cart items.
      * Joins 'carts' with 'medicines' to get product details.
@@ -1522,18 +1531,18 @@ class DoctorController extends ApiController
             'medicine_id' => 'required|integer|exists:medicines,id',
             'quantity' => 'required|integer|min:1'
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first()
             ], 422);
         }
-    
+
         $userId = $request->user_id;
         $medicineId = $request->medicine_id;
         $qty = $request->quantity;
-    
+
         // Optional: check stock availability
         $medicine = Medicines::find($medicineId);
         if ($medicine && $medicine->available < $qty) {
@@ -1542,13 +1551,13 @@ class DoctorController extends ApiController
                 'message' => 'Insufficient stock for this medicine'
             ], 400);
         }
-    
+
         // Add or update cart
         $cart = Carts::updateOrCreate(
             ['user_id' => $userId, 'medicine_id' => $medicineId],
             ['quantity' => \DB::raw("quantity + $qty")]
         );
-    
+
         return response()->json([
             'success' => true,
             'message' => 'Item added to cart',
@@ -1594,22 +1603,22 @@ class DoctorController extends ApiController
     {
         // 1. Validation - Match Flutter orderData keys
         $validator = Validator::make($request->all(), [
-            'user_id'          => 'required',
-            'total_amount'     => 'required|numeric',
+            'user_id' => 'required',
+            'total_amount' => 'required|numeric',
             'shipping_address' => 'required|string',
-            'city'             => 'required|string',
-            'zip_code'         => 'required|string',
-            'items'            => 'required|array|min:1',
-            'items.*.id'       => 'required|integer',
-            'items.*.qty'      => 'required|integer',
-            'items.*.price'    => 'required|numeric',
+            'city' => 'required|string',
+            'zip_code' => 'required|string',
+            'items' => 'required|array|min:1',
+            'items.*.id' => 'required|integer',
+            'items.*.qty' => 'required|integer',
+            'items.*.price' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validation Error',
-                'errors'  => $validator->errors()
+                'errors' => $validator->errors()
             ], 422);
         }
 
@@ -1620,27 +1629,27 @@ class DoctorController extends ApiController
 
             // 2. Lookup Medicine and Verify Store exists
             $firstMedicine = DB::table('medicines')->where('id', $items[0]['id'])->first();
-            
+
             if (!$firstMedicine) {
                 throw new \Exception("Medicine with ID " . $items[0]['id'] . " not found.");
             }
 
             // CRITICAL FIX: Check if the store_id actually exists in the 'store_locations' table
             /*$storeExists = DB::table('store_locations')->where('LocationID', $firstMedicine->store_id)->exists();
-            
+
             if (!$storeExists) {
                 throw new \Exception("Order failed: The Store (ID: {$firstMedicine->store_id}) associated with this medicine does not exist in the database.");
             }*/
 
             // 3. Create the Order
             $orderId = DB::table('orders')->insertGetId([
-                'user_id'          => $request->user_id,
-                'store_id'         => $firstMedicine->store_id,
-                'supplier_id'      => $firstMedicine->pharmacy_id ?? null, // Ensure this ID is valid too
+                'user_id' => $request->user_id,
+                'store_id' => $firstMedicine->store_id,
+                'supplier_id' => $firstMedicine->pharmacy_id ?? null, // Ensure this ID is valid too
                 'shipping_address' => $request->shipping_address,
-                'order_date'       => now(),
-                'status'           => 'Pending',
-                'total_amount'     => $request->total_amount,
+                'order_date' => now(),
+                'status' => 'Pending',
+                'total_amount' => $request->total_amount,
             ]);
 
             // 4. Process Order Items
@@ -1658,10 +1667,10 @@ class DoctorController extends ApiController
 
                 // Insert into order_items table
                 DB::table('order_items')->insert([
-                    'order_id'    => $orderId,
+                    'order_id' => $orderId,
                     'medicine_id' => $item['id'],
-                    'quantity'    => $item['qty'],
-                    'price'       => $item['price'],
+                    'quantity' => $item['qty'],
+                    'price' => $item['price'],
                 ]);
 
                 // 5. Deduct Stock
@@ -1688,5 +1697,65 @@ class DoctorController extends ApiController
                 'message' => $e->getMessage() // This will now show the specific reason
             ], 500);
         }
+    }
+    public function availableSlots(Request $request, $id)
+    {
+        $date = $request->query('date');
+        if (!$date) {
+            return response()->json(['success' => false, 'message' => 'Date is required'], 400);
+        }
+
+        $formattedDate = Carbon::parse($date);
+        $dayOfWeek = $formattedDate->format('l');
+
+        // Get Doctor's Availability for this date range
+        $availability = Doctor_availables::where('doctor_id', $id)
+            ->where('from_date', '<=', $date)
+            ->where('to_date', '>=', $date)
+            ->first();
+
+        if (!$availability) {
+            return response()->json([]);
+        }
+
+        // Check if the specific day is available
+        $availableDays = explode('|', $availability->available_days);
+        $availableDays = array_map('trim', $availableDays);
+        if (!in_array($dayOfWeek, $availableDays)) {
+            return response()->json([]);
+        }
+
+        // Generate Slots
+        $startTime = Carbon::parse($availability->start_time);
+        $endTime = Carbon::parse($availability->end_time);
+        $duration = intval($availability->duration);
+
+        $slots = [];
+        while ($startTime->lt($endTime)) {
+            $slotStart = $startTime->format('H:i');
+            $slotEnd = $startTime->copy()->addMinutes($duration)->format('H:i');
+
+            if ($startTime->copy()->addMinutes($duration)->gt($endTime)) {
+                break;
+            }
+
+            // Check if booked
+            $isBooked = Appointments::where('did', $id)
+                ->where('date', $date)
+                ->where('time', $slotStart)
+                ->where('status', '!=', '2')
+                ->exists();
+
+            if (!$isBooked) {
+                $slots[] = [
+                    'value' => $slotStart,
+                    'label' => Carbon::parse($slotStart)->format('h:i A') . ' - ' . Carbon::parse($slotEnd)->format('h:i A')
+                ];
+            }
+
+            $startTime->addMinutes($duration);
+        }
+
+        return response()->json($slots);
     }
 }
