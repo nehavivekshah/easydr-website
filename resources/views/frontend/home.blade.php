@@ -119,7 +119,8 @@
                                         @endif
 
                                         <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
-                                            class="btn ss-btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift text-center">
+                                            class="btn ss-btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift text-center"
+                                            style="min-width: 100% !important;">
                                             Book Now
                                         </a>
                                     </div>
