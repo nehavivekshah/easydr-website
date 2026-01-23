@@ -27,7 +27,7 @@
                     <form action="/doctors" method="GET">
                         <div class="row g-3 align-items-center">
                             <div class="col-lg-5">
-                                <label for="search" class="visually-hidden">Search Doctor</label>
+                                <!-- <label for="search" class="visually-hidden">Search Doctor</label> -->
                                 <div
                                     class="input-group input-group-lg border rounded-3 overflow-hidden transition-all bg-light">
                                     <span class="input-group-text bg-transparent border-0 ps-3">
@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5">
-                                <label for="specialty" class="visually-hidden">Specialty</label>
+                                <!-- <label for="specialty" class="visually-hidden">Specialty</label> -->
                                 <div
                                     class="input-group input-group-lg border rounded-3 overflow-hidden transition-all bg-light">
                                     <span class="input-group-text bg-transparent border-0 ps-3">
@@ -284,6 +284,7 @@
         /* Search & Filter */
         .search-filter-card {
             border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 100px;
         }
 
         .input-group:focus-within {
