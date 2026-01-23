@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <button type="submit"
-                                    class="btn ss-btn btn-primary w-100 btn-lg fw-600 rounded-3 shadow-sm btn-filter h-100 align-items-center">
+                                    class="btn ss-btn btn-primary w-100 btn-lg fw-600 rounded-3 shadow-sm btn-filter h-100 d-flex justify-content-center align-items-center">
                                     Find Doctor
                                 </button>
                             </div>
@@ -87,8 +87,8 @@
                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
                         @if(request('search') || request('specialty'))
                             <!-- <a href="/doctors" class="btn btn-link text-decoration-none text-muted p-0 hover-text-primary">
-                                                        <i class="fas fa-times-circle me-1"></i> Clear all filters
-                                                    </a> -->
+                                                                                        <i class="fas fa-times-circle me-1"></i> Clear all filters
+                                                                                    </a> -->
                         @endif
                     </div>
                 </div>
