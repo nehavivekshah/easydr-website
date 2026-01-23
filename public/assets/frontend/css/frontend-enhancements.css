@@ -153,6 +153,11 @@ body {
     box-shadow: var(--shadow-soft) !important;
     transition: all 0.4s ease;
     overflow: hidden;
+    border: 1px solid #cccccc54 !important;
+}
+
+.form-control {
+    height: calc(2.2em + .75rem + 2px) !important;
 }
 
 .single-specialists:hover,
