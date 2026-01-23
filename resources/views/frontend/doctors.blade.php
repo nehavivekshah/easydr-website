@@ -281,6 +281,18 @@
             border-color: #0a58ca;
         }
 
+        .input-group.input-group-lg.border.rounded-3.overflow-hidden.transition-all.bg-light {
+            border-radius: 100px !important;
+        }
+
+        input#search,
+        select#specialty {
+            border-top-left-radius: 0px !important;
+            border-bottom-left-radius: 0px !important;
+            border-top-right-radius: 50px !important;
+            border-bottom-right-radius: 50px !important;
+        }
+
         /* Search & Filter */
         .search-filter-card {
             border: 1px solid rgba(0, 0, 0, 0.05);
