@@ -48,7 +48,7 @@
 
                                 {{-- Rating --}}
                                 <div class="mb-3 font-14"> {{-- font-14 is custom --}}
-                                    @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
+                                @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
                                         @php
                                             $rating = round($doctor->avg_rating);
                                             $maxRating = 5;
@@ -64,6 +64,19 @@
                                         {{-- Changed fst-italic to font-italic --}}
                                         <span class="text-muted font-italic">No ratings yet</span>
                                     @endif
+                                </div>
+
+                                {{-- Experience & Location --}}
+                                <div class="mb-4">
+                                    @if(!empty($doctor->experience))
+                                        <p class="mb-2 text-dark font-weight-bold">
+                                            <i class="fas fa-briefcase text-primary mr-2"></i>{{ $doctor->experience }}
+                                        </p>
+                                    @endif
+                                    
+                                    <p class="mb-0 text-muted">
+                                        <i class="fas fa-map-marker-alt text-danger mr-2"></i>{{ $doctor->hospital_name ?? $doctor->address ?? 'Main Hospital, NY' }}
+                                    </p>
                                 </div>
 
                                 @if($doctor->fees)
