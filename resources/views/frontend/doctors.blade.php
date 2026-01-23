@@ -226,6 +226,13 @@
 
 @push('scripts')
     <style>
+        .doctor-card .text-muted {
+            gap: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .doctor-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
