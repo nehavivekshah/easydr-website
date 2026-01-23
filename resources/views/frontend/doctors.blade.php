@@ -41,12 +41,13 @@
                             <div class="col-lg-5">
                                 <!-- <label for="specialty" class="visually-hidden">Specialty</label> -->
                                 <div
-                                    class="input-group input-group-lg border rounded-3 overflow-hidden transition-all bg-light">
+                                    class="input-group input-group-lg flex-nowrap border rounded-3 overflow-hidden transition-all bg-light">
                                     <span class="input-group-text bg-transparent border-0 ps-3">
                                         <i class="fas fa-stethoscope text-muted"></i>
                                     </span>
                                     <select id="specialty" name="specialty"
-                                        class="form-select border-0 bg-transparent shadow-none" style="cursor: pointer;">
+                                        class="form-select border-0 bg-transparent shadow-none pr-2"
+                                        style="cursor: pointer;">
                                         <option value="">All Specialties</option>
                                         @isset($specialists)
                                             @foreach($specialists as $specialist)
