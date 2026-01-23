@@ -4,7 +4,7 @@
     <!-- main-area -->
     <main>
         <!-- signup-area -->
-        <section id="signup" class="team-area pt-50 pb-20">
+        <section id="signup" class="team-area pt-20 pb-40">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-4 col-lg-5 col-md-6">
