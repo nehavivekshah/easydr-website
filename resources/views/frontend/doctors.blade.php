@@ -46,7 +46,7 @@
                                         <i class="fas fa-stethoscope text-muted"></i>
                                     </span>
                                     <select id="specialty" name="specialty"
-                                        class="form-select border-0 bg-transparent shadow-none pr-2"
+                                        class="form-select border-0 bg-transparent shadow-none pr-2 w-100"
                                         style="cursor: pointer;">
                                         <option value="">All Specialties</option>
                                         @isset($specialists)
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-lg-2">
                                 <button type="submit"
-                                    class="btn btn-primary w-100 btn-lg fw-600 rounded-3 shadow-sm btn-filter h-100">
+                                    class="btn ss-btn btn-primary w-100 btn-lg fw-600 rounded-3 shadow-sm btn-filter h-100">
                                     Find Doctor
                                 </button>
                             </div>
