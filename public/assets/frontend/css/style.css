@@ -8473,3 +8473,79 @@ ul#doctorTabs li button.active {
     opacity: 1;
 }
 
+
+/* Auth Pages Enhancement */
+.auth-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    background: #fff;
+    padding: 20px;
+}
+
+.auth-card .card-body {
+    padding: 40px;
+}
+
+.auth-card h4 {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.auth-card .form-group label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.auth-card .form-control {
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #e1e1e1;
+    background-color: #f9f9f9;
+    padding: 10px 20px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.auth-card .form-control:focus {
+    background-color: #fff;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.auth-btn {
+    height: 50px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    transition: transform 0.2s;
+    background: linear-gradient(to right, #007bff, #0056b3);
+    border: none;
+    color: #fff;
+}
+
+.auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    color: #fff;
+}
+
+.auth-footer-link {
+    color: #777;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.auth-footer-link:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
