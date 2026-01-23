@@ -57,7 +57,7 @@
                                     {{-- Hover Overlay with Button --}}
                                     <div class="doctor-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                                         style="background: rgba(30, 41, 99, 0.7); opacity: 0; transition: all 0.3s ease;">
-                                        <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
+                                        <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
                                             class="btn btn-light rounded-pill px-4 py-2 fw-bold transform-scale"
                                             style="transform: scale(0.9); transition: all 0.3s ease;">
                                             View Profile
@@ -80,7 +80,7 @@
 
                                     {{-- Name --}}
                                     <h5 class="card-title mb-1">
-                                        <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
+                                        <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
                                             class="text-decoration-none text-dark fw-bold" style="font-size: 1.1rem;">
                                             Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}
                                         </a>
@@ -118,7 +118,7 @@
                                             </h6>
                                         @endif
 
-                                        <a href="/doctor/{{ $doctor->id ?? '' }}/{!! md5($doctor->email ?? '') !!}"
+                                        <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
                                             class="btn ss-btn btn-primary w-100 fw-600 py-2 rounded-3 shadow-sm hover-y-shift text-center"
                                             style="min-width: 100% !important;">
                                             Book Now
