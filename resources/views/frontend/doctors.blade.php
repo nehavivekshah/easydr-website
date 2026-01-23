@@ -94,86 +94,89 @@
 
                 <div class="row g-4">
                     @forelse ($doctors as $doctor)
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                            <div class="card doctor-card h-100 border-0 rounded-4 overflow-hidden position-relative">
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="card doctor-card h-100 border-0 overflow-hidden transition-all"
+                                style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;">
 
-                                {{-- Doctor Image --}}
-                                <div class="doctor-img-wrap position-relative overflow-hidden bg-light">
-                                    <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}">
-                                        <img src="{{ asset(!empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png') }}"
-                                            class="card-img-top w-100"
-                                            alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
-                                            style="height: 280px; object-fit: cover; object-position: top;">
-                                    </a>
+                                {{-- Doctor Image Container --}}
+                                <div class="position-relative bg-light overflow-hidden doctor-image-wrapper"
+                                    style="height: 250px;">
+                                    <img src="{{ asset(!empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png') }}"
+                                        class="card-img-top w-100 h-100"
+                                        alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
+                                        style="object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
 
-                                    {{-- Experience Badge --}}
-                                    @if(!empty($doctor->experience))
-                                        <div class="position-absolute top-0 end-0 m-3">
-                                            <span class="badge bg-white text-dark shadow-sm rounded-pill px-3 py-2 fw-600 font-12">
-                                                {{ $doctor->experience }} Exp
-                                            </span>
-                                        </div>
-                                    @endif
-
-                                    {{-- Hover Action --}}
-                                    <div
-                                        class="doctor-action-overlay position-absolute bottom-0 start-0 w-100 p-3 d-flex justify-content-center">
+                                    {{-- Hover Overlay with Button --}}
+                                    <div class="doctor-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                                        style="background: rgba(30, 41, 99, 0.7); opacity: 0; transition: all 0.3s ease;">
                                         <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
-                                            class="btn btn-light rounded-pill px-4 py-2 fw-600 shadow-sm transform-scale-sm">
+                                            class="btn btn-light rounded-pill px-4 py-2 fw-bold transform-scale"
+                                            style="transform: scale(0.9); transition: all 0.3s ease;">
                                             View Profile
                                         </a>
                                     </div>
+
+                                    {{-- Experience Badge --}}
+                                    @if(!empty($doctor->experience))
+                                        <div class="position-absolute bottom-0 start-0 w-100 p-2"
+                                            style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);">
+                                            <span class="badge bg-primary rounded-pill px-2 py-1 font-12 fw-500">
+                                                <i class="fas fa-briefcase-medical me-1"></i>{{ $doctor->experience }}
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
 
-                                {{-- Card Body --}}
-                                <div class="card-body p-4 text-center d-flex flex-column">
-                                    {{-- Specialization --}}
-                                    <div class="mb-2">
-                                        <span
-                                            class="badge bg-primary-soft text-primary rounded-pill px-3 py-1 font-11 fw-600 text-uppercase tracking-wider">
-                                            {{ $doctor->specialist ?? 'General' }}
-                                        </span>
-                                    </div>
+                                {{-- Doctor Info Body --}}
+                                <div class="card-body d-flex flex-column pt-3 pb-3 px-3 text-center" style="flex-grow: 1;">
 
                                     {{-- Name --}}
-                                    <h5 class="card-title fw-700 mb-2">
+                                    <h5 class="card-title mb-1">
                                         <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
-                                            class="text-dark text-decoration-none hover-text-primary transition-colors">
+                                            class="text-decoration-none text-dark fw-bold" style="font-size: 1.1rem;">
                                             Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}
                                         </a>
                                     </h5>
 
+                                    {{-- Specialization --}}
+                                    <p class="text-primary mb-1 fw-600 font-13 text-uppercase"
+                                        style="font-size: 0.8rem; letter-spacing: 0.5px;">
+                                        {{ $doctor->specialist ?? 'Specialist' }}
+                                    </p>
+
+                                    {{-- Spacer --}}
+                                    <div class="w-100 my-2 border-bottom opacity-50"></div>
+
                                     {{-- Rating --}}
-                                    <div class="mb-3 d-flex justify-content-center align-items-center">
+                                    <div class="mb-2">
                                         @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
-                                            <i class="fas fa-star text-warning font-12 me-1"></i>
-                                            <span
-                                                class="fw-bold text-dark font-14">{{ number_format($doctor->avg_rating, 1) }}</span>
-                                            <span class="text-muted ms-1 font-12">({{ $doctor->reviews_count ?? 0 }} reviews)</span>
+                                            <div
+                                                class="d-inline-flex align-items-center justify-content-center bg-light rounded-pill px-3 py-1">
+                                                <i class="fas fa-star text-warning font-12 me-1"></i>
+                                                <span
+                                                    class="fw-bold font-13 text-dark">{{ number_format($doctor->avg_rating, 1) }}</span>
+                                            </div>
                                         @else
-                                            <span class="text-muted font-13 fst-italic">No ratings yet</span>
+                                            <span class="text-muted font-12"><i class="far fa-star me-1"></i>No ratings</span>
                                         @endif
                                     </div>
 
-                                    <div class="border-top w-100 my-3 opacity-25"></div>
-
-                                    {{-- Fees & Action --}}
+                                    {{-- Fees --}}
                                     <div class="mt-auto">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="text-muted font-13 fw-500">Consultation</span>
-                                            <span class="text-dark fw-700 font-16">
-                                                @if(!empty($doctor->fees))
-                                                    ₹{{ number_format($doctor->fees, 0) }}
-                                                @else
-                                                    <span class="text-success font-13">Free</span>
-                                                @endif
-                                            </span>
-                                        </div>
+                                        @if(!empty($doctor->fees))
+                                            <h6 class="text-dark mb-3 fw-bold d-flex align-items-center justify-content-center">
+                                                <span class="text-muted font-12 fw-normal me-1">Consultation:</span>
+                                                ₹{{ number_format($doctor->fees, 0) }}
+                                            </h6>
+                                        @endif
+
                                         <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
-                                            class="btn btn-primary w-100 rounded-3 py-2 fw-600 shadow-sm btn-book hover-y-shift">
-                                            Book Appointment
+                                            class="btn ss-btn btn-primary w-100 fw-600 rounded-3 shadow-sm hover-y-shift text-center"
+                                            style="min-width: 100% !important;">
+                                            Book Now
                                         </a>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -291,6 +294,13 @@
 
         .input-group input::placeholder {
             color: #adb5bd;
+        }
+
+        .doctor-card .text-muted {
+            gap: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Doctor Card */
