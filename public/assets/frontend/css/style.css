@@ -261,7 +261,7 @@ label {
 	letter-spacing: 0;
 	line-height: 1;
 	margin-bottom: 0;
-	padding: 18px 45px;
+	padding: 15px 45px;
 	text-align: center;
 	text-transform: unset;
 	touch-action: manipulation;
@@ -8394,163 +8394,162 @@ ul#doctorTabs li button.active {
 		right: calc(50% - 40px);
 	}
 }
+
 /* Fix for Appointment Modal Inputs */
 #appointmentModal .form-group {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 #appointmentModal .form-control {
-    height: 50px;
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    padding: 10px 20px;
-    color: var(--color-text);
-    font-size: 15px;
-    width: 100%;
-    background-color: #f9f9f9;
-    box-shadow: none;
+	height: 50px;
+	border: 1px solid #e1e1e1;
+	border-radius: 5px;
+	padding: 10px 20px;
+	color: var(--color-text);
+	font-size: 15px;
+	width: 100%;
+	background-color: #f9f9f9;
+	box-shadow: none;
 }
 
 #appointmentModal .form-control:focus {
-    border-color: var(--color-primary);
-    background-color: var(--color-white);
-    outline: none;
+	border-color: var(--color-primary);
+	background-color: var(--color-white);
+	outline: none;
 }
 
 #appointmentModal select.form-control {
-    -webkit-appearance: auto;
-    -moz-appearance: auto;
-    appearance: auto;
-    background-image: none;
-    padding: 10px 20px;
-    color: #555;
-    cursor: pointer;
+	-webkit-appearance: auto;
+	-moz-appearance: auto;
+	appearance: auto;
+	background-image: none;
+	padding: 10px 20px;
+	color: #555;
+	cursor: pointer;
 }
 
 #appointmentModal .form-group label {
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--color-heading);
-    display: block;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: var(--color-heading);
+	display: block;
 }
 
 #appointmentModal textarea.form-control {
-    height: auto;
-    padding-top: 15px;
+	height: auto;
+	padding-top: 15px;
 }
 
 #appointmentModal .modal-header {
-    border-bottom: 1px solid #eee;
-    padding: 20px 30px;
-    background-color: #f8f9fa;
-    border-radius: 5px 5px 0 0;
+	border-bottom: 1px solid #eee;
+	padding: 20px 30px;
+	background-color: #f8f9fa;
+	border-radius: 5px 5px 0 0;
 }
 
 #appointmentModal .modal-title {
-    font-weight: 700;
-    color: var(--color-heading);
-    font-size: 20px;
+	font-weight: 700;
+	color: var(--color-heading);
+	font-size: 20px;
 }
 
 #appointmentModal .modal-body {
-    padding: 30px;
+	padding: 30px;
 }
 
 #appointmentModal .modal-footer {
-    border-top: 1px solid #eee;
-    padding: 20px 30px;
-    background-color: #f8f9fa;
-    border-radius: 0 0 5px 5px;
+	border-top: 1px solid #eee;
+	padding: 20px 30px;
+	background-color: #f8f9fa;
+	border-radius: 0 0 5px 5px;
 }
 
 #appointmentModal .close {
-    font-size: 28px;
-    font-weight: 300;
-    opacity: 0.5;
+	font-size: 28px;
+	font-weight: 300;
+	opacity: 0.5;
 }
 
 #appointmentModal .close:hover {
-    opacity: 1;
+	opacity: 1;
 }
 
 
 /* Auth Pages Enhancement */
 .auth-card {
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    background: #fff;
-    padding: 20px;
+	border: none;
+	border-radius: 20px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+	background: #fff;
+	padding: 20px;
 }
 
 .auth-card .card-body {
-    padding: 40px;
+	padding: 40px;
 }
 
 .auth-card h4 {
-    color: #333;
-    font-weight: 700;
-    margin-bottom: 30px;
-    font-family: 'Poppins', sans-serif;
+	color: #333;
+	font-weight: 700;
+	margin-bottom: 30px;
+	font-family: 'Poppins', sans-serif;
 }
 
 .auth-card .form-group label {
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 8px;
-    font-size: 14px;
+	font-weight: 600;
+	color: #555;
+	margin-bottom: 8px;
+	font-size: 14px;
 }
 
 .auth-card .form-control {
-    height: 50px;
-    border-radius: 8px;
-    border: 1px solid #e1e1e1;
-    background-color: #f9f9f9;
-    padding: 10px 20px;
-    font-size: 15px;
-    transition: all 0.3s ease;
+	height: 50px;
+	border-radius: 8px;
+	border: 1px solid #e1e1e1;
+	background-color: #f9f9f9;
+	padding: 10px 20px;
+	font-size: 15px;
+	transition: all 0.3s ease;
 }
 
 .auth-card .form-control:focus {
-    background-color: #fff;
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+	background-color: #fff;
+	border-color: #007bff;
+	box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
 .auth-btn {
-    height: 50px;
-    border-radius: 25px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 14px;
-    transition: transform 0.2s;
-    background: linear-gradient(to right, #007bff, #0056b3);
-    border: none;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 30px;
+	height: 50px;
+	border-radius: 25px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-size: 14px;
+	transition: transform 0.2s;
+	background: linear-gradient(to right, #007bff, #0056b3);
+	border: none;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 30px;
 }
 
 .auth-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
-    color: #fff;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+	color: #fff;
 }
 
 .auth-footer-link {
-    color: #777;
-    font-size: 14px;
-    text-decoration: none;
-    transition: color 0.3s;
+	color: #777;
+	font-size: 14px;
+	text-decoration: none;
+	transition: color 0.3s;
 }
 
 .auth-footer-link:hover {
-    color: #007bff;
-    text-decoration: none;
+	color: #007bff;
+	text-decoration: none;
 }
-
-
