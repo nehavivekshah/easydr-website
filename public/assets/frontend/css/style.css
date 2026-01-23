@@ -8516,7 +8516,7 @@ ul#doctorTabs li button.active {
 .auth-card .form-control:focus {
 	background-color: #fff;
 	border-color: #007bff;
-	box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+	/* box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1); */
 }
 
 .auth-btn {
@@ -8527,7 +8527,7 @@ ul#doctorTabs li button.active {
 	letter-spacing: 1px;
 	font-size: 14px;
 	transition: transform 0.2s;
-	/* background: linear-gradient(to right, #007bff, #0056b3); */
+	background: linear-gradient(to right, #007bff, #0056b3);
 	border: none;
 	color: #fff;
 	display: flex;
