@@ -4,7 +4,7 @@
     <!-- main-area -->
     <main>
         <!-- otp-verification-area -->
-        <section id="otp-verification" class="team-area pt-20 pb-40">
+        <section id="otp-verification" class="team-area pt-40 pb-40">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-4 col-lg-5 col-md-6">
