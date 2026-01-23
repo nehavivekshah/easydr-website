@@ -36,12 +36,14 @@
                     <div class="col-xl-4 col-lg-4 col-md-5">
                         <div class="card shadow-sm mb-4">
                             <div class="text-center pt-3 bg-light">
-                                <img src="{{ asset( !empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png' ) }}"
-                                     alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
-                                     class="img-fluid img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                <img src="{{ asset(!empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png') }}"
+                                    alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
+                                    class="img-fluid img-thumbnail rounded-circle"
+                                    style="width: 150px; height: 150px; object-fit: cover;">
                             </div>
                             <div class="card-body text-center">
-                                <h4 class="card-title font-weight-bold mb-1">Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}</h4>
+                                <h4 class="card-title font-weight-bold mb-1">Dr. {{ $doctor->first_name ?? '' }}
+                                    {{ $doctor->last_name ?? '' }}</h4>
                                 <p class="text-muted mb-2">{{ $doctor->specialist ?? 'Specialist' }}</p>
 
                                 {{-- Rating --}}
@@ -65,11 +67,13 @@
                                 </div>
 
                                 @if($doctor->fees)
-                                <p class="mb-3"><strong>Consultation Fee:</strong> ${{ number_format($doctor->fees, 2) }}</p>
+                                    <p class="mb-3"><strong>Consultation Fee:</strong> ${{ number_format($doctor->fees, 2) }}
+                                    </p>
                                 @endif
 
                                 {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                <button type="button" class="btn btn-primary btn-lg w-100" data-toggle="modal" data-target="#appointmentModal">
+                                <button type="button" class="btn btn-primary btn-lg w-100" data-toggle="modal"
+                                    data-target="#appointmentModal">
                                     {{-- Changed me-2 to mr-2 --}}
                                     <i class="fas fa-calendar-check mr-2"></i> Book Appointment
                                 </button>
@@ -84,30 +88,123 @@
                                 <ul class="nav nav-tabs nav-justified" id="doctorTabs" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                        <button class="nav-link active py-3" id="about-tab" data-toggle="tab" data-target="#about" type="button" role="tab" aria-controls="about" aria-selected="true">About</button>
+                                        <button class="nav-link active py-3" id="availability-tab" data-toggle="tab"
+                                            data-target="#availability" type="button" role="tab"
+                                            aria-controls="availability" aria-selected="true">Availability</button>
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                        <button class="nav-link py-3" id="education-tab" data-toggle="tab" data-target="#education" type="button" role="tab" aria-controls="education" aria-selected="false">Education & License</button>
+                                        <button class="nav-link py-3" id="about-tab" data-toggle="tab" data-target="#about"
+                                            type="button" role="tab" aria-controls="about" aria-selected="false">About
+                                            Doctor</button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                         {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                        <button class="nav-link py-3" id="reviews-tab" data-toggle="tab" data-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews ({{ $reviews->count() }})</button>
+                                        {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
+                                        <button class="nav-link py-3" id="education-tab" data-toggle="tab"
+                                            data-target="#education" type="button" role="tab" aria-controls="education"
+                                            aria-selected="false">Education & License</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
+                                        <button class="nav-link py-3" id="reviews-tab" data-toggle="tab"
+                                            data-target="#reviews" type="button" role="tab" aria-controls="reviews"
+                                            aria-selected="false">Reviews ({{ $reviews->count() }})</button>
                                     </li>
                                     {{-- Add more tabs if needed --}}
-                                     @if(!empty($doctor->extra))
-                                    <li class="nav-item" role="presentation">
-                                         {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                        <button class="nav-link py-3" id="extra-tab" data-toggle="tab" data-target="#extra" type="button" role="tab" aria-controls="extra" aria-selected="false">More Info</button>
-                                    </li>
+                                    @if(!empty($doctor->extra))
+                                        <li class="nav-item" role="presentation">
+                                            {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
+                                            <button class="nav-link py-3" id="extra-tab" data-toggle="tab" data-target="#extra"
+                                                type="button" role="tab" aria-controls="extra" aria-selected="false">More
+                                                Info</button>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>
                             <div class="card-body p-4">
                                 <div class="tab-content" id="doctorTabsContent">
-                                    {{-- About Tab --}}
-                                    <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
-                                        <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}</h5>
+                                    {{-- Availability Tab --}}
+                                    <div class="tab-pane fade show active" id="availability" role="tabpanel"
+                                        aria-labelledby="availability-tab">
+                                        <div class="availability-wrap">
+                                            {{-- Date Range --}}
+                                            <div class="row mb-3">
+                                                <div class="col-md-6 mb-3 mb-md-0">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="icon-box me-3 text-success bg-light rounded p-2"
+                                                            style="font-size: 1.2rem;">
+                                                            <i class="far fa-calendar-check"></i>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <h6 class="mb-1 fw-bold text-dark">
+                                                                {{ $doctor->available_from ?? '07 Jan, 2026' }}</h6>
+                                                            <p class="text-muted small mb-0">From Date</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="icon-box me-3 text-danger bg-light rounded p-2"
+                                                            style="font-size: 1.2rem;">
+                                                            <i class="far fa-calendar-times"></i>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <h6 class="mb-1 fw-bold text-dark">
+                                                                {{ $doctor->available_to ?? '31 Jan, 2026' }}</h6>
+                                                            <p class="text-muted small mb-0">To Date</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- Available Days --}}
+                                            <div class="d-flex align-items-start mb-3">
+                                                <div class="icon-box me-3 text-warning bg-light rounded p-2"
+                                                    style="font-size: 1.2rem;">
+                                                    <i class="fas fa-grip-vertical"></i>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <h6 class="mb-1 fw-bold text-dark">
+                                                        {{ $doctor->available_days ?? 'Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday' }}
+                                                    </h6>
+                                                    <p class="text-muted small mb-0">Available Days</p>
+                                                </div>
+                                            </div>
+
+                                            {{-- Available Hours --}}
+                                            <div class="d-flex align-items-start mb-3">
+                                                <div class="icon-box me-3 text-primary bg-light rounded p-2"
+                                                    style="font-size: 1.2rem;">
+                                                    <i class="far fa-clock"></i>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <h6 class="mb-1 fw-bold text-dark">
+                                                        {{ $doctor->start_time ?? '09:00 AM' }} -
+                                                        {{ $doctor->end_time ?? '08:00 PM' }}
+                                                    </h6>
+                                                    <p class="text-muted small mb-0">Available Hours</p>
+                                                </div>
+                                            </div>
+
+                                            {{-- Slot Duration --}}
+                                            <div class="d-flex align-items-start">
+                                                <div class="icon-box me-3 text-purple bg-light rounded p-2"
+                                                    style="color: #6f42c1; font-size: 1.2rem;">
+                                                    <i class="fas fa-hourglass-half"></i>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <h6 class="mb-1 fw-bold text-dark">
+                                                        {{ $doctor->slot_duration ?? '30 minutes' }}</h6>
+                                                    <p class="text-muted small mb-0">Slot Duration</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- About Tab (No longer active by default) --}}
+                                    <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                                        <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
+                                            {{ $doctor->last_name ?? '' }}</h5>
                                         @if(!empty($doctor->about))
                                             <p>{!! nl2br(e($doctor->about)) !!}</p>
                                         @else
@@ -116,14 +213,15 @@
                                     </div>
 
                                     {{-- Education Tab --}}
-                                    <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
+                                    <div class="tab-pane fade" id="education" role="tabpanel"
+                                        aria-labelledby="education-tab">
                                         <h5 class="mb-3">Education & Credentials</h5>
                                         @if(!empty($doctor->education))
                                             <p><strong>Education:</strong><br> {!! nl2br(e($doctor->education)) !!}</p>
                                         @else
                                             <p><strong>Education:</strong> Information not available.</p>
                                         @endif
-                                         <hr>
+                                        <hr>
                                         @if(!empty($doctor->license))
                                             <p><strong>License:</strong><br> {{ $doctor->license }}</p>
                                         @else
@@ -140,12 +238,15 @@
                                                 {{-- Changed me-3 to mr-3 --}}
                                                 <div class="flex-shrink-0 mr-3">
                                                     <i class="fas fa-user-circle fa-3x text-secondary"></i>
-                                                    {{-- If you store reviewer info, use it: <img src="..." class="rounded-circle" width="50"> --}}
+                                                    {{-- If you store reviewer info, use it: <img src="..."
+                                                        class="rounded-circle" width="50"> --}}
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    {{-- You'll need to join with users table or store reviewer name on review --}}
+                                                    {{-- You'll need to join with users table or store reviewer name on review
+                                                    --}}
                                                     <h6 class="mb-0">Anonymous Patient</h6>
-                                                    <small class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
+                                                    <small
+                                                        class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
                                                     <div class="my-1">
                                                         @php $reviewRating = round($review->rating); @endphp
                                                         <span class="text-warning">
@@ -166,13 +267,13 @@
                                         {{-- Optional: Add link to view more reviews if pagination is implemented --}}
                                     </div>
 
-                                     {{-- Extra Info Tab --}}
-                                     @if(!empty($doctor->extra))
-                                     <div class="tab-pane fade" id="extra" role="tabpanel" aria-labelledby="extra-tab">
-                                         <h5 class="mb-3">Additional Information</h5>
-                                         <p>{!! nl2br(e($doctor->extra)) !!}</p>
-                                     </div>
-                                     @endif
+                                    {{-- Extra Info Tab --}}
+                                    @if(!empty($doctor->extra))
+                                        <div class="tab-pane fade" id="extra" role="tabpanel" aria-labelledby="extra-tab">
+                                            <h5 class="mb-3">Additional Information</h5>
+                                            <p>{!! nl2br(e($doctor->extra)) !!}</p>
+                                        </div>
+                                    @endif
 
                                 </div>
                             </div>
@@ -185,14 +286,15 @@
 
         <!-- Appointment Booking Modal -->
         {{-- Added id="appointmentModal" --}}
-        <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+        <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <form action="/appointment" method="POST" id="appointmentForm">
                         @csrf
                         <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
                         {{-- Maybe include the token if needed --}}
-                        {{-- <input type="hidden" name="token" value="{{ request()->route('token') }}">  --}}
+                        {{-- <input type="hidden" name="token" value="{{ request()->route('token') }}"> --}}
 
                         <div class="modal-header">
                             <h5 class="modal-title" id="appointmentModalLabel">Book Appointment</h5>
@@ -202,17 +304,21 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p class="mb-3">Booking appointment with: <br><strong>Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}</strong> ({{ $doctor->specialist ?? 'Specialist' }})</p>
+                            <p class="mb-3">Booking appointment with: <br><strong>Dr. {{ $doctor->first_name ?? '' }}
+                                    {{ $doctor->last_name ?? '' }}</strong> ({{ $doctor->specialist ?? 'Specialist' }})</p>
                             <hr>
 
-                             {{-- BS4 uses form-group typically to wrap label and input --}}
+                            {{-- BS4 uses form-group typically to wrap label and input --}}
                             <div class="form-group mb-3">
-                                <label for="appointment_date" class="form-label">Select Date <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="appointment_date" name="appointment_date" required min="{{ date('Y-m-d') }}">
+                                <label for="appointment_date" class="form-label">Select Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="appointment_date" name="appointment_date"
+                                    required min="{{ date('Y-m-d') }}">
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="appointment_time" class="form-label">Select Time Slot <span class="text-danger">*</span></label>
+                                <label for="appointment_time" class="form-label">Select Time Slot <span
+                                        class="text-danger">*</span></label>
                                 {{-- Changed form-select to form-control --}}
                                 <select class="form-control" id="appointment_time" name="appointment_time" required>
                                     <option value="" selected disabled>-- Select a time --</option>
@@ -228,11 +334,13 @@
                                     <option value="15:00">03:00 PM - 03:30 PM</option>
                                 </select>
                                 {{-- BS4 uses form-text text-muted for helper text --}}
-                                <small id="time-slot-availability" class="form-text text-muted">Select a date first to see available times.</small>
+                                <small id="time-slot-availability" class="form-text text-muted">Select a date first to see
+                                    available times.</small>
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="payment_mode" class="form-label">Payment Mode <span class="text-danger">*</span></label>
+                                <label for="payment_mode" class="form-label">Payment Mode <span
+                                        class="text-danger">*</span></label>
                                 {{-- Changed form-select to form-control --}}
                                 <select class="form-control" id="payment_mode" name="payment_mode" required>
                                     <option value="" selected disabled>-- Select payment method --</option>
@@ -245,7 +353,7 @@
                             <div class="form-group mb-3"> {{-- Changed mb-3 to form-group wrapper --}}
                                 <label for="visit_reason" class="form-label">Reason for Visit (Optional)</label>
                                 <textarea class="form-control" id="visit_reason" name="visit_reason" rows="2"></textarea>
-                             </div>
+                            </div>
 
                         </div>
                         <div class="modal-footer">
@@ -264,100 +372,100 @@
 @endsection
 
 @push('scripts')
-<script>
-    // This JavaScript does not rely heavily on Bootstrap-specific classes
-    // so it should work fine with Bootstrap 4.5 as well.
-    // The modal is triggered by data-toggle/data-target attributes handled by Bootstrap's JS.
-    document.addEventListener('DOMContentLoaded', function() {
-        const today = new Date().toISOString().split('T')[0];
-        const appointmentDateInput = document.getElementById('appointment_date');
-        if (appointmentDateInput) {
-             appointmentDateInput.setAttribute('min', today);
-        }
+    <script>
+        // This JavaScript does not rely heavily on Bootstrap-specific classes
+        // so it should work fine with Bootstrap 4.5 as well.
+        // The modal is triggered by data-toggle/data-target attributes handled by Bootstrap's JS.
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date().toISOString().split('T')[0];
+            const appointmentDateInput = document.getElementById('appointment_date');
+            if (appointmentDateInput) {
+                appointmentDateInput.setAttribute('min', today);
+            }
 
 
-        // --- IMPORTANT ---
-        // The AJAX logic for fetching time slots remains the same conceptually.
-        // Ensure your backend endpoint `/api/doctor/${doctorId}/available-slots` exists
-        // and returns data in the expected format (e.g., array of objects like { value: 'HH:MM', label: 'HH:MM AM/PM - HH:MM AM/PM' }).
+            // --- IMPORTANT ---
+            // The AJAX logic for fetching time slots remains the same conceptually.
+            // Ensure your backend endpoint `/api/doctor/${doctorId}/available-slots` exists
+            // and returns data in the expected format (e.g., array of objects like { value: 'HH:MM', label: 'HH:MM AM/PM - HH:MM AM/PM' }).
 
-        // Example of how you might fetch time slots (pseudo-code):
-        const dateInput = document.getElementById('appointment_date');
-        const timeSelect = document.getElementById('appointment_time');
-        const doctorIdInput = document.querySelector('input[name="doctor_id"]'); // Get doctor ID input
-        const timeSlotHelpText = document.getElementById('time-slot-availability');
+            // Example of how you might fetch time slots (pseudo-code):
+            const dateInput = document.getElementById('appointment_date');
+            const timeSelect = document.getElementById('appointment_time');
+            const doctorIdInput = document.querySelector('input[name="doctor_id"]'); // Get doctor ID input
+            const timeSlotHelpText = document.getElementById('time-slot-availability');
 
-        if (dateInput && timeSelect && doctorIdInput && timeSlotHelpText) {
-             const doctorId = doctorIdInput.value;
+            if (dateInput && timeSelect && doctorIdInput && timeSlotHelpText) {
+                const doctorId = doctorIdInput.value;
 
-            dateInput.addEventListener('change', function() {
-                const selectedDate = this.value;
-                if (!selectedDate) {
-                    timeSelect.innerHTML = '<option value="" selected disabled>-- Select a time --</option>';
-                    timeSlotHelpText.textContent = 'Select a date first to see available times.';
+                dateInput.addEventListener('change', function () {
+                    const selectedDate = this.value;
+                    if (!selectedDate) {
+                        timeSelect.innerHTML = '<option value="" selected disabled>-- Select a time --</option>';
+                        timeSlotHelpText.textContent = 'Select a date first to see available times.';
+                        timeSelect.disabled = true;
+                        return;
+                    };
+
+                    // Show loading state
+                    timeSelect.innerHTML = '<option value="">Loading times...</option>';
                     timeSelect.disabled = true;
-                    return;
-                };
-
-                // Show loading state
-                timeSelect.innerHTML = '<option value="">Loading times...</option>';
-                timeSelect.disabled = true;
-                timeSlotHelpText.textContent = 'Loading available times...';
+                    timeSlotHelpText.textContent = 'Loading available times...';
 
 
-                // Replace with your actual endpoint URL
-                 // Use fetch API (modern browsers) or XMLHttpRequest
-                fetch(`/api/doctor/${doctorId}/available-slots?date=${selectedDate}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json', // Expect JSON response
-                        'X-Requested-With': 'XMLHttpRequest' // Often needed for frameworks to detect AJAX
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                         // Try to get error message from response body if possible
-                        return response.text().then(text => {
-                            throw new Error(`Network response was not ok (${response.status}): ${text || 'Server error'}`);
+                    // Replace with your actual endpoint URL
+                    // Use fetch API (modern browsers) or XMLHttpRequest
+                    fetch(`/api/doctor/${doctorId}/available-slots?date=${selectedDate}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json', // Expect JSON response
+                            'X-Requested-With': 'XMLHttpRequest' // Often needed for frameworks to detect AJAX
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                // Try to get error message from response body if possible
+                                return response.text().then(text => {
+                                    throw new Error(`Network response was not ok (${response.status}): ${text || 'Server error'}`);
+                                });
+                            }
+                            return response.json(); // Parse JSON body
+                        })
+                        .then(slots => {
+                            timeSelect.innerHTML = '<option value="" selected disabled>-- Select a time --</option>'; // Reset
+                            if (slots && Array.isArray(slots) && slots.length > 0) {
+                                slots.forEach(slot => {
+                                    // Assuming slot object has 'value' (e.g., "09:00") and 'label' (e.g., "09:00 AM - 09:30 AM")
+                                    const option = new Option(slot.label, slot.value);
+                                    // You might want to add checks here if a slot is already booked
+                                    // e.g., if (slot.is_available) { timeSelect.add(option); }
+                                    timeSelect.add(option);
+                                });
+                                timeSelect.disabled = false;
+                                timeSlotHelpText.textContent = 'Please select an available time.';
+                            } else {
+                                timeSelect.innerHTML = '<option value="">No slots available</option>';
+                                timeSlotHelpText.textContent = 'No time slots available for this date.';
+                                // Keep it disabled if no slots are available
+                                timeSelect.disabled = true;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching time slots:', error);
+                            timeSelect.innerHTML = '<option value="">Error loading times</option>';
+                            timeSlotHelpText.textContent = `Error loading time slots: ${error.message}. Please try again or select a different date.`;
+                            // Keep it disabled on error
+                            timeSelect.disabled = true;
                         });
-                    }
-                    return response.json(); // Parse JSON body
-                })
-                .then(slots => {
-                    timeSelect.innerHTML = '<option value="" selected disabled>-- Select a time --</option>'; // Reset
-                    if (slots && Array.isArray(slots) && slots.length > 0) {
-                        slots.forEach(slot => {
-                            // Assuming slot object has 'value' (e.g., "09:00") and 'label' (e.g., "09:00 AM - 09:30 AM")
-                            const option = new Option(slot.label, slot.value);
-                            // You might want to add checks here if a slot is already booked
-                            // e.g., if (slot.is_available) { timeSelect.add(option); }
-                            timeSelect.add(option);
-                        });
-                        timeSelect.disabled = false;
-                        timeSlotHelpText.textContent = 'Please select an available time.';
-                    } else {
-                        timeSelect.innerHTML = '<option value="">No slots available</option>';
-                        timeSlotHelpText.textContent = 'No time slots available for this date.';
-                        // Keep it disabled if no slots are available
-                         timeSelect.disabled = true;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching time slots:', error);
-                    timeSelect.innerHTML = '<option value="">Error loading times</option>';
-                    timeSlotHelpText.textContent = `Error loading time slots: ${error.message}. Please try again or select a different date.`;
-                     // Keep it disabled on error
-                     timeSelect.disabled = true;
                 });
-            });
 
-             // Initialize state on page load
-             timeSelect.disabled = true;
+                // Initialize state on page load
+                timeSelect.disabled = true;
 
-        } else {
-            console.warn('Appointment date, time select, doctor ID input, or help text element not found. Dynamic time slot loading disabled.');
-        }
+            } else {
+                console.warn('Appointment date, time select, doctor ID input, or help text element not found. Dynamic time slot loading disabled.');
+            }
 
-    });
-</script>
+        });
+    </script>
 @endpush
