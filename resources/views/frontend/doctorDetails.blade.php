@@ -43,12 +43,13 @@
                             </div>
                             <div class="card-body text-center">
                                 <h4 class="card-title font-weight-bold mb-1">Dr. {{ $doctor->first_name ?? '' }}
-                                    {{ $doctor->last_name ?? '' }}</h4>
+                                    {{ $doctor->last_name ?? '' }}
+                                </h4>
                                 <p class="text-muted mb-2">{{ $doctor->specialist ?? 'Specialist' }}</p>
 
                                 {{-- Rating --}}
                                 <div class="mb-3 font-14"> {{-- font-14 is custom --}}
-                                @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
+                                    @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
                                         @php
                                             $rating = round($doctor->avg_rating);
                                             $maxRating = 5;
@@ -73,9 +74,10 @@
                                             <i class="fas fa-briefcase text-primary mr-2"></i>{{ $doctor->experience }}
                                         </p>
                                     @endif
-                                    
+
                                     <p class="mb-0 text-muted">
-                                        <i class="fas fa-map-marker-alt text-danger mr-2"></i>{{ $doctor->hospital_name ?? $doctor->address ?? 'Main Hospital, NY' }}
+                                        <i
+                                            class="fas fa-map-marker-alt text-danger mr-2"></i>{{ $doctor->hospital_name ?? $doctor->address ?? 'Main Hospital, NY' }}
                                     </p>
                                 </div>
 
@@ -96,7 +98,7 @@
 
                     {{-- Right Side: Details Tabs (About, Education, Reviews) --}}
                     <div class="col-xl-8 col-lg-8 col-md-7">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-sm details-tabs">
                             <div class="card-header bg-light p-0">
                                 <ul class="nav nav-tabs nav-justified" id="doctorTabs" role="tablist">
                                     <li class="nav-item" role="presentation">
@@ -150,7 +152,8 @@
                                                         </div>
                                                         <div class="ms-3">
                                                             <h6 class="mb-1 fw-bold text-dark">
-                                                                {{ $doctor->available_from ?? '07 Jan, 2026' }}</h6>
+                                                                {{ $doctor->available_from ?? '07 Jan, 2026' }}
+                                                            </h6>
                                                             <p class="text-muted small mb-0">From Date</p>
                                                         </div>
                                                     </div>
@@ -163,7 +166,8 @@
                                                         </div>
                                                         <div class="ms-3">
                                                             <h6 class="mb-1 fw-bold text-dark">
-                                                                {{ $doctor->available_to ?? '31 Jan, 2026' }}</h6>
+                                                                {{ $doctor->available_to ?? '31 Jan, 2026' }}
+                                                            </h6>
                                                             <p class="text-muted small mb-0">To Date</p>
                                                         </div>
                                                     </div>
@@ -207,7 +211,8 @@
                                                 </div>
                                                 <div class="ms-3">
                                                     <h6 class="mb-1 fw-bold text-dark">
-                                                        {{ $doctor->slot_duration ?? '30 minutes' }}</h6>
+                                                        {{ $doctor->slot_duration ?? '30 minutes' }}
+                                                    </h6>
                                                     <p class="text-muted small mb-0">Slot Duration</p>
                                                 </div>
                                             </div>
@@ -217,7 +222,8 @@
                                     {{-- About Tab (No longer active by default) --}}
                                     <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
                                         <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                            {{ $doctor->last_name ?? '' }}</h5>
+                                            {{ $doctor->last_name ?? '' }}
+                                        </h5>
                                         @if(!empty($doctor->about))
                                             <p>{!! nl2br(e($doctor->about)) !!}</p>
                                         @else
