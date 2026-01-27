@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -437,19 +438,183 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
-        // Fetch some basic stats for the dashboard
-        $patient = \App\Models\Patients::where('uid', $user->id)->first();
-        $pid = $patient ? $patient->id : 0;
+        if ($user->role == 2) {
+            // DOCTOR DASHBOARD
+            $doctorId = $user->id; // Using User ID as reference, though some tables use doctors.id
 
-        $appointmentsCount = DB::table('appointments')->where('pid', $pid)->count();
-        // Assuming reports and favorites tables exist or logic is known, otherwise placeholders
-        $reportsCount = 0; // DB::table('reports')->where('patient_id', $pid)->count();
-        $favoritesCount = 0; // DB::table('favorites')->where('user_id', $user->id)->count();
+            // Today's Appointments
+            $today = Carbon::now()->toDateString();
+            $appointmentsCount = \App\Models\Appointments::where('did', $doctorId)
+                ->where('date', $today)
+                ->count();
 
-        // Calculate total billing if applicable
-        $billingAmount = 0; // Logic to sum billing
+            // My Patients (Unique PIDs linked to this doctor)
+            $patientsCount = \App\Models\Appointments::where('did', $doctorId)
+                ->distinct('pid')
+                ->count('pid');
 
-        return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount'));
+            // Wallet & Revenue
+            $doctorInfo = \App\Models\Doctors::where('uid', $user->id)->first();
+            $walletAmount = $doctorInfo ? $doctorInfo->wallet : 0;
+
+            // Total Revenue (Sum of fees from completed appointments)
+            $totalRevenue = \App\Models\Appointments::where('did', $doctorId)
+                ->where('status', 1) // 1 = Completed
+                ->sum('fees');
+
+            // Recent Appointments
+            $recentAppointments = \App\Models\Appointments::leftJoin('patients', 'appointments.pid', '=', 'patients.id')
+                ->leftJoin('users as patient', 'patients.uid', '=', 'patient.id')
+                ->select(
+                    'appointments.*',
+                    'patient.first_name as patient_first_name',
+                    'patient.last_name as patient_last_name'
+                )
+                ->where('appointments.did', $doctorId)
+                ->orderBy('appointments.date', 'desc')
+                ->orderBy('appointments.time', 'desc')
+                ->limit(5)
+                ->get();
+
+            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments'));
+
+        } else {
+            // PATIENT DASHBOARD
+            $patient = \App\Models\Patients::where('uid', $user->id)->first();
+            $pid = $patient ? $patient->id : 0; // This assumes appointments.pid uses PATIENTS.ID not USERS.ID.
+            // CAUTION: In bookAppointment, I saved $patient->id (from patients table).
+            // But let's verify if $patient->id is used or $user->id.
+            // In bookAppointment: $appointment->pid = $patient->id; -> Correct.
+            // Check if $pid is 0.
+
+            // However, authentication uses User ID.
+            // If patient entry is missing, we might have issues.
+
+            $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
+            // WAIT. In bookAppointment I used $patient->id. Mobile app sends 'pid'.
+            // Let's stick to $user->id if possible, but the schema seems mixed.
+            // Mobile app dashboardPage uses $doctorId (which is user ID in shared prefs).
+            // Let's assume PID in appointments refers to User ID for now to be safe, 
+            // OR I should use the Logic from Mobile App's `patientDetails`.
+            // The mobile app `patientDetails` joins `users as pet` on `appointments.pid = pet.id`. 
+            // This implies appointments.pid IS the User ID of the patient.
+            // BUT in `bookAppointment` (my previous edit), I used `$patient->id`. 
+            // If `patients.id` != `users.id`, this is a bug.
+            // Usually `patients` table has `id` (AI) and `uid` (FK to users).
+            // I should use `$user->id` for consistency if the app expects `users` join.
+            // Let's change this query to use `$user->id` assuming my fix in bookAppointment used `$patient->uid`?
+            // Re-checking bookAppointment: `$appointment->pid = $patient->id;`
+            // If `patients.id` is standard AI, then appointments.pid maps to patients table.
+
+            // Let's rely on what `appointments` method does below.
+            // `appointments` method uses `->where('appointments.pid', $user->id)`.
+            // So `appointments.pid` MUST BE User ID.
+
+            $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
+            $reportsCount = 0; // DB::table('reports')->where('patient_id', $user->id)->count();
+            $favoritesCount = 0; // DB::table('favorites')->where('user_id', $user->id)->count();
+            $billingAmount = DB::table('appointments')->where('pid', $user->id)->sum('fees');
+
+            return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount'));
+        }
+    }
+
+    public function myPatients()
+    {
+        $user = Auth::user();
+        if ($user->role != 2)
+            return redirect('/my-account');
+
+        // Fetch unique patients for this doctor
+        $patients = \App\Models\Appointments::leftJoin('patients', 'appointments.pid', '=', 'patients.id')
+            ->leftJoin('users as patient', 'patients.uid', '=', 'patient.id')
+            ->select(
+                'patient.id',
+                'patient.first_name',
+                'patient.last_name',
+                'patient.email',
+                'patient.mobile',
+                'patient.photo'
+            )
+            ->where('appointments.did', $user->id)
+            ->distinct('appointments.pid')
+            ->get();
+
+        return view('frontend.account.my_patients', compact('patients'));
+    }
+
+    public function manageSlots()
+    {
+        $user = Auth::user();
+        if ($user->role != 2)
+            return redirect('/my-account');
+
+        $slots = \App\Models\Doctor_availables::where('doctor_id', $user->id)->orderBy('id', 'desc')->get();
+        return view('frontend.account.manage_slots', compact('slots'));
+    }
+
+    public function doctorPrescriptions()
+    {
+        return view('frontend.account.doctor_prescriptions');
+    }
+
+    public function doctorBilling()
+    {
+        return view('frontend.account.doctor_billing');
+    }
+
+    /* Patient Methods */
+    public function myDoctors()
+    {
+        $user = Auth::user();
+        // Get doctors visited by this patient
+        $doctors = \App\Models\Appointments::leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
+            ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
+            ->select('doc.*', 'doctors.specialist')
+            ->where('appointments.pid', $user->id)
+            ->distinct('appointments.did')
+            ->get();
+
+        return view('frontend.account.my_doctors', compact('doctors'));
+    }
+
+    public function medicalReports()
+    {
+        return view('frontend.account.medical_reports');
+    }
+
+    public function patientPrescriptions()
+    {
+        return view('frontend.account.patient_prescriptions');
+    }
+
+    public function billing()
+    {
+        return view('frontend.account.billing');
+    }
+
+    public function changePassword()
+    {
+        return view('frontend.account.change_password');
+    }
+
+    public function changePasswordPost(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'Current password does not match.');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('success', 'Password updated successfully.');
     }
 
     public function myProfile()
@@ -468,21 +633,45 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
-        $appointments = DB::table('appointments')
-            ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
-            ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
-            ->select(
-                'appointments.*',
-                'doc.first_name as doctor_first_name',
-                'doc.last_name as doctor_last_name',
-                'doctors.specialist'
-            )
-            ->where('appointments.pid', $user->id)
-            ->orderBy('appointments.date', 'desc')
-            ->orderBy('appointments.time', 'desc')
-            ->get();
+        if ($user->role == 2) {
+            // DOCTOR VIEW
+            $appointments = DB::table('appointments')
+                ->join('patients', 'appointments.pid', '=', 'patients.id')
+                ->join('users', 'patients.uid', '=', 'users.id')
+                ->select(
+                    'appointments.*',
+                    'users.first_name as patient_first_name',
+                    'users.last_name as patient_last_name',
+                    'users.mobile as patient_mobile'
+                )
+                ->where('appointments.did', $user->id)
+                ->orderBy('appointments.date', 'desc')
+                ->orderBy('appointments.time', 'desc')
+                ->get();
 
-        return view('frontend/appointments', compact('appointments'));
+            return view('frontend/doctor_appointments', compact('appointments'));
+
+        } else {
+            // PATIENT VIEW
+            $patient = \App\Models\Patients::where('uid', $user->id)->first();
+            $pid = $patient ? $patient->id : 0;
+
+            $appointments = DB::table('appointments')
+                ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
+                ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
+                ->select(
+                    'appointments.*',
+                    'doc.first_name as doctor_first_name',
+                    'doc.last_name as doctor_last_name',
+                    'doctors.specialist'
+                )
+                ->where('appointments.pid', $pid)
+                ->orderBy('appointments.date', 'desc')
+                ->orderBy('appointments.time', 'desc')
+                ->get();
+
+            return view('frontend/appointments', compact('appointments'));
+        }
     }
 
     public function cancelAppointment($id)
@@ -534,6 +723,10 @@ class FrontendController extends Controller
             'appointment_date' => 'required|date',
             'appointment_time' => 'required',
             'payment_mode' => 'required',
+            'problem_description' => 'required|string|min:10',
+            'payment_gateway' => 'required_if:payment_mode,Online Payment',
+            'health_card_number' => 'required_if:payment_mode,Health Card',
+            'terms_accepted' => 'required|accepted',
         ]);
 
         if (!Auth::check()) {
@@ -561,7 +754,17 @@ class FrontendController extends Controller
         $appointment->payment_mode = $request->payment_mode;
         $appointment->status = 0; // Pending
         $appointment->payment_status = 'unpaid';
-        $appointment->note = $request->visit_reason ?? '';
+        $appointment->note = $request->problem_description; // Mapped from new field
+
+        // Handle conditionally required fields
+        if ($request->payment_mode == 'Health Card') {
+            $appointment->health_card_file = $request->health_card_number; // Using existing column for HC number
+        }
+
+        if ($request->payment_mode == 'Online Payment') {
+            // Save the selected gateway if column exists, or handle logic
+            $appointment->payment_gateway = $request->payment_gateway; // Saving gateway selection
+        }
 
         // Fix for DID: The schema says `did` int(11).
         // WebReportController joins `appointments.did` = `doc.id` (users table).

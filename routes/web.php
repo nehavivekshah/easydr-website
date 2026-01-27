@@ -36,6 +36,22 @@ Route::get('/appointments', [FrontendController::class, 'appointments']);
 Route::post('/cancel-appointment/{id}', [FrontendController::class, 'cancelAppointment'])->name('cancelAppointment');
 Route::get('/manage-appointment', [FrontendController::class, 'manageAppointment']);
 
+// Doctor Routes
+Route::get('/my-patients', [FrontendController::class, 'myPatients']);
+Route::get('/manage-slots', [FrontendController::class, 'manageSlots']);
+Route::get('/doctor-prescriptions', [FrontendController::class, 'doctorPrescriptions']);
+Route::get('/doctor-billing', [FrontendController::class, 'doctorBilling']);
+
+// Patient Routes
+Route::get('/my-doctors', [FrontendController::class, 'myDoctors']);
+Route::get('/medical-reports', [FrontendController::class, 'medicalReports']);
+Route::get('/patient-prescriptions', [FrontendController::class, 'patientPrescriptions']);
+Route::get('/billing', [FrontendController::class, 'billing']);
+
+// Common Routes
+Route::get('/change-password', [FrontendController::class, 'changePassword']);
+Route::post('/change-password', [FrontendController::class, 'changePasswordPost']);
+
 /*Website Informative Pages*/
 ;
 Route::get('/patients', [FrontendController::class, 'patients']);

@@ -331,20 +331,42 @@
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="payment_mode" class="form-label">Payment Mode <span
-                                        class="text-danger">*</span></label>
-                                {{-- Changed form-select to form-control --}}
+                                <label for="payment_mode" class="form-label">Payment Mode <span class="text-danger">*</span></label>
                                 <select class="form-control" id="payment_mode" name="payment_mode" required>
-                                    <option value="" selected disabled>-- Select payment method --</option>
-                                    <option value="health-card">Health Card</option>
-                                    <option value="online">Online Payment</option>
-                                    <option value="cash">Cash on Payment</option>
+                                    <option value="" selected disabled>-- Select Payment Option --</option>
+                                    <option value="Online Payment">Online Payment</option>
+                                    <option value="Cash Payment">Cash Payment</option>
+                                    <option value="Health Card">Health Card</option>
                                 </select>
                             </div>
 
-                            <div class="form-group mb-3"> {{-- Changed mb-3 to form-group wrapper --}}
-                                <label for="visit_reason" class="form-label">Reason for Visit (Optional)</label>
-                                <textarea class="form-control" id="visit_reason" name="visit_reason" rows="2"></textarea>
+                            {{-- Dynamic Payment Gateway Dropdown --}}
+                            <div class="form-group mb-3 d-none" id="payment-gateway-group">
+                                <label for="payment_gateway" class="form-label">Select Online Payment Gateway <span class="text-danger">*</span></label>
+                                <select class="form-control" id="payment_gateway" name="payment_gateway">
+                                    <option value="" selected disabled>-- Select Gateway --</option>
+                                    {{-- Options loaded via JS --}}
+                                </select>
+                            </div>
+
+                            {{-- Dynamic Health Card Input --}}
+                            <div class="form-group mb-3 d-none" id="health-card-group">
+                                <label for="health_card_number" class="form-label">Health Card Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="health_card_number" name="health_card_number" placeholder="Enter your Health Card No.">
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="problem_description" class="form-label">State your problem <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="problem_description" name="problem_description" rows="3" required minlength="10" placeholder="Briefly describe your health problem (min 10 chars)..."></textarea>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="terms_accepted" name="terms_accepted" required>
+                                    <label class="form-check-label" for="terms_accepted">
+                                        I accept the terms and conditions. <span class="text-danger">*</span>
+                                    </label>
+                                </div>
                             </div>
 
                         </div>
@@ -371,6 +393,76 @@
         document.addEventListener('DOMContentLoaded', function () {
             const today = new Date().toISOString().split('T')[0];
             const appointmentDateInput = document.getElementById('appointment_date');
+            
+            // --- Payment Mode Logic ---
+            const paymentModeSelect = document.getElementById('payment_mode');
+            const gatewayGroup = document.getElementById('payment-gateway-group');
+            const gatewaySelect = document.getElementById('payment_gateway');
+            const healthCardGroup = document.getElementById('health-card-group');
+            const healthCardInput = document.getElementById('health_card_number');
+
+            // Load gateways once
+            let gatewaysLoaded = false;
+            
+            if(paymentModeSelect) {
+                paymentModeSelect.addEventListener('change', function() {
+                    const mode = this.value;
+                    
+                    // Reset visibility/requirements
+                    gatewayGroup.classList.add('d-none');
+                    gatewaySelect.removeAttribute('required');
+                    
+                    healthCardGroup.classList.add('d-none');
+                    healthCardInput.removeAttribute('required');
+
+                    if (mode === 'Online Payment') {
+                        gatewayGroup.classList.remove('d-none');
+                        gatewaySelect.setAttribute('required', 'required');
+                        
+                        if (!gatewaysLoaded) {
+                            fetchGateways();
+                        }
+                    } else if (mode === 'Health Card') {
+                        healthCardGroup.classList.remove('d-none');
+                        healthCardInput.setAttribute('required', 'required');
+                    }
+                });
+            }
+
+            function fetchGateways() {
+                gatewaySelect.innerHTML = '<option value="">Loading...</option>';
+                fetch('/api/v1/payment-gateways')
+                    .then(res => res.json())
+                    .then(data => {
+                        // API returns { status: true, message: "...", data: [ {id, gateway_name}, ... ] }
+                        // OR directly the list depending on controller. 
+                        // DoctorController::getPaymentGateways calls successResponse which wraps in data.
+                        
+                        gatewaySelect.innerHTML = '<option value="" selected disabled>-- Select Gateway --</option>';
+                        
+                        let gateways = [];
+                        if(data.data && Array.isArray(data.data)) {
+                             gateways = data.data;
+                        } else if (Array.isArray(data)) {
+                             gateways = data;
+                        }
+
+                        if (gateways.length > 0) {
+                            gateways.forEach(g => {
+                                const option = new Option(g.gateway_name, g.gateway_name);
+                                gatewaySelect.add(option);
+                            });
+                            gatewaysLoaded = true;
+                        } else {
+                            gatewaySelect.innerHTML = '<option value="" disabled>No gateways available</option>';
+                        }
+                    })
+                    .catch(e => {
+                        console.error('Error fetching gateways:', e);
+                        gatewaySelect.innerHTML = '<option value="" disabled>Error loading gateways</option>';
+                    });
+            }
+
             if (appointmentDateInput) {
                 appointmentDateInput.setAttribute('min', today);
             }

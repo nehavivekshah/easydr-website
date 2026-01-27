@@ -6,13 +6,9 @@
             <div class="container">
                 <div class="row">
                     <!-- Sidebar -->
+                    <!-- Sidebar -->
                     <div class="col-lg-3 mb-4">
-                        <div class="list-group shadow-sm">
-                            <a href="/my-account" class="list-group-item list-group-item-action">Dashboard</a>
-                            <a href="/appointments" class="list-group-item list-group-item-action">Appointments</a>
-                            <a href="/my-profile" class="list-group-item list-group-item-action active">My Profile</a>
-                            <a href="/logout" class="list-group-item list-group-item-action">Logout</a>
-                        </div>
+                        @include('frontend.inc.user_sidebar')
                     </div>
 
                     <!-- Content Area -->
