@@ -102,149 +102,137 @@
                             <div class="card-header bg-light p-0">
                                 <ul class="nav nav-tabs nav-justified" id="doctorTabs" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                        <button class="nav-link active py-3" id="availability-tab" data-toggle="tab"
-                                            data-target="#availability" type="button" role="tab"
-                                            aria-controls="availability" aria-selected="true">Availability</button>
+                                        <button class="nav-link active py-3" id="doctor-about-tab" data-toggle="tab"
+                                            data-target="#doctor-about" type="button" role="tab"
+                                            aria-controls="doctor-about" aria-selected="true">Doctor About</button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                        <button class="nav-link py-3" id="about-tab" data-toggle="tab" data-target="#about"
-                                            type="button" role="tab" aria-controls="about" aria-selected="false">About
-                                            Doctor</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                        <button class="nav-link py-3" id="education-tab" data-toggle="tab"
-                                            data-target="#education" type="button" role="tab" aria-controls="education"
-                                            aria-selected="false">Education & License</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
                                         <button class="nav-link py-3" id="reviews-tab" data-toggle="tab"
                                             data-target="#reviews" type="button" role="tab" aria-controls="reviews"
-                                            aria-selected="false">Reviews ({{ $reviews->count() }})</button>
+                                            aria-selected="false">Patient Reviews ({{ $reviews->count() }})</button>
                                     </li>
-                                    {{-- Add more tabs if needed --}}
-                                    @if(!empty($doctor->extra))
-                                        <li class="nav-item" role="presentation">
-                                            {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                            <button class="nav-link py-3" id="extra-tab" data-toggle="tab" data-target="#extra"
-                                                type="button" role="tab" aria-controls="extra" aria-selected="false">More
-                                                Info</button>
-                                        </li>
-                                    @endif
                                 </ul>
                             </div>
                             <div class="card-body p-4">
                                 <div class="tab-content" id="doctorTabsContent">
-                                    {{-- Availability Tab --}}
-                                    <div class="tab-pane fade show active" id="availability" role="tabpanel"
-                                        aria-labelledby="availability-tab">
-                                        <div class="availability-wrap">
-                                            {{-- Date Range --}}
-                                            <div class="row mb-3">
-                                                <div class="col-md-6 mb-3 mb-md-0">
-                                                    <div class="d-flex align-items-start">
-                                                        <div class="icon-box me-3 text-success bg-light rounded p-2"
-                                                            style="font-size: 1.2rem;">
-                                                            <i class="far fa-calendar-check"></i>
+                                    {{-- Doctor About Tab --}}
+                                    <div class="tab-pane fade show active" id="doctor-about" role="tabpanel"
+                                        aria-labelledby="doctor-about-tab">
+
+                                        {{-- About Section --}}
+                                        <div class="mb-5">
+                                            <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
+                                                {{ $doctor->last_name ?? '' }}</h5>
+                                            @if(!empty($doctor->about))
+                                                <p>{!! nl2br(e($doctor->about)) !!}</p>
+                                            @else
+                                                <p class="text-muted">Information not available.</p>
+                                            @endif
+                                        </div>
+
+                                        {{-- Education & License Section --}}
+                                        <div class="mb-5">
+                                            <h5 class="mb-3">Education & Credentials</h5>
+                                            @if(!empty($doctor->education))
+                                                <p><strong>Education:</strong><br> {!! nl2br(e($doctor->education)) !!}</p>
+                                            @else
+                                                <p><strong>Education:</strong> Information not available.</p>
+                                            @endif
+                                            <hr>
+                                            @if(!empty($doctor->license))
+                                                <p><strong>License:</strong><br> {{ $doctor->license }}</p>
+                                            @else
+                                                <p><strong>License:</strong> Information not available.</p>
+                                            @endif
+                                        </div>
+
+                                        {{-- Availability Section --}}
+                                        <div class="mb-5">
+                                            <h5 class="mb-3">Doctor Availability</h5>
+                                            <div class="availability-wrap">
+                                                {{-- Date Range --}}
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6 mb-3 mb-md-0">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="icon-box me-3 text-success bg-light rounded p-2"
+                                                                style="font-size: 1.2rem;">
+                                                                <i class="far fa-calendar-check"></i>
+                                                            </div>
+                                                            <div class="ms-3">
+                                                                <h6 class="mb-1 fw-bold text-dark">
+                                                                    {{ $doctor->available_from ?? '07 Jan, 2026' }}
+                                                                </h6>
+                                                                <p class="text-muted small mb-0">From Date</p>
+                                                            </div>
                                                         </div>
-                                                        <div class="ms-3">
-                                                            <h6 class="mb-1 fw-bold text-dark">
-                                                                {{ $doctor->available_from ?? '07 Jan, 2026' }}
-                                                            </h6>
-                                                            <p class="text-muted small mb-0">From Date</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="icon-box me-3 text-danger bg-light rounded p-2"
+                                                                style="font-size: 1.2rem;">
+                                                                <i class="far fa-calendar-times"></i>
+                                                            </div>
+                                                            <div class="ms-3">
+                                                                <h6 class="mb-1 fw-bold text-dark">
+                                                                    {{ $doctor->available_to ?? '31 Jan, 2026' }}
+                                                                </h6>
+                                                                <p class="text-muted small mb-0">To Date</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="d-flex align-items-start">
-                                                        <div class="icon-box me-3 text-danger bg-light rounded p-2"
-                                                            style="font-size: 1.2rem;">
-                                                            <i class="far fa-calendar-times"></i>
-                                                        </div>
-                                                        <div class="ms-3">
-                                                            <h6 class="mb-1 fw-bold text-dark">
-                                                                {{ $doctor->available_to ?? '31 Jan, 2026' }}
-                                                            </h6>
-                                                            <p class="text-muted small mb-0">To Date</p>
-                                                        </div>
+
+                                                {{-- Available Days --}}
+                                                <div class="d-flex align-items-start mb-3">
+                                                    <div class="icon-box me-3 text-warning bg-light rounded p-2"
+                                                        style="font-size: 1.2rem;">
+                                                        <i class="fas fa-grip-vertical"></i>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-1 fw-bold text-dark">
+                                                            {{ $doctor->available_days ?? 'Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday' }}
+                                                        </h6>
+                                                        <p class="text-muted small mb-0">Available Days</p>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            {{-- Available Days --}}
-                                            <div class="d-flex align-items-start mb-3">
-                                                <div class="icon-box me-3 text-warning bg-light rounded p-2"
-                                                    style="font-size: 1.2rem;">
-                                                    <i class="fas fa-grip-vertical"></i>
+                                                {{-- Available Hours --}}
+                                                <div class="d-flex align-items-start mb-3">
+                                                    <div class="icon-box me-3 text-primary bg-light rounded p-2"
+                                                        style="font-size: 1.2rem;">
+                                                        <i class="far fa-clock"></i>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-1 fw-bold text-dark">
+                                                            {{ $doctor->start_time ?? '09:00 AM' }} -
+                                                            {{ $doctor->end_time ?? '08:00 PM' }}
+                                                        </h6>
+                                                        <p class="text-muted small mb-0">Available Hours</p>
+                                                    </div>
                                                 </div>
-                                                <div class="ms-3">
-                                                    <h6 class="mb-1 fw-bold text-dark">
-                                                        {{ $doctor->available_days ?? 'Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday' }}
-                                                    </h6>
-                                                    <p class="text-muted small mb-0">Available Days</p>
-                                                </div>
-                                            </div>
 
-                                            {{-- Available Hours --}}
-                                            <div class="d-flex align-items-start mb-3">
-                                                <div class="icon-box me-3 text-primary bg-light rounded p-2"
-                                                    style="font-size: 1.2rem;">
-                                                    <i class="far fa-clock"></i>
-                                                </div>
-                                                <div class="ms-3">
-                                                    <h6 class="mb-1 fw-bold text-dark">
-                                                        {{ $doctor->start_time ?? '09:00 AM' }} -
-                                                        {{ $doctor->end_time ?? '08:00 PM' }}
-                                                    </h6>
-                                                    <p class="text-muted small mb-0">Available Hours</p>
-                                                </div>
-                                            </div>
-
-                                            {{-- Slot Duration --}}
-                                            <div class="d-flex align-items-start">
-                                                <div class="icon-box me-3 text-purple bg-light rounded p-2"
-                                                    style="color: #6f42c1; font-size: 1.2rem;">
-                                                    <i class="fas fa-hourglass-half"></i>
-                                                </div>
-                                                <div class="ms-3">
-                                                    <h6 class="mb-1 fw-bold text-dark">
-                                                        {{ $doctor->slot_duration ?? '30 minutes' }}
-                                                    </h6>
-                                                    <p class="text-muted small mb-0">Slot Duration</p>
+                                                {{-- Slot Duration --}}
+                                                <div class="d-flex align-items-start">
+                                                    <div class="icon-box me-3 text-purple bg-light rounded p-2"
+                                                        style="color: #6f42c1; font-size: 1.2rem;">
+                                                        <i class="fas fa-hourglass-half"></i>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-1 fw-bold text-dark">
+                                                            {{ $doctor->slot_duration ?? '30 minutes' }}
+                                                        </h6>
+                                                        <p class="text-muted small mb-0">Slot Duration</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    {{-- About Tab (No longer active by default) --}}
-                                    <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
-                                        <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                            {{ $doctor->last_name ?? '' }}
-                                        </h5>
-                                        @if(!empty($doctor->about))
-                                            <p>{!! nl2br(e($doctor->about)) !!}</p>
-                                        @else
-                                            <p class="text-muted">Information not available.</p>
-                                        @endif
-                                    </div>
-
-                                    {{-- Education Tab --}}
-                                    <div class="tab-pane fade" id="education" role="tabpanel"
-                                        aria-labelledby="education-tab">
-                                        <h5 class="mb-3">Education & Credentials</h5>
-                                        @if(!empty($doctor->education))
-                                            <p><strong>Education:</strong><br> {!! nl2br(e($doctor->education)) !!}</p>
-                                        @else
-                                            <p><strong>Education:</strong> Information not available.</p>
-                                        @endif
-                                        <hr>
-                                        @if(!empty($doctor->license))
-                                            <p><strong>License:</strong><br> {{ $doctor->license }}</p>
-                                        @else
-                                            <p><strong>License:</strong> Information not available.</p>
+                                        {{-- Extra Info Section --}}
+                                        @if(!empty($doctor->extra))
+                                            <div class="mb-3">
+                                                <h5 class="mb-3">Additional Information</h5>
+                                                <p>{!! nl2br(e($doctor->extra)) !!}</p>
+                                            </div>
                                         @endif
                                     </div>
 
@@ -254,15 +242,10 @@
                                         @forelse ($reviews as $review)
                                             <div class="d-flex mb-4 pb-3 border-bottom">
                                                 {{-- Placeholder for reviewer image --}}
-                                                {{-- Changed me-3 to mr-3 --}}
                                                 <div class="flex-shrink-0 mr-3">
                                                     <i class="fas fa-user-circle fa-3x text-secondary"></i>
-                                                    {{-- If you store reviewer info, use it: <img src="..."
-                                                        class="rounded-circle" width="50"> --}}
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    {{-- You'll need to join with users table or store reviewer name on review
-                                                    --}}
                                                     <h6 class="mb-0">Anonymous Patient</h6>
                                                     <small
                                                         class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
@@ -283,17 +266,7 @@
                                                 No reviews have been submitted for this doctor yet.
                                             </div>
                                         @endforelse
-                                        {{-- Optional: Add link to view more reviews if pagination is implemented --}}
                                     </div>
-
-                                    {{-- Extra Info Tab --}}
-                                    @if(!empty($doctor->extra))
-                                        <div class="tab-pane fade" id="extra" role="tabpanel" aria-labelledby="extra-tab">
-                                            <h5 class="mb-3">Additional Information</h5>
-                                            <p>{!! nl2br(e($doctor->extra)) !!}</p>
-                                        </div>
-                                    @endif
-
                                 </div>
                             </div>
                         </div>
