@@ -1710,8 +1710,6 @@ class DoctorController extends ApiController
 
         // Get Doctor's Availability for this date range
         $availability = Doctor_availables::where('doctor_id', $id)
-            ->where('from_date', '<=', $date)
-            ->where('to_date', '>=', $date)
             ->first();
 
         if (!$availability) {
