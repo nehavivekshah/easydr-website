@@ -122,7 +122,7 @@
                                         {{-- About Section --}}
                                         <div class="mb-5">
                                             <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                                                                {{ $doctor->last_name ?? '' }}</h5> -->
+                                                                                                        {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -282,7 +282,7 @@
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form action="/appointment" method="POST" id="appointmentForm">
+                    <form action="/appointment" method="GET" id="appointmentForm">
                         @csrf
                         <input type="hidden" name="doctor_id" value="{{ $doctor->uid }}">
                         {{-- Maybe include the token if needed --}}
@@ -331,7 +331,8 @@
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="payment_mode" class="form-label">Payment Mode <span class="text-danger">*</span></label>
+                                <label for="payment_mode" class="form-label">Payment Mode <span
+                                        class="text-danger">*</span></label>
                                 <select class="form-control" id="payment_mode" name="payment_mode" required>
                                     <option value="" selected disabled>-- Select Payment Option --</option>
                                     <option value="Online Payment">Online Payment</option>
@@ -342,7 +343,8 @@
 
                             {{-- Dynamic Payment Gateway Dropdown --}}
                             <div class="form-group mb-3 d-none" id="payment-gateway-group">
-                                <label for="payment_gateway" class="form-label">Select Online Payment Gateway <span class="text-danger">*</span></label>
+                                <label for="payment_gateway" class="form-label">Select Online Payment Gateway <span
+                                        class="text-danger">*</span></label>
                                 <select class="form-control" id="payment_gateway" name="payment_gateway">
                                     <option value="" selected disabled>-- Select Gateway --</option>
                                     {{-- Options loaded via JS --}}
@@ -351,18 +353,24 @@
 
                             {{-- Dynamic Health Card Input --}}
                             <div class="form-group mb-3 d-none" id="health-card-group">
-                                <label for="health_card_number" class="form-label">Health Card Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="health_card_number" name="health_card_number" placeholder="Enter your Health Card No.">
+                                <label for="health_card_number" class="form-label">Health Card Number <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="health_card_number" name="health_card_number"
+                                    placeholder="Enter your Health Card No.">
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="problem_description" class="form-label">State your problem <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="problem_description" name="problem_description" rows="3" required minlength="10" placeholder="Briefly describe your health problem (min 10 chars)..."></textarea>
+                                <label for="problem_description" class="form-label">State your problem <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" id="problem_description" name="problem_description" rows="3"
+                                    required minlength="10"
+                                    placeholder="Briefly describe your health problem (min 10 chars)..."></textarea>
                             </div>
 
                             <div class="form-group mb-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="1" id="terms_accepted" name="terms_accepted" required>
+                                    <input class="form-check-input" type="checkbox" value="1" id="terms_accepted"
+                                        name="terms_accepted" required>
                                     <label class="form-check-label" for="terms_accepted">
                                         I accept the terms and conditions. <span class="text-danger">*</span>
                                     </label>
@@ -393,7 +401,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const today = new Date().toISOString().split('T')[0];
             const appointmentDateInput = document.getElementById('appointment_date');
-            
+
             // --- Payment Mode Logic ---
             const paymentModeSelect = document.getElementById('payment_mode');
             const gatewayGroup = document.getElementById('payment-gateway-group');
@@ -403,22 +411,22 @@
 
             // Load gateways once
             let gatewaysLoaded = false;
-            
-            if(paymentModeSelect) {
-                paymentModeSelect.addEventListener('change', function() {
+
+            if (paymentModeSelect) {
+                paymentModeSelect.addEventListener('change', function () {
                     const mode = this.value;
-                    
+
                     // Reset visibility/requirements
                     gatewayGroup.classList.add('d-none');
                     gatewaySelect.removeAttribute('required');
-                    
+
                     healthCardGroup.classList.add('d-none');
                     healthCardInput.removeAttribute('required');
 
                     if (mode === 'Online Payment') {
                         gatewayGroup.classList.remove('d-none');
                         gatewaySelect.setAttribute('required', 'required');
-                        
+
                         if (!gatewaysLoaded) {
                             fetchGateways();
                         }
@@ -437,14 +445,14 @@
                         // API returns { status: true, message: "...", data: [ {id, gateway_name}, ... ] }
                         // OR directly the list depending on controller. 
                         // DoctorController::getPaymentGateways calls successResponse which wraps in data.
-                        
+
                         gatewaySelect.innerHTML = '<option value="" selected disabled>-- Select Gateway --</option>';
-                        
+
                         let gateways = [];
-                        if(data.data && Array.isArray(data.data)) {
-                             gateways = data.data;
+                        if (data.data && Array.isArray(data.data)) {
+                            gateways = data.data;
                         } else if (Array.isArray(data)) {
-                             gateways = data;
+                            gateways = data;
                         }
 
                         if (gateways.length > 0) {
