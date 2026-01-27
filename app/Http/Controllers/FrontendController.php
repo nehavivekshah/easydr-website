@@ -770,17 +770,12 @@ class FrontendController extends Controller
         // WebReportController joins `appointments.did` = `doc.id` (users table).
         // If I save `doctors.id` here, the join will fail if it expects `users.id`.
         // I need to find the User ID of the doctor.
-        $doc = Doctors::find($request->doctor_id);
+        // Send User ID in doctor_id
+        $doc = Doctors::where('uid', $request->doctor_id)->first();
         if ($doc) {
-            $appointment->did = $doc->uid; // Save User ID of the doctor
-        } else {
-            // Fallback or error? If doctor_id is actually user ID?
-            // In doctorDetails: <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
-            // $doctor comes from `doctors` join `users`. `doctor->id` is usually ambiguous if not aliased.
-            // In `FrontendController.doctorDetails`: $doctor = Doctors::... ->first();
-            // So it is the Doctors model instance. $doctor->id is Doctors PK. $doctor->uid is User PK.
-            // So $appointment->did should be $doc->uid.
             $appointment->did = $doc->uid;
+        } else {
+            return back()->with('error', 'Details related to doctor not found.');
         }
 
         $appointment->save();
