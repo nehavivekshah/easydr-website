@@ -122,7 +122,7 @@
                                         {{-- About Section --}}
                                         <div class="mb-5">
                                             <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                                                        {{ $doctor->last_name ?? '' }}</h5> -->
+                                                                                                {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -284,7 +284,7 @@
                 <div class="modal-content">
                     <form action="/appointment" method="POST" id="appointmentForm">
                         @csrf
-                        <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+                        <input type="hidden" name="doctor_id" value="{{ $doctor->uid }}">
                         {{-- Maybe include the token if needed --}}
                         {{-- <input type="hidden" name="token" value="{{ request()->route('token') }}"> --}}
 
