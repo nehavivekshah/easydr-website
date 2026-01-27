@@ -1768,10 +1768,18 @@ class DoctorController extends ApiController
                 // Check if this specific time is in our pre-fetched booked array
                 // We use simple array lookup which is much faster than a DB query
                 if (!in_array($slotStart, $bookedTimes)) {
-                    $finalSlots[] = [
-                        'value' => $slotStart,
-                        'label' => Carbon::parse($slotStart)->format('h:i A') . ' - ' . Carbon::parse($slotEnd)->format('h:i A')
-                    ];
+                    // FILTER: If date is today, check if slot is in the past
+                    $isToday = Carbon::now()->format('Y-m-d') === $formattedDate->format('Y-m-d');
+                    $currentTime = Carbon::now()->format('H:i');
+
+                    if ($isToday && $slotStart < $currentTime) {
+                        // Skip this slot as it is in the past
+                    } else {
+                        $finalSlots[] = [
+                            'value' => $slotStart,
+                            'label' => Carbon::parse($slotStart)->format('h:i A') . ' - ' . Carbon::parse($slotEnd)->format('h:i A')
+                        ];
+                    }
                 }
 
                 $startTime->addMinutes($duration);
