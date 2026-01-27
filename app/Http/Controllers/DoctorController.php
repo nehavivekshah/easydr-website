@@ -1706,56 +1706,83 @@ class DoctorController extends ApiController
         }
 
         $formattedDate = Carbon::parse($date);
-        $dayOfWeek = $formattedDate->format('l');
+        $dayOfWeek = $formattedDate->format('l'); // e.g., "Monday"
 
-        // Get Doctor's Availability for this date range
-        $availability = Doctor_availables::where('doctor_id', $id)
+        // 1. Get ALL availability rows that cover this date (Use get() not first())
+        $availabilities = Doctor_availables::where('doctor_id', $id)
             ->where('from_date', '<=', $date)
             ->where('to_date', '>=', $date)
-            ->first();
+            ->get();
 
-        if (!$availability) {
+        if ($availabilities->isEmpty()) {
             return response()->json([]);
         }
 
-        // Check if the specific day is available
-        $availableDays = explode('|', $availability->available_days);
-        $availableDays = array_map('trim', $availableDays);
-        if (!in_array($dayOfWeek, $availableDays)) {
-            return response()->json([]);
-        }
+        // 2. Optimization: Fetch all booked slots for this day ONCE (prevents N+1 query issue)
+        $bookedTimes = Appointments::where('did', $id)
+            ->where('date', $date)
+            ->where('status', '!=', '2') // Assuming 2 is cancelled
+            ->pluck('time') // Get only the time column
+            ->toArray();
 
-        // Generate Slots
-        $startTime = Carbon::parse($availability->start_time);
-        $endTime = Carbon::parse($availability->end_time);
-        $duration = intval($availability->duration);
+        // Use H:i format for comparison (e.g., "14:00")
+        $bookedTimes = array_map(function ($time) {
+            return Carbon::parse($time)->format('H:i');
+        }, $bookedTimes);
 
-        $slots = [];
-        while ($startTime->lt($endTime)) {
-            $slotStart = $startTime->format('H:i');
-            $slotEnd = $startTime->copy()->addMinutes($duration)->format('H:i');
+        $finalSlots = [];
 
-            if ($startTime->copy()->addMinutes($duration)->gt($endTime)) {
-                break;
+        // 3. Iterate through all availability rows to find the matching day
+        foreach ($availabilities as $availability) {
+
+            $availableDays = preg_split('/[|,]/', $availability->available_days);
+            $availableDays = array_map('trim', $availableDays);
+
+            // If this row doesn't cover the specific day of the week, skip it
+            if (!in_array($dayOfWeek, $availableDays)) {
+                continue;
             }
 
-            // Check if booked
-            $isBooked = Appointments::where('did', $id)
-                ->where('date', $date)
-                ->where('time', $slotStart)
-                ->where('status', '!=', '2')
-                ->exists();
+            // Safety check for duration to prevent infinite loops
+            $duration = intval($availability->duration);
+            if ($duration <= 0)
+                continue;
 
-            if (!$isBooked) {
-                $slots[] = [
-                    'value' => $slotStart,
-                    'label' => Carbon::parse($slotStart)->format('h:i A') . ' - ' . Carbon::parse($slotEnd)->format('h:i A')
-                ];
+            $startTime = Carbon::parse($availability->start_time);
+            $endTime = Carbon::parse($availability->end_time);
+
+            // Generate Slots for this specific availability row
+            while ($startTime->lt($endTime)) {
+                $slotStart = $startTime->format('H:i');
+
+                // Calculate end of this slot
+                $nextSlotTime = $startTime->copy()->addMinutes($duration);
+
+                // Stop if the slot exceeds the end time
+                if ($nextSlotTime->gt($endTime)) {
+                    break;
+                }
+
+                $slotEnd = $nextSlotTime->format('H:i');
+
+                // Check if this specific time is in our pre-fetched booked array
+                // We use simple array lookup which is much faster than a DB query
+                if (!in_array($slotStart, $bookedTimes)) {
+                    $finalSlots[] = [
+                        'value' => $slotStart,
+                        'label' => Carbon::parse($slotStart)->format('h:i A') . ' - ' . Carbon::parse($slotEnd)->format('h:i A')
+                    ];
+                }
+
+                $startTime->addMinutes($duration);
             }
-
-            $startTime->addMinutes($duration);
         }
 
-        return response()->json($slots);
+        // Optional: Sort slots by time if multiple availability rows were merged
+        usort($finalSlots, function ($a, $b) {
+            return strcmp($a['value'], $b['value']);
+        });
+
+        return response()->json($finalSlots);
     }
 }
