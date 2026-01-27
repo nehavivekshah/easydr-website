@@ -122,7 +122,7 @@
                                         {{-- About Section --}}
                                         <div class="mb-5">
                                             <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                                                {{ $doctor->last_name ?? '' }}</h5> -->
+                                                                                        {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -403,7 +403,7 @@
                     timeSelect.innerHTML = '<option value="">Loading times...</option>';
                     timeSelect.disabled = true;
                     timeSlotHelpText.textContent = 'Loading available times...';
-
+                    console.log(`/api/doctor/${doctorId}/available-slots?date=${selectedDate}`);
 
                     // Replace with your actual endpoint URL
                     // Use fetch API (modern browsers) or XMLHttpRequest
