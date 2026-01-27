@@ -8553,3 +8553,10 @@ ul#doctorTabs li button.active {
 	color: #007bff;
 	text-decoration: none;
 }
+
+button.btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
