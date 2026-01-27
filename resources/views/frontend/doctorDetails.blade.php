@@ -121,8 +121,8 @@
 
                                         {{-- About Section --}}
                                         <div class="mb-5">
-                                            <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                {{ $doctor->last_name ?? '' }}</h5>
+                                            <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
+                                                                                {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -134,13 +134,13 @@
                                         <div class="mb-5">
                                             <h5 class="mb-3">Education & Credentials</h5>
                                             @if(!empty($doctor->education))
-                                                <p><strong>Education:</strong><br> {!! nl2br(e($doctor->education)) !!}</p>
+                                                <p><strong>Education:</strong> {!! nl2br(e($doctor->education)) !!}</p>
                                             @else
                                                 <p><strong>Education:</strong> Information not available.</p>
                                             @endif
-                                            <hr>
+
                                             @if(!empty($doctor->license))
-                                                <p><strong>License:</strong><br> {{ $doctor->license }}</p>
+                                                <p><strong>License:</strong> {{ $doctor->license }}</p>
                                             @else
                                                 <p><strong>License:</strong> Information not available.</p>
                                             @endif
