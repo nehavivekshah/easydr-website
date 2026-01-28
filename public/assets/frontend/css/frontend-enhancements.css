@@ -627,7 +627,218 @@ select:focus {
     align-self: center;
 }
 
-.btn-edit-profile:hover {
-    background-color: #0288d1;
-    color: white;
+/* ==================== User Provided Dashboard Template ==================== */
+
+/* User Profile Sidebar */
+.user_profile {
+    text-align: center;
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: var(--shadow-sm);
+    /* Using variable */
+    margin-bottom: 24px;
+}
+
+.user_profile_img {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    position: relative;
+    border-radius: 50%;
+}
+
+.user_profile_img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user_profile_img label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 35px;
+    height: 35px;
+    background: var(--color-primary, #007bff);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.user_profile_img label:hover {
+    background: var(--color-primary-dark, #0056b3);
+}
+
+.user_profile h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--color-text-heading);
+}
+
+.user_profile p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0;
+}
+
+/* Dashboard Menu */
+.dashboard_menu {
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard_menu li {
+    list-style: none;
+    margin-bottom: 15px;
+}
+
+.dashboard_menu li:last-child {
+    margin-bottom: 0;
+}
+
+.dashboard_menu li a {
+    display: block;
+    padding: 12px 20px;
+    background: #f9f9f9;
+    color: #333;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.dashboard_menu li a:hover,
+.dashboard_menu li a.active,
+.dashboard_menu li a.active-menu {
+    /* Supporting active-menu class used in logic */
+    background: var(--color-primary, #007bff);
+    color: #fff;
+}
+
+/* Dashboard Content */
+.dashboard_content h5 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-transform: capitalize;
+    color: var(--color-text-heading);
+}
+
+.dashboard_overview {
+    background: #fff;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+}
+
+.dashboard_overview:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.dashboard_overview .icon {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    background: rgba(var(--color-primary-rgb, 13, 138, 188), 0.1);
+    /* Fallback */
+    color: var(--color-primary, #007bff);
+    border-radius: 50%;
+    font-size: 24px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.dashboard_overview .text p {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.dashboard_overview .text h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 5px 0;
+    color: var(--color-text-heading);
+}
+
+/* Profile Info */
+.dashboard_profile {
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: var(--shadow-sm);
+    margin-top: 30px;
+    position: relative;
+    list-style: none;
+}
+
+.dashboard_profile h5 {
+    margin-bottom: 20px;
+}
+
+.dashboard_profile a {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: var(--color-primary, #007bff);
+    color: #fff;
+    padding: 5px 23px;
+    border-radius: 30px;
+    font-size: 14px;
+    text-transform: capitalize;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dashboard_profile a:hover {
+    background: var(--color-primary-dark, #0056b3);
+}
+
+.dashboard_profile ul {
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard_profile ul li {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.dashboard_profile ul li:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.dashboard_profile ul li span {
+    width: 30%;
+    font-weight: 600;
+    color: var(--color-text-heading);
+}
+
+@media (max-width: 576px) {
+    .dashboard_profile ul li span {
+        width: 100%;
+        margin-bottom: 5px;
+    }
 }
