@@ -655,7 +655,11 @@ class WebPharmacyController extends Controller
     // 15. Generate Reports
     public function reports()
     {
-        $reports = Reports::latest()->get();
+        try {
+            $reports = Reports::latest()->get();
+        } catch (\Exception $e) {
+            $reports = collect([]);
+        }
         return view('admin.reports.index', compact('reports'));
     }
 

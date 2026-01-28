@@ -81,7 +81,11 @@ class WebHomeController extends Controller
         // --- Reports ---
         $reportsCount = 0;
         if (in_array('reports', $rolePermissions) || in_array('All', $rolePermissions)) {
-            $reportsCount = \App\Models\Reports::count();
+            try {
+                $reportsCount = \App\Models\Reports::count();
+            } catch (\Exception $e) {
+                $reportsCount = 0;
+            }
         }
 
         // --- Appointment Chart Data ---
