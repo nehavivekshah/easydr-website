@@ -13,12 +13,13 @@
 
                     <!-- Content Area -->
                     <div class="col-lg-9">
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center bg-white">
-                                <h4 class="mb-0">My Appointments</h4>
-                                <a href="/manage-appointment" class="btn btn-primary btn-sm">Book New Appointment</a>
+                        <div class="dashboard_content">
+                            <div class="d-flex justify-content-between align-items-center mb-0">
+                                <h5>My Appointments</h5>
+                                <a href="/manage-appointment" class="btn btn-primary btn-sm mb-4">Book New Appointment</a>
                             </div>
-                            <div class="card-body">
+
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 @if(isset($appointments) && count($appointments) > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">

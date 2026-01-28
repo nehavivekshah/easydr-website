@@ -12,12 +12,11 @@
 
                     <!-- Content Area -->
                     <div class="col-lg-9">
-                        <div class="card shadow-sm border-0 rounded-3" style="min-height: 400px;">
-                            <div class="card-header bg-white border-bottom py-3">
-                                <h4 class="mb-0 text-primary">Messages</h4>
-                            </div>
-                            <div
-                                class="card-body d-flex flex-column align-items-center justify-content-center text-center p-5">
+                        <div class="dashboard_content">
+                            <h5>Messages</h5>
+
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm); min-height: 400px;"
+                                class="d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="mb-4">
                                     <i class='bx bx-message-rounded-dots text-muted'
                                         style="font-size: 5rem; opacity: 0.3;"></i>

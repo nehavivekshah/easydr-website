@@ -9,11 +9,10 @@
                         @include('frontend.inc.user_sidebar')
                     </div>
                     <div class="col-lg-9">
-                        <div class="card shadow-sm mb-4 border-0 rounded-3">
-                            <div class="card-header bg-white border-bottom p-3">
-                                <h4 class="mb-0">Billing & Payments</h4>
-                            </div>
-                            <div class="card-body p-0">
+                        <div class="dashboard_content">
+                            <h5>Billing & Payments</h5>
+
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 <div class="table-responsive">
                                     <table class="table table-hover mb-0">
                                         <thead class="bg-light">
@@ -29,9 +28,12 @@
                                         <tbody>
                                             @forelse($billings as $bill)
                                                 <tr>
-                                                    <td class="align-middle">{{ \Carbon\Carbon::parse($bill->date)->format('d M, Y') }}</td>
+                                                    <td class="align-middle">
+                                                        {{ \Carbon\Carbon::parse($bill->date)->format('d M, Y') }}</td>
                                                     <td class="align-middle">Consultation Fee</td>
-                                                    <td class="align-middle">Dr. {{ $bill->doctor_first_name }} {{ $bill->doctor_last_name }}<br><small class="text-muted">{{ $bill->specialist }}</small></td>
+                                                    <td class="align-middle">Dr. {{ $bill->doctor_first_name }}
+                                                        {{ $bill->doctor_last_name }}<br><small
+                                                            class="text-muted">{{ $bill->specialist }}</small></td>
                                                     <td class="align-middle fw-bold">₹{{ number_format($bill->fees, 2) }}</td>
                                                     <td class="align-middle">
                                                         @if($bill->payment_status == 'paid')
@@ -42,9 +44,11 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         @if($bill->payment_status == 'paid')
-                                                            <button class="btn btn-sm btn-outline-secondary" disabled><i class="bx bx-download"></i> Receipt</button>
+                                                            <button class="btn btn-sm btn-outline-secondary" disabled><i
+                                                                    class="bx bx-download"></i> Receipt</button>
                                                         @else
-                                                             <a href="{{ route('payment') }}" class="btn btn-sm btn-primary">Pay Now</a>
+                                                            <a href="{{ route('payment') }}" class="btn btn-sm btn-primary">Pay
+                                                                Now</a>
                                                         @endif
                                                     </td>
                                                 </tr>

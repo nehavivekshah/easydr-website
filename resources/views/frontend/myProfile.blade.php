@@ -13,11 +13,10 @@
 
                     <!-- Content Area -->
                     <div class="col-lg-9">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-white">
-                                <h4 class="mb-0">Edit Profile</h4>
-                            </div>
-                            <div class="card-body">
+                        <div class="dashboard_content">
+                            <h5>Edit Profile</h5>
+
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $user->id }}">
