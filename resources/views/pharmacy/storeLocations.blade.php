@@ -65,6 +65,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="col-md-12 text-center mt-3">
+                    {{ $stores->links('pagination::bootstrap-4') }}
+                </div>
             </div>
         </div>
     </section>

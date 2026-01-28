@@ -24,7 +24,7 @@ class WebPharmacyController extends Controller
     // List All Pharmacy
     public function pharmacy()
     {
-        $pharmacyMaster = PharmacyMaster::all();
+        $pharmacyMaster = PharmacyMaster::paginate(10);
 
         return view('pharmacy.index', compact('pharmacyMaster'));
     }
@@ -148,7 +148,7 @@ class WebPharmacyController extends Controller
     // List All Stores
     public function stores()
     {
-        $stores = Store_locations::all();
+        $stores = Store_locations::paginate(10);
 
         return view('pharmacy.storeLocations', compact('stores'));
     }
@@ -294,12 +294,12 @@ class WebPharmacyController extends Controller
         $StoreId = $request->storeid ?? '';
 
         if (!empty($PharmacyID)) {
-            $medicines = Medicines::where('pharmacy_id', $PharmacyID)->get();
+            $medicines = Medicines::where('pharmacy_id', $PharmacyID)->paginate(10);
         } elseif (!empty($StoreId)) {
-            $medicines = Medicines::where('store_id', $StoreId)->get();
+            $medicines = Medicines::where('store_id', $StoreId)->paginate(10);
         } else {
             $medicines = Medicines::leftjoin('medicine_types', 'medicines.type_id', '=', 'medicine_types.id')
-                ->select('medicine_types.name as type_name', 'medicines.*')->get();
+                ->select('medicine_types.name as type_name', 'medicines.*')->paginate(10);
         }
 
         return view('pharmacy.medicines', compact('medicines'));
@@ -508,7 +508,7 @@ class WebPharmacyController extends Controller
     // 11. List Orders
     public function orders()
     {
-        $orders = Orders::with('items')->latest()->get();
+        $orders = Orders::with('items')->latest()->paginate(10);
         return view('admin.orders.index', compact('orders'));
     }
 
@@ -656,7 +656,7 @@ class WebPharmacyController extends Controller
     public function reports()
     {
         try {
-            $reports = Reports::latest()->get();
+            $reports = Reports::latest()->paginate(10);
         } catch (\Exception $e) {
             $reports = collect([]);
         }

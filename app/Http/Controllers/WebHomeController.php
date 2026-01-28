@@ -89,23 +89,34 @@ class WebHomeController extends Controller
         }
 
         // --- Appointment Chart Data ---
+        // --- Appointment Chart Data (Optimized) ---
         $appointmentData = [];
         $appointmentLabels = [];
+
         if ($hasAppointmentAccess || $isDoctor) {
             $start = Carbon::now()->subMonths(5)->startOfMonth();
             $end = Carbon::now()->endOfMonth();
 
-            while ($start <= $end) {
-                $month = $start->format('M');
-                $q = Appointments::whereMonth('date', $start->month)->whereYear('date', $start->year);
-                if ($isDoctor) {
-                    $q->where('did', $user->id);
-                }
-                $count = $q->count();
+            $query = Appointments::selectRaw('COUNT(id) as count, MONTH(date) as month_num, YEAR(date) as year')
+                ->whereDate('date', '>=', $start)
+                ->whereDate('date', '<=', $end);
 
-                $appointmentLabels[] = $month;
-                $appointmentData[] = $count;
-                $start->addMonth();
+            if ($isDoctor) {
+                $query->where('did', $user->id);
+            }
+
+            $currentData = $query->groupBy('year', 'month_num')
+                ->get()
+                ->keyBy(function ($item) {
+                    return $item->year . '-' . str_pad($item->month_num, 2, '0', STR_PAD_LEFT);
+                });
+
+            $loopDate = $start->copy();
+            while ($loopDate <= $end) {
+                $monthKey = $loopDate->format('Y-m');
+                $appointmentLabels[] = $loopDate->format('M');
+                $appointmentData[] = $currentData->has($monthKey) ? $currentData[$monthKey]->count : 0;
+                $loopDate->addMonth();
             }
         }
 
