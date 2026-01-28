@@ -23,7 +23,7 @@
         <!-- filter-area -->
         <div class="filter-area position-relative" style="margin-top: -40px; z-index: 10;">
             <div class="container">
-                <div class="bg-white p-4 rounded-3 shadow-lg search-filter-card">
+                <div class="bg-white p-4 rounded-3 shadow search-filter-card">
                     <form action="/doctors" method="GET">
                         <div class="row g-3 align-items-center">
                             <div class="col-lg-5">
@@ -87,8 +87,8 @@
                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
                         @if(request('search') || request('specialty'))
                             <!-- <a href="/doctors" class="btn btn-link text-decoration-none text-muted p-0 hover-text-primary">
-                                                                                        <i class="fas fa-times-circle me-1"></i> Clear all filters
-                                                                                    </a> -->
+                                                                                                                                <i class="fas fa-times-circle me-1"></i> Clear all filters
+                                                                                                                            </a> -->
                         @endif
                     </div>
                 </div>
