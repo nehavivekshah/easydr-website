@@ -72,7 +72,7 @@ Route::get('/blog', [FrontendController::class, 'blog']);
 Route::get('/contact-us', [FrontendController::class, 'contact']);
 Route::post('/contact-us', [FrontendController::class, 'contactPost']);
 Route::get('/help', [FrontendController::class, 'help']);
-Route::get('/appointment', [FrontendController::class, 'bookAppointment']);
+Route::post('/appointment', [FrontendController::class, 'bookAppointment']);
 
 // Payment Routes
 Route::get('/payment', [WebPaymentController::class, 'payment'])->name('payment');

@@ -740,14 +740,7 @@ class FrontendController extends Controller
 
         $appointment = new \App\Models\Appointments();
         $appointment->pid = $patient->id;
-        $appointment->did = $request->doctor_id; // This is actually Doctor ID (from doctors table) not User ID. logic in doctorDetails passes doctor->id.
-        // Wait, appointments table usually links to doctor ID or User ID? 
-        // Based on WebReportController, appointments.did links to users.id (users as doc).
-        // BUT doctorDetails.blade.php passes $doctor->id which is likely from the `doctors` table (since it iterates $doctors).
-        // Let's verify `doctors` query in `doctorDetails` or `index`.
-        // In `doctors` method: selects `doctors.id`, `doctors.uid`.
-        // So `doctor->id` is the primary key of `doctors` table.
-        // `appointments` table `did` is... let's check schema.
+        $appointment->did = $request->doctor_id;
 
         $appointment->date = $request->appointment_date;
         $appointment->time = $request->appointment_time;
@@ -758,19 +751,13 @@ class FrontendController extends Controller
 
         // Handle conditionally required fields
         if ($request->payment_mode == 'Health Card') {
-            $appointment->health_card_file = $request->health_card_number; // Using existing column for HC number
+            $appointment->health_card_file = $request->health_card_number;
         }
 
         if ($request->payment_mode == 'Online Payment') {
-            // Save the selected gateway if column exists, or handle logic
-            $appointment->payment_gateway = $request->payment_gateway; // Saving gateway selection
+            $appointment->payment_gateway = $request->payment_gateway;
         }
 
-        // Fix for DID: The schema says `did` int(11).
-        // WebReportController joins `appointments.did` = `doc.id` (users table).
-        // If I save `doctors.id` here, the join will fail if it expects `users.id`.
-        // I need to find the User ID of the doctor.
-        // Send User ID in doctor_id
         $doc = Doctors::where('uid', $request->doctor_id)->first();
         if ($doc) {
             $appointment->did = $doc->uid;
