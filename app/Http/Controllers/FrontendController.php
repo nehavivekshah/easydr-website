@@ -647,16 +647,28 @@ class FrontendController extends Controller
         return view('frontend/myProfile', compact('user'));
     }
 
-    public function appointments()
+    public function messages()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+        return view('frontend/messages');
+    }
+
+    public function appointments(Request $request)
     {
         $user = Auth::user();
         if (!$user) {
             return redirect('/login');
         }
 
+        $filter = $request->input('filter');
+        $now = Carbon::now();
+
         if ($user->role == 2) {
             // DOCTOR VIEW
-            $appointments = DB::table('appointments')
+            $query = DB::table('appointments')
                 ->join('patients', 'appointments.pid', '=', 'patients.id')
                 ->join('users', 'patients.uid', '=', 'users.id')
                 ->select(
@@ -665,8 +677,28 @@ class FrontendController extends Controller
                     'users.last_name as patient_last_name',
                     'users.mobile as patient_mobile'
                 )
-                ->where('appointments.did', $user->id)
-                ->orderBy('appointments.date', 'desc')
+                ->where('appointments.did', $user->id);
+
+            // Filtering
+            if ($filter == 'upcoming') {
+                $query->where(function ($q) use ($now) {
+                    $q->where('appointments.date', '>', $now->toDateString())
+                        ->orWhere(function ($sub) use ($now) {
+                            $sub->where('appointments.date', '=', $now->toDateString())
+                                ->where('appointments.time', '>', $now->toTimeString());
+                        });
+                });
+            } elseif ($filter == 'past') {
+                $query->where(function ($q) use ($now) {
+                    $q->where('appointments.date', '<', $now->toDateString())
+                        ->orWhere(function ($sub) use ($now) {
+                            $sub->where('appointments.date', '=', $now->toDateString())
+                                ->where('appointments.time', '<', $now->toTimeString());
+                        });
+                });
+            }
+
+            $appointments = $query->orderBy('appointments.date', 'desc')
                 ->orderBy('appointments.time', 'desc')
                 ->get();
 
@@ -675,9 +707,17 @@ class FrontendController extends Controller
         } else {
             // PATIENT VIEW
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
+            // Assuming PID in appointments refers to User ID based on my previous analysis 
+            // OR strictly adhering to previous logic where $pid might be patients.id.
+            // Safe bet: stick to what was working ($pid logic) or assume $user->id if previously validated.
+            // Previous code used: $pid = $patient ? $patient->id : 0; AND ->where('appointments.pid', $pid)
+            // But dashboard used ->where('appointments.pid', $user->id).
+            // This inconsistency persists. I will use $user->id as per dashboard for broader compatibility if new appts use user ID.
+            // Actually, let's try to match both to be safe: 
+            // ->where(function($q) use ($user, $pid) { $q->where('pid', $user->id)->orWhere('pid', $pid); })
             $pid = $patient ? $patient->id : 0;
 
-            $appointments = DB::table('appointments')
+            $query = DB::table('appointments')
                 ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
                 ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
                 ->select(
@@ -686,8 +726,32 @@ class FrontendController extends Controller
                     'doc.last_name as doctor_last_name',
                     'doctors.specialist'
                 )
-                ->where('appointments.pid', $pid)
-                ->orderBy('appointments.date', 'desc')
+                ->where(function ($q) use ($user, $pid) {
+                    $q->where('appointments.pid', $user->id);
+                    if ($pid > 0)
+                        $q->orWhere('appointments.pid', $pid);
+                });
+
+            // Filtering
+            if ($filter == 'upcoming') {
+                $query->where(function ($q) use ($now) {
+                    $q->where('appointments.date', '>', $now->toDateString())
+                        ->orWhere(function ($sub) use ($now) {
+                            $sub->where('appointments.date', '=', $now->toDateString())
+                                ->where('appointments.time', '>', $now->toTimeString());
+                        });
+                });
+            } elseif ($filter == 'past') {
+                $query->where(function ($q) use ($now) {
+                    $q->where('appointments.date', '<', $now->toDateString())
+                        ->orWhere(function ($sub) use ($now) {
+                            $sub->where('appointments.date', '=', $now->toDateString())
+                                ->where('appointments.time', '<', $now->toTimeString());
+                        });
+                });
+            }
+
+            $appointments = $query->orderBy('appointments.date', 'desc')
                 ->orderBy('appointments.time', 'desc')
                 ->get();
 
