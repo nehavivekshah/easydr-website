@@ -218,7 +218,7 @@ label {
 }
 
 .theme-overlay::before {
-	background: #1696e7 none repeat scroll 0 0;
+	background: var(--color-primary) none repeat scroll 0 0;
 	content: "";
 	height: 100%;
 	left: 0;
@@ -249,11 +249,14 @@ label {
 /* button style */
 
 .btn {
+	-webkit-user-select: none;
 	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 	background: var(--gradient-primary) 0% 0% no-repeat padding-box;
 	/* box-shadow: var(--shadow-primary); */
 	border: none;
-	border-radius: 50px;
+	border-radius: var(--radius-pill);
 	color: var(--color-white);
 	display: inline-block;
 	font-size: 16px;
@@ -281,14 +284,14 @@ label {
 }
 
 .breadcrumb>.active {
-	color: #888;
+	color: var(--color-gray-500);
 }
 
 .btn-after {
 	width: 100%;
 	height: 45px;
 	border: 1px solid var(--color-gray-600);
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 	margin-top: -28px;
 	margin-left: 15px;
 	position: absolute;
@@ -311,7 +314,7 @@ label {
 	color: var(--color-white);
 	font-size: 20px;
 	text-align: center;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	font-size: 22px;
 	line-height: 45px;
 	transition: .3s;
@@ -456,7 +459,7 @@ label {
 	background: var(--color-gray-200);
 	text-align: center;
 	line-height: 35px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	color: var(--color-gray-900);
 }
 
@@ -515,7 +518,7 @@ label {
 	background: var(--color-white)4a;
 	text-align: center;
 	line-height: 35px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	color: var(--color-white);
 }
 
@@ -526,7 +529,7 @@ label {
 	width: 100%;
 	float: left;
 	color: var(--color-white);
-	border-radius: 23px;
+	border-radius: var(--radius-2xl);
 	position: relative;
 }
 
@@ -539,7 +542,7 @@ label {
 	position: absolute;
 	right: 3px;
 	top: 3px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	text-align: center;
 }
 
@@ -563,7 +566,7 @@ span.top-btn i {
 	position: absolute;
 	left: 3px;
 	top: 4px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	text-align: center;
 	padding: 0% !important;
 }
@@ -575,7 +578,7 @@ span.top-btn i {
 	width: 170px;
 	text-align: left;
 	color: var(--color-white);
-	border-radius: 30px;
+	border-radius: var(--radius-3xl);
 	position: relative;
 }
 
@@ -588,7 +591,7 @@ span.top-btn i {
 	position: absolute;
 	right: 3px;
 	top: 3px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	text-align: center;
 }
 
@@ -1006,7 +1009,7 @@ span.top-btn i {
 .slider-bg2 .video-i:hover {
 	background: var(--color-primary);
 	padding: 14px;
-	border-radius: 100%;
+	border-radius: var(--radius-full);
 	width: 51px;
 	display: inline-block;
 	text-align: center;
@@ -1094,7 +1097,7 @@ span.top-btn i {
 	text-align: center;
 	line-height: 60px;
 	border: 2px solid var(--color-white);
-	border-radius: 50px;
+	border-radius: var(--radius-pill);
 	font-size: 18px;
 }
 
@@ -1114,7 +1117,7 @@ span.top-btn i {
 	line-height: 65px;
 	border: none;
 	background: var(--color-white);
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	text-align: center;
 	z-index: 9;
 	cursor: pointer;
@@ -1168,7 +1171,7 @@ span.top-btn i {
 	max-width: 176px;
 	float: left;
 	color: var(--color-white);
-	border-radius: 30px;
+	border-radius: var(--radius-3xl);
 	position: relative;
 	text-align: left;
 }
@@ -1182,7 +1185,7 @@ span.top-btn i {
 	position: absolute;
 	right: 3px;
 	top: 3px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	text-align: center;
 }
 
@@ -1311,7 +1314,7 @@ span.top-btn i {
 	background: #294DA414 0% 0% no-repeat padding-box;
 	text-align: center;
 	line-height: 33px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	margin-right: 15px;
 }
 
@@ -1398,7 +1401,7 @@ span.top-btn i {
 	display: inline-block;
 	border: 1px solid var(--color-gray-400);
 	padding: 9px 30px;
-	border-radius: 50px;
+	border-radius: var(--radius-pill);
 }
 
 .s-btn:hover {
@@ -1461,7 +1464,7 @@ section:hover .section-title h2::before {
 
 .features-icon img {
 	border: 5px solid transparent;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	transition: .5s;
 }
 
@@ -2088,7 +2091,7 @@ section:hover .section-title h2::before {
 
 }
 
-.team-active .slick-dots li.slick-active button {}
+
 
 .team-active .slick-dots li.slick-active button::before {
 	background: url("../img/bg/active-dote.html");
@@ -2515,8 +2518,7 @@ section:hover .section-title h2::before {
 }
 
 /* 14. testimonial */
-.testimonial-area h2,
-.testimonial-area p {}
+
 
 .ta-bg {
 	height: 475px;
@@ -2950,7 +2952,7 @@ section:hover .section-title h2::before {
 
 }
 
-.home-blog-active .slick-dots li.slick-active button {}
+
 
 .home-blog-active .slick-dots li.slick-active button::before {
 	background: url("../img/bg/active-dote.html");
@@ -4015,7 +4017,7 @@ div.single-cta:last-child {
 	margin-bottom: 30px;
 }
 
-.pricing-head img {}
+
 
 .pricing-head h4 {
 	font-size: 36px;
@@ -5500,7 +5502,10 @@ pre cite {
 .woocommerce button.button,
 .woocommerce input.button {
 	text-transform: uppercase;
+	-webkit-user-select: none;
 	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 	background: var(--color-primary);
 	border: none;
 	border-radius: 50px;
@@ -7063,11 +7068,14 @@ p.checkout-coupon input[type="text"] {
 }
 
 .order-button-payment input:hover {
-	background: #FE4536 none repeat scroll 0 0;
+	background: var(--color-primary) none repeat scroll 0 0;
 }
 
 .payment-method .btn-link {
+	-webkit-user-select: none;
 	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 	background: no-repeat;
 	border: medium none;
 	border-radius: 0;
@@ -7186,7 +7194,7 @@ p.checkout-coupon input[type="text"] {
 }
 
 .zcube-login label span {
-	color: #fe4536;
+	color: var(--color-primary);
 }
 
 .login-action input {
@@ -7226,7 +7234,7 @@ p.checkout-coupon input[type="text"] {
 }
 
 .forgot-login a {
-	color: #fe4536;
+	color: var(--color-primary);
 }
 
 .forgot-login a:hover {
@@ -7266,7 +7274,7 @@ p.checkout-coupon input[type="text"] {
 	left: 0;
 	height: 100%;
 	width: 4px;
-	background-color: #dc3545;
+	background-color: var(--color-primary);
 	content: "";
 	opacity: 0;
 	visibility: hidden;
@@ -7594,7 +7602,7 @@ p.checkout-coupon input[type="text"] {
 	left: 50%;
 	width: 0%;
 	height: 3px;
-	background-color: #dc3545;
+	background-color: var(--color-primary);
 	transition: var(--transition-normal);
 	-moz-transition: var(--transition-normal);
 	-webkit-transition: var(--transition-normal);
@@ -7903,7 +7911,7 @@ p.checkout-coupon input[type="text"] {
 	text-align: center;
 	color: var(--color-white);
 	background-color: var(--color-primary);
-	border-radius: 10px;
+	border-radius: var(--radius-md);
 	-webkit-transition: all 300ms ease;
 	-moz-transition: all 300ms ease;
 	-ms-transition: all 300ms ease;
@@ -7927,7 +7935,7 @@ p.checkout-coupon input[type="text"] {
 	display: inline-block;
 	font-size: 30px;
 	line-height: 42px;
-	color: #dc3545;
+	color: var(--color-primary);
 	-webkit-transition: all 300ms ease;
 	-moz-transition: all 300ms ease;
 	-ms-transition: all 300ms ease;
@@ -8013,7 +8021,7 @@ p.checkout-coupon input[type="text"] {
 }
 
 .booking-area .contact-field input {
-	border-radius: 30px;
+	border-radius: var(--radius-3xl);
 }
 
 /*** 
@@ -8023,7 +8031,7 @@ p.checkout-coupon input[type="text"] {
 ====================================================================
 
 ***/
-.department-area {}
+
 
 .s-d-img {
 	margin-right: -400px;
@@ -8034,7 +8042,7 @@ p.checkout-coupon input[type="text"] {
 	margin-bottom: 30px;
 	background: var(--color-white) 0% 0% no-repeat padding-box;
 	box-shadow: 3px 4px 15px var(--color-black);
-	border-radius: 10px;
+	border-radius: var(--radius-md);
 	padding: 18px 30px;
 }
 
@@ -8071,7 +8079,7 @@ p.checkout-coupon input[type="text"] {
 	box-shadow: 3px 4px 15px var(--color-black);
 	text-align: center;
 	line-height: 56px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	margin-right: 15px;
 	padding: 20px;
 }
@@ -8083,14 +8091,14 @@ p.checkout-coupon input[type="text"] {
 
 .newslater input {
 	background: var(--color-white) !important;
-	border-radius: 30px;
+	border-radius: var(--radius-3xl);
 	border: 1px solid var(--color-white) !important;
 	box-shadow: none !important;
 	padding: 9px 30px;
 	color: var(--color-black) !important;
 	height: calc(1.5em + .75rem + 10px);
 	width: 100% !important;
-	border-radius: 30px !important;
+	border-radius: var(--radius-3xl) !important;
 
 }
 
@@ -8138,7 +8146,7 @@ p.checkout-coupon input[type="text"] {
 	width: 43%;
 	float: left;
 	color: var(--color-white);
-	border-radius: 23px;
+	border-radius: var(--radius-2xl);
 	position: absolute;
 	text-align: left;
 	right: 17px;
@@ -8154,7 +8162,7 @@ p.checkout-coupon input[type="text"] {
 	position: absolute;
 	right: 3px;
 	top: 3px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	text-align: center;
 }
 
@@ -8178,7 +8186,7 @@ a.specialists-icon img {
 	border: 1px solid #2989c9;
 	padding: 8px 5px;
 	text-align: center;
-	border-radius: 10px;
+	border-radius: var(--radius-md);
 	box-shadow: 0px 0px 10px #ddd;
 }
 
@@ -8402,7 +8410,7 @@ ul#doctorTabs li button.active {
 #appointmentModal .form-control {
 	height: 50px;
 	border: 1px solid #e1e1e1;
-	border-radius: 5px;
+	border-radius: var(--radius-sm);
 	padding: 10px 20px;
 	color: var(--color-text);
 	font-size: 15px;
@@ -8477,7 +8485,7 @@ ul#doctorTabs li button.active {
 /* Auth Pages Enhancement */
 .auth-card {
 	border: none;
-	border-radius: 20px;
+	border-radius: var(--radius-xl);
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 	overflow: hidden;
 	background: #fff;
@@ -8504,7 +8512,7 @@ ul#doctorTabs li button.active {
 
 .auth-card .form-control {
 	height: 50px;
-	border-radius: 8px;
+	border-radius: var(--radius-md);
 	border: 1px solid #e1e1e1;
 	background-color: #f9f9f9;
 	padding: 10px 20px;
