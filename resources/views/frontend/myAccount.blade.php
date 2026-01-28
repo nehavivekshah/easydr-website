@@ -12,67 +12,171 @@
 
                     <!-- Content Area -->
                     <div class="col-lg-9">
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-body">
-                                <h4 class="mb-4">Dashboard Overview</h4>
-
-                                <div class="row text-center">
-                                    {{-- DOCTOR DASHBOARD (Role 2) --}}
-                                    @if(Auth::user()->role == 2)
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-primary">{{ $appointmentsCount ?? 0 }}</h5>
-                                                <small class="text-muted">Today's Appointments</small>
+                        {{-- NEW DASHBOARD UI STATS GRID --}}
+                        <div class="row gx-3 gy-3 mb-4">
+                            @if(Auth::user()->role == 2)
+                                {{-- DOCTOR STATS --}}
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-calendar-check"></i></div>
+                                            <div class="stat-details">
+                                                <p>Total Appointment</p>
+                                                <h3>{{ $appointmentsCount ?? 0 }}</h3>
+                                                <small>15 Today</small>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-success">{{ $patientsCount ?? 0 }}</h5>
-                                                <small class="text-muted">My Patients</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-info">₹{{ $walletAmount ?? '0.00' }}</h5>
-                                                <small class="text-muted">Wallet Balance</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-warning">₹{{ $totalRevenue ?? '0.00' }}</h5>
-                                                <small class="text-muted">Total Revenue</small>
-                                            </div>
-                                        </div>
-
-                                        {{-- PATIENT DASHBOARD (Role 3) --}}
-                                    @else
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-primary">{{ $appointmentsCount ?? 0 }}</h5>
-                                                <small class="text-muted">Appointments</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-success">{{ $reportsCount ?? 0 }}</h5>
-                                                <small class="text-muted">Medical Reports</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-danger">{{ $favoritesCount ?? 0 }}</h5>
-                                                <small class="text-muted">Favorites</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-3 mb-3">
-                                            <div class="p-3 border rounded">
-                                                <h5 class="mb-1 text-info">₹{{ $billingAmount ?? '0.00' }}</h5>
-                                                <small class="text-muted">Total Billing</small>
-                                            </div>
-                                        </div>
-                                    @endif
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
                                 </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-check-circle"></i></div>
+                                            <div class="stat-details">
+                                                <p>Done Appointment</p>
+                                                <h3>{{ $appointmentsCount ?? 0 }}</h3> {{-- Needs 'completed' count logic --}}
+                                                <small>12 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-time"></i></div>
+                                            <div class="stat-details">
+                                                <p>Pending Appointment</p>
+                                                <h3>0</h3> {{-- Needs 'pending' count logic --}}
+                                                <small>5 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+
+                            @else
+                                {{-- PATIENT STATS --}}
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-calendar-check"></i></div>
+                                            <div class="stat-details">
+                                                <p>Total Appointment</p>
+                                                <h3>{{ $appointmentsCount ?? 255 }}</h3>
+                                                <small class="d-none">15 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-check-circle"></i></div>
+                                            <div class="stat-details">
+                                                <p>Done Appointment</p>
+                                                <h3>{{ $appointmentsCount ?? 220 }}</h3>
+                                                <small class="d-none">12 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            {{-- Using file icon for 'Pending' or 'Reports' for now --}}
+                                            <div class="stat-icon-circle"><i class="bx bx-file"></i></div>
+                                            <div class="stat-details">
+                                                <p>Pending Appointment</p>
+                                                <h3>{{ $reportsCount ?? 35 }}</h3>
+                                                <small class="d-none">5 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-dollar-circle"></i></div>
+                                            <div class="stat-details">
+                                                <p>Total Payment</p>
+                                                <h3>{{ $billingAmount ?? 255 }}</h3>
+                                                <small class="d-none">15 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-star"></i></div>
+                                            <div class="stat-details">
+                                                <p>Total Review</p>
+                                                <h3>{{ $favoritesCount ?? 220 }}</h3>
+                                                <small class="d-none">5 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="dashboard-stat-card">
+                                        <div class="d-flex align-items-center">
+                                            <div class="stat-icon-circle"><i class="bx bx-grid-alt"></i></div>
+                                            <div class="stat-details">
+                                                <p>Other Stats</p>
+                                                <h3>35</h3>
+                                                <small class="d-none">5 Today</small>
+                                            </div>
+                                        </div>
+                                        <i class="bx bx-heart-circle stat-bg-icon"></i>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- PROFILE INFORMATION SECTION --}}
+                        <div class="profile-info-header">
+                            <h4 class="profile-info-title">Profile Information</h4>
+                            <a href="/my-profile" class="btn-edit-profile">edit</a>
+                        </div>
+
+                        <div class="profile-content">
+                            <div class="profile-row clearfix">
+                                <span class="profile-label">Name:</span>
+                                <span class="profile-value">{{ Auth::user()->first_name }}
+                                    {{ Auth::user()->last_name }}</span>
                             </div>
+                            <div class="profile-row clearfix">
+                                <span class="profile-label">Phone:</span>
+                                <span class="profile-value">{{ Auth::user()->mobile }}</span>
+                            </div>
+                            <div class="profile-row clearfix">
+                                <span class="profile-label">Email:</span>
+                                <span class="profile-value">{{ Auth::user()->email }}</span>
+                            </div>
+                            <div class="profile-row clearfix">
+                                <span class="profile-label">Gender:</span>
+                                <span class="profile-value">{{ Auth::user()->gender ?? 'Not Specified' }}</span>
+                            </div>
+                            <!--
+                                <div class="profile-row clearfix">
+                                    <span class="profile-label">Weight:</span>
+                                    <span class="profile-value">64kg</span>
+                                </div>
+                                <div class="profile-row clearfix">
+                                    <span class="profile-label">Age:</span>
+                                    <span class="profile-value">35</span>
+                                </div>
+                                -->
                         </div>
 
                         {{-- Additional Dashboard Content (Recent Activity, etc.) could go here --}}

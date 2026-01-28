@@ -1,0 +1,165 @@
+/* New Sidebar Profile Card */
+.sidebar-profile-card {
+    background: linear-gradient(180deg, #e0f7fa 0%, #f1f8e9 100%);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    border: none;
+    margin-bottom: 30px;
+}
+
+.sidebar-profile-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-profile-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.sidebar-patient-id {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0;
+}
+
+/* Pill Navigation */
+.nav-pills-custom .nav-link {
+    background-color: #f8f9fa;
+    color: #333;
+    border-radius: 50px;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.nav-pills-custom .nav-link:hover {
+    background-color: #e3f2fd;
+    color: #03a9f4;
+    padding-left: 25px;
+    /* Slide effect */
+}
+
+.nav-pills-custom .nav-link.active {
+    background-color: #03a9f4;
+    /* Bright Blue */
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(3, 169, 244, 0.3);
+}
+
+.nav-pills-custom .nav-link.btn-logout {
+    background-color: #26c6da;
+    /* Green/Teal */
+    color: #fff;
+}
+
+.nav-pills-custom .nav-link.btn-logout:hover {
+    background-color: #00acc1;
+}
+
+
+/* Dashboard Stat Cards */
+.dashboard-stat-card {
+    background-color: #03a9f4;
+    color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 140px;
+    transition: transform 0.3s ease;
+    border: none;
+}
+
+.dashboard-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(3, 169, 244, 0.2);
+}
+
+.stat-icon-circle {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.stat-details h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    line-height: 1;
+}
+
+.stat-details p {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    opacity: 0.9;
+}
+
+.stat-details small {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.stat-bg-icon {
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    font-size: 4rem;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* Profile Info Section */
+.profile-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #03a9f4;
+    padding-bottom: 10px;
+}
+
+.profile-info-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.profile-row {
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-label {
+    font-weight: 600;
+    color: #333;
+    width: 30%;
+}
+
+.profile-value {
+    color: #666;
+    width: 70%;
+}
