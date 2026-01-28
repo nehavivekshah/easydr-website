@@ -2156,7 +2156,7 @@ section:hover .section-title h2::before {
 	height: 45px;
 	text-align: center;
 	background: var(--color-white);
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 50%;
 	font-size: 18px;
 	line-height: 45px;
@@ -2194,7 +2194,7 @@ section:hover .section-title h2::before {
 	width: 45px;
 	height: 45px;
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	display: inline-block;
 	border-radius: 50%;
 	font-size: 33px;
@@ -2282,7 +2282,7 @@ section:hover .section-title h2::before {
 	transform: translateY(0);
 	padding: 30px 20px;
 	transition: .3s;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 	position: relative;
 	overflow: hidden;
@@ -2375,7 +2375,7 @@ section:hover .section-title h2::before {
 /* 12. counter */
 .single-counter {
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 	padding: 30px;
 }
@@ -2504,7 +2504,7 @@ section:hover .section-title h2::before {
 	border-radius: 50%;
 	line-height: 47px;
 	margin-bottom: 30px;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 }
 
 .cta-bg .line {
@@ -2675,7 +2675,7 @@ section:hover .section-title h2::before {
 
 .single-testimonial-bg {
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 	width: 90%;
 	float: right;
@@ -2762,7 +2762,7 @@ section:hover .section-title h2::before {
 
 .testimonial-active2 {
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 	width: 100%;
 	float: left;
@@ -2979,7 +2979,7 @@ section:hover .section-title h2::before {
 	position: relative;
 	border-radius: 10px;
 	overflow: hidden;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 }
 
 .blog-thumb img.b-link {
@@ -3017,7 +3017,7 @@ section:hover .section-title h2::before {
 	z-index: 1;
 	transition: .3s;
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 	overflow: hidden;
 	margin: 10px 0;
@@ -3129,7 +3129,7 @@ section:hover .section-title h2::before {
 .bsingle__content {
 	padding: 50px;
 	border: 2px solid var(--color-bg-light);
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 }
 
@@ -3137,7 +3137,7 @@ section:hover .section-title h2::before {
 	border-radius: 10px;
 	overflow: hidden;
 	overflow: hidden;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	margin-bottom: 20px;
 }
 
@@ -3222,7 +3222,7 @@ section:hover .section-title h2::before {
 	padding: 35px 25px 35px 25px;
 	border: 2px solid var(--color-bg-light);
 	overflow: hidden;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 }
 
@@ -3997,7 +3997,7 @@ div.single-cta:last-child {
 /* 18. pricing */
 .pricing-box {
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 	float: left;
 	width: 100%;
@@ -6053,7 +6053,7 @@ pre cite {
 
 .single-brand {
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 10px;
 	padding: 40px 20px;
 	margin: 20px 0;
@@ -7981,7 +7981,7 @@ p.checkout-coupon input[type="text"] {
 .booking-area .contact-form {
 	background: var(--color-white);
 	padding: 50px 15px 30px 30px;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: 15px;
 	margin: 0 15px;
 }
@@ -8041,7 +8041,7 @@ p.checkout-coupon input[type="text"] {
 	display: flex;
 	margin-bottom: 30px;
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	border-radius: var(--radius-md);
 	padding: 18px 30px;
 }
@@ -8076,7 +8076,7 @@ p.checkout-coupon input[type="text"] {
 	width: 96px;
 	height: 96px;
 	background: var(--color-white) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px var(--color-gray-700);
+	box-shadow: 3px 4px 15px var(--color-gray-300);
 	text-align: center;
 	line-height: 56px;
 	border-radius: var(--radius-circle);
