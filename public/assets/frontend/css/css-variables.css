@@ -4,251 +4,257 @@
    ============================================ */
 
 :root {
-    /* ==================== Color Variables ==================== */
-    
-    /* Primary & Secondary Colors */
-    --color-primary: #1E0B9B;
-    --color-primary-light: #2d1ab3;
-    --color-primary-dark: #150882;
-    --color-primary-rgb: 30, 11, 155;
-    
-    --color-secondary: #07CCEC;
-    --color-secondary-light: #3fd9f3;
-    --color-secondary-dark: #06b3d0;
-    --color-secondary-rgb: 7, 204, 236;
-    
-    /* Neutral Colors */
-    --color-white: #ffffff;
-    --color-black: #000000;
-    --color-gray-50: #f8fafc;
-    --color-gray-100: #f5f5f5;
-    --color-gray-200: #e9eaf8;
-    --color-gray-300: #e6e6e6;
-    --color-gray-400: #ccc;
-    --color-gray-500: #8a8a8a;
-    --color-gray-600: #707070;
-    --color-gray-700: #555555;
-    --color-gray-800: #383838;
-    --color-gray-900: #191D3B;
-    
-    /* Text Colors */
-    --color-text: #4A5764;
-    --color-text-light: #676f67;
-    --color-text-muted: #7e7e7e;
-    --color-heading: #013243;
-    
-    /* Background Colors */
-    --color-bg-light: #f5f8fa;
-    --color-bg-gray: #eceff8;
-    --color-bg-dark: #00081b;
-    
-    /* Border Colors */
-    --color-border-light: #f2f2f2;
-    --color-border-gray: #edf2f7;
-    --color-border-dark: #2d3547;
-    
-    /* State Colors */
-    --color-hover: var(--color-primary);
-    --color-active: var(--color-primary);
-    --color-focus: var(--color-secondary);
-    
-    /* Gradient Colors */
-    --gradient-primary: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
-    --gradient-primary-reverse: linear-gradient(90deg, #07CCEC 0%, #1E0B9B 100%);
-    --gradient-dark: linear-gradient(90deg, #000 0%, #26154D 100%);
-    
-    /* Overlay Colors */
-    --overlay-dark: rgba(0, 0, 0, 0.5);
-    --overlay-primary: rgba(30, 11, 155, 0.6);
-    
-    /* ==================== Typography Variables ==================== */
-    
-    /* Font Families */
-    --font-heading: 'Titillium Web', sans-serif;
-    --font-body: 'Inter', sans-serif;
-    --font-secondary: 'Poppins', sans-serif;
-    
-    /* Font Sizes */
-    --font-size-xs: 12px;
-    --font-size-sm: 14px;
-    --font-size-base: 15px;
-    --font-size-md: 16px;
-    --font-size-lg: 18px;
-    --font-size-xl: 22px;
-    --font-size-2xl: 24px;
-    --font-size-3xl: 28px;
-    --font-size-4xl: 35px;
-    --font-size-5xl: 38px;
-    --font-size-6xl: 40px;
-    --font-size-7xl: 45px;
-    --font-size-8xl: 55px;
-    --font-size-9xl: 60px;
-    --font-size-10xl: 65px;
-    --font-size-11xl: 90px;
-    --font-size-mega: 350px;
-    
-    /* Font Weights */
-    --font-weight-light: 200;
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    --font-weight-extrabold: 900;
-    
-    /* Line Heights */
-    --line-height-tight: 1;
-    --line-height-snug: 1.1;
-    --line-height-normal: 1.4;
-    --line-height-relaxed: 1.5;
-    --line-height-loose: 25px;
-    --line-height-body: 28px;
-    
-    /* Letter Spacing */
-    --letter-spacing-tight: -2px;
-    --letter-spacing-normal: 0;
-    --letter-spacing-wide: 2px;
-    --letter-spacing-wider: 6px;
-    
-    /* ==================== Spacing Variables ==================== */
-    
-    /* Base Spacing Scale */
-    --spacing-0: 0;
-    --spacing-1: 5px;
-    --spacing-2: 10px;
-    --spacing-3: 15px;
-    --spacing-4: 20px;
-    --spacing-5: 25px;
-    --spacing-6: 30px;
-    --spacing-7: 35px;
-    --spacing-8: 40px;
-    --spacing-9: 45px;
-    --spacing-10: 50px;
-    --spacing-12: 60px;
-    --spacing-14: 70px;
-    --spacing-16: 80px;
-    --spacing-20: 100px;
-    --spacing-24: 120px;
-    --spacing-28: 140px;
-    --spacing-32: 160px;
-    --spacing-36: 180px;
-    --spacing-40: 200px;
-    
-    /* Section Spacing */
-    --section-padding-top: 80px;
-    --section-padding-bottom: 80px;
-    --section-padding-top-lg: 100px;
-    --section-padding-bottom-lg: 100px;
-    
-    /* Container Padding */
-    --container-padding: 15px;
-    
-    /* ==================== Shadow Variables ==================== */
-    
-    /* Box Shadows */
-    --shadow-xs: 0px 2px 4px rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0px 5px 17px rgba(0, 0, 0, 0.07);
-    --shadow-md: 3px 4px 15px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
-    --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.12);
-    --shadow-2xl: 0px 10px 30px rgba(29, 38, 129, 0.48);
-    
-    /* Specific Shadows */
-    --shadow-primary: 3px 4px 15px #3FB0CEA6;
-    --shadow-card: 3px 4px 15px #00000026;
-    --shadow-menu: 0 0 60px rgba(0, 0, 0, 0.07);
-    --shadow-sticky: 0 10px 15px rgba(25, 25, 25, 0.1);
-    
-    /* Button Shadows */
-    --shadow-btn: 3px 3px 0 0 var(--color-primary);
-    --shadow-btn-hover: 4px 2px 0 0 var(--color-primary);
-    
-    /* ==================== Border Variables ==================== */
-    
-    /* Border Radius */
-    --radius-none: 0;
-    --radius-sm: 8px;
-    --radius-md: 10px;
-    --radius-lg: 12px;
-    --radius-xl: 20px;
-    --radius-2xl: 23px;
-    --radius-3xl: 30px;
-    --radius-pill: 50px;
-    --radius-circle: 50%;
-    --radius-full: 100%;
-    
-    /* Border Widths */
-    --border-width-thin: 1px;
-    --border-width-medium: 2px;
-    --border-width-thick: 5px;
-    
-    /* ==================== Transition/Animation Variables ==================== */
-    
-    /* Transition Durations */
-    --duration-fast: 0.15s;
-    --duration-normal: 0.3s;
-    --duration-slow: 0.5s;
-    --duration-slower: 1s;
-    
-    /* Transition Timing Functions */
-    --ease-in: ease-in;
-    --ease-out: ease-out;
-    --ease-in-out: ease-in-out;
-    --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    
-    /* Common Transitions */
-    --transition-fast: all var(--duration-fast) var(--ease-out);
-    --transition-normal: all var(--duration-normal) var(--ease-out);
-    --transition-slow: all var(--duration-slow) var(--ease-out);
-    --transition-bounce: all 0.4s var(--ease-bounce);
-    
-    /* Animation Durations */
-    --animation-pulse: 1500ms;
-    --animation-slide: 300ms;
-    
-    /* ==================== Z-Index Variables ==================== */
-    
-    /* Z-Index Layers */
-    --z-index-negative: -1;
-    --z-index-base: 1;
-    --z-index-dropdown: 9;
-    --z-index-sticky: 999;
-    --z-index-modal: 9999;
-    
-    /* ==================== Size Variables ==================== */
-    
-    /* Icon Sizes */
-    --icon-size-sm: 33px;
-    --icon-size-md: 37px;
-    --icon-size-lg: 45px;
-    --icon-size-xl: 51px;
-    --icon-size-2xl: 80px;
-    --icon-size-3xl: 120px;
-    
-    /* Button Sizes */
-    --btn-height: 45px;
-    --btn-padding-x: 45px;
-    --btn-padding-y: 18px;
-    --btn-padding-sm-x: 30px;
-    --btn-padding-sm-y: 14px;
-    
-    /* Header Sizes */
-    --header-height: 115px;
-    --header-top-padding: 40px;
-    --sticky-header-height: 71px;
-    
-    /* Slider Sizes */
-    --slider-min-height: 700px;
-    --slider-min-height-lg: 900px;
-    
-    /* ==================== Opacity Variables ==================== */
-    
-    --opacity-0: 0;
-    --opacity-10: 0.1;
-    --opacity-20: 0.2;
-    --opacity-50: 0.5;
-    --opacity-65: 0.65;
-    --opacity-70: 0.7;
-    --opacity-100: 1;
+  /* ==================== Color Variables ==================== */
+
+  /* Primary & Secondary Colors */
+  --color-primary: #1E0B9B;
+  --color-primary-light: #2d1ab3;
+  --color-primary-dark: #150882;
+  --color-primary-rgb: 30, 11, 155;
+
+  --color-secondary: #07CCEC;
+  --color-secondary-light: #3fd9f3;
+  --color-secondary-dark: #06b3d0;
+  --color-secondary-rgb: 7, 204, 236;
+
+  /* Neutral Colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #e9eaf8;
+  --color-gray-300: #e6e6e6;
+  --color-gray-400: #ccc;
+  --color-gray-500: #8a8a8a;
+  --color-gray-600: #707070;
+  --color-gray-700: #555555;
+  --color-gray-800: #383838;
+  --color-gray-900: #191D3B;
+
+  /* Text Colors */
+  --color-text: #4A5764;
+  --color-text-light: #676f67;
+  --color-text-muted: #7e7e7e;
+  --color-heading: #013243;
+
+  /* Background Colors */
+  --color-bg-light: #f5f8fa;
+  --color-bg-gray: #eceff8;
+  --color-bg-dark: #00081b;
+
+  /* Border Colors */
+  --color-border-light: #f2f2f2;
+  --color-border-gray: #edf2f7;
+  --color-border-dark: #2d3547;
+
+  /* State Colors */
+  --color-hover: var(--color-primary);
+  --color-active: var(--color-primary);
+  --color-focus: var(--color-secondary);
+
+  /* Gradient Colors */
+  --gradient-primary: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
+  --gradient-primary-reverse: linear-gradient(90deg, #07CCEC 0%, #1E0B9B 100%);
+  --gradient-dark: linear-gradient(90deg, #000 0%, #26154D 100%);
+
+  /* Overlay Colors */
+  --overlay-dark: rgba(0, 0, 0, 0.5);
+  --overlay-primary: rgba(30, 11, 155, 0.6);
+
+  /* ==================== Typography Variables ==================== */
+
+  /* Font Families */
+  --font-heading: 'Titillium Web', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-secondary: 'Poppins', sans-serif;
+
+  /* Font Sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 15px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 28px;
+  --font-size-4xl: 35px;
+  --font-size-5xl: 38px;
+  --font-size-6xl: 40px;
+  --font-size-7xl: 45px;
+  --font-size-8xl: 55px;
+  --font-size-9xl: 60px;
+  --font-size-10xl: 65px;
+  --font-size-11xl: 90px;
+  --font-size-mega: 350px;
+
+  /* Font Weights */
+  --font-weight-light: 200;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 900;
+
+  /* Line Heights */
+  --line-height-tight: 1;
+  --line-height-snug: 1.1;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.5;
+  --line-height-loose: 25px;
+  --line-height-body: 28px;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -2px;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 2px;
+  --letter-spacing-wider: 6px;
+
+  /* ==================== Spacing Variables ==================== */
+
+  /* Base Spacing Scale */
+  --spacing-0: 0;
+  --spacing-1: 5px;
+  --spacing-2: 10px;
+  --spacing-3: 15px;
+  --spacing-4: 20px;
+  --spacing-5: 25px;
+  --spacing-6: 30px;
+  --spacing-7: 35px;
+  --spacing-8: 40px;
+  --spacing-9: 45px;
+  --spacing-10: 50px;
+  --spacing-12: 60px;
+  --spacing-14: 70px;
+  --spacing-16: 80px;
+  --spacing-20: 100px;
+  --spacing-24: 120px;
+  --spacing-28: 140px;
+  --spacing-32: 160px;
+  --spacing-36: 180px;
+  --spacing-40: 200px;
+
+  /* Section Spacing */
+  --section-padding-top: 80px;
+  --section-padding-bottom: 80px;
+  --section-padding-top-lg: 100px;
+  --section-padding-bottom-lg: 100px;
+
+  /* Container Padding */
+  --container-padding: 15px;
+
+  /* ==================== Shadow Variables ==================== */
+
+  /* Modern Professional Shadows (Layered for depth) */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Colored Shadows for Brand Elements */
+  /* Using primary color rgb: 30, 11, 155 */
+  --shadow-primary-sm: 0 2px 4px rgba(30, 11, 155, 0.2);
+  --shadow-primary: 0 4px 14px 0 rgba(30, 11, 155, 0.39);
+  --shadow-primary-lg: 0 10px 25px rgba(30, 11, 155, 0.25);
+
+  /* Specific Component Shadows */
+  --shadow-card: var(--shadow-md);
+  --shadow-card-hover: var(--shadow-xl);
+  --shadow-menu: 0 0 60px rgba(0, 0, 0, 0.07);
+  --shadow-sticky: var(--shadow-md);
+
+  /* Button Shadows */
+  --shadow-btn: var(--shadow-primary);
+  --shadow-btn-hover: 0 6px 20px rgba(30, 11, 155, 0.23);
+
+  /* ==================== Border Variables ==================== */
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-2xl: 23px;
+  --radius-3xl: 30px;
+  --radius-pill: 50px;
+  --radius-circle: 50%;
+  --radius-full: 100%;
+
+  /* Border Widths */
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-thick: 5px;
+
+  /* ==================== Transition/Animation Variables ==================== */
+
+  /* Transition Durations */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.5s;
+  --duration-slower: 1s;
+
+  /* Transition Timing Functions */
+  --ease-in: ease-in;
+  --ease-out: ease-out;
+  --ease-in-out: ease-in-out;
+  --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Common Transitions */
+  --transition-fast: all var(--duration-fast) var(--ease-out);
+  --transition-normal: all var(--duration-normal) var(--ease-out);
+  --transition-slow: all var(--duration-slow) var(--ease-out);
+  --transition-bounce: all 0.4s var(--ease-bounce);
+
+  /* Animation Durations */
+  --animation-pulse: 1500ms;
+  --animation-slide: 300ms;
+
+  /* ==================== Z-Index Variables ==================== */
+
+  /* Z-Index Layers */
+  --z-index-negative: -1;
+  --z-index-base: 1;
+  --z-index-dropdown: 9;
+  --z-index-sticky: 999;
+  --z-index-modal: 9999;
+
+  /* ==================== Size Variables ==================== */
+
+  /* Icon Sizes */
+  --icon-size-sm: 33px;
+  --icon-size-md: 37px;
+  --icon-size-lg: 45px;
+  --icon-size-xl: 51px;
+  --icon-size-2xl: 80px;
+  --icon-size-3xl: 120px;
+
+  /* Button Sizes */
+  --btn-height: 45px;
+  --btn-padding-x: 45px;
+  --btn-padding-y: 18px;
+  --btn-padding-sm-x: 30px;
+  --btn-padding-sm-y: 14px;
+
+  /* Header Sizes */
+  --header-height: 115px;
+  --header-top-padding: 40px;
+  --sticky-header-height: 71px;
+
+  /* Slider Sizes */
+  --slider-min-height: 700px;
+  --slider-min-height-lg: 900px;
+
+  /* ==================== Opacity Variables ==================== */
+
+  --opacity-0: 0;
+  --opacity-10: 0.1;
+  --opacity-20: 0.2;
+  --opacity-50: 0.5;
+  --opacity-65: 0.65;
+  --opacity-70: 0.7;
+  --opacity-100: 1;
 }
 
 /* ==================== Responsive Breakpoints (for reference) ==================== */

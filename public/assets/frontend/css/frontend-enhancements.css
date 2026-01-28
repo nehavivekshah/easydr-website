@@ -26,7 +26,7 @@ body {
     border-radius: 50px;
     padding: 15px 35px;
     font-weight: 600;
-    box-shadow: 0 5px 15px rgba(30, 11, 155, 0.3);
+    box-shadow: var(--shadow-primary);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
@@ -35,7 +35,7 @@ body {
 
 .btn.ss-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(30, 11, 155, 0.4);
+    box-shadow: var(--shadow-primary-lg);
 }
 
 .btn.ss-btn::after {
@@ -60,7 +60,7 @@ body {
     border: none !important;
     background: #fff;
     border-radius: 15px !important;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: var(--shadow-lg) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     position: relative;
@@ -68,7 +68,7 @@ body {
 
 .doctor-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: var(--shadow-xl) !important;
 }
 
 .doctor-image-wrapper {
@@ -126,7 +126,7 @@ body {
 
 .doctor-card .card-footer .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(30, 11, 155, 0.3);
+    box-shadow: var(--shadow-primary);
 }
 
 /* Badge Styling */
@@ -140,7 +140,7 @@ body {
 
 .badge.bg-primary {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%) !important;
-    box-shadow: 0 4px 12px rgba(30, 11, 155, 0.3);
+    box-shadow: var(--shadow-primary-sm);
 }
 
 /* ==================== Card Enhancements ==================== */
@@ -209,7 +209,7 @@ select:focus {
     background: rgba(255, 255, 255, 0.95);
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
     backdrop-filter: blur(10px);
 }
 

@@ -251,7 +251,7 @@ label {
 .btn {
 	-moz-user-select: none;
 	background: var(--gradient-primary) 0% 0% no-repeat padding-box;
-	/* box-shadow: 3px 4px 15px #3FB0CEA6; */
+	/* box-shadow: var(--shadow-primary); */
 	border: none;
 	border-radius: 50px;
 	color: var(--color-white);
@@ -471,12 +471,12 @@ label {
 	position: fixed;
 	top: 0;
 	width: 100%;
-	box-shadow: 0 0 60px 0 rgba(0, 0, 0, .07);
+	box-shadow: var(--shadow-menu);
 	z-index: 9999;
 	background: var(--color-white);
 	-webkit-animation: 300ms ease-in-out 0s normal none 1 running fadeInDown;
 	animation: 300ms ease-in-out 0s normal none 1 running fadeInDown;
-	-webkit-box-shadow: 0 10px 15px rgba(25, 25, 25, 0.1);
+	-webkit-box-shadow: var(--shadow-sticky);
 }
 
 .responsive {
@@ -489,7 +489,7 @@ label {
 
 .menu-area {
 	background: var(--color-white);
-	box-shadow: 2px 2px 5px #0000002e;
+	box-shadow: var(--shadow-sm);
 }
 
 .menu-area::before {
@@ -521,7 +521,7 @@ label {
 
 .top-btn {
 	background: var(--gradient-primary) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px #3FB0CEA6;
+	box-shadow: var(--shadow-primary);
 	padding: 10px 15px 10px 20px;
 	width: 100%;
 	float: left;
@@ -571,7 +571,7 @@ span.top-btn i {
 .product-details-action .btn {
 	background: var(--gradient-primary) 0% 0% no-repeat padding-box;
 	padding: 14px 15px 14px 30px;
-	box-shadow: 3px 4px 15px #3FB0CEA6;
+	box-shadow: var(--shadow-primary);
 	width: 170px;
 	text-align: left;
 	color: var(--color-white);
@@ -1070,7 +1070,7 @@ span.top-btn i {
 }
 
 .slider-btn .btn {
-	box-shadow: 3px 3px 0 0 var(--color-primary);
+	box-shadow: var(--shadow-btn);
 }
 
 .slider-btn .btn:hover {
@@ -1129,7 +1129,7 @@ span.top-btn i {
 }
 
 .slider-active .slick-arrow:hover {
-	box-shadow: 4px 2px 0 0 var(--color-primary);
+	box-shadow: var(--shadow-btn-hover);
 }
 
 .second-slider-content h2 {
@@ -1163,7 +1163,7 @@ span.top-btn i {
 
 .btn.ss-btn {
 	background: var(--gradient-primary) 0% 0% no-repeat padding-box;
-	box-shadow: 3px 4px 15px #3FB0CEA6;
+	box-shadow: var(--shadow-primary);
 	padding: 14px 80px 14px 30px;
 	max-width: 176px;
 	float: left;
@@ -1251,7 +1251,7 @@ span.top-btn i {
 	width: 265px;
 	text-align: center;
 	background: var(--color-primary);
-	box-shadow: 5px 5px 0 0 var(--color-primary);
+	box-shadow: var(--shadow-primary);
 }
 
 .about-text span {
@@ -1508,7 +1508,7 @@ section:hover .section-title h2::before {
 
 .single-services {
 	background: var(--color-white);
-	box-shadow: 0px 5px 17px 0px rgba(0, 0, 0, 0.07);
+	box-shadow: var(--shadow-sm);
 	position: relative;
 }
 
@@ -1625,7 +1625,7 @@ section:hover .section-title h2::before {
 	height: 120px;
 	background: var(--color-white);
 	margin-bottom: 20px;
-	box-shadow: 3px 4px 15px var(--color-black);
+	box-shadow: var(--shadow-md);
 	border-radius: 50%;
 	padding: 30px;
 	line-height: 50px;
@@ -4785,9 +4785,8 @@ li.has-sub.has-mega-menu:hover>ul>li>ul {
 
 }
 
-.sidebar-widget .widget li.page_item_has_children,
-{
-padding-bottom: 0;
+.sidebar-widget .widget li.page_item_has_children {
+	padding-bottom: 0;
 }
 
 .sidebar-widget .widget .children {
