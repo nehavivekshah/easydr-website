@@ -590,7 +590,28 @@ class FrontendController extends Controller
 
     public function billing()
     {
-        return view('frontend.account.billing');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        // PATIENT BILLING (Using Appointments as Billing Records)
+        // Appointments store 'fees' and 'payment_status'
+        $billings = DB::table('appointments')
+            ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
+            ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
+            ->select(
+                'appointments.*',
+                'doc.first_name as doctor_first_name',
+                'doc.last_name as doctor_last_name',
+                'doctors.specialist'
+            )
+            ->where('appointments.pid', $user->id)
+            ->where('appointments.status', '!=', '2') // Exclude cancelled if preferred, or include all
+            ->orderBy('appointments.date', 'desc')
+            ->paginate(10); // Pagination
+
+        return view('frontend.account.billing', compact('billings'));
     }
 
     public function changePassword()
