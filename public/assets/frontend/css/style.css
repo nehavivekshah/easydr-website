@@ -489,7 +489,7 @@ label {
 
 .menu-area {
 	background: var(--color-white);
-	box-shadow: 3px 4px 15px var(--color-black);
+	box-shadow: 2px 2px 5px #0000002e;
 }
 
 .menu-area::before {
