@@ -87,8 +87,8 @@
                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
                         @if(request('search') || request('specialty'))
                             <!-- <a href="/doctors" class="btn btn-link text-decoration-none text-muted p-0 hover-text-primary">
-                                                                                                                                <i class="fas fa-times-circle me-1"></i> Clear all filters
-                                                                                                                            </a> -->
+                                        <i class="fas fa-times-circle me-1"></i> Clear all filters
+                                    </a> -->
                         @endif
                     </div>
                 </div>
