@@ -17,7 +17,7 @@
 
                             <div class="row">
                                 {{-- PATIENT STATS --}}
-                                @if(Auth::user()->role == 3)
+                                @if(Auth::user()->role == 5)
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
                                         <div class="dashboard_overview">
                                             <div class="icon"><i class="fas fa-handshake" aria-hidden="true"></i></div>

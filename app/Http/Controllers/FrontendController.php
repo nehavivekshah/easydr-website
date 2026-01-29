@@ -438,7 +438,7 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
-        if ($user->role == 2) {
+        if ($user->role == 4) {
             // DOCTOR DASHBOARD
             $doctorId = $user->id; // Using User ID as reference, though some tables use doctors.id
 
@@ -478,7 +478,7 @@ class FrontendController extends Controller
 
             return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments'));
 
-        } else {
+        } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
             $pid = $patient ? $patient->id : 0; // This assumes appointments.pid uses PATIENTS.ID not USERS.ID.
@@ -522,7 +522,7 @@ class FrontendController extends Controller
     public function myPatients()
     {
         $user = Auth::user();
-        if ($user->role != 2)
+        if ($user->role != 4)
             return redirect('/my-account');
 
         // Fetch unique patients for this doctor
@@ -546,7 +546,7 @@ class FrontendController extends Controller
     public function manageSlots()
     {
         $user = Auth::user();
-        if ($user->role != 2)
+        if ($user->role != 4)
             return redirect('/my-account');
 
         $slots = \App\Models\Doctor_availables::where('doctor_id', $user->id)->orderBy('id', 'desc')->get();
@@ -666,7 +666,7 @@ class FrontendController extends Controller
         $filter = $request->input('filter');
         $now = Carbon::now();
 
-        if ($user->role == 2) {
+        if ($user->role == 4) {
             // DOCTOR VIEW
             $query = DB::table('appointments')
                 ->join('patients', 'appointments.pid', '=', 'patients.id')
@@ -704,7 +704,7 @@ class FrontendController extends Controller
 
             return view('frontend/doctor_appointments', compact('appointments'));
 
-        } else {
+        } elseif ($user->role == 5) {
             // PATIENT VIEW
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
             // Assuming PID in appointments refers to User ID based on my previous analysis 
