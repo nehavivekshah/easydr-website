@@ -9,9 +9,9 @@
                         @include('frontend.inc.user_sidebar')
                     </div>
                     <div class="col-lg-9">
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-body">
-                                <h4 class="mb-4">My Doctors</h4>
+                        <div class="dashboard_content">
+                            <h5>My Doctors</h5>
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 @if(isset($doctors) && count($doctors) > 0)
                                     <div class="table-responsive">
                                         <table class="table table-hover">

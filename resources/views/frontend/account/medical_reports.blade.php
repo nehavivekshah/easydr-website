@@ -9,11 +9,10 @@
                         @include('frontend.inc.user_sidebar')
                     </div>
                     <div class="col-lg-9">
-                        <div class="card shadow-sm border-0 rounded-3">
-                            <div class="card-header bg-white border-bottom p-3">
-                                <h4 class="mb-0">Medical Reports</h4>
-                            </div>
-                            <div class="card-body p-5 text-center">
+                        <div class="dashboard_content">
+                            <h5>Medical Reports</h5>
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm); min-height: 300px;"
+                                class="d-flex flex-column align-items-center justify-content-center text-center">
                                 <div class="mb-3">
                                     <i class="bx bxs-report text-muted opacity-25" style="font-size: 4rem;"></i>
                                 </div>

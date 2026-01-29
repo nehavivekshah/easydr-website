@@ -16,23 +16,25 @@
 
     <ul class="dashboard_menu">
         @if(Auth::user()->role == 3) {{-- Patient --}}
-            <li><a class="{{ Request::is('my-account') || Request::is('my-profile') ? 'active' : '' }}" href="/my-account">My
-                    Profile</a></li>
-            <li><a class="{{ Request::is('appointments*') && !request('filter') ? 'active' : '' }}"
-                    href="/appointments">Appointment</a></li>
+            <li><a class="{{ Request::is('my-account') || Request::is('my-profile') ? 'active' : '' }}" href="/my-account">My Profile</a></li>
+            <li><a class="{{ Request::is('appointments*') && !request('filter') ? 'active' : '' }}" href="/appointments">Appointment</a></li>
+            <li><a class="{{ Request::is('my-doctors*') ? 'active' : '' }}" href="/my-doctors">My Doctors</a></li>
+            <li><a class="{{ Request::is('medical-reports*') ? 'active' : '' }}" href="/medical-reports">Medical Reports</a></li>
+            <li><a class="{{ Request::is('patient-prescriptions*') ? 'active' : '' }}" href="/patient-prescriptions">Prescriptions</a></li>
             <li><a class="{{ Request::is('billing*') ? 'active' : '' }}" href="/billing">Transaction History</a></li>
-            <li><a class="{{ Request::is('appointments*') && request('filter') == 'past' ? 'active' : '' }}"
-                    href="/appointments?filter=past">Meeting History</a></li>
-            <li><a class="{{ Request::is('appointments*') && request('filter') == 'upcoming' ? 'active' : '' }}"
-                    href="/appointments?filter=upcoming">Upcoming Meeting</a></li>
+            <li><a class="{{ Request::is('appointments*') && request('filter') == 'past' ? 'active' : '' }}" href="/appointments?filter=past">Meeting History</a></li>
+            <li><a class="{{ Request::is('appointments*') && request('filter') == 'upcoming' ? 'active' : '' }}" href="/appointments?filter=upcoming">Upcoming Meeting</a></li>
             <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages">Message</a></li>
+            <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password">Change Password</a></li>
         @elseif(Auth::user()->role == 2) {{-- Doctor --}}
             <li><a class="{{ Request::is('my-account') ? 'active' : '' }}" href="/my-account">Dashboard</a></li>
             <li><a class="{{ Request::is('appointments*') ? 'active' : '' }}" href="/appointments">Appointments</a></li>
             <li><a class="{{ Request::is('my-patients*') ? 'active' : '' }}" href="/my-patients">My Patients</a></li>
+            <li><a class="{{ Request::is('manage-slots*') ? 'active' : '' }}" href="/manage-slots">Manage Slots</a></li>
+            <li><a class="{{ Request::is('doctor-prescriptions*') ? 'active' : '' }}" href="/doctor-prescriptions">Prescriptions</a></li>
             <li><a class="{{ Request::is('doctor-billing*') ? 'active' : '' }}" href="/doctor-billing">Billing</a></li>
-            <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password">Change Password</a>
-            </li>
+            <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages">Messages</a></li>
+            <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password">Change Password</a></li>
         @endif
 
         <form action="/logout" method="POST" class="d-none" id="logout-form">

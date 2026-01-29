@@ -9,11 +9,9 @@
                         @include('frontend.inc.user_sidebar')
                     </div>
                     <div class="col-lg-9">
-                        <div class="card shadow-sm border-0 rounded-3">
-                            <div class="card-header bg-white border-bottom p-3">
-                                <h4 class="mb-0">Change Password</h4>
-                            </div>
-                            <div class="card-body p-4">
+                        <div class="dashboard_content">
+                            <h5>Change Password</h5>
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 @if(session('success'))
                                     <div class="alert alert-success">{{ session('success') }}</div>
                                 @endif
@@ -31,9 +29,9 @@
                                         <label class="form-label">New Password</label>
                                         <input type="password" name="new_password" class="form-control" required>
                                     </div>
+                                    <button type="submit" class="btn btn-primary">Update Password</button>
+                                </form>
                             </div>
-                            <button type="submit" class="btn btn-primary">Update Password</button>
-                            </form>
                         </div>
                     </div>
                 </div>
