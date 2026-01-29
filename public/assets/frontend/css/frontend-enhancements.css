@@ -980,3 +980,176 @@ select:focus {
         margin-bottom: 5px;
     }
 }
+
+/* ==================== Appointment Card (Facilities) ==================== */
+.appointment-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    /* Soft shadow */
+    padding: 20px;
+    position: relative;
+    border: 1px solid #11065512;
+    transition: all 0.3s ease;
+    margin-bottom: 24px;
+}
+
+.appointment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.appointment-img-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid #f0f0f0;
+}
+
+.appointment-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.appointment-info h5 {
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.appointment-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+.appointment-status-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.appointment-status-badge.status-expired {
+    color: #dc3545;
+}
+
+.appointment-status-badge.status-upcoming {
+    color: var(--color-primary);
+}
+
+.appointment-status-badge.status-completed {
+    color: #198754;
+}
+
+.appointment-status-badge.status-cancelled {
+    color: #dc3545;
+}
+
+.appointment-datetime {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 20px;
+    padding-left: 75px;
+    /* Align with text */
+}
+
+/* Action Buttons Footer */
+.appointment-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #f5f5f5;
+}
+
+.action-btn {
+    flex: 1;
+    background: #e0e0e0;
+    color: #fff;
+    /* Icon color usually white on active, but mockup shows icons. */
+    border: none;
+    border-radius: 8px;
+    /* Slightly rounded rects */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.action-btn i {
+    color: #fff;
+}
+
+/* Specific Colors matching mockup icons usually */
+.action-btn.btn-chat {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-chat i {
+    color: #757575;
+}
+
+.action-btn.btn-chat:hover,
+.action-btn.btn-chat:hover i {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.action-btn.btn-call {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-call i {
+    color: #757575;
+}
+
+.action-btn.btn-call:hover,
+.action-btn.btn-call:hover i {
+    background: #28a745;
+    color: #fff;
+}
+
+.action-btn.btn-video {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-video i {
+    color: #757575;
+}
+
+.action-btn.btn-video:hover,
+.action-btn.btn-video:hover i {
+    background: #17a2b8;
+    color: #fff;
+}
+
+.action-btn.btn-cancel {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-cancel i {
+    color: #757575;
+}
+
+.action-btn.btn-cancel:hover,
+.action-btn.btn-cancel:hover i {
+    background: #dc3545;
+    color: #fff;
+}
