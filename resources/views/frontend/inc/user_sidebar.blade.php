@@ -37,6 +37,7 @@
         <form action="/logout" method="POST" class="d-none" id="logout-form">
             @csrf
         </form>
-        <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+        <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                class="btn-logout">Logout <i class="fas fa-chevron-right"></i></a></li>
     </ul>
 @endif

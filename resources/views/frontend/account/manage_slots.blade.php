@@ -9,9 +9,9 @@
                         @include('frontend.inc.user_sidebar')
                     </div>
                     <div class="col-lg-9">
-                        <div class="card shadow-sm mb-4">
-                            <div class="card-body">
-                                <h4 class="mb-4">Manage Slots</h4>
+                        <div class="dashboard_content">
+                            <h5>Manage Slots</h5>
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 <div class="alert alert-info">
                                     Slot management functionality is coming soon. Please use the mobile app for full
                                     functionality.

@@ -26,6 +26,7 @@
                                                 <h3>{{ $appointmentsCount ?? 0 }}</h3>
                                                 <p>{{ $todayAppointmentsCount ?? 0 }} Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
@@ -36,6 +37,7 @@
                                                 <h3>{{ $completedAppointmentsCount ?? 0 }}</h3>
                                                 <p>{{ $todayCompletedCount ?? 0 }} Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
@@ -46,6 +48,7 @@
                                                 <h3>{{ $pendingAppointmentsCount ?? 0 }}</h3>
                                                 <p>{{ $todayPendingCount ?? 0 }} Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
@@ -56,6 +59,7 @@
                                                 <h3>{{ $billingAmount ?? 0 }}</h3>
                                                 <p>{{ $todayPaymentCount ?? 0 }} Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
@@ -66,6 +70,7 @@
                                                 <h3>{{ $favoritesCount ?? 0 }}</h3>
                                                 <p>0 Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
                                     {{-- Placeholder or Extra Stat --}}
@@ -77,6 +82,7 @@
                                                 <h3>35</h3>
                                                 <p>5 Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
 
@@ -90,6 +96,7 @@
                                                 <h3>{{ $appointmentsCount ?? 0 }}</h3>
                                                 <p>0 Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
@@ -100,6 +107,7 @@
                                                 <h3>{{ $patientsCount ?? 0 }}</h3>
                                                 <p>New Today</p>
                                             </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
                                 @endif
