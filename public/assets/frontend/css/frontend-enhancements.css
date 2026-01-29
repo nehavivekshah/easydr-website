@@ -481,38 +481,38 @@ select:focus {
 
 .nav-pills-custom .nav-link:hover {
     background-color: #e3f2fd;
-    color: #03a9f4;
+    color: var(--color-secondary);
     padding-left: 25px;
     /* Slide effect */
 }
 
 .nav-pills-custom .nav-link.active {
-    background-color: #00acc1;
+    background-color: var(--color-primary);
     /* Teal-ish Blue */
-    background: #03a9f4;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-white);
     box-shadow: 0 4px 10px rgba(3, 169, 244, 0.3);
 }
 
 .nav-pills-custom .nav-link.active i {
-    color: #fff !important;
+    color: var(--color-white) !important;
 }
 
 .nav-pills-custom .nav-link.btn-logout {
     background-color: #26c6da;
     /* Green/Teal */
     background: #00bf8e;
-    color: #fff;
+    color: var(--color-white);
     margin-top: 20px;
 }
 
 .nav-pills-custom .nav-link.btn-logout:hover {
-    background-color: #00acc1;
-    color: white !important;
+    background-color: var(--color-primary);
+    color: var(--color-white) !important;
 }
 
 .nav-pills-custom .nav-link.btn-logout i {
-    color: white !important;
+    color: var(--color-white) !important;
 }
 
 /* Dashboard Stat Cards */
@@ -726,14 +726,14 @@ select:focus {
 
 .dashboard_menu li a:hover {
     background: #e1f5fe;
-    color: #03a9f4;
+    color: var(--color-secondary);
 }
 
 .dashboard_menu li a.active,
 .dashboard_menu li a.active-menu {
-    background: #03a9f4;
+    background: var(--color-primary);
     /* Bright Blue */
-    color: #fff;
+    color: var(--color-white);
     box-shadow: 0 4px 10px rgba(3, 169, 244, 0.3);
 }
 
@@ -766,17 +766,17 @@ select:focus {
 
 /* Stats Cards - Blue Theme */
 .dashboard_overview {
-    background: #03a9f4;
-    /* Solid Blue */
+    background: var(--color-primary);
+    /* Primary Theme Color */
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(3, 169, 244, 0.2);
+    box-shadow: var(--shadow-primary);
     display: flex;
     align-items: center;
     margin-bottom: 24px;
     position: relative;
     overflow: hidden;
-    color: #fff;
+    color: var(--color-white);
     min-height: 140px;
     justify-content: flex-start;
 }
@@ -793,7 +793,7 @@ select:focus {
     text-align: center;
     background: #fff;
     /* White circle */
-    color: #03a9f4;
+    color: var(--color-secondary);
     /* Blue Icon */
     border-radius: 50%;
     font-size: 24px;
@@ -813,9 +813,16 @@ select:focus {
 }
 
 /* Color Variants for Dashboard Cards */
+.dashboard_overview {
+    background: var(--color-primary);
+    /* Primary Theme Color */
+    /* background: var(--gradient-primary); Optional: Use gradient */
+    box-shadow: var(--shadow-primary);
+}
+
 .dashboard_overview.bg-success {
     background: #00bf8e;
-    /* Green */
+    /* Green - No variable available yet */
     box-shadow: 0 5px 15px rgba(0, 191, 142, 0.2);
 }
 
@@ -825,7 +832,7 @@ select:focus {
 
 .dashboard_overview.bg-warning {
     background: #ffb74d;
-    /* Orange */
+    /* Orange - No variable available yet */
     box-shadow: 0 5px 15px rgba(255, 183, 77, 0.2);
 }
 
@@ -834,13 +841,13 @@ select:focus {
 }
 
 .dashboard_overview.bg-info {
-    background: #4dd0e1;
-    /* Cyan */
-    box-shadow: 0 5px 15px rgba(77, 208, 225, 0.2);
+    background: var(--color-secondary);
+    /* Secondary Theme Color */
+    box-shadow: 0 5px 15px rgba(7, 204, 236, 0.2);
 }
 
 .dashboard_overview.bg-info:hover {
-    box-shadow: 0 8px 25px rgba(77, 208, 225, 0.3);
+    box-shadow: 0 8px 25px rgba(7, 204, 236, 0.3);
 }
 
 .dashboard_overview.bg-purple {
@@ -857,7 +864,7 @@ select:focus {
     font-size: 28px;
     font-weight: 700;
     margin: 5px 0;
-    color: #fff;
+    color: var(--color-white);
 }
 
 /* Faint Background Icon */
@@ -887,7 +894,7 @@ select:focus {
 
 .dashboard_profile h5 {
     font-size: 20px;
-    border-bottom: 2px solid #03a9f4;
+    border-bottom: 2px solid var(--color-secondary);
     display: inline-block;
     padding-bottom: 10px;
     margin-bottom: 30px;
@@ -898,8 +905,8 @@ select:focus {
     position: absolute;
     top: 0;
     right: 0;
-    background: #03a9f4;
-    color: #fff;
+    background: var(--color-secondary);
+    color: var(--color-white);
     padding: 5px 25px;
     border-radius: 50px;
     font-size: 14px;
