@@ -29,19 +29,32 @@
                             <div class="row">
                                 @if(isset($appointments) && count($appointments) > 0)
                                     @foreach($appointments as $appointment)
+                                        @php
+                                            $apptDateTime = \Carbon\Carbon::parse($appointment->date . ' ' . $appointment->time);
+                                            $now = \Carbon\Carbon::now();
+                                            // Expired if time passed and not completed/cancelled
+                                            $isExpired = $now->gt($apptDateTime) && $appointment->status != '3' && $appointment->status != '2';
+                                            
+                                            // On Time: If today and within 15 mins before to 1 hour after (or just simply "is today" for broader window)
+                                            // User requested: "on time to highlight button". Let's assume on time means the meeting time has started or is about to.
+                                            // Let's use a 30 min window before and 2 hours after.
+                                            $startWindow = $apptDateTime->copy()->subMinutes(30);
+                                            $endWindow = $apptDateTime->copy()->addHours(2);
+                                            $isOnTime = $now->between($startWindow, $endWindow);
+                                        @endphp
                                         <div class="col-lg-6 col-md-12 mb-4 wow fadeInUp">
                                             <div class="appointment-card">
                                                 {{-- Status Badge --}}
-                                                @if($appointment->status == '0')
-                                                    <span class="appointment-status-badge status-upcoming">Pending</span>
-                                                @elseif($appointment->status == '1')
-                                                    <span class="appointment-status-badge status-upcoming">Confirmed</span>
-                                                @elseif($appointment->status == '2')
+                                                @if($appointment->status == '2')
                                                     <span class="appointment-status-badge status-cancelled">Cancelled</span>
                                                 @elseif($appointment->status == '3')
                                                     <span class="appointment-status-badge status-completed">Completed</span>
-                                                @else
+                                                @elseif($isExpired)
                                                     <span class="appointment-status-badge status-expired">Expired</span>
+                                                @elseif($appointment->status == '1')
+                                                    <span class="appointment-status-badge status-upcoming">Confirmed</span>
+                                                @else
+                                                    <span class="appointment-status-badge status-upcoming">Pending</span>
                                                 @endif
 
                                                 {{-- Header --}}
@@ -58,7 +71,7 @@
 
                                                 {{-- Date Time --}}
                                                 <div class="appointment-datetime">
-                                                    {{ \Carbon\Carbon::parse($appointment->date)->format('d M, Y') }} | {{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}
+                                                    {{ $apptDateTime->format('d M, Y') }} | {{ $apptDateTime->format('h:i A') }}
                                                 </div>
 
                                                 {{-- Action Buttons --}}
@@ -72,25 +85,27 @@
                                                         <i class="fas fa-phone-alt"></i>
                                                     </a>
 
-                                                    {{-- Video Button (Only if link is available) --}} 
-                                                    @if(!empty($appointment->meeting_link) && $appointment->status == '1')
+                                                    {{-- Video Button --}} 
+                                                    {{-- Only enabled if On Time logic is met AND link exists AND status is confirmed (1) --}}
+                                                    @if(!empty($appointment->meeting_link) && $appointment->status == '1' && $isOnTime)
                                                         @if($appointment->meeting_provider == 'whatsapp')
-                                                            <a href="https://wa.me/{{ $appointment->meeting_link }}" target="_blank" class="action-btn btn-video" title="WhatsApp Video">
+                                                            <a href="https://wa.me/{{ $appointment->meeting_link }}" target="_blank" class="action-btn btn-video pulsate-active" title="Join WhatsApp Video" style="background: #17a2b8; color: #fff;">
                                                                 <i class="fab fa-whatsapp"></i>
                                                             </a>
                                                         @else
-                                                            <a href="{{ $appointment->meeting_link }}" target="_blank" class="action-btn btn-video" title="Video Call">
+                                                            <a href="{{ $appointment->meeting_link }}" target="_blank" class="action-btn btn-video pulsate-active" title="Join Video Call" style="background: #17a2b8; color: #fff;">
                                                                 <i class="fas fa-video"></i>
                                                             </a>
                                                         @endif
                                                     @else
-                                                        <button class="action-btn btn-video" disabled style="opacity: 0.5; cursor: not-allowed;">
-                                                            <i class="fas fa-video-slash"></i>
+                                                        {{-- Disabled State --}}
+                                                        <button class="action-btn btn-video" disabled style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
+                                                            <i class="fas fa-video{{ !empty($appointment->meeting_link) ? '' : '-slash' }}"></i>
                                                         </button>
                                                     @endif
 
-                                                    {{-- Cancel Button --}}
-                                                    @if($appointment->status == '0' || $appointment->status == '1')
+                                                    {{-- Cancel Button (Hide calculation logic: only cancellable if upcoming and pending/confirmed) --}}
+                                                    @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
                                                         <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST" class="flex-grow-1" style="flex: 1; display: flex;" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
                                                             @csrf
                                                             <button type="submit" class="action-btn btn-cancel" title="Cancel Appointment" style="width: 100%;">
@@ -108,7 +123,7 @@
                                     @endforeach
 
                                     {{-- Pagination Links --}}
-                                    <div class="col-12 mt-4">
+                                    <div class="col-12 mt-4 d-flex justify-content-center">
                                         {{ $appointments->appends(request()->input())->links('pagination::bootstrap-5') }}
                                     </div>
 
