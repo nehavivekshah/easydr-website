@@ -632,7 +632,8 @@ select:focus {
 /* User Profile Sidebar */
 .user_profile {
     text-align: center;
-    background: #e0f7fa; /* Light cyan background like mockup */
+    background: #e0f7fa;
+    /* Light cyan background like mockup */
     background: linear-gradient(180deg, #e0f7fa 0%, #fff 100%);
     padding: 30px;
     border-radius: 10px;
@@ -663,7 +664,8 @@ select:focus {
     right: 0;
     width: 32px;
     height: 32px;
-    background: #333; /* Dark camera icon */
+    background: #333;
+    /* Dark camera icon */
     color: #fff;
     border-radius: 50%;
     text-align: center;
@@ -703,9 +705,11 @@ select:focus {
     justify-content: space-between;
     align-items: center;
     padding: 12px 25px;
-    background: #f0f4f8; /* Light gray for inactive */
+    background: #f0f4f8;
+    /* Light gray for inactive */
     color: #333;
-    border-radius: 50px; /* Pill shape */
+    border-radius: 50px;
+    /* Pill shape */
     font-size: 15px;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -715,7 +719,8 @@ select:focus {
 .dashboard_menu li a::after {
     font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free";
     font-weight: 900;
-    content: "\f054"; /* Chevron Right */
+    content: "\f054";
+    /* Chevron Right */
     font-size: 12px;
 }
 
@@ -726,21 +731,24 @@ select:focus {
 
 .dashboard_menu li a.active,
 .dashboard_menu li a.active-menu {
-    background: #03a9f4; /* Bright Blue */
+    background: #03a9f4;
+    /* Bright Blue */
     color: #fff;
     box-shadow: 0 4px 10px rgba(3, 169, 244, 0.3);
 }
 
 /* Logout Button Special Style */
 .dashboard_menu li a.btn-logout {
-    background: #00bf8e; /* Green */
+    background: #00bf8e;
+    /* Green */
     color: #fff;
     margin-top: 20px;
     justify-content: center;
 }
 
 .dashboard_menu li a.btn-logout::after {
-    display: none; /* No chevron for logout if centered, or keep it */
+    display: none;
+    /* No chevron for logout if centered, or keep it */
 }
 
 .dashboard_menu li a.btn-logout i {
@@ -758,7 +766,8 @@ select:focus {
 
 /* Stats Cards - Blue Theme */
 .dashboard_overview {
-    background: #03a9f4; /* Solid Blue */
+    background: #03a9f4;
+    /* Solid Blue */
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(3, 169, 244, 0.2);
@@ -782,8 +791,10 @@ select:focus {
     height: 60px;
     line-height: 60px;
     text-align: center;
-    background: #fff; /* White circle */
-    color: #03a9f4; /* Blue Icon */
+    background: #fff;
+    /* White circle */
+    color: #03a9f4;
+    /* Blue Icon */
     border-radius: 50%;
     font-size: 24px;
     margin-right: 20px;
@@ -798,7 +809,48 @@ select:focus {
 .dashboard_overview .text p {
     margin-bottom: 0;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
+    opacity: 0.9;
+}
+
+/* Color Variants for Dashboard Cards */
+.dashboard_overview.bg-success {
+    background: #00bf8e;
+    /* Green */
+    box-shadow: 0 5px 15px rgba(0, 191, 142, 0.2);
+}
+
+.dashboard_overview.bg-success:hover {
+    box-shadow: 0 8px 25px rgba(0, 191, 142, 0.3);
+}
+
+.dashboard_overview.bg-warning {
+    background: #ffb74d;
+    /* Orange */
+    box-shadow: 0 5px 15px rgba(255, 183, 77, 0.2);
+}
+
+.dashboard_overview.bg-warning:hover {
+    box-shadow: 0 8px 25px rgba(255, 183, 77, 0.3);
+}
+
+.dashboard_overview.bg-info {
+    background: #4dd0e1;
+    /* Cyan */
+    box-shadow: 0 5px 15px rgba(77, 208, 225, 0.2);
+}
+
+.dashboard_overview.bg-info:hover {
+    box-shadow: 0 8px 25px rgba(77, 208, 225, 0.3);
+}
+
+.dashboard_overview.bg-purple {
+    background: #9575cd;
+    /* Purple */
+    box-shadow: 0 5px 15px rgba(149, 117, 205, 0.2);
+}
+
+.dashboard_overview.bg-purple:hover {
+    box-shadow: 0 8px 25px rgba(149, 117, 205, 0.3);
 }
 
 .dashboard_overview .text h3 {
@@ -822,8 +874,10 @@ select:focus {
 
 /* Profile Info */
 .dashboard_profile {
-    background: #fff; /* White background */
-    padding: 0; /* Removing padding to handle via internal spacing */
+    background: #fff;
+    /* White background */
+    padding: 0;
+    /* Removing padding to handle via internal spacing */
     border-radius: 0;
     box-shadow: none;
     margin-top: 40px;
@@ -870,7 +924,8 @@ select:focus {
 }
 
 .dashboard_profile ul li span {
-    width: 200px; /* Fixed label width */
+    width: 200px;
+    /* Fixed label width */
     font-weight: 600;
     color: #333;
     flex-shrink: 0;
@@ -879,13 +934,8 @@ select:focus {
 .dashboard_profile ul li {
     color: #666;
 }
-    padding: 5px 23px;
-    border-radius: 30px;
-    font-size: 14px;
-    text-transform: capitalize;
-    text-decoration: none;
-    transition: 0.3s;
-}
+
+
 
 .dashboard_profile a:hover {
     background: var(--color-primary-dark, #0056b3);

@@ -30,7 +30,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview">
+                                        <div class="dashboard_overview bg-success">
                                             <div class="icon"><i class="far fa-check-circle" aria-hidden="true"></i></div>
                                             <div class="text">
                                                 <p>Done Appointment</p>
@@ -41,7 +41,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview">
+                                        <div class="dashboard_overview bg-warning">
                                             <div class="icon"><i class="far fa-file-alt" aria-hidden="true"></i></div>
                                             <div class="text">
                                                 <p>Pending Appointment</p>
@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview">
+                                        <div class="dashboard_overview bg-purple">
                                             <div class="icon"><i class="fas fa-hand-holding-usd" aria-hidden="true"></i></div>
                                             <div class="text">
                                                 <p>Total Payment</p>
@@ -63,7 +63,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview">
+                                        <div class="dashboard_overview bg-info">
                                             <div class="icon"><i class="fal fa-stars" aria-hidden="true"></i></div>
                                             <div class="text">
                                                 <p>Total Review</p>
@@ -75,7 +75,7 @@
                                     </div>
                                     {{-- Placeholder or Extra Stat --}}
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview">
+                                        <div class="dashboard_overview bg-success">
                                             <div class="icon"><i class="far fa-snowflake" aria-hidden="true"></i></div>
                                             <div class="text">
                                                 <p>Any One</p>
@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview">
+                                        <div class="dashboard_overview bg-success">
                                             <div class="icon"><i class="fas fa-users" aria-hidden="true"></i></div>
                                             <div class="text">
                                                 <p>My Patients</p>

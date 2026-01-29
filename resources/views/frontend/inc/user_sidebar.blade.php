@@ -2,7 +2,8 @@
     <div class="user_profile">
         <div class="user_profile_img">
             @if(Auth::user()->photo)
-                <img src="{{ asset('assets/images/profiles/' . Auth::user()->photo) }}" alt="user" class="img-fluid w-100">
+                <img src="{{ asset('public/assets/images/profiles/' . Auth::user()->photo) }}" alt="user"
+                    class="img-fluid w-100">
             @else
                 <img src="https://ui-avatars.com/api/?name={{ Auth::user()->first_name }}+{{ Auth::user()->last_name }}&background=0D8ABC&color=fff"
                     alt="user" class="img-fluid w-100">
