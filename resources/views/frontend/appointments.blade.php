@@ -47,7 +47,7 @@
                                                 {{-- Header --}}
                                                 <div class="appointment-header">
                                                     <div class="appointment-img-wrapper">
-                                                        <img src="{{ $appointment->doctor_photo ? asset('public/assets/images/doctors/' . $appointment->doctor_photo) : 'https://ui-avatars.com/api/?name='.$appointment->doctor_first_name.'+'.$appointment->doctor_last_name.'&background=0D8ABC&color=fff' }}"
+                                                        <img src="{{ $appointment->doctor_photo ? asset('public/assets/images/profiles/' . $appointment->doctor_photo) : 'https://ui-avatars.com/api/?name='.$appointment->doctor_first_name.'+'.$appointment->doctor_last_name.'&background=0D8ABC&color=fff' }}"
                                                              alt="{{ $appointment->doctor_first_name }}">
                                                     </div>
                                                     <div class="appointment-info">
@@ -106,6 +106,12 @@
                                             </div>
                                         </div>
                                     @endforeach
+
+                                    {{-- Pagination Links --}}
+                                    <div class="col-12 mt-4">
+                                        {{ $appointments->appends(request()->input())->links('pagination::bootstrap-5') }}
+                                    </div>
+
                                 @else
                                     <div class="col-12 text-center py-5">
                                         <div class="empty-state">
