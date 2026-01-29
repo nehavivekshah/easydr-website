@@ -700,7 +700,7 @@ class FrontendController extends Controller
 
             $appointments = $query->orderBy('appointments.date', 'desc')
                 ->orderBy('appointments.time', 'desc')
-                ->get();
+                ->paginate(6);
 
             return view('frontend/doctor_appointments', compact('appointments'));
 
@@ -755,7 +755,7 @@ class FrontendController extends Controller
 
             $appointments = $query->orderBy('appointments.date', 'desc')
                 ->orderBy('appointments.time', 'desc')
-                ->get();
+                ->paginate(6);
 
             return view('frontend/appointments', compact('appointments'));
         }
