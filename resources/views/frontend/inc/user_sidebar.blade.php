@@ -16,7 +16,8 @@
 
     <ul class="dashboard_menu">
         @if(Auth::user()->role == 3) {{-- Patient --}}
-            <li><a class="{{ Request::is('my-account') ? 'active' : '' }}" href="/my-account">My Profile</a></li>
+            <li><a class="{{ Request::is('my-account') || Request::is('my-profile') ? 'active' : '' }}" href="/my-account">My
+                    Profile</a></li>
             <li><a class="{{ Request::is('appointments*') && !request('filter') ? 'active' : '' }}"
                     href="/appointments">Appointment</a></li>
             <li><a class="{{ Request::is('billing*') ? 'active' : '' }}" href="/billing">Transaction History</a></li>

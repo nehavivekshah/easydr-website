@@ -10,7 +10,7 @@
                     </div>
                     <div class="col-lg-9">
                         <div class="dashboard_content">
-                            <h5>Billing & Payments</h5>
+                            <h5>Transaction History</h5>
 
                             <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 <div class="table-responsive">
@@ -29,11 +29,13 @@
                                             @forelse($billings as $bill)
                                                 <tr>
                                                     <td class="align-middle">
-                                                        {{ \Carbon\Carbon::parse($bill->date)->format('d M, Y') }}</td>
+                                                        {{ \Carbon\Carbon::parse($bill->date)->format('d M, Y') }}
+                                                    </td>
                                                     <td class="align-middle">Consultation Fee</td>
                                                     <td class="align-middle">Dr. {{ $bill->doctor_first_name }}
                                                         {{ $bill->doctor_last_name }}<br><small
-                                                            class="text-muted">{{ $bill->specialist }}</small></td>
+                                                            class="text-muted">{{ $bill->specialist }}</small>
+                                                    </td>
                                                     <td class="align-middle fw-bold">₹{{ number_format($bill->fees, 2) }}</td>
                                                     <td class="align-middle">
                                                         @if($bill->payment_status == 'paid')

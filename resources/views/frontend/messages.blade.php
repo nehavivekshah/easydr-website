@@ -13,7 +13,7 @@
                     <!-- Content Area -->
                     <div class="col-lg-9">
                         <div class="dashboard_content">
-                            <h5>Messages</h5>
+                            <h5>Message</h5>
 
                             <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm); min-height: 400px;"
                                 class="d-flex flex-column align-items-center justify-content-center text-center">

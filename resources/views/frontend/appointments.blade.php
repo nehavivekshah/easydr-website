@@ -14,8 +14,15 @@
                     <!-- Content Area -->
                     <div class="col-lg-9">
                         <div class="dashboard_content">
+                            @php
+                                $pageTitle = 'Appointment';
+                                if (request('filter') == 'past')
+                                    $pageTitle = 'Meeting History';
+                                if (request('filter') == 'upcoming')
+                                    $pageTitle = 'Upcoming Meeting';
+                            @endphp
                             <div class="d-flex justify-content-between align-items-center mb-0">
-                                <h5>My Appointments</h5>
+                                <h5>{{ $pageTitle }}</h5>
                                 <a href="/manage-appointment" class="btn btn-primary btn-sm mb-4">Book New Appointment</a>
                             </div>
 
