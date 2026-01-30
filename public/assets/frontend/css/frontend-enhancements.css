@@ -739,7 +739,7 @@ select:focus {
 
 /* Logout Button Special Style */
 .dashboard_menu li a.btn-logout {
-    background: #1f0b9c;
+    background: #666666;
     /* Green */
     color: #fff;
     margin-top: 20px;
@@ -768,7 +768,7 @@ select:focus {
 .dashboard_overview {
     background: var(--color-primary);
     /* Primary Theme Color */
-    padding: 25px;
+    padding: 25px 15px;
     border-radius: 10px;
     box-shadow: var(--shadow-primary);
     display: flex;
@@ -905,7 +905,7 @@ select:focus {
     position: absolute;
     top: 0;
     right: 0;
-    background: var(--color-secondary);
+    background: var(--color-primary-dark);
     color: var(--color-white);
     padding: 5px 25px;
     border-radius: 50px;
