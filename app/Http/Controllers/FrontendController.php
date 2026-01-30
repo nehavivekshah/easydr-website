@@ -15,6 +15,8 @@ use App\Models\User;
 use App\Models\Doctors;
 use App\Models\Doctor_reviews;
 use App\Models\Roles;
+use App\Models\Usermetas;
+use App\Models\Patients;
 use App\Models\Specialists;
 
 class FrontendController extends Controller
@@ -644,7 +646,40 @@ class FrontendController extends Controller
         if (!$user) {
             return redirect('/login');
         }
-        return view('frontend/myProfile', compact('user'));
+
+        $userData = User::leftjoin('branches', 'users.branch', '=', 'branches.id')
+            ->leftjoin('roles', 'users.role', '=', 'roles.id')
+            ->leftjoin('usermetas', 'users.id', '=', 'usermetas.uid')
+            ->leftjoin('patients', 'users.id', '=', 'patients.uid')
+            ->leftjoin('doctors', 'users.id', '=', 'doctors.uid')
+            ->select(
+                'branches.name as company',
+                'usermetas.designation',
+                'usermetas.adhar',
+                'usermetas.address',
+                'usermetas.city',
+                'usermetas.state',
+                'usermetas.country',
+                'usermetas.pincode',
+                'patients.blood_group',
+                'patients.medical_file',
+                'patients.height',
+                'patients.weight',
+                'patients.health_card',
+                'patients.health_card_file',
+                'patients.marital_status',
+                'doctors.specialist',
+                'doctors.license',
+                'doctors.education',
+                'doctors.about',
+                'roles.title',
+                'roles.subtitle',
+                'users.*'
+            )
+            ->where('users.id', '=', $user->id)
+            ->first();
+
+        return view('frontend/myProfile', ['user' => $userData]);
     }
 
     public function messages()
