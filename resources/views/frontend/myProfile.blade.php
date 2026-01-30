@@ -45,7 +45,7 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Gender</label>
-                                            <select class="form-select" name="gender">
+                                            <select class="form-control" name="gender">
                                                 <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male
                                                 </option>
                                                 <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>
