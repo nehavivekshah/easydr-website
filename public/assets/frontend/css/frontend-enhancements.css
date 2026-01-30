@@ -501,7 +501,7 @@ select:focus {
 .nav-pills-custom .nav-link.btn-logout {
     background-color: #26c6da;
     /* Green/Teal */
-    background: #00bf8e;
+    background: #1f0b9c;
     color: var(--color-white);
     margin-top: 20px;
 }
@@ -632,9 +632,9 @@ select:focus {
 /* User Profile Sidebar */
 .user_profile {
     text-align: center;
-    background: #e0f7fa;
+    background: #e0e4fa;
     /* Light cyan background like mockup */
-    background: linear-gradient(180deg, #e0f7fa 0%, #fff 100%);
+    background: linear-gradient(180deg, #e0e4fa 0%, #fff 100%);
     padding: 30px;
     border-radius: 10px;
     box-shadow: none;
@@ -669,7 +669,7 @@ select:focus {
     color: #fff;
     border-radius: 50%;
     text-align: center;
-    line-height: 32px;
+    line-height: 27px;
     cursor: pointer;
     font-size: 13px;
     border: 2px solid #fff;
@@ -731,15 +731,15 @@ select:focus {
 
 .dashboard_menu li a.active,
 .dashboard_menu li a.active-menu {
-    background: var(--color-primary);
+    background: #1f0b9c;
     /* Bright Blue */
     color: var(--color-white);
-    box-shadow: 0 4px 10px rgba(3, 169, 244, 0.3);
+    box-shadow: 0 4px 10px rgb(3 22 244 / 30%);
 }
 
 /* Logout Button Special Style */
 .dashboard_menu li a.btn-logout {
-    background: #00bf8e;
+    background: #1f0b9c;
     /* Green */
     color: #fff;
     margin-top: 20px;
@@ -821,7 +821,7 @@ select:focus {
 }
 
 .dashboard_overview.bg-success {
-    background: #00bf8e;
+    background: #1f0b9c;
     /* Green - No variable available yet */
     box-shadow: 0 5px 15px rgba(0, 191, 142, 0.2);
 }
