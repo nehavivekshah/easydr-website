@@ -725,13 +725,13 @@ select:focus {
 }
 
 .dashboard_menu li a:hover {
-    background: #e1f5fe;
+    background: #e1e5fe;
     color: #1f0b9c;
 }
 
 .dashboard_menu li a.active,
 .dashboard_menu li a.active-menu {
-    background: #1f0b9c;
+    background: var(--gradient-primary) 0% 0% no-repeat padding-box;
     /* Bright Blue */
     color: var(--color-white);
     box-shadow: 0 4px 10px rgb(3 22 244 / 30%);
