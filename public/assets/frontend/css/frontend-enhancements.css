@@ -726,7 +726,7 @@ select:focus {
 
 .dashboard_menu li a:hover {
     background: #e1f5fe;
-    color: var(--color-secondary);
+    color: #1f0b9c;
 }
 
 .dashboard_menu li a.active,
