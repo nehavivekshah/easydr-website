@@ -123,9 +123,11 @@
                                     </li>
                                     <li><span>Email:</span> {{ Auth::user()->email }}</li>
                                     <li><span>DOB:</span>
-                                        {{ Auth::user()->dob ? date('d-m-Y', strtotime(Auth::user()->dob)) : 'Not Specified' }}
+                                        {{ Auth::user()->dob ? date('d M, Y', strtotime(Auth::user()->dob)) : 'Not Specified' }}
                                     </li>
-                                    <li><span>Gender:</span> {{ Auth::user()->gender == 1 ? 'Male' : (Auth::user()->gender == 2 ? 'Female' : 'Other') ?? 'Not Specified' }}</li>
+                                    <li><span>Gender:</span>
+                                        {{ Auth::user()->gender == 1 ? 'Male' : (Auth::user()->gender == 2 ? 'Female' : 'Other') ?? 'Not Specified' }}
+                                    </li>
                                     @if(isset($userAddress))
                                         <li><span>Address:</span> {{ $userAddress->address ?? 'Not Set' }}</li>
                                         <li><span>City:</span> {{ $userAddress->city ?? 'Not Set' }}</li>
@@ -142,8 +144,10 @@
                                     <ul>
                                         <li><span>Blood Group:</span> {{ $patient->blood_group ?? 'Not Set' }}</li>
                                         <li><span>Height:</span> {{ $patient->height ?? 'Not Set' }}</li>
-                                        <li><span>Weight:</span> {{ $patient->weight.' Kg' ?? 'Not Set' }}</li>
-                                        <li><span>Marital Status:</span> {{ $patient->marital_status == 1 ? 'Single' : ( $patient->marital_status == 2 ? 'Married' : 'Divorced') ?? 'Not Set' }}</li>
+                                        <li><span>Weight:</span> {{ $patient->weight . ' Kg' ?? 'Not Set' }}</li>
+                                        <li><span>Marital Status:</span>
+                                            {{ $patient->marital_status == 1 ? 'Single' : ($patient->marital_status == 2 ? 'Married' : 'Divorced') ?? 'Not Set' }}
+                                        </li>
                                     </ul>
                                 @elseif(Auth::user()->role == 4 && isset($doctorInfo))
                                     <hr>
