@@ -478,7 +478,13 @@ class FrontendController extends Controller
                 ->limit(5)
                 ->get();
 
-            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments', 'doctorInfo'));
+            // Doctor Availability (Fetch latest active schedule)
+            $doctorAvailability = \App\Models\Doctor_availables::where('doctor_id', $user->id)
+                ->where('status', 1)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments', 'doctorInfo', 'doctorAvailability'));
 
         } elseif ($user->role == 5) {
             // PATIENT DASHBOARD

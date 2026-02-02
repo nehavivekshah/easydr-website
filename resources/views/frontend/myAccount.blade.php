@@ -135,16 +135,40 @@
                                         <li><span>Height:</span> {{ $patient->height ?? 'Not Set' }}</li>
                                         <li><span>Weight:</span> {{ $patient->weight ?? 'Not Set' }}</li>
                                         <li><span>Marital Status:</span> {{ $patient->marital_status ?? 'Not Set' }}</li>
+                                        <li class="mt-3"><strong>Health Card Details:</strong></li>
+                                        <li><span>Card No:</span> {{ $patient->health_card ?? 'Not Set' }}</li>
+                                        <li><span>Status:</span>
+                                            @if(!empty($patient->hc_verified_at))
+                                                <span class="badge badge-success">Verified</span>
+                                            @else
+                                                <span class="badge badge-warning">Pending</span>
+                                            @endif
+                                        </li>
+                                        <li><span>Issue Date:</span> {{ $patient->hc_issue_date ?? 'N/A' }}</li>
+                                        <li><span>Expiry Date:</span> {{ $patient->hc_expairy_date ?? 'N/A' }}</li>
                                     </ul>
                                 @elseif(Auth::user()->role == 4 && isset($doctorInfo))
                                     <hr>
                                     <h5>Professional Details</h5>
                                     <ul>
                                         <li><span>Specialist:</span> {{ $doctorInfo->specialist ?? 'Not Set' }}</li>
+                                        <li><span>Experience:</span> {{ $doctorInfo->experience ?? 'Not Set' }}</li>
                                         <li><span>License:</span> {{ $doctorInfo->license ?? 'Not Set' }}</li>
                                         <li><span>Education:</span> {{ $doctorInfo->education ?? 'Not Set' }}</li>
-                                        <li><span>Fees:</span> {{ $doctorInfo->fees ? '$'.$doctorInfo->fees : 'Not Set' }}</li>
+                                        <li><span>Fees:</span> {{ $doctorInfo->fees ? '$' . $doctorInfo->fees : 'Not Set' }}</li>
+                                        <li class="mt-2"><span>About:</span>
+                                            <small>{{ Str::limit($doctorInfo->about ?? 'No description', 100) }}</small></li>
                                     </ul>
+                                    @if(isset($doctorAvailability))
+                                        <h5 class="mt-3">Availability</h5>
+                                        <ul>
+                                            <li><span>Days:</span>
+                                                {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
+                                            <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
+                                                {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}</li>
+                                            <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
+                                        </ul>
+                                    @endif
                                 @endif
                             </div>
                         </div>
