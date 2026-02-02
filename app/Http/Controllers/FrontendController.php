@@ -478,46 +478,20 @@ class FrontendController extends Controller
                 ->limit(5)
                 ->get();
 
-            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments'));
+            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments', 'doctorInfo'));
 
         } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
-            $pid = $patient ? $patient->id : 0; // This assumes appointments.pid uses PATIENTS.ID not USERS.ID.
-            // CAUTION: In bookAppointment, I saved $patient->id (from patients table).
-            // But let's verify if $patient->id is used or $user->id.
-            // In bookAppointment: $appointment->pid = $patient->id; -> Correct.
-            // Check if $pid is 0.
+            $pid = $patient ? $patient->id : 0;
 
-            // However, authentication uses User ID.
-            // If patient entry is missing, we might have issues.
-
-            $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
-            // WAIT. In bookAppointment I used $patient->id. Mobile app sends 'pid'.
-            // Let's stick to $user->id if possible, but the schema seems mixed.
-            // Mobile app dashboardPage uses $doctorId (which is user ID in shared prefs).
-            // Let's assume PID in appointments refers to User ID for now to be safe, 
-            // OR I should use the Logic from Mobile App's `patientDetails`.
-            // The mobile app `patientDetails` joins `users as pet` on `appointments.pid = pet.id`. 
-            // This implies appointments.pid IS the User ID of the patient.
-            // BUT in `bookAppointment` (my previous edit), I used `$patient->id`. 
-            // If `patients.id` != `users.id`, this is a bug.
-            // Usually `patients` table has `id` (AI) and `uid` (FK to users).
-            // I should use `$user->id` for consistency if the app expects `users` join.
-            // Let's change this query to use `$user->id` assuming my fix in bookAppointment used `$patient->uid`?
-            // Re-checking bookAppointment: `$appointment->pid = $patient->id;`
-            // If `patients.id` is standard AI, then appointments.pid maps to patients table.
-
-            // Let's rely on what `appointments` method does below.
-            // `appointments` method uses `->where('appointments.pid', $user->id)`.
-            // So `appointments.pid` MUST BE User ID.
-
+            // Should use User ID for appointments if that's how it's stored
             $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
             $reportsCount = 0; // DB::table('reports')->where('patient_id', $user->id)->count();
             $favoritesCount = 0; // DB::table('favorites')->where('user_id', $user->id)->count();
             $billingAmount = DB::table('appointments')->where('pid', $user->id)->sum('fees');
 
-            return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount'));
+            return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount', 'patient'));
         }
     }
 

@@ -125,6 +125,27 @@
                                     <li><span>DOB:</span> {{ Auth::user()->dob ?? 'Not Specified' }}</li>
                                     <li><span>Branch:</span> {{ Auth::user()->branch ?? 'Main' }}</li>
                                 </ul>
+
+                                {{-- Extended Profile Info --}}
+                                @if(Auth::user()->role == 5 && isset($patient))
+                                    <hr>
+                                    <h5>Medical Information</h5>
+                                    <ul>
+                                        <li><span>Blood Group:</span> {{ $patient->blood_group ?? 'Not Set' }}</li>
+                                        <li><span>Height:</span> {{ $patient->height ?? 'Not Set' }}</li>
+                                        <li><span>Weight:</span> {{ $patient->weight ?? 'Not Set' }}</li>
+                                        <li><span>Marital Status:</span> {{ $patient->marital_status ?? 'Not Set' }}</li>
+                                    </ul>
+                                @elseif(Auth::user()->role == 4 && isset($doctorInfo))
+                                    <hr>
+                                    <h5>Professional Details</h5>
+                                    <ul>
+                                        <li><span>Specialist:</span> {{ $doctorInfo->specialist ?? 'Not Set' }}</li>
+                                        <li><span>License:</span> {{ $doctorInfo->license ?? 'Not Set' }}</li>
+                                        <li><span>Education:</span> {{ $doctorInfo->education ?? 'Not Set' }}</li>
+                                        <li><span>Fees:</span> {{ $doctorInfo->fees ? '$'.$doctorInfo->fees : 'Not Set' }}</li>
+                                    </ul>
+                                @endif
                             </div>
                         </div>
                     </div>
