@@ -129,6 +129,7 @@
                                         {{ Auth::user()->gender == 1 ? 'Male' : (Auth::user()->gender == 2 ? 'Female' : 'Other') ?? 'Not Specified' }}
                                     </li>
                                     @if(isset($userAddress))
+                                        <li><span>Aadhar No.:</span> {{ $userAddress->adhar ?? 'Not Set' }}</li>
                                         <li><span>Address:</span> {{ $userAddress->address ?? 'Not Set' }}</li>
                                         <li><span>City:</span> {{ $userAddress->city ?? 'Not Set' }}</li>
                                         <li><span>State:</span> {{ $userAddress->state ?? 'Not Set' }}</li>

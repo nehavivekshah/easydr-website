@@ -416,6 +416,12 @@ class WebUserController extends Controller
     }
     function manageUserPost(Request $request)
     {
+        if ($request->filled('adhar')) {
+            $request->validate([
+                'adhar' => 'numeric|digits:12',
+            ]);
+        }
+
         // Check if the user exists or if it's a new entry
         $user = $request->id ? User::find($request->id) : new User();
 

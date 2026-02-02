@@ -57,6 +57,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
+                                            <label class="form-label">Aadhar Number</label>
+                                            <input type="text" class="form-control" name="adhar"
+                                                value="{{ $user->adhar ?? '' }}" placeholder="12 Digit Aadhar Number">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
                                             <label class="form-label">Profile Photo</label>
                                             <input type="file" class="form-control" name="profile_photo">
                                             @if($user->photo)
