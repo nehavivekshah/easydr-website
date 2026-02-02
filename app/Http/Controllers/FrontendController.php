@@ -484,12 +484,18 @@ class FrontendController extends Controller
                 ->orderBy('id', 'desc')
                 ->first();
 
-            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments', 'doctorInfo', 'doctorAvailability'));
+            // Address
+            $userAddress = \App\Models\Usermetas::where('uid', $user->id)->first();
+
+            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments', 'doctorInfo', 'doctorAvailability', 'userAddress'));
 
         } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
             $pid = $patient ? $patient->id : 0;
+
+            // Address
+            $userAddress = \App\Models\Usermetas::where('uid', $user->id)->first();
 
             // Should use User ID for appointments if that's how it's stored
             $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
@@ -497,7 +503,7 @@ class FrontendController extends Controller
             $favoritesCount = 0; // DB::table('favorites')->where('user_id', $user->id)->count();
             $billingAmount = DB::table('appointments')->where('pid', $user->id)->sum('fees');
 
-            return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount', 'patient'));
+            return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount', 'patient', 'userAddress'));
         }
     }
 

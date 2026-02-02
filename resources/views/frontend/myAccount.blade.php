@@ -119,11 +119,20 @@
                                 <a href="/my-profile"><i class="fas fa-edit pr-1"></i> edit</a>
                                 <ul>
                                     <li><span>Name:</span> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</li>
-                                    <li><span>Phone:</span> {{ Auth::user()->mobile }} </li>
+                                    <li><span>Mobile No.:</span> {{ Auth::user()->mobile }}, {{ Auth::user()->altr_mobile }}
+                                    </li>
                                     <li><span>Email:</span> {{ Auth::user()->email }}</li>
-                                    <li><span>Gender:</span> {{ Auth::user()->gender ?? 'Not Specified' }}</li>
-                                    <li><span>DOB:</span> {{ Auth::user()->dob ?? 'Not Specified' }}</li>
-                                    <li><span>Branch:</span> {{ Auth::user()->branch ?? 'Main' }}</li>
+                                    <li><span>DOB:</span>
+                                        {{ Auth::user()->dob ? date('d-m-Y', strtotime(Auth::user()->dob)) : 'Not Specified' }}
+                                    </li>
+                                    <li><span>Gender:</span> {{ Auth::user()->gender == 1 ? 'Male' : (Auth::user()->gender == 2 ? 'Female' : 'Other') ?? 'Not Specified' }}</li>
+                                    @if(isset($userAddress))
+                                        <li><span>Address:</span> {{ $userAddress->address ?? 'Not Set' }}</li>
+                                        <li><span>City:</span> {{ $userAddress->city ?? 'Not Set' }}</li>
+                                        <li><span>State:</span> {{ $userAddress->state ?? 'Not Set' }}</li>
+                                        <li><span>Country:</span> {{ $userAddress->country ?? 'Not Set' }}</li>
+                                        <li><span>Pincode:</span> {{ $userAddress->pincode ?? 'Not Set' }}</li>
+                                    @endif
                                 </ul>
 
                                 {{-- Extended Profile Info --}}
@@ -133,19 +142,8 @@
                                     <ul>
                                         <li><span>Blood Group:</span> {{ $patient->blood_group ?? 'Not Set' }}</li>
                                         <li><span>Height:</span> {{ $patient->height ?? 'Not Set' }}</li>
-                                        <li><span>Weight:</span> {{ $patient->weight ?? 'Not Set' }}</li>
-                                        <li><span>Marital Status:</span> {{ $patient->marital_status ?? 'Not Set' }}</li>
-                                        <li class="mt-3"><strong>Health Card Details:</strong></li>
-                                        <li><span>Card No:</span> {{ $patient->health_card ?? 'Not Set' }}</li>
-                                        <li><span>Status:</span>
-                                            @if(!empty($patient->hc_verified_at))
-                                                <span class="badge badge-success">Verified</span>
-                                            @else
-                                                <span class="badge badge-warning">Pending</span>
-                                            @endif
-                                        </li>
-                                        <li><span>Issue Date:</span> {{ $patient->hc_issue_date ?? 'N/A' }}</li>
-                                        <li><span>Expiry Date:</span> {{ $patient->hc_expairy_date ?? 'N/A' }}</li>
+                                        <li><span>Weight:</span> {{ $patient->weight.' Kg' ?? 'Not Set' }}</li>
+                                        <li><span>Marital Status:</span> {{ $patient->marital_status == 1 ? 'Single' : ( $patient->marital_status == 2 ? 'Married' : 'Divorced') ?? 'Not Set' }}</li>
                                     </ul>
                                 @elseif(Auth::user()->role == 4 && isset($doctorInfo))
                                     <hr>
@@ -155,9 +153,11 @@
                                         <li><span>Experience:</span> {{ $doctorInfo->experience ?? 'Not Set' }}</li>
                                         <li><span>License:</span> {{ $doctorInfo->license ?? 'Not Set' }}</li>
                                         <li><span>Education:</span> {{ $doctorInfo->education ?? 'Not Set' }}</li>
-                                        <li><span>Fees:</span> {{ $doctorInfo->fees ? '$' . $doctorInfo->fees : 'Not Set' }}</li>
+                                        <li><span>Fees:</span> {{ $doctorInfo->fees ? '$' . $doctorInfo->fees : 'Not Set' }}
+                                        </li>
                                         <li class="mt-2"><span>About:</span>
-                                            <small>{{ Str::limit($doctorInfo->about ?? 'No description', 100) }}</small></li>
+                                            <small>{{ Str::limit($doctorInfo->about ?? 'No description', 100) }}</small>
+                                        </li>
                                     </ul>
                                     @if(isset($doctorAvailability))
                                         <h5 class="mt-3">Availability</h5>
@@ -165,7 +165,8 @@
                                             <li><span>Days:</span>
                                                 {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
                                             <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
-                                                {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}</li>
+                                                {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
+                                            </li>
                                             <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
                                         </ul>
                                     @endif
