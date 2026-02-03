@@ -68,13 +68,13 @@
                                                                 {{-- Join Button --}}
                                                                 @if(!empty($appointment->meeting_link) && $appointment->status == '1' && $isOnTime && !$isExpired)
                                                                     <a href="{{ $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link }}"
-                                                                        target="_blank" class="btn btn-sm btn-info text-white"
+                                                                        target="_blank"
+                                                                        class="btn btn-sm btn-info text-white action-btn"
                                                                         title="Join Meeting">
                                                                         <i class="fas fa-video"></i> Join
                                                                     </a>
                                                                 @else
-                                                                    <button class="btn btn-sm btn-secondary" disabled
-                                                                        style="opacity: 0.5; cursor: not-allowed;">
+                                                                    <button class="btn btn-sm btn-secondary action-btn" disabled>
                                                                         <i class="fas fa-video"></i>
                                                                     </button>
                                                                 @endif
@@ -85,14 +85,13 @@
                                                                         method="POST"
                                                                         onsubmit="return confirm('Cancel this appointment?');">
                                                                         @csrf
-                                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                                        <button type="submit" class="btn btn-sm btn-danger action-btn"
                                                                             title="Cancel">
                                                                             <i class="fas fa-times"></i>
                                                                         </button>
                                                                     </form>
                                                                 @else
-                                                                    <button class="btn btn-sm btn-outline-danger" disabled
-                                                                        style="opacity: 0.5;">
+                                                                    <button class="btn btn-sm btn-outline-danger action-btn" disabled>
                                                                         <i class="fas fa-times"></i>
                                                                     </button>
                                                                 @endif
