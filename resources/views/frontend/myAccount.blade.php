@@ -152,9 +152,9 @@
                                             {{ $patient->marital_status == 1 ? 'Single' : ($patient->marital_status == 2 ? 'Married' : 'Divorced') ?? 'Not Set' }}
                                         </li>
                                         <li><span>Family Doctor:</span>
-                                            @if($patient->familyDoctor)
-                                                <strong class="text-success">{{ $patient->familyDoctor->first_name }}
-                                                    {{ $patient->familyDoctor->last_name }}</strong>
+                                            @if($patient->family_doctor)
+                                                <strong class="text-success">{{ $patient->family_doctor->first_name }}
+                                                    {{ $patient->family_doctor->last_name }}</strong>
                                             @else
                                                 <strong class="text-danger">Not Set</strong>
                                             @endif

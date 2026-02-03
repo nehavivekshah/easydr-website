@@ -32,7 +32,7 @@ class WebAppointmentController extends Controller
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id') // Join doctor users
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid') // Join doctors
             ->leftJoin('patients', 'pet.id', '=', 'patients.uid') // Corrected join with patients table
-            ->leftJoin('users as famdoc', 'patients.familyDoctor', '=', 'famdoc.id') // Join family doctor
+            ->leftJoin('users as famdoc', 'patients.family_doctor_id', '=', 'famdoc.id') // Join family doctor
             ->select(
                 'pet.first_name as patient_first_name',
                 'pet.last_name as patient_last_name',
@@ -81,7 +81,7 @@ class WebAppointmentController extends Controller
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id') // Join doctor users
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid') // Join doctors
             ->leftJoin('patients', 'pet.id', '=', 'patients.uid') // Corrected join with patients table
-            ->leftJoin('users as famdoc', 'patients.familyDoctor', '=', 'famdoc.id') // Join family doctor
+            ->leftJoin('users as famdoc', 'patients.family_doctor_id', '=', 'famdoc.id') // Join family doctor
             ->select(
                 'pet.first_name as patient_first_name',
                 'pet.last_name as patient_last_name',
@@ -125,7 +125,7 @@ class WebAppointmentController extends Controller
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id') // Join doctor users
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid') // Join doctors
             ->leftJoin('patients', 'pet.id', '=', 'patients.uid') // Corrected join with patients table
-            ->leftJoin('users as famdoc', 'patients.familyDoctor', '=', 'famdoc.id') // Join family doctor
+            ->leftJoin('users as famdoc', 'patients.family_doctor_id', '=', 'famdoc.id') // Join family doctor
             ->select(
                 'pet.first_name as patient_first_name',
                 'pet.last_name as patient_last_name',

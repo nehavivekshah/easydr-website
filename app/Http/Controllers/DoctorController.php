@@ -758,7 +758,7 @@ class DoctorController extends ApiController
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
             ->leftJoin('patients', 'pet.id', '=', 'patients.uid')
-            ->leftJoin('users as famdoc', 'patients.familyDoctor', '=', 'famdoc.id')
+            ->leftJoin('users as famdoc', 'patients.family_doctor_id', '=', 'famdoc.id')
             ->select(
                 'pet.first_name as patient_first_name',
                 'pet.last_name as patient_last_name',
@@ -866,7 +866,7 @@ class DoctorController extends ApiController
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
             ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
             ->leftJoin('patients', 'pet.id', '=', 'patients.uid')
-            ->leftJoin('users as famdoc', 'patients.familyDoctor', '=', 'famdoc.id')
+            ->leftJoin('users as famdoc', 'patients.family_doctor_id', '=', 'famdoc.id')
             ->select(
                 'appointments.pid',
                 'pet.first_name as patient_first_name',
@@ -913,7 +913,7 @@ class DoctorController extends ApiController
             ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
             ->leftJoin('patients', 'pet.id', '=', 'patients.uid')
             ->leftJoin('usermetas', 'appointments.pid', '=', 'usermetas.uid')
-            ->leftJoin('users as famdoc', 'patients.familyDoctor', '=', 'famdoc.id')
+            ->leftJoin('users as famdoc', 'patients.family_doctor_id', '=', 'famdoc.id')
             ->select(
                 'doc.first_name as doctor_first_name',
                 'doc.last_name as doctor_last_name',
