@@ -412,7 +412,12 @@ class WebUserController extends Controller
 
         }
 
-        return view('manageUser', ['users' => $users, 'roles' => $roles, 'type' => $type, 'id' => $id]);
+        $doctors = User::where('branch', (Auth::user()->branch ?? ''))
+            ->where('role', 4)
+            ->select('id', 'first_name', 'last_name')
+            ->get();
+
+        return view('manageUser', ['users' => $users, 'roles' => $roles, 'type' => $type, 'id' => $id, 'doctors' => $doctors]);
     }
     function manageUserPost(Request $request)
     {
@@ -525,6 +530,27 @@ class WebUserController extends Controller
                 $patient->height = $request->height ?? '';
                 $patient->weight = $request->weight ?? '';
 
+                // Family Doctor Logic
+                $familyDoctorId = $request->family_doctor_id;
+                if (!empty($request->new_doc_name) && !empty($request->new_doc_mobile)) {
+                    $newDoc = new User();
+                    $newDoc->branch = Auth::user()->branch ?? 1;
+                    $newDoc->first_name = $request->new_doc_name;
+                    $newDoc->mobile = $request->new_doc_mobile;
+                    $newDoc->email = $request->new_doc_email ?? null;
+                    $newDoc->role = 4;
+                    $newDoc->status = 1;
+                    $newDoc->password = Hash::make('12345678');
+                    $newDoc->save();
+
+                    $docProfile = new Doctors();
+                    $docProfile->uid = $newDoc->id;
+                    $docProfile->save();
+
+                    $familyDoctorId = $newDoc->id;
+                }
+                $patient->family_doctor_id = $familyDoctorId;
+
                 if (!empty($request->health_card)) {
                     $patient->health_card = $request->health_card ?? '';
                     $patient->hc_verified_at = NOW();
@@ -618,6 +644,27 @@ class WebUserController extends Controller
 
                 $patient->height = $request->height ?? '';
                 $patient->weight = $request->weight ?? '';
+
+                // Family Doctor Logic
+                $familyDoctorId = $request->family_doctor_id;
+                if (!empty($request->new_doc_name) && !empty($request->new_doc_mobile)) {
+                    $newDoc = new User();
+                    $newDoc->branch = Auth::user()->branch ?? 1;
+                    $newDoc->first_name = $request->new_doc_name;
+                    $newDoc->mobile = $request->new_doc_mobile;
+                    $newDoc->email = $request->new_doc_email ?? null;
+                    $newDoc->role = 4;
+                    $newDoc->status = 1;
+                    $newDoc->password = Hash::make('12345678');
+                    $newDoc->save();
+
+                    $docProfile = new Doctors();
+                    $docProfile->uid = $newDoc->id;
+                    $docProfile->save();
+
+                    $familyDoctorId = $newDoc->id;
+                }
+                $patient->family_doctor_id = $familyDoctorId;
 
                 if (!empty($request->health_card)) {
                     $patient->health_card = $request->health_card ?? '';
