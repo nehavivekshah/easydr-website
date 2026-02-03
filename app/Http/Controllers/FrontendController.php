@@ -440,13 +440,16 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
+        $today = Carbon::now()->toDateString();
+        $userAddress = \App\Models\Usermetas::where('uid', $user->id)->first();
+
         if ($user->role == 4) {
             // DOCTOR DASHBOARD
-            $doctorId = $user->id; // Using User ID as reference, though some tables use doctors.id
+            $doctorId = $user->id;
 
-            // Today's Appointments
-            $today = Carbon::now()->toDateString();
-            $appointmentsCount = \App\Models\Appointments::where('did', $doctorId)
+            // Appointments Stats
+            $appointmentsCount = \App\Models\Appointments::where('did', $doctorId)->count();
+            $todayAppointmentsCount = \App\Models\Appointments::where('did', $doctorId)
                 ->where('date', $today)
                 ->count();
 
@@ -465,7 +468,7 @@ class FrontendController extends Controller
                 ->sum('fees');
 
             // Recent Appointments
-            $recentAppointments = \App\Models\Appointments::leftJoin('patients', 'appointments.pid', '=', 'patients.id')
+            $recentAppointments = \App\Models\Appointments::leftJoin('patients', 'appointments.pid', '=', 'patients.uid')
                 ->leftJoin('users as patient', 'patients.uid', '=', 'patient.id')
                 ->select(
                     'appointments.*',
@@ -478,32 +481,75 @@ class FrontendController extends Controller
                 ->limit(5)
                 ->get();
 
-            // Doctor Availability (Fetch latest active schedule)
+            // Doctor Availability
             $doctorAvailability = \App\Models\Doctor_availables::where('doctor_id', $user->id)
                 ->where('status', 1)
                 ->orderBy('id', 'desc')
                 ->first();
 
-            // Address
-            $userAddress = \App\Models\Usermetas::where('uid', $user->id)->first();
-
-            return view('frontend/myAccount', compact('appointmentsCount', 'patientsCount', 'walletAmount', 'totalRevenue', 'recentAppointments', 'doctorInfo', 'doctorAvailability', 'userAddress'));
+            return view('frontend/myAccount', compact(
+                'appointmentsCount',
+                'todayAppointmentsCount',
+                'patientsCount',
+                'walletAmount',
+                'totalRevenue',
+                'recentAppointments',
+                'doctorInfo',
+                'doctorAvailability',
+                'userAddress'
+            ));
 
         } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
-            $pid = $patient ? $patient->id : 0;
 
-            // Address
-            $userAddress = \App\Models\Usermetas::where('uid', $user->id)->first();
+            // Appointment Stats
+            $appointmentsCount = \App\Models\Appointments::where('pid', $user->id)->count();
+            $todayAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
+                ->where('date', $today)
+                ->count();
 
-            // Should use User ID for appointments if that's how it's stored
-            $appointmentsCount = DB::table('appointments')->where('pid', $user->id)->count();
-            $reportsCount = 0; // DB::table('reports')->where('patient_id', $user->id)->count();
-            $favoritesCount = 0; // DB::table('favorites')->where('user_id', $user->id)->count();
-            $billingAmount = DB::table('appointments')->where('pid', $user->id)->sum('fees');
+            $completedAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
+                ->where('status', 1)
+                ->count();
+            $todayCompletedCount = \App\Models\Appointments::where('pid', $user->id)
+                ->where('date', $today)
+                ->where('status', 1)
+                ->count();
 
-            return view('frontend/myAccount', compact('appointmentsCount', 'reportsCount', 'favoritesCount', 'billingAmount', 'patient', 'userAddress'));
+            $pendingAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
+                ->where('status', 0)
+                ->count();
+            $todayPendingCount = \App\Models\Appointments::where('pid', $user->id)
+                ->where('date', $today)
+                ->where('status', 0)
+                ->count();
+
+            // Billing & Payments
+            $billingAmount = \App\Models\Appointments::where('pid', $user->id)
+                ->where('payment_status', 'paid')
+                ->sum('fees');
+            $todayPaymentCount = \App\Models\Appointments::where('pid', $user->id)
+                ->where('date', $today)
+                ->where('payment_status', 'paid')
+                ->count();
+
+            // Favorites/Reviews placeholders (could be expanded later)
+            $favoritesCount = 0;
+
+            return view('frontend/myAccount', compact(
+                'appointmentsCount',
+                'todayAppointmentsCount',
+                'completedAppointmentsCount',
+                'todayCompletedCount',
+                'pendingAppointmentsCount',
+                'todayPendingCount',
+                'billingAmount',
+                'todayPaymentCount',
+                'favoritesCount',
+                'patient',
+                'userAddress'
+            ));
         }
     }
 

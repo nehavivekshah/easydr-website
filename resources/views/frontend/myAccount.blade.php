@@ -73,18 +73,6 @@
                                             <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
-                                    {{-- Placeholder or Extra Stat --}}
-                                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview bg-success">
-                                            <div class="icon"><i class="far fa-snowflake" aria-hidden="true"></i></div>
-                                            <div class="text">
-                                                <p>Any One</p>
-                                                <h3>35</h3>
-                                                <p>5 Today</p>
-                                            </div>
-                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                        </div>
-                                    </div>
 
                                 @else
                                     {{-- DOCTOR STATS --}}
@@ -94,7 +82,7 @@
                                             <div class="text">
                                                 <p>Total Appointment</p>
                                                 <h3>{{ $appointmentsCount ?? 0 }}</h3>
-                                                <p>0 Today</p>
+                                                <p>{{ $todayAppointmentsCount ?? 0 }} Today</p>
                                             </div>
                                             <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
@@ -105,7 +93,18 @@
                                             <div class="text">
                                                 <p>My Patients</p>
                                                 <h3>{{ $patientsCount ?? 0 }}</h3>
-                                                <p>New Today</p>
+                                                <p>Unique Patients</p>
+                                            </div>
+                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
+                                        <div class="dashboard_overview bg-purple">
+                                            <div class="icon"><i class="fas fa-wallet" aria-hidden="true"></i></div>
+                                            <div class="text">
+                                                <p>Wallet Balance</p>
+                                                <h3>{{ $walletAmount ?? 0 }}</h3>
+                                                <p>Total Revenue: {{ $totalRevenue ?? 0 }}</p>
                                             </div>
                                             <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
