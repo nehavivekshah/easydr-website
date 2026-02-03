@@ -64,7 +64,8 @@
                                 }
                                 .step-label { font-size: 12px; color: #666; }
                                 .step-item.active .step-label { color: var(--primary-color); font-weight: bold; }
-                                .wizard-buttons { margin-top: 25px; display: flex; justify-content: space-between; }
+                                .wizard-buttons { margin-top: 35px; display: flex; justify-content: flex-end; gap: 15px; }
+                                .wizard-buttons .btn { min-width: 120px; }
                             </style>
 
                             @php
@@ -366,9 +367,9 @@
             
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").style.display = "none";
-                document.getElementById("submitBtn").style.display = "inline";
+                document.getElementById("submitBtn").style.display = "inline-block";
             } else {
-                document.getElementById("nextBtn").style.display = "inline";
+                document.getElementById("nextBtn").style.display = "inline-block";
                 document.getElementById("submitBtn").style.display = "none";
             }
             

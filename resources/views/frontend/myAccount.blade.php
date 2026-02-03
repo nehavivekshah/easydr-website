@@ -114,9 +114,11 @@
 
                             </div>
 
-                            <div class="dashboard_profile">
+                            <div class="dashboard_profile d-flex justify-content-between align-items-center mb-3">
                                 <h5>Profile information</h5>
-                                <a href="/my-profile"><i class="fas fa-edit pr-1"></i> edit</a>
+                                <a href="/my-profile" class="btn btn-sm btn-primary py-1 px-3"><i class="fas fa-edit pr-1"></i> Edit Profile</a>
+                            </div>
+                            <div class="dashboard_profile_details">
                                 <ul>
                                     <li><span>Name:</span> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</li>
                                     <li><span>Mobile No.:</span> {{ Auth::user()->mobile }}, {{ Auth::user()->altr_mobile }}
@@ -126,7 +128,7 @@
                                         {{ Auth::user()->dob ? date('d M, Y', strtotime(Auth::user()->dob)) : 'Not Specified' }}
                                     </li>
                                     <li><span>Gender:</span>
-                                        {{ Auth::user()->gender == 1 ? 'Male' : (Auth::user()->gender == 2 ? 'Female' : 'Other') ?? 'Not Specified' }}
+                                        {{ !isset(Auth::user()->gender) ? 'Not Specified' : (Auth::user()->gender == 1 ? 'Male' : (Auth::user()->gender == 2 ? 'Female' : 'Other')) }}
                                     </li>
                                     @if(isset($userAddress))
                                         <li><span>Aadhar No.:</span> <strong
@@ -146,10 +148,10 @@
                                     <h5>Medical Information</h5>
                                     <ul>
                                         <li><span>Blood Group:</span> {{ $patient->blood_group ?? 'Not Set' }}</li>
-                                        <li><span>Height:</span> {{ $patient->height ?? 'Not Set' }}</li>
-                                        <li><span>Weight:</span> {{ $patient->weight . ' Kg' ?? 'Not Set' }}</li>
+                                        <li><span>Height:</span> {{ $patient->height ? $patient->height : 'Not Set' }}</li>
+                                        <li><span>Weight:</span> {{ $patient->weight ? $patient->weight . ' Kg' : 'Not Set' }}</li>
                                         <li><span>Marital Status:</span>
-                                            {{ $patient->marital_status == 1 ? 'Single' : ($patient->marital_status == 2 ? 'Married' : 'Divorced') ?? 'Not Set' }}
+                                            {{ !isset($patient->marital_status) ? 'Not Set' : ($patient->marital_status == 1 ? 'Single' : ($patient->marital_status == 2 ? 'Married' : 'Divorced')) }}
                                         </li>
                                         <li><span>Family Doctor:</span>
                                             @if($patient->family_doctor)
@@ -162,6 +164,13 @@
                                         <li><span>Health Card No.:</span>
                                             @if(!empty($patient->health_card))
                                                 <strong class="text-success">{{ $patient->health_card }}</strong>
+                                                @if(($patient->health_card_status ?? 0) == 1)
+                                                    <span class="badge bg-success font-10 ml-2">Approved</span>
+                                                @elseif(($patient->health_card_status ?? 0) == 2)
+                                                    <span class="badge bg-danger font-10 ml-2">Rejected</span>
+                                                @else
+                                                    <span class="badge bg-warning font-10 ml-2">Pending</span>
+                                                @endif
                                             @else
                                                 <strong class="text-danger">Not Set</strong>
                                             @endif
