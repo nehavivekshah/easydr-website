@@ -84,6 +84,17 @@
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
+                                                    {{-- Call Button --}}
+                                                    @if(!empty($appointment->doctor_phone))
+                                                        <a href="tel:{{ $appointment->doctor_phone }}" class="action-btn btn-call" title="Call Doctor">
+                                                            <i class="fas fa-phone"></i>
+                                                        </a>
+                                                    @else
+                                                        <button class="action-btn btn-call" disabled title="No phone provided">
+                                                            <i class="fas fa-phone"></i>
+                                                        </button>
+                                                    @endif
+
                                                     {{-- Chat Button --}}
                                                     @if($isChatActive && !$isExpired)
                                                         <a href="/messages" class="action-btn btn-chat" title="Message">

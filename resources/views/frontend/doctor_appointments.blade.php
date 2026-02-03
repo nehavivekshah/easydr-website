@@ -107,6 +107,17 @@
                                                         </form>
                                                     @endif
 
+                                                    {{-- Call Button --}}
+                                                    @if(!empty($appointment->patient_mobile))
+                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call" title="Call Patient">
+                                                            <i class="fas fa-phone"></i>
+                                                        </a>
+                                                    @else
+                                                        <button class="action-btn btn-call" disabled title="No phone provided">
+                                                            <i class="fas fa-phone"></i>
+                                                        </button>
+                                                    @endif
+
                                                     {{-- Chat Button (assuming doctors also use /messages) --}}
                                                     @if($isChatActive && !$isExpired)
                                                         <a href="/messages" class="action-btn btn-chat" title="Message Patient">
@@ -167,8 +178,8 @@
                                         </div>
                                     @endforeach
 
-                                    <div class="col-12 mt-4">
-                                        {{ $appointments->links() }}
+                                    <div class="col-12 mt-4 d-flex justify-content-center">
+                                        {{ $appointments->appends(request()->input())->links('pagination::bootstrap-5') }}
                                     </div>
                                 @else
                                     <div class="col-12">
