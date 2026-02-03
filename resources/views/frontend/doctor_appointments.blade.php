@@ -13,108 +13,133 @@
                     <!-- Content Area -->
                     <div class="col-lg-9">
                         <div class="dashboard_content">
-                            <h5>My Appointments</h5>
-                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5>My Appointments</h5>
+                            </div>
+
+                            <div class="row">
                                 @if(isset($appointments) && count($appointments) > 0)
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th>Patient</th>
-                                                    <th>Problem</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($appointments as $appointment)
-                                                    @php
-                                                        $apptDateTime = \Carbon\Carbon::parse($appointment->date . ' ' . $appointment->time);
-                                                        $now = \Carbon\Carbon::now();
-                                                        // Duration: Use specific duration if available, else 30 mins
-                                                        $duration = $appointment->duration ?? 30;
-                                                        $slotEndTime = $apptDateTime->copy()->addMinutes($duration);
+                                    @foreach($appointments as $appointment)
+                                        @php
+                                            $apptDateTime = \Carbon\Carbon::parse($appointment->date . ' ' . $appointment->time);
+                                            $now = \Carbon\Carbon::now();
 
-                                                        // Chat starts 15 mins before, ends when slot ends
-                                                        $chatStartTime = $apptDateTime->copy()->subMinutes(15);
-                                                        $isChatActive = $now->between($chatStartTime, $slotEndTime) && $appointment->status == '1';
+                                            // Duration: Use specific duration if available, else 30 mins
+                                            $duration = $appointment->duration ?? 30;
+                                            $slotEndTime = $apptDateTime->copy()->addMinutes($duration);
 
-                                                        // Session (Call/Video) starts at appt time, ends when slot ends
-                                                        $sessionStartTime = $apptDateTime->copy()->subMinutes(5);
-                                                        $isSessionActive = $now->between($sessionStartTime, $slotEndTime) && $appointment->status == '1';
+                                            // Chat starts 15 mins before, ends when slot ends
+                                            $chatStartTime = $apptDateTime->copy()->subMinutes(15);
+                                            $isChatActive = $now->between($chatStartTime, $slotEndTime) && $appointment->status == '1';
 
-                                                        // Expired after slot ends
-                                                        $isExpired = $now->gt($slotEndTime) && $appointment->status != '3' && $appointment->status != '2';
-                                                        $isOnTime = $isSessionActive; 
-                                                    @endphp
-                                                    <tr>
-                                                        <td>{{ $apptDateTime->format('d M, Y') }}</td>
-                                                        <td>{{ $apptDateTime->format('h:i A') }}</td>
-                                                        <td>
-                                                            {{ $appointment->patient_first_name }}
-                                                            {{ $appointment->patient_last_name }}
-                                                            <br>
-                                                            <small class="text-muted">{{ $appointment->patient_mobile }}</small>
-                                                        </td>
-                                                        <td>{{ Str::limit($appointment->note, 30) }}</td>
-                                                        <td>
-                                                            @if($appointment->status == '0')
-                                                                <span class="badge bg-warning text-dark">Pending</span>
-                                                            @elseif($appointment->status == '1')
-                                                                <span class="badge bg-success">Confirmed</span>
-                                                            @elseif($appointment->status == '2')
-                                                                <span class="badge bg-danger">Cancelled</span>
-                                                            @elseif($isExpired)
-                                                                <span class="badge bg-secondary">Expired</span>
-                                                            @else
-                                                                <span class="badge bg-info">Completed</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex gap-2">
-                                                                {{-- Join Button --}}
-                                                                @if(!empty($appointment->meeting_link) && $appointment->status == '1' && $isOnTime && !$isExpired)
-                                                                    <a href="{{ $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link }}"
-                                                                        target="_blank" class="btn btn-sm btn-info text-white"
-                                                                        title="Join Meeting">
-                                                                        <i class="fas fa-video"></i> Join
-                                                                    </a>
-                                                                @else
-                                                                    <button class="btn btn-sm btn-secondary" disabled
-                                                                        title="Meeting not active">
-                                                                        <i class="fas fa-video"></i>
-                                                                    </button>
-                                                                @endif
+                                            // Session (Call/Video) starts at appt time, ends when slot ends
+                                            $sessionStartTime = $apptDateTime->copy()->subMinutes(5);
+                                            $isSessionActive = $now->between($sessionStartTime, $slotEndTime) && $appointment->status == '1';
 
-                                                                {{-- Cancel Button --}}
-                                                                @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
-                                                                    <form action="{{ route('cancelAppointment', $appointment->id) }}"
-                                                                        method="POST"
-                                                                        onsubmit="return confirm('Cancel this appointment?');">
-                                                                        @csrf
-                                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                                            title="Cancel">
-                                                                            <i class="fas fa-times"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                @else
-                                                                    <button class="btn btn-sm btn-outline-danger" disabled
-                                                                        title="Cannot cancel">
-                                                                        <i class="fas fa-times"></i>
-                                                                    </button>
-                                                                @endif
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                            // Expired after slot ends
+                                            $isExpired = $now->gt($slotEndTime) && $appointment->status != '3' && $appointment->status != '2';
+                                            $isOnTime = $isSessionActive; 
+                                        @endphp
+                                        <div class="col-lg-6 col-md-12 mb-4 wow fadeInUp">
+                                            <div class="appointment-card">
+                                                {{-- Status Badge --}}
+                                                @if($appointment->status == '2')
+                                                    <span class="appointment-status-badge status-cancelled">Cancelled</span>
+                                                @elseif($appointment->status == '3')
+                                                    <span class="appointment-status-badge status-completed">Completed</span>
+                                                @elseif($isExpired)
+                                                    <span class="appointment-status-badge status-expired">Expired</span>
+                                                @elseif($appointment->status == '1')
+                                                    <span class="appointment-status-badge status-upcoming">Confirmed</span>
+                                                @else
+                                                    <span class="appointment-status-badge status-upcoming">Pending</span>
+                                                @endif
+
+                                                {{-- Header --}}
+                                                <div class="appointment-header">
+                                                    <div class="appointment-img-wrapper">
+                                                        <img src="{{ $appointment->patient_photo ? asset('public/assets/images/profiles/' . $appointment->patient_photo) : 'https://ui-avatars.com/api/?name=' . $appointment->patient_first_name . '+' . $appointment->patient_last_name . '&background=0D8ABC&color=fff' }}"
+                                                            alt="{{ $appointment->patient_first_name }}">
+                                                    </div>
+                                                    <div class="appointment-info">
+                                                        <h5>{{ $appointment->patient_first_name }}
+                                                            {{ $appointment->patient_last_name }}</h5>
+                                                        <p>{{ $appointment->patient_mobile }}</p>
+                                                    </div>
+                                                </div>
+
+                                                {{-- Problem/Note --}}
+                                                <div class="appointment-problem mt-2 mb-3">
+                                                    <small class="text-muted d-block">Problem:</small>
+                                                    <p class="mb-0">{{ Str::limit($appointment->note, 60) }}</p>
+                                                </div>
+
+                                                {{-- Date Time --}}
+                                                <div class="appointment-datetime">
+                                                    <i class="far fa-calendar-alt me-2"></i> {{ $apptDateTime->format('d M, Y') }} |
+                                                    <i class="far fa-clock ms-2 me-2"></i> {{ $apptDateTime->format('h:i A') }}
+                                                </div>
+
+                                                {{-- Action Buttons --}}
+                                                <div class="appointment-actions">
+                                                    {{-- Chat Button (assuming doctors also use /messages) --}}
+                                                    @if($isChatActive && !$isExpired)
+                                                        <a href="/messages" class="action-btn btn-chat" title="Message Patient">
+                                                            <i class="fas fa-comment-alt"></i>
+                                                        </a>
+                                                    @else
+                                                        <button class="action-btn btn-chat" disabled
+                                                            title="{{ $now->lt($chatStartTime) ? 'Chat opens 15m before' : 'Messaging closed' }}">
+                                                            <i class="fas fa-comment-alt"></i>
+                                                        </button>
+                                                    @endif
+
+                                                    {{-- Video Button --}}
+                                                    @if(!empty($appointment->meeting_link) && $isSessionActive && !$isExpired)
+                                                        @php
+                                                            $meetingUrl = $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link;
+                                                        @endphp
+                                                        <a href="{{ $meetingUrl }}" target="_blank"
+                                                            class="action-btn btn-video pulsate-active" title="Join Meeting"
+                                                            style="background: #17a2b8; color: #fff;">
+                                                            <i class="fas fa-video"></i>
+                                                        </a>
+                                                    @else
+                                                        <button class="action-btn btn-video" disabled
+                                                            title="{{ $isExpired ? 'Meeting Expired' : 'Join active during session' }}">
+                                                            <i class="fas fa-video"></i>
+                                                        </button>
+                                                    @endif
+
+                                                    {{-- Cancel Button --}}
+                                                    @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
+                                                        <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST"
+                                                            class="flex-grow-1" style="flex: 1; display: flex;"
+                                                            onsubmit="return confirm('Cancel this appointment?');">
+                                                            @csrf
+                                                            <button type="submit" class="action-btn btn-cancel"
+                                                                title="Cancel Appointment" style="width: 100%;">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <button class="action-btn btn-cancel" disabled title="Cannot cancel">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                    <div class="col-12 mt-4">
+                                        {{ $appointments->links() }}
                                     </div>
                                 @else
-                                    <div class="text-center py-5">
-                                        <p class="text-muted mb-3">No appointments found.</p>
+                                    <div class="col-12">
+                                        <div class="text-center py-5 bg-white shadow-sm rounded">
+                                            <p class="text-muted mb-0">No appointments found.</p>
+                                        </div>
                                     </div>
                                 @endif
                             </div>

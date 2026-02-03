@@ -748,7 +748,8 @@ class FrontendController extends Controller
                     'appointments.*',
                     'users.first_name as patient_first_name',
                     'users.last_name as patient_last_name',
-                    'users.mobile as patient_mobile'
+                    'users.mobile as patient_mobile',
+                    'users.photo as patient_photo'
                 )
                 ->where('appointments.did', $user->id);
 
