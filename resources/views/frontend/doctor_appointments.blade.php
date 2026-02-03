@@ -64,7 +64,22 @@
                                                     <div class="appointment-info">
                                                         <h5>{{ $appointment->patient_first_name }}
                                                             {{ $appointment->patient_last_name }}</h5>
-                                                        <p>{{ $appointment->patient_mobile }}</p>
+                                                        <p class="mb-0">{{ $appointment->patient_mobile }}</p>
+                                                        @php
+                                                            $age = null;
+                                                            if (!empty($appointment->patient_dob)) {
+                                                                try {
+                                                                    $age = \Carbon\Carbon::parse($appointment->patient_dob)->age . ' Yrs';
+                                                                } catch (\Exception $e) {
+                                                                }
+                                                            }
+                                                            $gender = !empty($appointment->patient_gender) ? ucfirst($appointment->patient_gender) : null;
+                                                        @endphp
+                                                        @if($age || $gender)
+                                                            <small class="text-muted">
+                                                                {{ $gender }}{{ $age && $gender ? ', ' : '' }}{{ $age }}
+                                                            </small>
+                                                        @endif
                                                     </div>
                                                 </div>
 
@@ -82,6 +97,16 @@
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
+                                                    {{-- Confirm Button (If Pending) --}}
+                                                    @if($appointment->status == '0')
+                                                        <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST" class="flex-grow-1" style="flex: 1; display: flex;">
+                                                            @csrf
+                                                            <button type="submit" class="action-btn" title="Confirm Appointment" style="width: 100%; background: #28a745; color: #fff; border-color: #28a745;">
+                                                                <i class="fas fa-check"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+
                                                     {{-- Chat Button (assuming doctors also use /messages) --}}
                                                     @if($isChatActive && !$isExpired)
                                                         <a href="/messages" class="action-btn btn-chat" title="Message Patient">
@@ -109,6 +134,16 @@
                                                             title="{{ $isExpired ? 'Meeting Expired' : 'Join active during session' }}">
                                                             <i class="fas fa-video"></i>
                                                         </button>
+                                                    @endif
+
+                                                    {{-- Complete Button (If Confirmed) --}}
+                                                    @if($appointment->status == '1' && !$isExpired)
+                                                        <form action="{{ route('completeAppointment', $appointment->id) }}" method="POST" class="flex-grow-1" style="flex: 1; display: flex;">
+                                                            @csrf
+                                                            <button type="submit" class="action-btn" title="Mark as Completed" style="width: 100%; background: #6f42c1; color: #fff; border-color: #6f42c1;">
+                                                                <i class="fas fa-flag-checkered"></i>
+                                                            </button>
+                                                        </form>
                                                     @endif
 
                                                     {{-- Cancel Button --}}

@@ -749,7 +749,9 @@ class FrontendController extends Controller
                     'users.first_name as patient_first_name',
                     'users.last_name as patient_last_name',
                     'users.mobile as patient_mobile',
-                    'users.photo as patient_photo'
+                    'users.photo as patient_photo',
+                    'users.dob as patient_dob',
+                    'users.gender as patient_gender'
                 )
                 ->where('appointments.did', $user->id);
 
@@ -860,10 +862,12 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
-        // Find the appointment and ensure it belongs to the logged-in user
+        // Find the appointment and ensure it belongs to the logged-in user (as patient or doctor)
         $appointment = DB::table('appointments')
             ->where('id', $id)
-            ->where('pid', $user->id)
+            ->where(function ($q) use ($user) {
+                $q->where('pid', $user->id)->orWhere('did', $user->id);
+            })
             ->first();
 
         if (!$appointment) {
@@ -878,6 +882,48 @@ class FrontendController extends Controller
         DB::table('appointments')->where('id', $id)->update(['status' => '2']);
 
         return back()->with('success', 'Appointment cancelled successfully.');
+    }
+
+    public function confirmAppointment($id)
+    {
+        $user = Auth::user();
+        if (!$user || $user->role != 4) {
+            return redirect('/login');
+        }
+
+        $appointment = DB::table('appointments')
+            ->where('id', $id)
+            ->where('did', $user->id)
+            ->first();
+
+        if (!$appointment) {
+            return back()->with('error', 'Appointment not found or unauthorized.');
+        }
+
+        DB::table('appointments')->where('id', $id)->update(['status' => '1']);
+
+        return back()->with('success', 'Appointment confirmed successfully.');
+    }
+
+    public function completeAppointment($id)
+    {
+        $user = Auth::user();
+        if (!$user || $user->role != 4) {
+            return redirect('/login');
+        }
+
+        $appointment = DB::table('appointments')
+            ->where('id', $id)
+            ->where('did', $user->id)
+            ->first();
+
+        if (!$appointment) {
+            return back()->with('error', 'Appointment not found or unauthorized.');
+        }
+
+        DB::table('appointments')->where('id', $id)->update(['status' => '3']);
+
+        return back()->with('success', 'Appointment marked as completed.');
     }
 
     public function manageAppointment(Request $request)
