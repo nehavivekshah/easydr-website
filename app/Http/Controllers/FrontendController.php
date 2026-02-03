@@ -654,6 +654,7 @@ class FrontendController extends Controller
                 'patients.health_card',
                 'patients.health_card_file',
                 'patients.marital_status',
+                'patients.family_doctor_id',
                 'doctors.specialist',
                 'doctors.license',
                 'doctors.education',
@@ -665,7 +666,12 @@ class FrontendController extends Controller
             ->where('users.id', '=', $user->id)
             ->first();
 
-        return view('frontend/myProfile', ['user' => $userData]);
+        $doctors = User::where('branch', ($user->branch ?? ''))
+            ->where('role', 4)
+            ->select('id', 'first_name', 'last_name')
+            ->get();
+
+        return view('frontend/myProfile', ['user' => $userData, 'doctors' => $doctors]);
     }
 
     public function messages()

@@ -378,6 +378,7 @@ class WebUserController extends Controller
                 'patients.health_card',
                 'patients.health_card_file',
                 'patients.marital_status',
+                'patients.family_doctor_id',
                 'doctors.specialist',
                 'doctors.license',
                 'doctors.education',
