@@ -1154,6 +1154,50 @@ select:focus {
     color: #fff;
 }
 
+/* Disabled States */
+.action-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: #f0f0f0 !important;
+}
+
+.action-btn:disabled i {
+    color: #999 !important;
+}
+
+/* Specific Disabled Highlights if needed */
+.action-btn.btn-cancel:disabled {
+    background: #f8d7da !important;
+}
+
+.action-btn.btn-cancel:disabled i {
+    color: #dc3545 !important;
+}
+
+.action-btn.btn-video:disabled {
+    background: #e2f3f5 !important;
+}
+
+.action-btn.btn-video:disabled i {
+    color: #17a2b8 !important;
+}
+
+.action-btn.btn-chat:disabled {
+    background: #eef1f1 !important;
+}
+
+.action-btn.btn-chat:disabled i {
+    color: #6c757d !important;
+}
+
+.action-btn.btn-call:disabled {
+    background: #e8f5e9 !important;
+}
+
+.action-btn.btn-call:disabled i {
+    color: #28a745 !important;
+}
+
 /* ==================== Custom Pagination ==================== */
 .pagination {
     margin-bottom: 0;

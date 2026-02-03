@@ -74,7 +74,7 @@
                                                                     </a>
                                                                 @else
                                                                     <button class="btn btn-sm btn-secondary" disabled
-                                                                        style="opacity: 0.5; cursor: not-allowed;">
+                                                                        title="Meeting not active">
                                                                         <i class="fas fa-video"></i>
                                                                     </button>
                                                                 @endif
@@ -92,7 +92,7 @@
                                                                     </form>
                                                                 @else
                                                                     <button class="btn btn-sm btn-outline-danger" disabled
-                                                                        style="opacity: 0.5;">
+                                                                        title="Cannot cancel">
                                                                         <i class="fas fa-times"></i>
                                                                     </button>
                                                                 @endif
