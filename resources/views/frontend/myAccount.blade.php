@@ -159,6 +159,18 @@
                                                 <strong class="text-danger">Not Set</strong>
                                             @endif
                                         </li>
+                                        <li><span>Health Card No.:</span>
+                                            @if(!empty($patient->health_card))
+                                                <strong class="text-success">{{ $patient->health_card }}</strong>
+                                            @else
+                                                <strong class="text-danger">Not Set</strong>
+                                            @endif
+                                        </li>
+                                        @if(!empty($patient->health_card_file))
+                                            <li><span>Health Card File:</span>
+                                                <a href="{{ asset('public/assets/images/healthCards/' . $patient->health_card_file) }}" target="_blank" class="text-primary"><i class="fas fa-file-medical"></i> View Card</a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 @elseif(Auth::user()->role == 4 && isset($doctorInfo))
                                     <hr>

@@ -100,46 +100,52 @@
                                     </div>
 
                                     @if($role == 5)
-                                    <hr>
-                                    <h5>Family Doctor</h5>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Select Family Doctor</label>
-                                            <select class="form-control" name="family_doctor_id" id="familyDoctorSelect">
-                                                <option value="">Select Doctor</option>
-                                                @if(isset($doctors))
-                                                    @foreach($doctors as $doc)
-                                                        {{-- Assuming we fetch patient's current family_doctor_id to pre-select --}}
-                                                        <option value="{{ $doc->id }}" {{ ($user->family_doctor_id ?? '') == $doc->id ? 'selected' : '' }}>
-                                                            {{ $doc->first_name }} {{ $doc->last_name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                            <small class="text-muted"><a href="javascript:void(0);" onclick="toggleNewDoctor()" id="toggleNewDocLink">Doctor not found? Click here to add.</a></small>
-                                        </div>
-                                    </div>
-
-                                    <div id="newDoctorFields" style="display: none; background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                                        <h6>Add New Family Doctor</h6>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Doctor Name</label>
-                                                <input type="text" class="form-control" name="new_doc_name" placeholder="First Name Last Name">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Doctor Mobile</label>
-                                                <input type="text" class="form-control" name="new_doc_mobile" placeholder="Mobile Number">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Doctor Email (Optional)</label>
-                                                <input type="email" class="form-control" name="new_doc_email" placeholder="Email Address">
+                                        <hr>
+                                        <h5>Family Doctor</h5>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Select Family Doctor</label>
+                                                <select class="form-control" name="family_doctor_id" id="familyDoctorSelect">
+                                                    <option value="">Select Doctor</option>
+                                                    @if(isset($doctors))
+                                                        @foreach($doctors as $doc)
+                                                            {{-- Assuming we fetch patient's current family_doctor_id to pre-select --}}
+                                                            <option value="{{ $doc->id }}" {{ ($user->family_doctor_id ?? '') == $doc->id ? 'selected' : '' }}>
+                                                                {{ $doc->first_name }} {{ $doc->last_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                                <small class="text-muted"><a href="javascript:void(0);"
+                                                        onclick="toggleNewDoctor()" id="toggleNewDocLink">Doctor not found?
+                                                        Click here to add.</a></small>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <hr>
-                                    <h5>Medical Information</h5>
+                                        <div id="newDoctorFields"
+                                            style="display: none; background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                                            <h6>Add New Family Doctor</h6>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Doctor Name</label>
+                                                    <input type="text" class="form-control" name="new_doc_name"
+                                                        placeholder="First Name Last Name">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Doctor Mobile</label>
+                                                    <input type="text" class="form-control" name="new_doc_mobile"
+                                                        placeholder="Mobile Number">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Doctor Email (Optional)</label>
+                                                    <input type="email" class="form-control" name="new_doc_email"
+                                                        placeholder="Email Address">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        <h5>Medical Information</h5>
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Blood Group</label>
@@ -171,6 +177,22 @@
                                                 <label class="form-label">Weight (kg)</label>
                                                 <input type="text" class="form-control" name="weight"
                                                     value="{{ $user->weight ?? '' }}">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Health Card No.</label>
+                                                <input type="text" class="form-control" name="health_card"
+                                                    value="{{ $user->health_card ?? '' }}">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Health Card File</label>
+                                                <input type="file" class="form-control" name="health_card_file">
+                                                @if($user->health_card_file)
+                                                    <div class="mt-2">
+                                                        <a href="{{ asset('public/assets/images/healthCards/' . $user->health_card_file) }}"
+                                                            target="_blank" class="btn btn-sm btn-info text-white">View Current
+                                                            Card</a>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     @endif
