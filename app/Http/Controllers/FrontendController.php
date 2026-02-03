@@ -773,11 +773,15 @@ class FrontendController extends Controller
 
             $dateStr = $now->toDateString();
             $appointments = $query
-                ->orderByRaw("CASE WHEN appointments.date = ? THEN 1 WHEN appointments.date > ? THEN 2 ELSE 3 END ASC", [$dateStr, $dateStr])
-                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.date END DESC", [$dateStr])
+                ->orderByRaw("CASE 
+                    WHEN appointments.date = ? THEN 1 
+                    WHEN appointments.date > ? THEN 2 
+                    ELSE 3 
+                END ASC", [$dateStr, $dateStr])
                 ->orderByRaw("CASE WHEN appointments.date >= ? THEN appointments.date END ASC", [$dateStr])
-                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.time END DESC", [$dateStr])
+                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.date END DESC", [$dateStr])
                 ->orderByRaw("CASE WHEN appointments.date >= ? THEN appointments.time END ASC", [$dateStr])
+                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.time END DESC", [$dateStr])
                 ->paginate(6);
 
             return view('frontend/doctor_appointments', compact('appointments'));
@@ -833,11 +837,15 @@ class FrontendController extends Controller
 
             $dateStr = $now->toDateString();
             $appointments = $query
-                ->orderByRaw("CASE WHEN appointments.date = ? THEN 1 WHEN appointments.date > ? THEN 2 ELSE 3 END ASC", [$dateStr, $dateStr])
-                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.date END DESC", [$dateStr])
+                ->orderByRaw("CASE 
+                    WHEN appointments.date = ? THEN 1 
+                    WHEN appointments.date > ? THEN 2 
+                    ELSE 3 
+                END ASC", [$dateStr, $dateStr])
                 ->orderByRaw("CASE WHEN appointments.date >= ? THEN appointments.date END ASC", [$dateStr])
-                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.time END DESC", [$dateStr])
+                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.date END DESC", [$dateStr])
                 ->orderByRaw("CASE WHEN appointments.date >= ? THEN appointments.time END ASC", [$dateStr])
+                ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.time END DESC", [$dateStr])
                 ->paginate(6);
 
             return view('frontend/appointments', compact('appointments'));
