@@ -429,7 +429,7 @@ class FrontendController extends Controller
     {
         Auth::logout();
 
-        return back()->with('success', 'Successfully Logout.');
+        return redirect('/login')->with('success', 'Successfully Logout.');
     }
 
     /*Website My Account Controllers*/
