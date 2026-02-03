@@ -145,11 +145,11 @@
                                     <hr>
                                     <h5>Medical Information</h5>
                                     <ul>
-                                        <li><span>Blood Group:</span> {{ $patient->blood_group ?? 'Not Set' }}</li>
-                                        <li><span>Height:</span> {{ $patient->height ?? 'Not Set' }}</li>
-                                        <li><span>Weight:</span> {{ $patient->weight . ' Kg' ?? 'Not Set' }}</li>
+                                        <li><span>Blood Group:</span> {{ !empty($patient->blood_group) ? $patient->blood_group : 'Not Set' }}</li>
+                                        <li><span>Height:</span> {{ !empty($patient->height) ? $patient->height : 'Not Set' }}</li>
+                                        <li><span>Weight:</span> {{ !empty($patient->weight) ? $patient->weight . ' Kg' : 'Not Set' }}</li>
                                         <li><span>Marital Status:</span>
-                                            {{ $patient->marital_status == 1 ? 'Single' : ($patient->marital_status == 2 ? 'Married' : 'Divorced') ?? 'Not Set' }}
+                                            @if($patient->marital_status == 1) Single @elseif($patient->marital_status == 2) Married @elseif($patient->marital_status == 3) Divorced @else Not Set @endif
                                         </li>
                                         <li><span>Family Doctor:</span>
                                             @if($patient->familyDoctor)

@@ -65,6 +65,8 @@
                                 .step-label { font-size: 12px; color: #666; }
                                 .step-item.active .step-label { color: var(--primary-color); font-weight: bold; }
                                 .wizard-buttons { margin-top: 25px; display: flex; justify-content: space-between; }
+                                .is-invalid { border-color: #dc3545 !important; }
+                                .is-invalid:focus { box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important; }
                             </style>
 
                             @php
@@ -72,7 +74,7 @@
                                 $pageType = $role == 4 ? 'doctor-directory' : ($role == 5 ? 'patient-directory' : 'admin-accounts');
                             @endphp
 
-                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);" id="wizardContainer">
                                 <!-- Progress Bar -->
                                 <div class="wizard-progress">
                                     <div class="step-item active" id="step-1-indicator">
@@ -93,7 +95,7 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data" id="wizardForm">
+                                <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data" id="wizardForm" oninput="clearInvalid(event)">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $user->id }}">
                                     <input type="hidden" name="pagetype" value="{{ $pageType }}">
@@ -364,7 +366,10 @@
             }
             
             // ... and run a function that will display the correct step indicator:
-            fixStepIndicator(n)
+            fixStepIndicator(n);
+
+            // Scroll to the top of the wizard container
+            document.getElementById("wizardContainer").scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function nextPrev(n) {
@@ -402,7 +407,9 @@
                 // If a field is empty and HAS required attribute...
                 if (y[i].value == "" && y[i].hasAttribute('required')) {
                     // add an "invalid" class to the field:
-                    y[i].className += " is-invalid";
+                    if (!y[i].classList.contains("is-invalid")) {
+                        y[i].classList.add("is-invalid");
+                    }
                     // and set the current valid status to false
                     valid = false;
                 }
@@ -410,7 +417,7 @@
             
             // If the valid status is true, mark the step as finished and valid:
             if (valid) {
-                document.getElementsByClassName("step-item")[currentTab].className += " completed";
+                document.getElementsByClassName("step-item")[currentTab].classList.add("completed");
             }
             return valid; // return the valid status
         }
@@ -419,10 +426,16 @@
             // This function removes the "active" class of all steps...
             var i, x = document.getElementsByClassName("step-item");
             for (i = 0; i < x.length; i++) {
-                x[i].className = x[i].className.replace(" active", "");
+                x[i].classList.remove("active");
             }
             //... and adds the "active" class on the current step:
-            x[n].className += " active";
+            x[n].classList.add("active");
+        }
+
+        function clearInvalid(event) {
+            if (event.target.classList.contains("is-invalid")) {
+                event.target.classList.remove("is-invalid");
+            }
         }
 
         function toggleNewDoctor() {
