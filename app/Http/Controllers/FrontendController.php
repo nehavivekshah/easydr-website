@@ -653,7 +653,6 @@ class FrontendController extends Controller
                 'patients.weight',
                 'patients.health_card',
                 'patients.health_card_file',
-                'patients.health_card_status',
                 'patients.marital_status',
                 'patients.family_doctor_id',
                 'doctors.specialist',

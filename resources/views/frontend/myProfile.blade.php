@@ -253,26 +253,17 @@
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label class="form-label">Health Card No.</label>
-                                                    <input type="text" class="form-control" name="health_card" id="health_card_input"
-                                                        value="{{ $user->health_card ?? '' }}" {{ ($user->health_card_status ?? 0) == 1 ? 'readonly' : '' }}>
+                                                    <input type="text" class="form-control" name="health_card"
+                                                        value="{{ $user->health_card ?? '' }}">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label class="form-label">Health Card File</label>
-                                                    <input type="file" class="form-control" name="health_card_file" id="health_card_file_input" {{ ($user->health_card_status ?? 0) == 1 ? 'disabled' : '' }}>
+                                                    <input type="file" class="form-control" name="health_card_file">
                                                     @if($user->health_card_file)
                                                         <div class="mt-2 text-truncate">
                                                             <a href="{{ asset('public/assets/images/healthCards/' . $user->health_card_file) }}"
                                                                 target="_blank" class="btn btn-sm btn-info text-white">View Current Card</a>
-                                                            @if(($user->health_card_status ?? 0) == 1)
-                                                                <button type="button" class="btn btn-sm btn-warning ml-2" onclick="requestHealthCardEdit()">Request Edit</button>
-                                                            @endif
                                                         </div>
-                                                    @endif
-                                                    <input type="hidden" name="health_card_edit_request" id="health_card_edit_request" value="0">
-                                                    @if(($user->health_card_status ?? 0) == 1)
-                                                        <small class="text-success d-block mt-1"><i class="fas fa-check-circle"></i> Approved & Locked</small>
-                                                    @elseif(($user->health_card_status ?? 0) == 2)
-                                                        <small class="text-danger d-block mt-1"><i class="fas fa-times-circle"></i> Rejected. Please update.</small>
                                                     @endif
                                                 </div>
                                             </div>
@@ -432,19 +423,6 @@
             }
             //... and adds the "active" class on the current step:
             x[n].className += " active";
-        }
-
-        function requestHealthCardEdit() {
-            document.getElementById("health_card_input").readOnly = false;
-            document.getElementById("health_card_file_input").disabled = false;
-            document.getElementById("health_card_edit_request").value = "1";
-            
-            // Highlight the fields to indicate they are now editable
-            document.getElementById("health_card_input").style.borderColor = "#ffc107";
-            document.getElementById("health_card_file_input").style.borderColor = "#ffc107";
-            
-            // Optionally alert the user
-            // alert("You can now edit your health card details. Saving will resubmit them for approval.");
         }
 
         function toggleNewDoctor() {

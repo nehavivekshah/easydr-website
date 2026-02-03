@@ -377,7 +377,6 @@ class WebUserController extends Controller
                 'patients.weight',
                 'patients.health_card',
                 'patients.health_card_file',
-                'patients.health_card_status',
                 'patients.marital_status',
                 'patients.family_doctor_id',
                 'doctors.specialist',
@@ -556,11 +555,6 @@ class WebUserController extends Controller
                 if (!empty($request->health_card)) {
                     $patient->health_card = $request->health_card ?? '';
                     $patient->hc_verified_at = NOW();
-                }
-
-                // Health Card Status Logic
-                if ($request->health_card_edit_request == "1" || !empty($request->file('health_card_file')) || $patient->isDirty('health_card')) {
-                    $patient->health_card_status = 0; // Reset to Pending
                 }
 
                 $patient->marital_status = $request->marital_status ?? '';
