@@ -140,7 +140,6 @@
                                     @endif
                                 </ul>
 
-                                {{-- Extended Profile Info --}}
                                 @if(Auth::user()->role == 5 && isset($patient))
                                     <hr>
                                     <h5>Medical Information</h5>
