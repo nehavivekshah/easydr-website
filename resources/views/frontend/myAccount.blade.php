@@ -151,6 +151,14 @@
                                         <li><span>Marital Status:</span>
                                             {{ $patient->marital_status == 1 ? 'Single' : ($patient->marital_status == 2 ? 'Married' : 'Divorced') ?? 'Not Set' }}
                                         </li>
+                                        <li><span>Family Doctor:</span>
+                                            @if($patient->familyDoctor)
+                                                <strong class="text-success">{{ $patient->familyDoctor->first_name }}
+                                                    {{ $patient->familyDoctor->last_name }}</strong>
+                                            @else
+                                                <strong class="text-danger">Not Set</strong>
+                                            @endif
+                                        </li>
                                     </ul>
                                 @elseif(Auth::user()->role == 4 && isset($doctorInfo))
                                     <hr>
