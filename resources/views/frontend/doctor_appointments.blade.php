@@ -55,6 +55,18 @@
                                                     <span class="appointment-status-badge status-upcoming">Pending</span>
                                                 @endif
 
+                                                {{-- Confirm Button at Top (If Pending) --}}
+                                                @if($appointment->status == '0')
+                                                    <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST"
+                                                        class="mb-3">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success w-100"
+                                                            style="border-radius: 8px; font-weight: 600; padding: 10px;">
+                                                            <i class="fas fa-check me-2"></i> Confirm Appointment
+                                                        </button>
+                                                    </form>
+                                                @endif
+
                                                 {{-- Header --}}
                                                 <div class="appointment-header">
                                                     <div class="appointment-img-wrapper">
@@ -63,7 +75,8 @@
                                                     </div>
                                                     <div class="appointment-info">
                                                         <h5>{{ $appointment->patient_first_name }}
-                                                            {{ $appointment->patient_last_name }}</h5>
+                                                            {{ $appointment->patient_last_name }}
+                                                        </h5>
                                                         <p class="mb-0">{{ $appointment->patient_mobile }}</p>
                                                         @php
                                                             $age = null;
@@ -97,19 +110,10 @@
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
-                                                    {{-- Confirm Button (If Pending) --}}
-                                                    @if($appointment->status == '0')
-                                                        <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST" class="flex-grow-1" style="flex: 1; display: flex;">
-                                                            @csrf
-                                                            <button type="submit" class="action-btn" title="Confirm Appointment" style="width: 100%; background: #28a745; color: #fff; border-color: #28a745;">
-                                                                <i class="fas fa-check"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
-
                                                     {{-- Call Button --}}
                                                     @if(!empty($appointment->patient_mobile))
-                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call" title="Call Patient">
+                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call"
+                                                            title="Call Patient">
                                                             <i class="fas fa-phone"></i>
                                                         </a>
                                                     @else
@@ -149,9 +153,11 @@
 
                                                     {{-- Complete Button (If Confirmed) --}}
                                                     @if($appointment->status == '1' && !$isExpired)
-                                                        <form action="{{ route('completeAppointment', $appointment->id) }}" method="POST" class="flex-grow-1" style="flex: 1; display: flex;">
+                                                        <form action="{{ route('completeAppointment', $appointment->id) }}"
+                                                            method="POST" class="flex-grow-1" style="flex: 1; display: flex;">
                                                             @csrf
-                                                            <button type="submit" class="action-btn" title="Mark as Completed" style="width: 100%; background: #6f42c1; color: #fff; border-color: #6f42c1;">
+                                                            <button type="submit" class="action-btn" title="Mark as Completed"
+                                                                style="width: 100%; background: #6f42c1; color: #fff; border-color: #6f42c1;">
                                                                 <i class="fas fa-flag-checkered"></i>
                                                             </button>
                                                         </form>
