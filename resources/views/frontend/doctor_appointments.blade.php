@@ -55,18 +55,6 @@
                                                     <span class="appointment-status-badge status-upcoming">Pending</span>
                                                 @endif
 
-                                                {{-- Confirm Button at Top (If Pending) --}}
-                                                @if($appointment->status == '0')
-                                                    <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST"
-                                                        class="mb-3">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-success w-100"
-                                                            style="border-radius: 8px; font-weight: 600; padding: 10px;">
-                                                            <i class="fas fa-check me-2"></i> Confirm Appointment
-                                                        </button>
-                                                    </form>
-                                                @endif
-
                                                 {{-- Header --}}
                                                 <div class="appointment-header">
                                                     <div class="appointment-img-wrapper">
@@ -107,6 +95,16 @@
                                                     <i class="far fa-calendar-alt me-2"></i> {{ $apptDateTime->format('d M, Y') }} |
                                                     <i class="far fa-clock ms-2 me-2"></i> {{ $apptDateTime->format('h:i A') }}
                                                 </div>
+
+                                                {{-- Confirm Button (If Pending) --}}
+                                                @if($appointment->status == '0')
+                                                    <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST" class="mt-3 mb-3">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-success w-100" style="border-radius: 8px; font-weight: 600; padding: 10px;">
+                                                            <i class="fas fa-check me-2"></i> Confirm Appointment
+                                                        </button>
+                                                    </form>
+                                                @endif
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
