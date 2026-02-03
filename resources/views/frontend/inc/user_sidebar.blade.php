@@ -17,8 +17,8 @@
 
     <ul class="dashboard_menu">
         @if(Auth::user()->role == 5) {{-- Patient --}}
-            <li><a class="{{ Request::is('my-account') ? 'active' : '' }}" href="/my-account">Dashboard</a></li>
-            <li><a class="{{ Request::is('my-profile') ? 'active' : '' }}" href="/my-profile">Edit Profile</a></li>
+            <li><a class="{{ Request::is('my-account') || Request::is('my-profile') ? 'active' : '' }}" href="/my-account">My
+                    Profile</a></li>
             <li><a class="{{ Request::is('appointments*') && !request('filter') ? 'active' : '' }}"
                     href="/appointments">Appointment</a></li>
             <li><a class="{{ Request::is('my-doctors*') ? 'active' : '' }}" href="/my-doctors">My Doctors</a></li>
@@ -36,7 +36,6 @@
             </li>
         @elseif(Auth::user()->role == 4) {{-- Doctor --}}
             <li><a class="{{ Request::is('my-account') ? 'active' : '' }}" href="/my-account">Dashboard</a></li>
-            <li><a class="{{ Request::is('my-profile') ? 'active' : '' }}" href="/my-profile">Edit Profile</a></li>
             <li><a class="{{ Request::is('appointments*') ? 'active' : '' }}" href="/appointments">Appointments</a></li>
             <li><a class="{{ Request::is('my-patients*') ? 'active' : '' }}" href="/my-patients">My Patients</a></li>
             <li><a class="{{ Request::is('manage-slots*') ? 'active' : '' }}" href="/manage-slots">Manage Slots</a></li>
