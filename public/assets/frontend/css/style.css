@@ -6411,7 +6411,7 @@ img {
 	background: #8fb569;
 	padding: 20px 25px;
 	border: none;
-	margin-left: 15px;
+	/* margin-left: 15px; */
 	color: var(--color-white);
 	display: inline-block;
 }
