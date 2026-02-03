@@ -76,18 +76,30 @@
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
-                                                    <a href="/messages" class="action-btn btn-chat" title="Message">
-                                                        <i class="fas fa-comment-alt"></i>
-                                                    </a>
+                                                    @if(!$isExpired && $appointment->status == '1')
+                                                        <a href="/messages" class="action-btn btn-chat" title="Message">
+                                                            <i class="fas fa-comment-alt"></i>
+                                                        </a>
+                                                    @else
+                                                        <button class="action-btn btn-chat" disabled style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
+                                                            <i class="fas fa-comment-alt"></i>
+                                                        </button>
+                                                    @endif
                                                     
                                                     {{-- Call Button --}}
-                                                    <a href="tel:{{ $appointment->doctor_phone ?? '#' }}" class="action-btn btn-call" title="Call">
-                                                        <i class="fas fa-phone-alt"></i>
-                                                    </a>
+                                                    @if(!$isExpired && $appointment->status == '1')
+                                                        <a href="tel:{{ $appointment->doctor_phone ?? '#' }}" class="action-btn btn-call" title="Call">
+                                                            <i class="fas fa-phone-alt"></i>
+                                                        </a>
+                                                    @else
+                                                        <button class="action-btn btn-call" disabled style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
+                                                            <i class="fas fa-phone-alt"></i>
+                                                        </button>
+                                                    @endif
 
                                                     {{-- Video Button --}} 
                                                     {{-- Only enabled if On Time logic is met AND link exists AND status is confirmed (1) --}}
-                                                    @if(!empty($appointment->meeting_link) && $appointment->status == '1' && $isOnTime)
+                                                    @if(!empty($appointment->meeting_link) && $appointment->status == '1' && $isOnTime && !$isExpired)
                                                         @if($appointment->meeting_provider == 'whatsapp')
                                                             <a href="https://wa.me/{{ $appointment->meeting_link }}" target="_blank" class="action-btn btn-video pulsate-active" title="Join WhatsApp Video" style="background: #17a2b8; color: #fff;">
                                                                 <i class="fab fa-whatsapp"></i>
@@ -98,8 +110,7 @@
                                                             </a>
                                                         @endif
                                                     @else
-                                                        {{-- Disabled State --}}
-                                                        <button class="action-btn btn-video" disabled style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
+                                                        <button class="action-btn btn-video" disabled title="{{ $isExpired ? 'Meeting Expired' : 'Join Link Not Active' }}" style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
                                                             <i class="fas fa-video{{ !empty($appointment->meeting_link) ? '' : '-slash' }}"></i>
                                                         </button>
                                                     @endif
@@ -113,7 +124,7 @@
                                                             </button>
                                                         </form>
                                                     @else
-                                                         <button class="action-btn btn-cancel" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                                         <button class="action-btn btn-cancel" disabled style="opacity: 0.4; cursor: not-allowed; background: #f8d7da; color: #721c24; border-color: #f5c6cb;">
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     @endif

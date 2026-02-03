@@ -25,21 +25,31 @@
                                                     <th>Patient</th>
                                                     <th>Problem</th>
                                                     <th>Status</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($appointments as $appointment)
+                                                    @php
+                                                        $apptDateTime = \Carbon\Carbon::parse($appointment->date . ' ' . $appointment->time);
+                                                        $now = \Carbon\Carbon::now();
+                                                        $isExpired = $now->gt($apptDateTime) && $appointment->status != '3' && $appointment->status != '2';
+
+                                                        // 30 min before to 2 hours after
+                                                        $startWindow = $apptDateTime->copy()->subMinutes(30);
+                                                        $endWindow = $apptDateTime->copy()->addHours(2);
+                                                        $isOnTime = $now->between($startWindow, $endWindow);
+                                                    @endphp
                                                     <tr>
-                                                        <td>{{ \Carbon\Carbon::parse($appointment->date)->format('d M, Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($appointment->time)->format('h:i A') }}</td>
+                                                        <td>{{ $apptDateTime->format('d M, Y') }}</td>
+                                                        <td>{{ $apptDateTime->format('h:i A') }}</td>
                                                         <td>
                                                             {{ $appointment->patient_first_name }}
                                                             {{ $appointment->patient_last_name }}
                                                             <br>
                                                             <small class="text-muted">{{ $appointment->patient_mobile }}</small>
                                                         </td>
-                                                        <td>{{ Str::limit($appointment->note, 30) }}</td> {{-- Mobile app uses
-                                                        'problem', we use 'note' --}}
+                                                        <td>{{ Str::limit($appointment->note, 30) }}</td>
                                                         <td>
                                                             @if($appointment->status == '0')
                                                                 <span class="badge bg-warning text-dark">Pending</span>
@@ -47,9 +57,46 @@
                                                                 <span class="badge bg-success">Confirmed</span>
                                                             @elseif($appointment->status == '2')
                                                                 <span class="badge bg-danger">Cancelled</span>
+                                                            @elseif($isExpired)
+                                                                <span class="badge bg-secondary">Expired</span>
                                                             @else
-                                                                <span class="badge bg-secondary">Completed</span>
+                                                                <span class="badge bg-info">Completed</span>
                                                             @endif
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex gap-2">
+                                                                {{-- Join Button --}}
+                                                                @if(!empty($appointment->meeting_link) && $appointment->status == '1' && $isOnTime && !$isExpired)
+                                                                    <a href="{{ $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link }}"
+                                                                        target="_blank" class="btn btn-sm btn-info text-white"
+                                                                        title="Join Meeting">
+                                                                        <i class="fas fa-video"></i> Join
+                                                                    </a>
+                                                                @else
+                                                                    <button class="btn btn-sm btn-secondary" disabled
+                                                                        style="opacity: 0.5; cursor: not-allowed;">
+                                                                        <i class="fas fa-video"></i>
+                                                                    </button>
+                                                                @endif
+
+                                                                {{-- Cancel Button --}}
+                                                                @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
+                                                                    <form action="{{ route('cancelAppointment', $appointment->id) }}"
+                                                                        method="POST"
+                                                                        onsubmit="return confirm('Cancel this appointment?');">
+                                                                        @csrf
+                                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                                            title="Cancel">
+                                                                            <i class="fas fa-times"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @else
+                                                                    <button class="btn btn-sm btn-outline-danger" disabled
+                                                                        style="opacity: 0.5;">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </button>
+                                                                @endif
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
