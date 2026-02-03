@@ -1126,6 +1126,13 @@ select:focus {
     color: #fff;
 }
 
+.action-btn.btn-chat:disabled,
+.action-btn.btn-chat:disabled i {
+    background: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
 .action-btn.btn-video {
     background: #e0e0e0;
 }
