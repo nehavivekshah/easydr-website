@@ -1094,18 +1094,64 @@ select:focus {
 }
 
 .action-btn i {
+    color: #fff;
+}
+
+/* Specific Colors matching mockup icons usually */
+.action-btn.btn-chat {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-chat i {
     color: #757575;
 }
 
-.action-btn:disabled {
-    background: #1e0b9b00 !important;
-    color: #21252959 !important;
-    cursor: not-allowed;
-    border: 1px solid #21252926;
+.action-btn.btn-chat:hover,
+.action-btn.btn-chat:hover i {
+    background: var(--color-primary);
+    color: #fff;
 }
 
-.action-btn:disabled i {
-    color: #21252959 !important;
+.action-btn.btn-call {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-call i {
+    color: #757575;
+}
+
+.action-btn.btn-call:hover,
+.action-btn.btn-call:hover i {
+    background: #28a745;
+    color: #fff;
+}
+
+.action-btn.btn-video {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-video i {
+    color: #757575;
+}
+
+.action-btn.btn-video:hover,
+.action-btn.btn-video:hover i {
+    background: #17a2b8;
+    color: #fff;
+}
+
+.action-btn.btn-cancel {
+    background: #e0e0e0;
+}
+
+.action-btn.btn-cancel i {
+    color: #757575;
+}
+
+.action-btn.btn-cancel:hover,
+.action-btn.btn-cancel:hover i {
+    background: #dc3545;
+    color: #fff;
 }
 
 /* ==================== Custom Pagination ==================== */

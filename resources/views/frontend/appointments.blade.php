@@ -81,7 +81,7 @@
                                                             <i class="fas fa-comment-alt"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-chat" disabled>
+                                                        <button class="action-btn btn-chat" disabled style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </button>
                                                     @endif
@@ -92,7 +92,7 @@
                                                             <i class="fas fa-phone-alt"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-call" disabled>
+                                                        <button class="action-btn btn-call" disabled style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
                                                             <i class="fas fa-phone-alt"></i>
                                                         </button>
                                                     @endif
@@ -110,7 +110,7 @@
                                                             </a>
                                                         @endif
                                                     @else
-                                                        <button class="action-btn btn-video" disabled title="{{ $isExpired ? 'Meeting Expired' : 'Join Link Not Active' }}">
+                                                        <button class="action-btn btn-video" disabled title="{{ $isExpired ? 'Meeting Expired' : 'Join Link Not Active' }}" style="opacity: 0.4; cursor: not-allowed; background: #e0e0e0; color: #999;">
                                                             <i class="fas fa-video{{ !empty($appointment->meeting_link) ? '' : '-slash' }}"></i>
                                                         </button>
                                                     @endif
@@ -124,7 +124,7 @@
                                                             </button>
                                                         </form>
                                                     @else
-                                                         <button class="action-btn btn-cancel" disabled>
+                                                         <button class="action-btn btn-cancel" disabled style="opacity: 0.4; cursor: not-allowed; background: #f8d7da; color: #721c24; border-color: #f5c6cb;">
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     @endif
