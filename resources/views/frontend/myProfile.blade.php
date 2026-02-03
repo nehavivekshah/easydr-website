@@ -138,6 +138,12 @@
                                                     <option value="2" {{ $user->gender == '2' ? 'selected' : '' }}>Female</option>
                                                     <option value="3" {{ $user->gender == '3' ? 'selected' : '' }}>Other</option>
                                                 </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Aadhar Number</label>
+                                                <input type="text" class="form-control" name="adhar"
+                                                    value="{{ $user->adhar ?? '' }}" placeholder="12 Digit Aadhar Number">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -162,20 +168,13 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Country</label>
-                                                <input type="text" class="form-control" name="country" id="countryInput"
-                                                    value="{{ $user->country ?? '' }}" onkeyup="toggleAadhar()">
+                                                <input type="text" class="form-control" name="country"
+                                                    value="{{ $user->country ?? '' }}">
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Pincode</label>
                                                 <input type="text" class="form-control" name="pincode"
                                                     value="{{ $user->pincode ?? '' }}">
-                                            </div>
-                                        </div>
-                                        <div class="row" id="adharRow" style="display: none;">
-                                            <div class="col-md-12 mb-3">
-                                                <label class="form-label">Aadhar Number (For India Only)</label>
-                                                <input type="text" class="form-control" name="adhar"
-                                                    value="{{ $user->adhar ?? '' }}" placeholder="12 Digit Aadhar Number">
                                             </div>
                                         </div>
                                     </div>
@@ -345,17 +344,6 @@
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
-        toggleAadhar(); // Run on initial load
-
-        function toggleAadhar() {
-            var country = document.getElementById("countryInput").value.toLowerCase().trim();
-            var adharRow = document.getElementById("adharRow");
-            if (country === "india") {
-                adharRow.style.display = "flex";
-            } else {
-                adharRow.style.display = "none";
-            }
-        }
 
         function showTab(n) {
             // This function will display the specified tab of the form...
