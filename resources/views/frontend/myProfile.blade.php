@@ -26,6 +26,7 @@
                                     @endphp
                                     <input type="hidden" name="pagetype" value="{{ $pageType }}">
                                     <input type="hidden" name="role" value="{{ $role }}">
+                                    <input type="hidden" name="is_frontend" value="1">
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">

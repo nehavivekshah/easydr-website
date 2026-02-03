@@ -551,8 +551,11 @@ class WebUserController extends Controller
 
             }
 
-            if ($request->segment(2) == 'my-profile') {
+            if ($request->is_frontend) {
+                return redirect('/my-profile')->with('success', 'Profile updated successfully.');
+            }
 
+            if ($request->segment(2) == 'my-profile') {
                 return redirect('/admin/my-profile/' . $type . '/' . $request->id)->with('success', 'Successfully updated.');
 
             } else {
