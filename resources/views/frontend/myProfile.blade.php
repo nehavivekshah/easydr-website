@@ -67,6 +67,11 @@
                                 .wizard-buttons { margin-top: 25px; display: flex; justify-content: space-between; }
                             </style>
 
+                            @php
+                                $role = Auth::user()->role;
+                                $pageType = $role == 4 ? 'doctor-directory' : ($role == 5 ? 'patient-directory' : 'admin-accounts');
+                            @endphp
+
                             <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);">
                                 <!-- Progress Bar -->
                                 <div class="wizard-progress">
@@ -91,10 +96,6 @@
                                 <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data" id="wizardForm">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $user->id }}">
-                                    @php
-                                        $role = Auth::user()->role;
-                                        $pageType = $role == 4 ? 'doctor-directory' : ($role == 5 ? 'patient-directory' : 'admin-accounts');
-                                    @endphp
                                     <input type="hidden" name="pagetype" value="{{ $pageType }}">
                                     <input type="hidden" name="role" value="{{ $role }}">
                                     <input type="hidden" name="is_frontend" value="1">
