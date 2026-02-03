@@ -33,12 +33,21 @@
                                                     @php
                                                         $apptDateTime = \Carbon\Carbon::parse($appointment->date . ' ' . $appointment->time);
                                                         $now = \Carbon\Carbon::now();
-                                                        $isExpired = $now->gt($apptDateTime) && $appointment->status != '3' && $appointment->status != '2';
+                                                        // Duration: Use specific duration if available, else 30 mins
+                                                        $duration = $appointment->duration ?? 30;
+                                                        $slotEndTime = $apptDateTime->copy()->addMinutes($duration);
 
-                                                        // 30 min before to 2 hours after
-                                                        $startWindow = $apptDateTime->copy()->subMinutes(30);
-                                                        $endWindow = $apptDateTime->copy()->addHours(2);
-                                                        $isOnTime = $now->between($startWindow, $endWindow);
+                                                        // Chat starts 15 mins before, ends when slot ends
+                                                        $chatStartTime = $apptDateTime->copy()->subMinutes(15);
+                                                        $isChatActive = $now->between($chatStartTime, $slotEndTime) && $appointment->status == '1';
+
+                                                        // Session (Call/Video) starts at appt time, ends when slot ends
+                                                        $sessionStartTime = $apptDateTime->copy()->subMinutes(5);
+                                                        $isSessionActive = $now->between($sessionStartTime, $slotEndTime) && $appointment->status == '1';
+
+                                                        // Expired after slot ends
+                                                        $isExpired = $now->gt($slotEndTime) && $appointment->status != '3' && $appointment->status != '2';
+                                                        $isOnTime = $isSessionActive; 
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $apptDateTime->format('d M, Y') }}</td>

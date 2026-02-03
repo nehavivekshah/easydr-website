@@ -1223,8 +1223,8 @@ select:focus {
 .page-item.active .page-link {
     background: var(--color-primary);
     color: #fff;
-    box-shadow: 0 4px 10px rgba(30, 11, 155, 0.3);
-    transform: translateY(-2px);
+    /* box-shadow: 0 4px 10px rgba(30, 11, 155, 0.3); */
+    /* transform: translateY(-2px); */
 }
 
 .page-item .page-link:hover {

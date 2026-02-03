@@ -3868,9 +3868,9 @@ section:hover .section-title h2::before {
 .pagination .page-item a.page-link {
 	border-radius: 50%;
 	padding: 0;
-	height: 70px;
-	width: 70px;
-	line-height: 70px;
+	height: 40px;
+	width: 40px;
+	line-height: 40px;
 	background: #f8f8f8;
 	color: #9fa7c5;
 	font-size: 14px;
