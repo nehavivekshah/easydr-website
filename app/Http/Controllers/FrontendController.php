@@ -491,7 +491,7 @@ class FrontendController extends Controller
 
         } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
-            $patient = \App\Models\Patients::with('family_doctor')->where('uid', $user->id)->first();
+            $patient = \App\Models\Patients::where('uid', $user->id)->first();
             $pid = $patient ? $patient->id : 0;
 
             // Address

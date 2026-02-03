@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Patients extends Model
 {
     use HasFactory;
-    public function family_doctor()
+    public function familyDoctor()
     {
         return $this->belongsTo(User::class, 'family_doctor_id', 'id');
     }
