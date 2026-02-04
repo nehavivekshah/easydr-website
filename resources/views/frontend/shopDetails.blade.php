@@ -1,47 +1,49 @@
 @extends('frontend.layout')
 
 @section('content')
-        <!-- main-area -->
-        <main>
-            <!-- breadcrumb-area -->
-            <section class="breadcrumb-area d-flex align-items-center" style="background-image:url(img/testimonial/test-bg.jpg)">
-						
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
-                            <div class="breadcrumb-wrap text-center">							
-                                <div class="breadcrumb-title mb-30">
-                                    <h2>Shop Details</h2>                                   
-                                </div>
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">News</li>
-                                    </ol>
-                                </nav>
+    <!-- main-area -->
+    <main>
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center"
+            style="background-image:url(img/testimonial/test-bg.jpg)">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2">
+                        <div class="breadcrumb-wrap text-center">
+                            <div class="breadcrumb-title mb-30">
+                                <h2>Shop Details</h2>
                             </div>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">News</li>
+                                </ol>
+                            </nav>
                         </div>
                     </div>
                 </div>
-            </section>
-            
-			<!-- shop-banner-area start -->
-        <section class="shop-banner-area pt-120 pb-90 wow fadeInUp animated" data-animation="fadeInUp animated" data-delay=".2s">
+            </div>
+        </section>
+
+        <!-- shop-banner-area start -->
+        <section class="shop-banner-area pt-120 pb-90 wow fadeInUp animated" data-animation="fadeInUp animated"
+            data-delay=".2s">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-7">
                         <div class="shop-thumb-tab mb-30">
                             <ul class="nav" id="myTab2" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
                                         aria-selected="true"><img src="img/shop/details/thumb1.jpg" alt=""> </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
                                         aria-selected="false"><img src="img/shop/details/thumb2.jpg" alt=""></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile1" role="tab"
+                                    <a class="nav-link" id="profile-tab2" data-bs-toggle="tab" href="#profile1" role="tab"
                                         aria-selected="false"><img src="img/shop/details/thumb3.jpg" alt=""></a>
                                 </li>
                             </ul>
@@ -76,7 +78,8 @@
                                     <span class="old-price">$820.00</span>
                                 </div>
                             </div>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of a page
+                            <p>It is a long established fact that a reader will be distracted by the readable content of a
+                                page
                                 when looking at its
                                 layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of
                                 letters, as opposed to
@@ -85,16 +88,17 @@
                                 <span>Category: </span>
                                 <a href="#">furniture,</a>
                                 <a href="#">decor</a>
-                            </div>                            
+                            </div>
                             <div class="product-details-action">
                                 <form action="#">
                                     <div class="plus-minus">
                                         <div class="cart-plus-minus"><input type="text" value="1" /></div>
                                     </div>
-                                    <button class="btn btn-black" type="submit">add to cart <i class="fas fa-chevron-right"></i></button>                                   
+                                    <button class="btn btn-black" type="submit">add to cart <i
+                                            class="fas fa-chevron-right"></i></button>
                                 </form>
                             </div>
-							<div class="product-social mt-45">
+                            <div class="product-social mt-45">
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                                 <a href="#"><i class="fab fa-twitter"></i></a>
                                 <a href="#"><i class="fab fa-behance"></i></a>
@@ -115,15 +119,15 @@
                         <div class="bakix-details-tab">
                             <ul class="nav text-center justify-content-center pb-30 mb-50" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="desc-tab" data-toggle="tab" href="#id-desc" role="tab"
+                                    <a class="nav-link active" id="desc-tab" data-bs-toggle="tab" href="#id-desc" role="tab"
                                         aria-controls="home" aria-selected="true">Description </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="id-add-in" data-toggle="tab" href="#id-add" role="tab"
+                                    <a class="nav-link" id="id-add-in" data-bs-toggle="tab" href="#id-add" role="tab"
                                         aria-controls="profile" aria-selected="false">Additional Information</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="id-r" data-toggle="tab" href="#id-rev" role="tab"
+                                    <a class="nav-link" id="id-r" data-bs-toggle="tab" href="#id-rev" role="tab"
                                         aria-controls="profile" aria-selected="false">Reviews(10)</a>
                                 </li>
                             </ul>
@@ -226,6 +230,6 @@
             </div>
         </section>
         <!-- product-desc-area end -->
-        </main>
-        <!-- main-area-end -->
+    </main>
+    <!-- main-area-end -->
 @endsection

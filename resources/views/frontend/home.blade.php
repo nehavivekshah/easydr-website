@@ -177,7 +177,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
-                        <div class="about-content s-about-content pl-30">
+                        <div class="about-content s-about-content ps-30">
                             <div class="section-title mb-20">
                                 <span>About Us</span>
                                 <h2>We Are Specialize in Medical Diagnositics</h2>

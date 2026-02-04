@@ -115,7 +115,7 @@
 
                             <div class="dashboard_profile">
                                 <h5>Profile information</h5>
-                                <a href="/my-profile"><i class="fas fa-edit pr-1"></i> edit</a>
+                                <a href="/my-profile"><i class="fas fa-edit pe-1"></i> edit</a>
                                 <ul>
                                     <li><span>Name:</span> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</li>
                                     <li><span>Mobile No.:</span> {{ Auth::user()->mobile }}, {{ Auth::user()->altr_mobile }}

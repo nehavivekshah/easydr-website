@@ -59,25 +59,23 @@
                                                 <i class="{{ $i <= $rating ? 'fas' : 'far' }} fa-star"></i>
                                             @endfor
                                         </span>
-                                        {{-- Changed ms-1 to ml-1 --}}
-                                        <span class="ml-1 text-muted">({{ number_format($doctor->avg_rating, 1) }})</span>
+                                        <span class="ms-1 text-muted">({{ number_format($doctor->avg_rating, 1) }})</span>
                                     @else
-                                        {{-- Changed fst-italic to font-italic --}}
-                                        <span class="text-muted font-italic">No ratings yet</span>
+                                        <span class="text-muted fst-italic">No ratings yet</span>
                                     @endif
                                 </div>
 
                                 {{-- Experience & Location --}}
                                 <div class="mb-4">
                                     @if(!empty($doctor->experience))
-                                        <p class="mb-2 text-dark font-weight-bold">
-                                            <i class="fas fa-briefcase text-primary mr-2"></i>{{ $doctor->experience }}
+                                        <p class="mb-2 text-dark fw-bold">
+                                            <i class="fas fa-briefcase text-primary me-2"></i>{{ $doctor->experience }}
                                         </p>
                                     @endif
 
                                     <p class="mb-0 text-muted">
                                         <i
-                                            class="fas fa-map-marker-alt text-danger mr-2"></i>{{ $doctor->hospital_name ?? $doctor->address ?? 'Main Hospital, NY' }}
+                                            class="fas fa-map-marker-alt text-danger me-2"></i>{{ $doctor->hospital_name ?? $doctor->address ?? 'Main Hospital, NY' }}
                                     </p>
                                 </div>
 
@@ -86,11 +84,9 @@
                                     </p>
                                 @endif
 
-                                {{-- Changed data-bs-toggle & data-bs-target to data-toggle & data-target --}}
-                                <button type="button" class="btn btn-primary btn-lg w-100" data-toggle="modal"
-                                    data-target="#appointmentModal">
-                                    {{-- Changed me-2 to mr-2 --}}
-                                    <i class="fas fa-calendar-check mr-2"></i> Book Appointment
+                                <button type="button" class="btn btn-primary btn-lg w-100" data-bs-toggle="modal"
+                                    data-bs-target="#appointmentModal">
+                                    <i class="fas fa-calendar-check me-2"></i> Book Appointment
                                 </button>
                             </div>
                         </div>
@@ -102,13 +98,13 @@
                             <div class="card-header bg-light p-0">
                                 <ul class="nav nav-tabs nav-justified" id="doctorTabs" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active py-3" id="doctor-about-tab" data-toggle="tab"
-                                            data-target="#doctor-about" type="button" role="tab"
+                                        <button class="nav-link active py-3" id="doctor-about-tab" data-bs-toggle="tab"
+                                            data-bs-target="#doctor-about" type="button" role="tab"
                                             aria-controls="doctor-about" aria-selected="true">Doctor About</button>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link py-3" id="reviews-tab" data-toggle="tab"
-                                            data-target="#reviews" type="button" role="tab" aria-controls="reviews"
+                                        <button class="nav-link py-3" id="reviews-tab" data-bs-toggle="tab"
+                                            data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews"
                                             aria-selected="false">Patient Reviews ({{ $reviews->count() }})</button>
                                     </li>
                                 </ul>
@@ -122,7 +118,7 @@
                                         {{-- About Section --}}
                                         <div class="mb-5">
                                             <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                                                                                    {{ $doctor->last_name ?? '' }}</h5> -->
+                                                                                                                        {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -242,7 +238,7 @@
                                         @forelse ($reviews as $review)
                                             <div class="d-flex mb-4 pb-3 border-bottom">
                                                 {{-- Placeholder for reviewer image --}}
-                                                <div class="flex-shrink-0 mr-3">
+                                                <div class="flex-shrink-0 me-3">
                                                     <i class="fas fa-user-circle fa-3x text-secondary"></i>
                                                 </div>
                                                 <div class="flex-grow-1">
@@ -290,10 +286,7 @@
 
                         <div class="modal-header">
                             <h5 class="modal-title" id="appointmentModalLabel">Book Appointment</h5>
-                            {{-- Changed close button markup and added data-dismiss --}}
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p class="mb-3">Booking appointment with: <br><strong>Dr. {{ $doctor->first_name ?? '' }}
@@ -379,8 +372,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            {{-- Changed data-bs-dismiss to data-dismiss --}}
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Confirm Booking</button>
                         </div>
                     </form>
