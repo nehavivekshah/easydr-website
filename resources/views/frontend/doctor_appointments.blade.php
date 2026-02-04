@@ -42,7 +42,7 @@
                                         @endphp
                                         <div class="col-lg-6 col-md-12 mb-4 wow fadeInUp">
                                             <div class="appointment-card">
-                                                {{-- Status Badge --}}
+
                                                 @if($appointment->status == '2')
                                                     <span class="appointment-status-badge status-cancelled">Cancelled</span>
                                                 @elseif($appointment->status == '3')
@@ -55,7 +55,7 @@
                                                     <span class="appointment-status-badge status-upcoming">Pending</span>
                                                 @endif
 
-                                                {{-- Header --}}
+
                                                 <div class="appointment-header">
                                                     <div class="appointment-img-wrapper">
                                                         <img src="{{ $appointment->patient_photo ? asset('public/assets/images/profiles/' . $appointment->patient_photo) : 'https://ui-avatars.com/api/?name=' . $appointment->patient_first_name . '+' . $appointment->patient_last_name . '&background=0D8ABC&color=fff' }}"
@@ -84,31 +84,33 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- Problem/Note --}}
+
                                                 <div class="appointment-problem mt-2 mb-3">
                                                     <small class="text-muted d-block">Problem:</small>
                                                     <p class="mb-0">{{ Str::limit($appointment->note, 60) }}</p>
                                                 </div>
 
-                                                {{-- Date Time --}}
+
                                                 <div class="appointment-datetime">
                                                     <i class="far fa-calendar-alt me-2"></i> {{ $apptDateTime->format('d M, Y') }} |
                                                     <i class="far fa-clock ms-2 me-2"></i> {{ $apptDateTime->format('h:i A') }}
                                                 </div>
 
-                                                {{-- Confirm Button (If Pending) --}}
+
                                                 @if($appointment->status == '0')
-                                                    <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST" class="mt-3 mb-3">
+                                                    <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST"
+                                                        class="mt-3 mb-3">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-success w-100" style="border-radius: 8px; font-weight: 600; padding: 10px;">
+                                                        <button type="submit" class="btn btn-success w-100"
+                                                            style="border-radius: 8px; font-weight: 600; padding: 10px;">
                                                             <i class="fas fa-check me-2"></i> Confirm Appointment
                                                         </button>
                                                     </form>
                                                 @endif
 
-                                                {{-- Action Buttons --}}
+
                                                 <div class="appointment-actions">
-                                                    {{-- Call Button --}}
+
                                                     @if(!empty($appointment->patient_mobile))
                                                         <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call"
                                                             title="Call Patient">
@@ -120,7 +122,7 @@
                                                         </button>
                                                     @endif
 
-                                                    {{-- Chat Button (assuming doctors also use /messages) --}}
+
                                                     @if($isChatActive && !$isExpired)
                                                         <a href="/messages" class="action-btn btn-chat" title="Message Patient">
                                                             <i class="fas fa-comment-alt"></i>
@@ -132,7 +134,7 @@
                                                         </button>
                                                     @endif
 
-                                                    {{-- Video Button --}}
+
                                                     @if(!empty($appointment->meeting_link) && $isSessionActive && !$isExpired)
                                                         @php
                                                             $meetingUrl = $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link;
@@ -149,7 +151,7 @@
                                                         </button>
                                                     @endif
 
-                                                    {{-- Complete Button (If Confirmed) --}}
+
                                                     @if($appointment->status == '1' && !$isExpired)
                                                         <form action="{{ route('completeAppointment', $appointment->id) }}"
                                                             method="POST" class="flex-grow-1" style="flex: 1; display: flex;">
@@ -161,7 +163,7 @@
                                                         </form>
                                                     @endif
 
-                                                    {{-- Cancel Button --}}
+
                                                     @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
                                                         <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST"
                                                             class="flex-grow-1" style="flex: 1; display: flex;"

@@ -6,7 +6,6 @@
             <div class="container">
                 <div class="row">
                     <!-- Sidebar -->
-                    <!-- Sidebar -->
                     <div class="col-lg-3 mb-4">
                         @include('frontend.inc.user_sidebar')
                     </div>

@@ -46,7 +46,7 @@
                             <div class="card doctor-card h-100 border-0 overflow-hidden transition-all"
                                 style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: all 0.3s ease;">
 
-                                {{-- Doctor Image Container --}}
+
                                 <div class="position-relative bg-light overflow-hidden doctor-image-wrapper"
                                     style="height: 250px;">
                                     <img src="{{ asset(!empty($doctor->photo) ? 'public/assets/images/profiles/' . $doctor->photo : 'public/assets/images/doctor-placeholder.png') }}"
@@ -54,7 +54,7 @@
                                         alt="Dr. {{ $doctor->first_name ?? '' }} {{ $doctor->last_name ?? '' }}"
                                         style="object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);">
 
-                                    {{-- Hover Overlay with Button --}}
+
                                     <div class="doctor-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                                         style="background: rgba(30, 41, 99, 0.7); opacity: 0; transition: all 0.3s ease;">
                                         <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
@@ -64,7 +64,7 @@
                                         </a>
                                     </div>
 
-                                    {{-- Experience Badge --}}
+
                                     @if(!empty($doctor->experience))
                                         <div class="position-absolute bottom-0 start-0 w-100 p-2"
                                             style="background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);">
@@ -75,10 +75,10 @@
                                     @endif
                                 </div>
 
-                                {{-- Doctor Info Body --}}
+
                                 <div class="card-body d-flex flex-column pt-3 pb-3 px-3 text-center" style="flex-grow: 1;">
 
-                                    {{-- Name --}}
+
                                     <h5 class="card-title mb-1">
                                         <a href="/doctor/{{ $doctor->uid ?? '' }}/{!! md5($doctor->email ?? '') !!}"
                                             class="text-decoration-none text-dark fw-bold" style="font-size: 1.1rem;">
@@ -86,16 +86,16 @@
                                         </a>
                                     </h5>
 
-                                    {{-- Specialization --}}
+
                                     <p class="text-primary mb-1 fw-600 font-13 text-uppercase"
                                         style="font-size: 0.8rem; letter-spacing: 0.5px;">
                                         {{ $doctor->specialist ?? 'Specialist' }}
                                     </p>
 
-                                    {{-- Spacer --}}
+
                                     <div class="w-100 my-2 border-bottom opacity-50"></div>
 
-                                    {{-- Rating --}}
+
                                     <div class="mb-2">
                                         @if(isset($doctor->avg_rating) && $doctor->avg_rating > 0)
                                             <div
@@ -109,7 +109,7 @@
                                         @endif
                                     </div>
 
-                                    {{-- Fees --}}
+
                                     <div class="mt-auto">
                                         @if(!empty($doctor->fees))
                                             <h6 class="text-dark mb-3 fw-bold d-flex align-items-center justify-content-center">
@@ -134,7 +134,7 @@
         </section>
         <!-- doctors-area-end -->
 
-        {{-- Custom Styles for this section --}}
+
         <style>
             .doctor-card .text-muted {
                 gap: 7px;

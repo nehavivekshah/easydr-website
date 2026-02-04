@@ -34,7 +34,7 @@
             <div class="container">
 
                 <div class="row justify-content-center">
-                    {{-- Loop through specialists --}}
+
                     @forelse ($specialists as $speciality)
                         <div class="col-lg-2 col-md-3 col-sm-6 px-2">
                             <div class="single-specialists shadow mt-30">
@@ -53,10 +53,10 @@
                             </div>
                         </div>
                     @empty
-                        {{-- What to show if no specialists are found --}}
+
                         <div class="col-12">
                             <div class="alert alert-info text-center py-5" role="alert">
-                                <i class="fas fa-tags fa-3x mb-3 d-block"></i> {{-- Changed icon --}}
+                                <i class="fas fa-tags fa-3x mb-3 d-block"></i>
                                 <h4 class="alert-heading">No Specialties Found</h4>
                                 <p>We couldn't find any medical specialties listed at this time.</p>
                                 <hr>
@@ -66,12 +66,8 @@
                     @endforelse
                 </div>
 
-                {{-- No pagination typically needed for a fixed list like specialties --}}
-                {{-- You can add a message or leave this section out --}}
                 <div class="row">
                     <div class="col-12 text-center mt-40">
-                        {{-- Optional message --}}
-                        {{-- <p class="text-muted">Click on a specialty to find relevant doctors.</p> --}}
                     </div>
                 </div>
 

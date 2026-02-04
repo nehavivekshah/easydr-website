@@ -16,7 +16,7 @@
     </div>
 
     <ul class="dashboard_menu">
-        @if(Auth::user()->role == 5) {{-- Patient --}}
+        @if(Auth::user()->role == 5)
             <li><a class="{{ Request::is('my-account') || Request::is('my-profile') ? 'active' : '' }}" href="/my-account">My
                     Profile</a></li>
             <li><a class="{{ Request::is('appointments*') && !request('filter') ? 'active' : '' }}"
@@ -34,7 +34,7 @@
             <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages">Message</a></li>
             <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password">Change Password</a>
             </li>
-        @elseif(Auth::user()->role == 4) {{-- Doctor --}}
+        @elseif(Auth::user()->role == 4)
             <li><a class="{{ Request::is('my-account') ? 'active' : '' }}" href="/my-account">Dashboard</a></li>
             <li><a class="{{ Request::is('appointments*') ? 'active' : '' }}" href="/appointments">Appointments</a></li>
             <li><a class="{{ Request::is('my-patients*') ? 'active' : '' }}" href="/my-patients">My Patients</a></li>

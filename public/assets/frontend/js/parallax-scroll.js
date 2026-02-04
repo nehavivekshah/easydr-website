@@ -35,7 +35,7 @@ var ParallaxScroll = {
 
     /* PRIVATE FUNCTIONS */
     _log: function(message) {
-        if (this.showLogs) console.log("Parallax Scroll / " + message);
+        // Logging disabled for production
     },
     _onScroll: function(noSmooth) {
         var scroll = jQuery(document).scrollTop();
