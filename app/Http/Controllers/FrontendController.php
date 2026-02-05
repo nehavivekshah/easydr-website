@@ -708,6 +708,7 @@ class FrontendController extends Controller
                 'patients.marital_status',
                 'patients.family_doctor_id',
                 'doctors.specialist',
+                'doctors.fees',
                 'doctors.license',
                 'doctors.education',
                 'doctors.about',
