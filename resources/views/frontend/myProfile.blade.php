@@ -285,6 +285,11 @@
                                                         value="{{ $user->specialist ?? '' }}">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Experience:</label>
+                                                    <input type="text" class="form-control" name="experience"
+                                                        value="{{ $user->experience ?? '' }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
                                                     <label class="form-label">License No.</label>
                                                     <input type="text" class="form-control" name="license"
                                                         value="{{ $user->license ?? '' }}">
