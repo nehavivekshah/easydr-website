@@ -108,7 +108,6 @@
                                                 </div>
                                                 <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                             </div>
-                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
                                         </div>
                                     </div>
 
