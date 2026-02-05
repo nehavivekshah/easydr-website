@@ -1246,6 +1246,10 @@ select:focus {
     /* Override bootstrap rounded-pill/corners */
 }
 
+textarea.form-control {
+    height: auto !important;
+}
+
 /* ==================== Animations ==================== */
 @keyframes pulsate {
     0% {
