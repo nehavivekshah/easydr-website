@@ -52,27 +52,33 @@
                                         <div class="tab-pane fade show active" id="active" role="tabpanel"
                                             aria-labelledby="active-tab">
                                             @forelse($activeSlots as $dateGroup)
-                                                <div class="mb-4 border rounded overflow-hidden">
-                                                    <div class="p-3 border-bottom" style="background-color: #f3e5f5;">
-                                                        <!-- Light purple header per design -->
-                                                        <h6 class="mb-0 fw-bold" style="color: #4a148c;">
-                                                            {{ $dateGroup['date'] }}
+                                                <div class="mb-4 border-0 shadow-sm rounded-3 overflow-hidden">
+                                                    <div class="p-3 bg-light border-bottom">
+                                                        <h6 class="mb-0 fw-bold text-primary">
+                                                            <i class="fas fa-calendar-day me-2"></i>{{ $dateGroup['date'] }}
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
-                                                                <button type="button"
-                                                                    class="btn {{ $slot['is_past'] ? 'btn-outline-secondary disabled' : 'btn-outline-primary' }} rounded-1 px-4 py-2"
-                                                                    style="min-width: 100px;">
-                                                                    {{ $slot['time'] }}
-                                                                </button>
+                                                                                                        <button type="button"
+                                                                                                            class="btn rounded-pill px-4 py-2 fw-medium shadow-sm border-0"
+                                                                                                            style="{{ $slot['is_past']
+                                                                ? 'background-color: #f5f5f5; color: #9e9e9e; cursor: not-allowed;'
+                                                                : 'background-color: #e3f2fd; color: #1565c0; transition: transform 0.2s;' }}"
+                                                                                                            {{ $slot['is_past'] ? 'disabled' : '' }}
+                                                                                                            onmouseover="this.style.transform='scale(1.05)'"
+                                                                                                            onmouseout="this.style.transform='scale(1)'">
+                                                                                                            {{ $slot['time'] }}
+                                                                                                        </button>
                                                             @endforeach
                                                         </div>
                                                     </div>
                                                 </div>
                                             @empty
-                                                <p class="text-muted text-center py-4">No active availabilities for today.</p>
+                                                <div class="text-center py-5">
+                                                    <p class="text-muted">No active availabilities for today.</p>
+                                                </div>
                                             @endforelse
                                         </div>
 
@@ -80,16 +86,21 @@
                                         <div class="tab-pane fade" id="upcoming" role="tabpanel"
                                             aria-labelledby="upcoming-tab">
                                             @forelse($upcomingSlots as $dateGroup)
-                                                <div class="mb-4 border rounded overflow-hidden">
-                                                    <div class="p-3 border-bottom bg-light">
-                                                        <h6 class="mb-0 fw-bold text-dark">{{ $dateGroup['date'] }}</h6>
+                                                <div class="mb-4 border-0 shadow-sm rounded-3 overflow-hidden">
+                                                    <div class="p-3 bg-light border-bottom">
+                                                        <h6 class="mb-0 fw-bold text-dark">
+                                                            <i
+                                                                class="fas fa-calendar-alt me-2 text-success"></i>{{ $dateGroup['date'] }}
+                                                        </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn btn-outline-success rounded-1 px-4 py-2"
-                                                                    style="min-width: 100px;">
+                                                                    class="btn rounded-pill px-4 py-2 fw-medium shadow-sm border-0"
+                                                                    style="background-color: #e8f5e9; color: #2e7d32; transition: transform 0.2s;"
+                                                                    onmouseover="this.style.transform='scale(1.05)'"
+                                                                    onmouseout="this.style.transform='scale(1)'">
                                                                     {{ $slot['time'] }}
                                                                 </button>
                                                             @endforeach
@@ -97,23 +108,28 @@
                                                     </div>
                                                 </div>
                                             @empty
-                                                <p class="text-muted text-center py-4">No upcoming availabilities found.</p>
+                                                <div class="text-center py-5">
+                                                    <p class="text-muted">No upcoming availabilities found.</p>
+                                                </div>
                                             @endforelse
                                         </div>
 
                                         <!-- Past Slots -->
                                         <div class="tab-pane fade" id="past" role="tabpanel" aria-labelledby="past-tab">
                                             @forelse($pastSlots as $dateGroup)
-                                                <div class="mb-4 border rounded overflow-hidden">
-                                                    <div class="p-3 border-bottom bg-light">
-                                                        <h6 class="mb-0 fw-bold text-muted">{{ $dateGroup['date'] }}</h6>
+                                                <div class="mb-4 border-0 shadow-sm rounded-3 overflow-hidden">
+                                                    <div class="p-3 bg-light border-bottom">
+                                                        <h6 class="mb-0 fw-bold text-muted">
+                                                            <i class="fas fa-history me-2"></i>{{ $dateGroup['date'] }}
+                                                        </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn btn-outline-secondary rounded-1 px-4 py-2"
-                                                                    style="min-width: 100px; cursor: not-allowed;" disabled>
+                                                                    class="btn rounded-pill px-4 py-2 fw-medium border-0"
+                                                                    style="background-color: #f5f5f5; color: #bdbdbd; cursor: not-allowed;"
+                                                                    disabled>
                                                                     {{ $slot['time'] }}
                                                                 </button>
                                                             @endforeach
@@ -121,7 +137,9 @@
                                                     </div>
                                                 </div>
                                             @empty
-                                                <p class="text-muted text-center py-4">No past availabilities found.</p>
+                                                <div class="text-center py-5">
+                                                    <p class="text-muted">No past availabilities found.</p>
+                                                </div>
                                             @endforelse
                                         </div>
                                     </div>
