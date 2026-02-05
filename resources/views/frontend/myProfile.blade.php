@@ -159,7 +159,7 @@
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 <label class="form-label">Address</label>
-                                                <textarea class="form-control" name="address">{{ $user->address ?? '' }}</textarea>
+                                                <textarea class="form-control" name="address" rows="3">{{ $user->address ?? '' }}</textarea>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">City</label>
@@ -301,7 +301,7 @@
                                                 </div>
                                                 <div class="col-md-12 mb-3">
                                                     <label class="form-label">About Me</label>
-                                                    <textarea class="form-control" name="about">{{ $user->about ?? '' }}</textarea>
+                                                    <textarea class="form-control" name="about" rows="3">{{ $user->about ?? '' }}</textarea>
                                                 </div>
                                             </div>
                                         @endif
