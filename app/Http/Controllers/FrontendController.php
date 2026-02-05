@@ -613,8 +613,73 @@ class FrontendController extends Controller
         if ($user->role != 4)
             return redirect('/my-account');
 
-        $slots = \App\Models\Doctor_availables::where('doctor_id', $user->id)->orderBy('id', 'desc')->get();
-        return view('frontend.account.manage_slots', compact('slots'));
+        $today = Carbon::today();
+
+        // Fetch all slots for the doctor
+        $allSlots = \App\Models\Doctor_availables::where('doctor_id', $user->id)
+            ->orderBy('from_date', 'asc')
+            ->get();
+
+        $activeSlots = [];
+        $upcomingSlots = [];
+        $pastSlots = [];
+
+        foreach ($allSlots as $slot) {
+            $from = Carbon::parse($slot->from_date);
+            $to = Carbon::parse($slot->to_date);
+
+            if ($to->lt($today)) {
+                $pastSlots[] = $slot;
+            } elseif ($from->gt($today)) {
+                $upcomingSlots[] = $slot;
+            } else {
+                // If it overlaps with today (started before/today and ends today/after)
+                $activeSlots[] = $slot;
+            }
+        }
+
+        return view('frontend.account.manage_slots', compact('activeSlots', 'upcomingSlots', 'pastSlots'));
+    }
+
+    public function saveSlot(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->role != 4)
+            return redirect('/login');
+
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date|after_or_equal:from_date',
+            'days' => 'required|array',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+            'duration' => 'required|integer|min:5'
+        ]);
+
+        $slot = new \App\Models\Doctor_availables();
+        $slot->doctor_id = $user->id; // note: checking if doctor_id maps to user->id or doctor->uid in other code. FrontendController seems to use user->id usually.
+        // Wait, Doctor_availables model usage in FrontendController::myAccount used `where('doctor_id', $user->id)`.
+        // However, WebDoctorController uses:
+        // $docAvailable->doctor_id = $validatedData['doctor']; (where doctor is uid from doctors table?)
+        // Let's re-verify user->id vs doctors->uid mapping. 
+        // In FrontendController::myAccount: $doctorId = $user->id; ... Appointments::where('did', $doctorId)
+        // In Doctor_availables: doctor_id column.
+
+        // Let's assume user->id is correct for now based on `myAccount`. 
+        // Actually, let's check `WebDoctorController` again. 
+        // ` Doctor_availables::leftJoin('users', 'doctor_availables.doctor_id', '=', 'users.id')` 
+        // This suggests doctor_id IS users.id.
+
+        $slot->doctor_id = $user->id;
+        $slot->from_date = $request->from_date;
+        $slot->to_date = $request->to_date;
+        $slot->available_days = implode(',', $request->days);
+        $slot->start_time = $request->start_time;
+        $slot->end_time = $request->end_time;
+        $slot->duration = $request->duration;
+        $slot->save();
+
+        return redirect()->back()->with('success', 'Availability slot added successfully!');
     }
 
     public function doctorPrescriptions()

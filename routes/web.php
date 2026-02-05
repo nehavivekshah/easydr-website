@@ -42,6 +42,7 @@ Route::get('/manage-appointment', [FrontendController::class, 'manageAppointment
 // Doctor Routes
 Route::get('/my-patients', [FrontendController::class, 'myPatients']);
 Route::get('/manage-slots', [FrontendController::class, 'manageSlots']);
+Route::post('/manage-slots/save', [FrontendController::class, 'saveSlot'])->name('saveSlot');
 Route::get('/doctor-prescriptions', [FrontendController::class, 'doctorPrescriptions']);
 Route::get('/doctor-billing', [FrontendController::class, 'doctorBilling']);
 
