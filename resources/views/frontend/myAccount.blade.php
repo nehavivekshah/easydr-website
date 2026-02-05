@@ -115,7 +115,7 @@
                                     <!-- New Section: Calendar & Revenue Graph -->
                                     <div class="row mt-4">
                                         <!-- Calendar Section -->
-                                        <div class="col-lg-5 mb-4">
+                                        <div class="col-lg-12 mb-4">
                                             <div class="card shadow-sm border-0">
                                                 <div class="card-header bg-white">
                                                     <h5 class="mb-0">Upcoming Appointments</h5>
@@ -152,7 +152,7 @@
                                         </div>
 
                                         <!-- Revenue Graph Section -->
-                                        <div class="col-lg-7 mb-4">
+                                        <div class="col-lg-12 mb-4">
                                             <div class="card shadow-sm border-0 h-100">
                                                 <div class="card-header bg-white">
                                                     <h5 class="mb-0">Monthly Revenue ({{ date('Y') }})</h5>
