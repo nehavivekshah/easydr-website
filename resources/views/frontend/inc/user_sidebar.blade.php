@@ -43,7 +43,7 @@
                     Profile</a></li>
             <li><a class="{{ Request::is('appointments*') ? 'active' : '' }}" href="/appointments">Appointments</a></li>
             <li><a class="{{ Request::is('my-patients*') ? 'active' : '' }}" href="/my-patients">My Patients</a></li>
-            <li><a class="{{ Request::is('manage-slots*') ? 'active' : '' }}" href="/manage-slots">Manage Slots</a></li>
+            <!-- <li><a class="{{ Request::is('manage-slots*') ? 'active' : '' }}" href="/manage-slots">Manage Slots</a></li> -->
             <li><a class="{{ Request::is('doctor-prescriptions*') ? 'active' : '' }}"
                     href="/doctor-prescriptions">Prescriptions</a></li>
             <li><a class="{{ Request::is('doctor-billing*') ? 'active' : '' }}" href="/doctor-billing">Billing</a></li>

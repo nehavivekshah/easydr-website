@@ -14,7 +14,9 @@
                     <div class="col-lg-9">
                         <div class="dashboard_content">
                             <h5>overview</h5>
-
+                            @if(Auth::user()->role == 4)
+                                <a href="/manage-slots"><i class="fas fa-clock pe-1"></i> Availability</a>
+                            @endif
                             <div class="row">
 
                                 @if(Auth::user()->role == 5)
