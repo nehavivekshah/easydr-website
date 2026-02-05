@@ -56,14 +56,15 @@
                                                     <div class="p-3 border-bottom" style="background-color: #f3e5f5;">
                                                         <!-- Light purple header per design -->
                                                         <h6 class="mb-0 fw-bold" style="color: #4a148c;">
-                                                            {{ $dateGroup['date'] }}</h6>
+                                                            {{ $dateGroup['date'] }}
+                                                        </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn {{ $slot['is_past'] ? 'btn-secondary disabled' : 'btn-outline-primary' }} rounded-1 px-4 py-2"
-                                                                    style="min-width: 100px; {{ $slot['is_past'] ? 'opacity: 0.6; background-color: #e0e0e0; border: none; color: #757575;' : '' }}">
+                                                                    class="btn {{ $slot['is_past'] ? 'btn-outline-secondary disabled' : 'btn-outline-primary' }} rounded-1 px-4 py-2"
+                                                                    style="min-width: 100px;">
                                                                     {{ $slot['time'] }}
                                                                 </button>
                                                             @endforeach
@@ -88,7 +89,7 @@
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn btn-outline-success rounded-1 px-4 py-2"
-                                                                    style="min-width: 100px; background-color: #e8f5e9; border: 1px solid #c8e6c9; color: #2e7d32;">
+                                                                    style="min-width: 100px;">
                                                                     {{ $slot['time'] }}
                                                                 </button>
                                                             @endforeach
@@ -111,8 +112,8 @@
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn btn-light text-muted border rounded-1 px-4 py-2"
-                                                                    style="min-width: 100px; cursor: not-allowed;">
+                                                                    class="btn btn-outline-secondary rounded-1 px-4 py-2"
+                                                                    style="min-width: 100px; cursor: not-allowed;" disabled>
                                                                     {{ $slot['time'] }}
                                                                 </button>
                                                             @endforeach
