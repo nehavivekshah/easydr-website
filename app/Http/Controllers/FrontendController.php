@@ -711,6 +711,7 @@ class FrontendController extends Controller
                 'doctors.fees',
                 'doctors.license',
                 'doctors.education',
+                'doctors.experience',
                 'doctors.about',
                 'roles.title',
                 'roles.subtitle',
