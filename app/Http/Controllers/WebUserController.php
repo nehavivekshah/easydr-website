@@ -447,7 +447,7 @@ class WebUserController extends Controller
         $user->last_name = $name[1] ?? '';
         $user->email = $request->email ?? '';
         $user->mobile = $request->mob ?? '';
-        $user->altr_mobile = $request->mob2 ?? '';
+        $user->altr_mobile = $request->altr_mob ?? $request->mob2 ?? '';
 
         if (!empty($request->file('profile_photo'))):
 
