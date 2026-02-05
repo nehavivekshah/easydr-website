@@ -493,6 +493,28 @@ class FrontendController extends Controller
                 ->orderBy('id', 'desc')
                 ->first();
 
+            // Calendar Data: Upcoming unique appointment dates
+            $appointmentDates = \App\Models\Appointments::where('did', $doctorId)
+                ->where('date', '>=', $today)
+                ->distinct()
+                ->pluck('date')
+                ->toArray();
+
+            // Revenue Data: Monthly revenue for current year
+            $revenueRaw = \App\Models\Appointments::where('did', $doctorId)
+                ->where('status', 1) // Completed
+                ->whereYear('date', Carbon::now()->year)
+                ->selectRaw('MONTH(date) as month, SUM(fees) as total')
+                ->groupBy('month')
+                ->pluck('total', 'month')
+                ->toArray();
+
+            // Format revenue for Chart.js (12 months)
+            $monthlyRevenue = [];
+            for ($m = 1; $m <= 12; $m++) {
+                $monthlyRevenue[] = $revenueRaw[$m] ?? 0;
+            }
+
             return view('frontend/myAccount', compact(
                 'appointmentsCount',
                 'todayAppointmentsCount',
@@ -502,7 +524,9 @@ class FrontendController extends Controller
                 'recentAppointments',
                 'doctorInfo',
                 'doctorAvailability',
-                'userAddress'
+                'userAddress',
+                'appointmentDates',
+                'monthlyRevenue'
             ));
 
         } elseif ($user->role == 5) {
