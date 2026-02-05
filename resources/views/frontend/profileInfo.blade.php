@@ -14,7 +14,7 @@
                     <div class="col-lg-9">
                         <div class="dashboard_content">
                             <div class="dashboard_profile">
-                                <h5>Profile information</h5>
+                                <h4>Profile information</h4>
                                 <a href="/my-profile"><i class="fas fa-edit pe-1"></i> edit</a>
                                 <ul>
                                     <li><span>Name:</span> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</li>

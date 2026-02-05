@@ -14,7 +14,7 @@
                     <!-- Content Area -->
                     <div class="col-lg-9">
                         <div class="dashboard_content">
-                            <h5>Edit Profile</h5>
+                            <h4>Edit Profile</h4>
 
                             <style>
                                 .form-step { display: none; }

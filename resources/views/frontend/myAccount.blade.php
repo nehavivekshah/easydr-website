@@ -16,7 +16,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">Overview</h4>
                                 @if(Auth::user()->role == 4)
-                                    <a href="/manage-slots" class="btn btn-sm btn-primary text-white"><i
+                                    <a href="/manage-slots" class="btn btn-sm btn-primary text-white px-2"><i
                                             class="fas fa-clock pe-1"></i> Availability</a>
                                 @endif
                             </div>
