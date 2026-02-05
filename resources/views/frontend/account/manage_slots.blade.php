@@ -11,31 +11,39 @@
                     <div class="col-lg-9">
                         <div class="dashboard_content">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h4>Availability</h4>
-                                <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal"
+                                <h4 class="mb-0">Availability</h4>
+                                <button type="button" class="btn ss-btn text-white" data-bs-toggle="modal"
                                     data-bs-target="#addSlotModal">
                                     <i class="fas fa-plus pe-1"></i> Add New Slot
                                 </button>
                             </div>
 
-                            <div class="card shadow-sm border-0">
-                                <div class="card-body">
-                                    <ul class="nav nav-tabs mb-4" id="slotTabs" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="active-tab" data-bs-toggle="tab"
+                            <div class="card shadow-sm border-0" style="border-radius: 15px;">
+                                <div class="card-body p-4">
+                                    <ul class="nav nav-pills nav-pills-custom mb-4" id="slotTabs" role="tablist">
+                                        <li class="nav-item me-2" role="presentation">
+                                            <button class="nav-link active" id="active-tab" data-bs-toggle="pill"
                                                 data-bs-target="#active" type="button" role="tab" aria-controls="active"
-                                                aria-selected="true">Active
-                                                (Today)</button>
+                                                aria-selected="true">
+                                                <span>Active (Today)</span>
+                                                <i class="fas fa-calendar-day ms-2"></i>
+                                            </button>
                                         </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="upcoming-tab" data-bs-toggle="tab"
+                                        <li class="nav-item me-2" role="presentation">
+                                            <button class="nav-link" id="upcoming-tab" data-bs-toggle="pill"
                                                 data-bs-target="#upcoming" type="button" role="tab" aria-controls="upcoming"
-                                                aria-selected="false">Upcoming</button>
+                                                aria-selected="false">
+                                                <span>Upcoming</span>
+                                                <i class="fas fa-calendar-alt ms-2"></i>
+                                            </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="past-tab" data-bs-toggle="tab"
+                                            <button class="nav-link" id="past-tab" data-bs-toggle="pill"
                                                 data-bs-target="#past" type="button" role="tab" aria-controls="past"
-                                                aria-selected="false">Past</button>
+                                                aria-selected="false">
+                                                <span>Past</span>
+                                                <i class="fas fa-history ms-2"></i>
+                                            </button>
                                         </li>
                                     </ul>
 
