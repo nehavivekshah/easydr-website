@@ -129,7 +129,7 @@
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-4 py-2 fw-medium transition-all"
-                                                                    style="border-radius: 6px; min-width: 140px; background-color: #f8f9fa; border: 1px solid #e9ecef; color: #adb5bd; cursor: not-allowed;"
+                                                                    style="border-radius: 6px; min-width: 140px; background: #f8f9fa!important; border: 1px solid #e9ecef!important; color: #adb5bd!important; cursor: not-allowed!important;"
                                                                     disabled>
                                                                     {{ $slot['time'] }}
                                                                 </button>
