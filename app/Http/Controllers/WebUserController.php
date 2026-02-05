@@ -383,6 +383,9 @@ class WebUserController extends Controller
                 'doctors.license',
                 'doctors.education',
                 'doctors.fees',
+
+                'doctors.experience',
+                'doctors.extra',
                 'doctors.about',
                 'roles.title',
                 'roles.subtitle',
@@ -575,6 +578,9 @@ class WebUserController extends Controller
                 $doctor->license = $request->license ?? '';
                 $doctor->education = $request->education ?? '';
                 $doctor->about = $request->about ?? '';
+                $doctor->fees = $request->fees ?? '';
+                $doctor->experience = $request->experience ?? '';
+                $doctor->extra = $request->extra ?? '';
                 $doctor->save();
 
             }
