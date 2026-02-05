@@ -728,6 +728,33 @@ class FrontendController extends Controller
         return view('frontend/myProfile', ['user' => $userData, 'doctors' => $doctors]);
     }
 
+    public function profileInfo()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        $userAddress = \App\Models\Usermetas::where('uid', $user->id)->first();
+        $patient = null;
+        $doctorInfo = null;
+        $doctorAvailability = null;
+
+        if ($user->role == 5) {
+            // Patient
+            $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        } elseif ($user->role == 4) {
+            // Doctor
+            $doctorInfo = \App\Models\Doctors::where('uid', $user->id)->first();
+            $doctorAvailability = \App\Models\Doctor_availables::where('doctor_id', $user->id)
+                ->where('status', 1)
+                ->orderBy('id', 'desc')
+                ->first();
+        }
+
+        return view('frontend/profileInfo', compact('user', 'userAddress', 'patient', 'doctorInfo', 'doctorAvailability'));
+    }
+
     public function messages()
     {
         $user = Auth::user();

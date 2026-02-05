@@ -31,6 +31,7 @@ Route::post('/create-new-password', [FrontendController::class, 'createNewPasswo
 /*Website My Account Pages*/
 Route::get('/logout', [FrontendController::class, 'logout']);
 Route::get('/my-account', [FrontendController::class, 'myAccount']);
+Route::get('/profile-info', [FrontendController::class, 'profileInfo']);
 Route::get('/my-profile', [FrontendController::class, 'myProfile']);
 Route::get('/appointments', [FrontendController::class, 'appointments']);
 Route::post('/cancel-appointment/{id}', [FrontendController::class, 'cancelAppointment'])->name('cancelAppointment');
