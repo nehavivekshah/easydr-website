@@ -382,7 +382,7 @@ class WebUserController extends Controller
                 'doctors.specialist',
                 'doctors.license',
                 'doctors.education',
-                'doctors.fees',
+                '   .fees',
                 'doctors.about',
                 'roles.title',
                 'roles.subtitle',
