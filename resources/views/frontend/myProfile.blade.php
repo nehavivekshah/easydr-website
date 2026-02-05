@@ -125,8 +125,9 @@
                                                     required>
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">Date of Birth</label>
-                                                <input type="date" class="form-control" name="dob" value="{{ $user->dob }}">
+                                                <label class="form-label">Alternate Mobile Number</label>
+                                                <input type="text" class="form-control" name="alter_mob" value="{{ $user->alter_mob }}"
+                                                    required>
                                             </div>
                                         </div>
 
@@ -140,10 +141,16 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6 mb-3">
+                                                <label class="form-label">Date of Birth</label>
+                                                <input type="date" class="form-control" name="dob" value="{{ $user->dob }}">
+                                            </div>
+                                            @if($role == 5)
+                                            <div class="col-md-6 mb-3">
                                                 <label class="form-label">Aadhar Number</label>
                                                 <input type="text" class="form-control" name="adhar"
                                                     value="{{ $user->adhar ?? '' }}" placeholder="12 Digit Aadhar Number">
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -153,8 +160,7 @@
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 <label class="form-label">Address</label>
-                                                <textarea class="form-control" name="address"
-                                                    rows="2">{{ $user->address ?? '' }}</textarea>
+                                                <textarea class="form-control" name="address">{{ $user->address ?? '' }}</textarea>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">City</label>
@@ -296,8 +302,7 @@
                                                 </div>
                                                 <div class="col-md-12 mb-3">
                                                     <label class="form-label">About Me</label>
-                                                    <textarea class="form-control" name="about"
-                                                        rows="3">{{ $user->about ?? '' }}</textarea>
+                                                    <textarea class="form-control" name="about">{{ $user->about ?? '' }}</textarea>
                                                 </div>
                                             </div>
                                         @endif
