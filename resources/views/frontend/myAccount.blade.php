@@ -13,10 +13,13 @@
                     <!-- Content Area -->
                     <div class="col-lg-9">
                         <div class="dashboard_content">
-                            <h5>overview</h5>
-                            @if(Auth::user()->role == 4)
-                                <a href="/manage-slots"><i class="fas fa-clock pe-1"></i> Availability</a>
-                            @endif
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="mb-0">Overview</h5>
+                                @if(Auth::user()->role == 4)
+                                    <a href="/manage-slots" class="btn btn-sm btn-primary text-white"><i
+                                            class="fas fa-clock pe-1"></i> Availability</a>
+                                @endif
+                            </div>
                             <div class="row">
 
                                 @if(Auth::user()->role == 5)
