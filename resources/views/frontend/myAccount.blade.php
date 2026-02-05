@@ -128,9 +128,13 @@
                                         {{ Auth::user()->gender == 1 ? 'Male' : (Auth::user()->gender == 2 ? 'Female' : 'Other') ?? 'Not Specified' }}
                                     </li>
                                     @if(isset($userAddress))
-                                        <li><span>Aadhar No.:</span> <strong
-                                                class="{{ !empty($userAddress->adhar) ? 'text-success' : 'text-danger' }}">{{ $userAddress->adhar ?? 'Not Set' }}</strong>
-                                        </li>
+
+                                        @if (Auth::user()->role == 5)
+                                            <li><span>Aadhar No.:</span> <strong
+                                                    class="{{ !empty($userAddress->adhar) ? 'text-success' : 'text-danger' }}">{{ $userAddress->adhar ?? 'Not Set' }}</strong>
+                                            </li>
+                                        @endif
+
                                         <li><span>Address:</span> {{ $userAddress->address ?? 'Not Set' }}</li>
                                         <li><span>City:</span> {{ $userAddress->city ?? 'Not Set' }}</li>
                                         <li><span>State:</span> {{ $userAddress->state ?? 'Not Set' }}</li>
@@ -181,9 +185,10 @@
                                         <li><span>Fees:</span> {{ $doctorInfo->fees ? '$' . $doctorInfo->fees : 'Not Set' }}
                                         </li>
                                         <li class="mt-2"><span>About:</span>
-                                            <small>{{ Str::limit($doctorInfo->about ?? 'No description', 100) }}</small>
+                                            {{ $doctorInfo->about ?? 'No About Available' }}
                                         </li>
                                     </ul>
+                                    <hr>
                                     @if(isset($doctorAvailability))
                                         <h5 class="mt-3">Availability</h5>
                                         <ul>
