@@ -363,7 +363,7 @@
             
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").style.display = "none";
-                document.getElementById("submitBtn").style.display = "inline";
+                document.getElementById("submitBtn").style.display = "flex";
             } else {
                 document.getElementById("nextBtn").style.display = "inline";
                 document.getElementById("submitBtn").style.display = "none";
