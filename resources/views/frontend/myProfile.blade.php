@@ -126,8 +126,7 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Alternate Mobile Number</label>
-                                                <input type="text" class="form-control" name="alter_mob" value="{{ $user->alter_mob }}"
-                                                    required>
+                                                <input type="text" class="form-control" name="altr_mob" value="{{ $user->altr_mob }}">
                                             </div>
                                         </div>
 
