@@ -887,7 +887,7 @@ select:focus {
     /* Removing padding to handle via internal spacing */
     border-radius: 0;
     box-shadow: none;
-    margin-top: 40px;
+    margin-top: 0px;
     position: relative;
     list-style: none;
 }
