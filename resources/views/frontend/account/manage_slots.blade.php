@@ -65,11 +65,11 @@
                                                                     class="btn px-4 py-2 fw-medium shadow-sm transition-all"
                                                                     style="border-radius: 6px; min-width: 140px; 
                                                                     {{ $slot['is_past'] 
-                                                                        ? 'background-color: #f8f9fa; border: 1px solid #e9ecef; color: #adb5bd; cursor: not-allowed;' 
-                                                                        : 'background-color: #fff; border: 1px solid #cfd8dc; color: #455a64;' }}"
+                                                                        ? 'background: #f8f9fa!important; border: 1px solid #e9ecef!important; color: #adb5bd!important; cursor: not-allowed;' 
+                                                                        : 'background: #fff!important; border: 1px solid #cfd8dc!important; color: #455a64!important;' }}"
                                                                     {{ $slot['is_past'] ? 'disabled' : '' }}
-                                                                    onmouseover="if(!this.disabled){this.style.backgroundColor='#d05ce3'; this.style.color='#fff'; this.style.borderColor='#d05ce3';}" 
-                                                                    onmouseout="if(!this.disabled){this.style.backgroundColor='#fff'; this.style.color='#455a64'; this.style.borderColor='#cfd8dc';}">
+                                                                    onmouseover="if(!this.disabled){this.style.backgroundColor='#0ab7e3!important'; this.style.color='#fff!important'; this.style.borderColor='#0ab7e3!important';}" 
+                                                                    onmouseout="if(!this.disabled){this.style.backgroundColor='#fff!important'; this.style.color='#455a64!important'; this.style.borderColor='#cfd8dc!important';}">
                                                                     {{ $slot['time'] }}
                                                                 </button>
                                                             @endforeach
