@@ -615,30 +615,87 @@ class FrontendController extends Controller
 
         $today = Carbon::today();
 
-        // Fetch all slots for the doctor
-        $allSlots = \App\Models\Doctor_availables::where('doctor_id', $user->id)
-            ->orderBy('from_date', 'asc')
-            ->get();
+        // Active (Today)
+        $activeSlots = $this->generateDateSlots($user->id, $today, $today);
 
-        $activeSlots = [];
-        $upcomingSlots = [];
-        $pastSlots = [];
+        // Upcoming (Tomorrow to +14 days)
+        $upcomingSlots = $this->generateDateSlots($user->id, $today->copy()->addDay(), $today->copy()->addDays(14));
 
-        foreach ($allSlots as $slot) {
-            $from = Carbon::parse($slot->from_date);
-            $to = Carbon::parse($slot->to_date);
+        // Past (Yesterday to -7 days) - displayed in reverse chronological order usually, but helper generates date-wise. 
+        // Let's generate and then reverse if needed, or just let view handle it.
+        $pastSlots = $this->generateDateSlots($user->id, $today->copy()->subDays(7), $today->copy()->subDay());
 
-            if ($to->lt($today)) {
-                $pastSlots[] = $slot;
-            } elseif ($from->gt($today)) {
-                $upcomingSlots[] = $slot;
-            } else {
-                // If it overlaps with today (started before/today and ends today/after)
-                $activeSlots[] = $slot;
-            }
-        }
+        // Reverse past slots to show most recent past first
+        $pastSlots = array_reverse($pastSlots);
 
         return view('frontend.account.manage_slots', compact('activeSlots', 'upcomingSlots', 'pastSlots'));
+    }
+
+    private function generateDateSlots($doctorId, $startDate, $endDate)
+    {
+        $dates = [];
+        $current = $startDate->copy();
+        $now = Carbon::now();
+
+        // Fetch all availability rules that might overlap with the requested range
+        // Rule: from_date <= end_range AND to_date >= start_range
+        $rules = \App\Models\Doctor_availables::where('doctor_id', $doctorId)
+            ->where('from_date', '<=', $endDate->toDateString())
+            ->where('to_date', '>=', $startDate->toDateString())
+            ->get();
+
+        while ($current->lte($endDate)) {
+            $daySlots = [];
+            $dateString = $current->toDateString();
+            $dayName = $current->format('l'); // Monday, Tuesday...
+
+            foreach ($rules as $rule) {
+                // Check if rule covers this date
+                if ($rule->from_date <= $dateString && $rule->to_date >= $dateString) {
+                    // Check if day matches
+                    $availableDays = explode(',', $rule->available_days);
+                    if (in_array($dayName, $availableDays)) {
+                        // Generate slots for this rule
+                        $start = Carbon::parse($dateString . ' ' . $rule->start_time);
+                        $end = Carbon::parse($dateString . ' ' . $rule->end_time);
+                        $duration = $rule->duration;
+
+                        while ($start->copy()->addMinutes($duration)->lte($end)) {
+                            // Check if slot falls within rule bounds
+                            // Note: $start is slot start. Slot end is $start + duration.
+
+                            $isPast = $start->lt($now); // Slot start time is in the past
+
+                            $daySlots[] = [
+                                'time' => $start->format('h:i A'),
+                                'is_past' => $isPast
+                            ];
+
+                            $start->addMinutes($duration);
+                        }
+                    }
+                }
+            }
+
+            // sort slots by time if multiple rules merged (optional but good practice)
+            usort($daySlots, function ($a, $b) {
+                return strtotime($a['time']) - strtotime($b['time']);
+            });
+
+            // Store even if empty? User design shows containers for dates. 
+            // If empty, maybe show "No slots available".
+            if (!empty($daySlots) || $current->isToday()) {
+                $dates[] = [
+                    'date' => $current->format('l, F j, Y'), // Today, February 5
+                    'is_today' => $current->isToday(),
+                    'slots' => $daySlots
+                ];
+            }
+
+            $current->addDay();
+        }
+
+        return $dates;
     }
 
     public function saveSlot(Request $request)
