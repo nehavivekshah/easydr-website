@@ -61,16 +61,17 @@
                                                     <div class="p-3 bg-white">
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
-                                                                                                        <button type="button"
-                                                                                                            class="btn rounded-pill px-4 py-2 fw-medium shadow-sm border-0"
-                                                                                                            style="{{ $slot['is_past']
-                                                                ? 'background-color: #f5f5f5; color: #9e9e9e; cursor: not-allowed;'
-                                                                : 'background-color: #e3f2fd; color: #1565c0; transition: transform 0.2s;' }}"
-                                                                                                            {{ $slot['is_past'] ? 'disabled' : '' }}
-                                                                                                            onmouseover="this.style.transform='scale(1.05)'"
-                                                                                                            onmouseout="this.style.transform='scale(1)'">
-                                                                                                            {{ $slot['time'] }}
-                                                                                                        </button>
+                                                                <button type="button"
+                                                                    class="btn px-4 py-2 fw-medium shadow-sm transition-all"
+                                                                    style="border-radius: 6px; min-width: 140px; 
+                                                                    {{ $slot['is_past'] 
+                                                                        ? 'background-color: #f8f9fa; border: 1px solid #e9ecef; color: #adb5bd; cursor: not-allowed;' 
+                                                                        : 'background-color: #fff; border: 1px solid #cfd8dc; color: #455a64;' }}"
+                                                                    {{ $slot['is_past'] ? 'disabled' : '' }}
+                                                                    onmouseover="if(!this.disabled){this.style.backgroundColor='#d05ce3'; this.style.color='#fff'; this.style.borderColor='#d05ce3';}" 
+                                                                    onmouseout="if(!this.disabled){this.style.backgroundColor='#fff'; this.style.color='#455a64'; this.style.borderColor='#cfd8dc';}">
+                                                                    {{ $slot['time'] }}
+                                                                </button>
                                                             @endforeach
                                                         </div>
                                                     </div>
@@ -97,10 +98,10 @@
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn rounded-pill px-4 py-2 fw-medium shadow-sm border-0"
-                                                                    style="background-color: #e8f5e9; color: #2e7d32; transition: transform 0.2s;"
-                                                                    onmouseover="this.style.transform='scale(1.05)'"
-                                                                    onmouseout="this.style.transform='scale(1)'">
+                                                                    class="btn px-4 py-2 fw-medium shadow-sm transition-all"
+                                                                    style="border-radius: 6px; min-width: 140px; background-color: #fff; border: 1px solid #cfd8dc; color: #455a64;"
+                                                                    onmouseover="this.style.backgroundColor='#d05ce3'; this.style.color='#fff'; this.style.borderColor='#d05ce3';" 
+                                                                    onmouseout="this.style.backgroundColor='#fff'; this.style.color='#455a64'; this.style.borderColor='#cfd8dc';">
                                                                     {{ $slot['time'] }}
                                                                 </button>
                                                             @endforeach
@@ -127,8 +128,8 @@
                                                         <div class="d-flex flex-wrap gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn rounded-pill px-4 py-2 fw-medium border-0"
-                                                                    style="background-color: #f5f5f5; color: #bdbdbd; cursor: not-allowed;"
+                                                                    class="btn px-4 py-2 fw-medium transition-all"
+                                                                    style="border-radius: 6px; min-width: 140px; background-color: #f8f9fa; border: 1px solid #e9ecef; color: #adb5bd; cursor: not-allowed;"
                                                                     disabled>
                                                                     {{ $slot['time'] }}
                                                                 </button>
