@@ -125,10 +125,12 @@
                                                     <div class="custom-calendar">
                                                         <div
                                                             class="calendar-header d-flex justify-content-between align-items-center mb-3">
-                                                            <button class="btn btn-sm btn-outline-primary" id="prevMonth"><i
+                                                            <button class="btn btn-sm btn-outline-primary" id="prevMonth"
+                                                                style="padding: 8px 15px 8px 13px;"><i
                                                                     class="fas fa-chevron-left"></i></button>
                                                             <h6 class="mb-0" id="monthYear"></h6>
-                                                            <button class="btn btn-sm btn-outline-primary" id="nextMonth"><i
+                                                            <button class="btn btn-sm btn-outline-primary" id="nextMonth"
+                                                                style="padding: 8px 13px 8px 15px;"><i
                                                                     class="fas fa-chevron-right"></i></button>
                                                         </div>
                                                         <div
