@@ -59,7 +59,7 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between g-10">
+                                                        <div class="d-flex flex-wrap justify-content-start g-10">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium shadow-sm transition-all"
@@ -95,7 +95,7 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between g-10">
+                                                        <div class="d-flex flex-wrap justify-content-start g-10">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium shadow-sm transition-all"
@@ -125,7 +125,7 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between g-10">
+                                                        <div class="d-flex flex-wrap justify-content-start g-10">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium transition-all"
@@ -222,4 +222,141 @@
             </div>
         </section>
     </main>
+    </main>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addSlotModal = document.getElementById('addSlotModal');
+            const fromDateInput = addSlotModal.querySelector('input[name="from_date"]');
+            const startTimeInput = addSlotModal.querySelector('input[name="start_time"]');
+            const endTimeInput = addSlotModal.querySelector('input[name="end_time"]');
+            const durationInput = addSlotModal.querySelector('input[name="duration"]');
+            
+            // Get logged in doctor ID - assuming Auth user is the doctor
+            const doctorId = "{{ Auth::id() }}"; 
+
+            fromDateInput.addEventListener('change', function() {
+                const selectedDate = this.value;
+                if (!selectedDate) return;
+
+                // Sync to_date with from_date for convenience
+                const toDateInput = addSlotModal.querySelector('input[name="to_date"]');
+                if(!toDateInput.value) {
+                    toDateInput.value = selectedDate;
+                }
+
+                // Fetch availability
+                fetch(`/admin/get-doctor-availability/${doctorId}`)
+                    .then(response => response.json())
+                    .then(slots => {
+                        // Filter slots for the selected date
+                        const daySlots = slots.filter(slot => slot.date === selectedDate);
+                        
+                        if (daySlots.length > 0) {
+                            // Find the last slot's time
+                            // Time format from API is "hh:mm A" (e.g., "09:00 AM")
+                            // We need to parse this to find the latest one.
+                            
+                            let lastSlotTime = null;
+                            let maxTimeValue = -1;
+
+                            daySlots.forEach(slot => {
+                                const timeParts = parseTime(slot.time);
+                                if (timeParts > maxTimeValue) {
+                                    maxTimeValue = timeParts;
+                                    lastSlotTime = slot.time;
+                                }
+                            });
+
+                            if (lastSlotTime) {
+                                // Calculate next start time = lastSlotTime + duration (default 15 mins or user input)
+                                const duration = parseInt(durationInput.value) || 15;
+                                const nextTime = addMinutesToTime(lastSlotTime, duration);
+                                
+                                // Set input value (requires HH:mm 24h format for input type="time")
+                                startTimeInput.value = convertTo24Hour(nextTime);
+                                
+                                // Automatically set end time too
+                                const endTime = addMinutesToTime(nextTime, duration);
+                                endTimeInput.value = convertTo24Hour(endTime);
+                            }
+                        } else {
+                            // No slots for this day, maybe set a default start time like 09:00
+                            startTimeInput.value = "09:00";
+                            // Set end time
+                            const duration = parseInt(durationInput.value) || 15;
+                            endTimeInput.value = convertTo24Hour(addMinutesToTime("09:00 AM", duration));
+                        }
+                    })
+                    .catch(error => console.error('Error fetching availability:', error));
+            });
+
+            // Helper to parse "hh:mm A" to minutes since midnight
+            function parseTime(timeStr) {
+                const [time, modifier] = timeStr.split(' ');
+                let [hours, minutes] = time.split(':');
+                
+                hours = parseInt(hours); 
+                minutes = parseInt(minutes); 
+
+                if (hours === 12 && modifier === 'AM') {
+                    hours = 0;
+                }
+                if (hours !== 12 && modifier === 'PM') {
+                    hours += 12;
+                }
+                
+                return hours * 60 + minutes;
+            }
+
+            // Helper to add minutes to "hh:mm A" time string and return "hh:mm A"
+            function addMinutesToTime(timeStr, minutesToAdd) {
+                // Handle raw HH:mm input (if manual input was 24h) vs HH:mm A
+                let hours, minutes, modifier;
+                
+                if (timeStr.includes(' ')) {
+                     [time, modifier] = timeStr.split(' ');
+                     [hours, minutes] = time.split(':');
+                     if (hours === '12' && modifier === 'AM') hours = 0;
+                     if (hours !== '12' && modifier === 'PM') hours = parseInt(hours) + 12;
+                } else {
+                    [hours, minutes] = timeStr.split(':');
+                }
+                
+                hours = parseInt(hours);
+                minutes = parseInt(minutes);
+
+                const totalMinutes = hours * 60 + minutes + minutesToAdd;
+                
+                const newHours = Math.floor(totalMinutes / 60) % 24;
+                const newMinutes = totalMinutes % 60;
+                
+                const ampm = newHours >= 12 ? 'PM' : 'AM';
+                let displayHours = newHours % 12;
+                displayHours = displayHours ? displayHours : 12; // the hour '0' should be '12'
+                
+                const displayMinutes = newMinutes < 10 ? '0' + newMinutes : newMinutes;
+                
+                return `${displayHours}:${displayMinutes} ${ampm}`;
+            }
+
+            // Helper to convert "hh:mm A" to "HH:mm" for input fields
+            function convertTo24Hour(timeStr) {
+                const [time, modifier] = timeStr.split(' ');
+                let [hours, minutes] = time.split(':');
+                
+                if (hours === '12') {
+                    hours = '00';
+                }
+                
+                if (modifier === 'PM') {
+                    hours = parseInt(hours, 10) + 12;
+                }
+                
+                return `${hours}:${minutes}`;
+            }
+        });
+    </script>
+    @endpush
 @endsection
