@@ -339,7 +339,7 @@
                                                                     <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
                                                                           onsubmit="return confirm('Mark this appointment as PAID manually?');">
                                                                         @csrf
-                                                                        <button type="submit" class="btn btn-sm markPaid">
+                                                                        <button type="submit" class="btn btn-sm badge-markPaid">
                                                                             Mark Paid
                                                                         </button>
                                                                     </form>
@@ -460,9 +460,11 @@
                                         {{ $appointments->appends(request()->input())->links('pagination::bootstrap-5') }}
                                     </div>
                                 @else
-                                    <div class="col-12">
-                                        <div class="text-center py-5 bg-white shadow-sm rounded">
-                                            <p class="text-muted mb-0">No appointments found.</p>
+                                    <div class="col-12 text-center py-5">
+                                        <div class="empty-state">
+                                            <i class="fas fa-calendar-check fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted mb-3">No appointments found.</p>
+                                            <a href="/manage-appointment" class="btn btn-primary ss-btn">Book your first appointment</a>
                                         </div>
                                     </div>
                                 @endif
