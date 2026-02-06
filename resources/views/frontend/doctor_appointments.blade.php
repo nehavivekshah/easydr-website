@@ -282,15 +282,18 @@
                                                     @elseif($paymentStatus == 'health_card')
                                                         <span class="badge-payment health_card">HEALTH CARD</span>
                                                     @else
-                                                        <div class="d-flex align-items-center gap-2">
+                                                        <div class="d-flex flex-wrap align-items-center gap-2">
                                                             <span class="badge-payment unpaid">UNPAID</span>
-                                                            <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
-                                                                  onsubmit="return confirm('Mark this appointment as PAID manually?');">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 0.7rem; border-radius: 20px; height: 24px;">
-                                                                    Mark Paid
-                                                                </button>
-                                                            </form>
+                                                            {{-- Show "Mark Paid" only if NOT Cancelled (2) and NOT Expired --}}
+                                                            @if($appointment->status != '2' && !$isExpired)
+                                                                <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
+                                                                      onsubmit="return confirm('Mark this appointment as PAID manually?');">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-sm btn-outline-danger py-2 px-2 mt-2" style="font-size: 0.7rem; border-radius: 20px; height: 24px;">
+                                                                        Mark Paid
+                                                                    </button>
+                                                                </form>
+                                                            @endif
                                                         </div>
                                                     @endif
                                                 </div>
