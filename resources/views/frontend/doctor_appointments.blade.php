@@ -347,15 +347,29 @@
                                                                 @endif
                                                             </div>
                                                         @endif
+                                                        
+                                                        <!-- Payment Mode Display -->
+                                                        @if(!empty($appointment->payment_mode))
+                                                            <small class="text-muted fw-bold" style="font-size: 0.7rem; margin-top: -2px;">
+                                                                Via {{ $appointment->payment_mode }}
+                                                            </small>
+                                                        @endif
                                                     </div>
                                                 </div>
 
                                                 <!-- Problem Section -->
                                                 <div class="problem-section">
                                                     <span class="problem-label">Reported Problem</span>
-                                                    <p class="problem-text mb-0">
+                                                    <p class="problem-text mb-2">
                                                         {{ Str::limit($appointment->note, 80, '...') }}
                                                     </p>
+                                                    @if(!empty($appointment->referral_file))
+                                                        <div class="mt-2">
+                                                            <a href="{{ asset('public/assets/images/referrals/' . $appointment->referral_file) }}" target="_blank" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
+                                                                <i class="fas fa-paperclip me-1 text-primary"></i> View Referral Document
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                                 </div>
 
                                                 <!-- Date & Time Pill Box -->
