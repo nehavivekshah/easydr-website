@@ -25,24 +25,24 @@
                                             <button class="nav-link active" id="active-tab" data-bs-toggle="pill"
                                                 data-bs-target="#active" type="button" role="tab" aria-controls="active"
                                                 aria-selected="true">
+                                                <i class="fas fa-calendar-day me-2"></i>
                                                 <span>Active (Today)</span>
-                                                <i class="fas fa-calendar-day ms-2"></i>
                                             </button>
                                         </li>
                                         <li class="nav-item me-2" role="presentation">
                                             <button class="nav-link" id="upcoming-tab" data-bs-toggle="pill"
                                                 data-bs-target="#upcoming" type="button" role="tab" aria-controls="upcoming"
                                                 aria-selected="false">
+                                                <i class="fas fa-calendar-alt me-2"></i>
                                                 <span>Upcoming</span>
-                                                <i class="fas fa-calendar-alt ms-2"></i>
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="past-tab" data-bs-toggle="pill"
                                                 data-bs-target="#past" type="button" role="tab" aria-controls="past"
                                                 aria-selected="false">
+                                                <i class="fas fa-history me-2"></i>
                                                 <span>Past</span>
-                                                <i class="fas fa-history ms-2"></i>
                                             </button>
                                         </li>
                                     </ul>
@@ -59,10 +59,10 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap gap-3">
+                                                        <div class="d-flex flex-wrap justify-content-between gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn px-4 py-2 fw-medium shadow-sm transition-all"
+                                                                    class="btn px-3 py-2 fw-medium shadow-sm transition-all"
                                                                     style="border-radius: 6px; min-width: 140px; 
                                                                     {{ $slot['is_past'] 
                                                                         ? 'background: #f8f9fa!important; border: 1px solid #e9ecef!important; color: #adb5bd!important; cursor: not-allowed;' 
@@ -95,10 +95,10 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap gap-3">
+                                                        <div class="d-flex flex-wrap justify-content-between gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn px-4 py-2 fw-medium shadow-sm transition-all"
+                                                                    class="btn px-3 py-2 fw-medium shadow-sm transition-all"
                                                                     style="border-radius: 6px; min-width: 140px; background: #fff; border: 1px solid #cfd8dc; color: #455a64;"
                                                                     onmouseover="this.style.backgroundColor='#0ab7e3!important'; this.style.color='#fff!important'; this.style.borderColor='#0ab7e3!important';" 
                                                                     onmouseout="this.style.backgroundColor='#fff!important'; this.style.color='#455a64!important'; this.style.borderColor='#cfd8dc!important';">
@@ -125,10 +125,10 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap gap-3">
+                                                        <div class="d-flex flex-wrap justify-content-between gap-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
-                                                                    class="btn px-4 py-2 fw-medium transition-all"
+                                                                    class="btn px-3 py-2 fw-medium transition-all"
                                                                     style="border-radius: 6px; min-width: 140px; background: #f8f9fa!important; border: 1px solid #e9ecef!important; color: #adb5bd!important; cursor: not-allowed!important;"
                                                                     disabled>
                                                                     {{ $slot['time'] }}
