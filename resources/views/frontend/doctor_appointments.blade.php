@@ -226,17 +226,22 @@
                                             $paymentStatus = $appointment->payment_status;
                                             $isPaid = in_array($paymentStatus, ['paid', 'health_card']);
 
-                                            // Action Availability
-                                            // Chat: Enabled for any Future/Active appointment (Paid or Unpaid)
-                                            $canChat = $isFutureActive;
-
-                                            // Cancel: Enabled only if Paid (User request: "if unpaid only chat enabled")
-                                            $canCancel = $isFutureActive && $isPaid;
-
-                                            // Session (Call/Video): Requires Paid + On Time
+                                            // Session Time Calculation (Standardized for all Live Actions)
+                                            // Active 5 mins before start until end time
                                             $sessionStartTime = $apptDateTime->copy()->subMinutes(5);
                                             $isSessionTime = $now->between($sessionStartTime, $slotEndTime);
+
+                                            // Action Availability
                                             
+                                            // Chat: Now aligned with Session Time (User: "on shedule time to active chat")
+                                            // Still allows Unpaid chat (if previously requested), but only during session.
+                                            // If we want to strictly follow "Only Chat if Unpaid", we keep that, but add Time Check.
+                                            $canChat = $isSessionTime && $isPendingOrConfirmed;
+
+                                            // Cancel: Enabled for Future Active (Before or During), Paid Only
+                                            $canCancel = $isFutureActive && $isPaid;
+
+                                            // Call/Video: Requires Paid + Session Time + Confirmed
                                             $canCallVideo = $isPaid && $isSessionTime && $appointment->status == '1';
                                             
                                             // Complete: Requires Paid + Active
@@ -260,6 +265,18 @@
                                                              alt="Profile" class="profile-img">
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
+                                                            <!-- Appointment Status Badge -->
+                                                            <div class="mb-1">
+                                                                @if($appointment->status == '0')
+                                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                                @elseif($appointment->status == '1')
+                                                                    <span class="badge bg-success">Confirmed</span>
+                                                                @elseif($appointment->status == '2')
+                                                                    <span class="badge bg-danger">Cancelled</span>
+                                                                @elseif($appointment->status == '3')
+                                                                    <span class="badge bg-primary">Completed</span>
+                                                                @endif
+                                                            </div>
                                                             <div class="profile-meta">
                                                                 @if($gender || $age)
                                                                     <span>
@@ -283,18 +300,18 @@
                                                         <span class="badge-payment health_card">HEALTH CARD</span>
                                                     @else
                                                         <div class="d-flex flex-wrap align-items-center gap-2">
-                                                            <span class="badge-payment unpaid">UNPAID</span>
                                                             {{-- Show "Mark Paid" only if NOT Cancelled (2) and NOT Expired --}}
                                                             @if($appointment->status != '2' && !$isExpired)
                                                                 <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
                                                                       onsubmit="return confirm('Mark this appointment as PAID manually?');">
                                                                     @csrf
-                                                                    <button type="submit" class="btn btn-sm btn-outline-danger py-2 px-2 mt-2" style="font-size: 0.7rem; border-radius: 20px; height: 24px;">
+                                                                    <button type="submit" class="btn btn-sm btn-outline-danger py-3 px-3 mb-2" style="font-size: 13px;border-radius: 20px;height: 40px;">
                                                                         Mark Paid
                                                                     </button>
                                                                 </form>
                                                             @endif
                                                         </div>
+                                                        <span class="badge-payment unpaid">UNPAID</span>
                                                     @endif
                                                 </div>
 
@@ -338,7 +355,7 @@
                                                             <i class="fas fa-comment-dots"></i>
                                                         </a>
                                                     @else
-                                                        <button class="btn-pastel btn-pastel-chat" disabled>
+                                                        <button class="btn-pastel btn-pastel-chat" disabled title="{{ !$isSessionTime ? 'Available 5 mins before appointment' : 'Unavailable' }}">
                                                             <i class="fas fa-comment-dots"></i>
                                                         </button>
                                                     @endif
