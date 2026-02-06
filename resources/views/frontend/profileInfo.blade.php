@@ -47,11 +47,15 @@
                                     <hr>
                                     <h5>Medical Information</h5>
                                     <ul>
-                                        <li><span>Blood Group:</span> {{ !empty($patient->blood_group) ? $patient->blood_group : 'Not Set' }}</li>
-                                        <li><span>Height:</span> {{ !empty($patient->height) ? $patient->height : 'Not Set' }}</li>
-                                        <li><span>Weight:</span> {{ !empty($patient->weight) ? $patient->weight . ' Kg' : 'Not Set' }}</li>
+                                        <li><span>Blood Group:</span>
+                                            {{ !empty($patient->blood_group) ? $patient->blood_group : 'Not Set' }}</li>
+                                        <li><span>Height:</span> {{ !empty($patient->height) ? $patient->height : 'Not Set' }}
+                                        </li>
+                                        <li><span>Weight:</span>
+                                            {{ !empty($patient->weight) ? $patient->weight . ' Kg' : 'Not Set' }}</li>
                                         <li><span>Marital Status:</span>
-                                            @if($patient->marital_status == 1) Single @elseif($patient->marital_status == 2) Married @elseif($patient->marital_status == 3) Divorced @else Not Set @endif
+                                            @if($patient->marital_status == 1) Single @elseif($patient->marital_status == 2)
+                                            Married @elseif($patient->marital_status == 3) Divorced @else Not Set @endif
                                         </li>
                                         <li><span>Family Doctor:</span>
                                             @if($patient->familyDoctor)
@@ -70,7 +74,9 @@
                                         </li>
                                         @if(!empty($patient->health_card_file))
                                             <li><span>Health Card File:</span>
-                                                <a href="{{ asset('public/assets/images/healthCards/' . $patient->health_card_file) }}" target="_blank" class="text-primary"><i class="fas fa-file-medical"></i> View Card</a>
+                                                <a href="{{ asset('public/assets/images/healthCards/' . $patient->health_card_file) }}"
+                                                    target="_blank" class="text-primary"><i class="fas fa-file-medical"></i> View
+                                                    Card</a>
                                             </li>
                                         @endif
                                     </ul>
@@ -90,15 +96,15 @@
                                     </ul>
                                     <hr>
                                     @if(isset($doctorAvailability))
-                                        <h5 class="mt-3">Availability</h5>
-                                        <ul>
-                                            <li><span>Days:</span>
-                                                {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
-                                            <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
-                                                {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
-                                            </li>
-                                            <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
-                                        </ul>
+                                        <!-- <h5 class="mt-3">Availability</h5>
+                                                                <ul>
+                                                                    <li><span>Days:</span>
+                                                                        {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
+                                                                    <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
+                                                                        {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
+                                                                    </li>
+                                                                    <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
+                                                                </ul> -->
                                     @endif
                                 @endif
                             </div>
