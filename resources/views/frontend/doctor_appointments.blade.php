@@ -14,7 +14,7 @@
                     <div class="col-lg-9">
                         <div class="dashboard_content">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5>My Appointments</h5>
+                                <h4>My Appointments</h4>
                             </div>
 
                             <div class="row">
@@ -53,6 +53,15 @@
                                                     <span class="appointment-status-badge status-upcoming">Confirmed</span>
                                                 @else
                                                     <span class="appointment-status-badge status-upcoming">Pending</span>
+                                                @endif
+
+                                                <!-- Payment Status Badge -->
+                                                @if($appointment->payment_status == 'paid')
+                                                    <span class="appointment-status-badge bg-success text-white ms-1">Paid</span>
+                                                @elseif($appointment->payment_status == 'health_card')
+                                                    <span class="appointment-status-badge bg-info text-white ms-1">Health Card</span>
+                                                @else
+                                                    <span class="appointment-status-badge bg-danger text-white ms-1">Unpaid</span>
                                                 @endif
 
 
@@ -111,18 +120,7 @@
 
                                                 <div class="appointment-actions">
 
-                                                    @if(!empty($appointment->patient_mobile))
-                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call"
-                                                            title="Call Patient">
-                                                            <i class="fas fa-phone"></i>
-                                                        </a>
-                                                    @else
-                                                        <button class="action-btn btn-call" disabled title="No phone provided">
-                                                            <i class="fas fa-phone"></i>
-                                                        </button>
-                                                    @endif
-
-
+                                                    {{-- 1. Chat Button --}}
                                                     @if($isChatActive && !$isExpired)
                                                         <a href="/messages" class="action-btn btn-chat" title="Message Patient">
                                                             <i class="fas fa-comment-alt"></i>
@@ -134,7 +132,19 @@
                                                         </button>
                                                     @endif
 
+                                                    {{-- 2. Call Button --}}
+                                                    @if(!empty($appointment->patient_mobile))
+                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call"
+                                                            title="Call Patient">
+                                                            <i class="fas fa-phone"></i>
+                                                        </a>
+                                                    @else
+                                                        <button class="action-btn btn-call" disabled title="No phone provided">
+                                                            <i class="fas fa-phone"></i>
+                                                        </button>
+                                                    @endif
 
+                                                    {{-- 3. Video Call Button --}}
                                                     @if(!empty($appointment->meeting_link) && $isSessionActive && !$isExpired)
                                                         @php
                                                             $meetingUrl = $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link;
@@ -163,7 +173,7 @@
                                                         </form>
                                                     @endif
 
-
+                                                    {{-- 4. Cancel Button --}}
                                                     @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
                                                         <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST"
                                                             class="flex-grow-1" style="flex: 1; display: flex;"
