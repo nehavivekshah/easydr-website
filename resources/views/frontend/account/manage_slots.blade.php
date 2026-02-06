@@ -59,7 +59,7 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between g-3">
+                                                        <div class="d-flex flex-wrap justify-content-between g-10">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium shadow-sm transition-all"
@@ -95,7 +95,7 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between g-3">
+                                                        <div class="d-flex flex-wrap justify-content-between g-10">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium shadow-sm transition-all"
@@ -125,7 +125,7 @@
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between g-3">
+                                                        <div class="d-flex flex-wrap justify-content-between g-10">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium transition-all"
