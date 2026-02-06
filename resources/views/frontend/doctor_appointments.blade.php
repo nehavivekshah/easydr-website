@@ -464,7 +464,6 @@
                                         <div class="empty-state">
                                             <i class="fas fa-calendar-check fa-3x text-muted mb-3"></i>
                                             <p class="text-muted mb-3">No appointments found.</p>
-                                            <a href="/manage-appointment" class="btn btn-primary ss-btn">Book your first appointment</a>
                                         </div>
                                     </div>
                                 @endif
