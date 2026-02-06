@@ -55,11 +55,11 @@
                                                 <div class="mb-4 border-0 shadow-sm rounded-3 overflow-hidden">
                                                     <div class="p-3 bg-light border-bottom">
                                                         <h6 class="mb-0 fw-bold text-primary">
-                                                            <i class="fas fa-calendar-day me-2"></i>{{ $dateGroup['date'] }}
+                                                            <i class="fas fa-calendar-day mr-2"></i>{{ $dateGroup['date'] }}
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between gap-3">
+                                                        <div class="d-flex flex-wrap justify-content-between g-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium shadow-sm transition-all"
@@ -91,11 +91,11 @@
                                                     <div class="p-3 bg-light border-bottom">
                                                         <h6 class="mb-0 fw-bold text-dark">
                                                             <i
-                                                                class="fas fa-calendar-alt me-2 text-success"></i>{{ $dateGroup['date'] }}
+                                                                class="fas fa-calendar-alt mr-2 text-success"></i>{{ $dateGroup['date'] }}
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between gap-3">
+                                                        <div class="d-flex flex-wrap justify-content-between g-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium shadow-sm transition-all"
@@ -121,11 +121,11 @@
                                                 <div class="mb-4 border-0 shadow-sm rounded-3 overflow-hidden">
                                                     <div class="p-3 bg-light border-bottom">
                                                         <h6 class="mb-0 fw-bold text-muted">
-                                                            <i class="fas fa-history me-2"></i>{{ $dateGroup['date'] }}
+                                                            <i class="fas fa-history mr-2"></i>{{ $dateGroup['date'] }}
                                                         </h6>
                                                     </div>
                                                     <div class="p-3 bg-white">
-                                                        <div class="d-flex flex-wrap justify-content-between gap-3">
+                                                        <div class="d-flex flex-wrap justify-content-between g-3">
                                                             @foreach($dateGroup['slots'] as $slot)
                                                                 <button type="button"
                                                                     class="btn px-3 py-2 fw-medium transition-all"

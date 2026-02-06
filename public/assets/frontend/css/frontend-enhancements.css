@@ -477,6 +477,7 @@ select:focus {
     align-items: center;
     transition: all 0.3s ease;
     border: 1px solid transparent;
+    gap: 10px;
 }
 
 .nav-pills-custom .nav-link:hover {
@@ -1248,6 +1249,10 @@ select:focus {
 
 textarea.form-control {
     height: auto !important;
+}
+
+.g-10 {
+    gap: 10px;
 }
 
 /* ==================== Animations ==================== */
