@@ -350,29 +350,36 @@
                                                         </button>
                                                     @endif
                                                     
-                                                    {{-- Complete (If Confirmed & Active) --}}
+                                                    {{-- Complete (If Confirmed & Active) OR Show Completed State --}}
                                                     @if($appointment->status == '1' && !$isExpired)
                                                         <form action="{{ route('completeAppointment', $appointment->id) }}" method="POST" style="flex:1; display:flex;">
                                                             @csrf
-                                                            <button type="submit" class="btn-pastel btn-pastel-complete" title="Complete" style="width:100%;">
-                                                                <i class="fas fa-flag-checkered"></i>
+                                                            <button type="submit" class="btn-pastel btn-pastel-complete" title="Mark as Completed" style="width:100%;">
+                                                                <i class="fas fa-check-circle"></i>
                                                             </button>
                                                         </form>
+                                                    @elseif($appointment->status == '3')
+                                                        {{-- Completed State Indicator --}}
+                                                        <button class="btn-pastel btn-pastel-complete" disabled title="Appointment Completed" style="opacity: 0.7;">
+                                                            <i class="fas fa-check-double"></i>
+                                                        </button>
                                                     @endif
 
-                                                    {{-- 4. Cancel --}}
-                                                    @if($canCancel)
-                                                        <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST" style="flex:1; display:flex;"
-                                                              onsubmit="return confirm('Cancel this appointment?');">
-                                                            @csrf
-                                                            <button type="submit" class="btn-pastel btn-pastel-cancel" title="Cancel" style="width:100%;">
+                                                    {{-- 4. Cancel (Hidden if Completed) --}}
+                                                    @if($appointment->status != '3')
+                                                        @if($canCancel)
+                                                            <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST" style="flex:1; display:flex;"
+                                                                  onsubmit="return confirm('Cancel this appointment?');">
+                                                                @csrf
+                                                                <button type="submit" class="btn-pastel btn-pastel-cancel" title="Cancel" style="width:100%;">
+                                                                    <i class="fas fa-times"></i>
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <button class="btn-pastel btn-pastel-cancel" disabled>
                                                                 <i class="fas fa-times"></i>
                                                             </button>
-                                                        </form>
-                                                    @else
-                                                        <button class="btn-pastel btn-pastel-cancel" disabled>
-                                                            <i class="fas fa-times"></i>
-                                                        </button>
+                                                        @endif
                                                     @endif
 
                                                 </div>
