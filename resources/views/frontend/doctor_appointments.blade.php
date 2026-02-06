@@ -70,7 +70,7 @@
             margin-top: 7px;
         }
         .badge-markPaid {
-            padding: 5px 12px;
+            padding: 5px 10px;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -79,6 +79,7 @@
             min-width: 100px;
             text-align: center;
             margin-top: 7px;
+            height: 35px;
         }
         .badge-payment.paid { background: #d1e7dd; color: #0f5132; }
         .badge-payment.unpaid { background: #fad7d7; color: #842029; }
