@@ -2,34 +2,188 @@
 
 @section('content')
     <style>
-        .appointment-actions .action-btn {
-            transition: all 0.3s ease;
-            border: none;
-            color: white !important;
-            border-radius: 8px; /* Smooth corners */
+        /* Card Container */
+        .appointment-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            height: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .appointment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        /* Profile & Header */
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .profile-section {
+            display: flex;
+            gap: 15px;
             align-items: center;
-            height: 40px; /* Consistent height */
-            width: 100%;
         }
-        .appointment-actions .action-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        .profile-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #eef2f6;
         }
-        .appointment-actions .action-btn i {
+        .profile-info h5 {
             font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+        .profile-meta {
+            font-size: 0.85rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-meta i {
+            font-size: 0.8rem;
+            opacity: 0.8;
         }
 
-        .btn-chat { background-color: #0dcaf0; }
-        .btn-call { background-color: #198754; }
-        .btn-video { background-color: #20c997; }
-        .btn-complete { background-color: #6f42c1; }
-        .btn-cancel { background-color: #dc3545; }
+        /* Payment Badge */
+        .badge-payment {
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-payment.paid { background: #d1e7dd; color: #0f5132; }
+        .badge-payment.unpaid { background: #fad7d7; color: #842029; }
+        .badge-payment.health_card { background: #cff4fc; color: #055160; }
 
-        .action-btn:disabled {
-            background-color: #e9ecef !important;
-            color: #adb5bd !important;
+        /* Reported Problem */
+        .problem-section {
+            margin-bottom: 20px;
+        }
+        .problem-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #adb5bd;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .problem-text {
+            font-size: 0.95rem;
+            color: #495057;
+            line-height: 1.5;
+        }
+
+        /* Date Time Pill Box */
+        .date-time-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 50px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+        }
+        .dt-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #34495e;
+        }
+        .dt-divider {
+            width: 1px;
+            height: 20px;
+            background: #dee2e6;
+        }
+        .dt-item i {
+            color: #6c757d;
+        }
+
+        /* Confirm Button */
+        .btn-confirm-appt {
+            width: 100%;
+            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+        .btn-confirm-appt:hover {
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Pastel Action Buttons */
+        .action-row {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-pastel {
+            flex: 1;
+            height: 48px;
+            border-radius: 12px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn-pastel i {
+            font-size: 1.2rem;
+        }
+        .btn-pastel:hover:not(:disabled) {
+            transform: translateY(-3px);
+            filter: brightness(0.95);
+        }
+
+        /* Colors */
+        /* Chat: Light Grayish Blue */
+        .btn-pastel-chat { background: #f1f3f5; color: #495057; }
+        
+        /* Call: Light Green */
+        .btn-pastel-call { background: #d1e7dd; color: #198754; }
+        
+        /* Video: Light Blue */
+        .btn-pastel-video { background: #cff4fc; color: #0dcaf0; } /* Bootstrap info-ish */
+        
+        /* Complete: Light Purple */
+        .btn-pastel-complete { background: #e0cffc; color: #6f42c1; }
+
+        /* Cancel: Light Red */
+        .btn-pastel-cancel { background: #fad7d7; color: #dc3545; }
+
+        /* Disabled State */
+        .btn-pastel:disabled, .btn-pastel.disabled {
+            background: #f8f9fa;
+            color: #dee2e6;
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none !important;
@@ -65,176 +219,162 @@
                                             // Status Checks
                                             $isPendingOrConfirmed = in_array($appointment->status, ['0', '1']);
                                             $isExpired = $now->gt($slotEndTime) && !$isPendingOrConfirmed; 
-                                            // Fix Expired Logic: if status is 2 (cancel) or 3 (complete), it's not "expired" in the pending sense, but done.
-                                            // User said "available appointment in future".
-                                            // Let's define "Future/Active" as: Not Cancelled, Not Completed, Not Time-Expired.
+                                            // Future/Active Logic
                                             $isFutureActive = $isPendingOrConfirmed && $now->lte($slotEndTime);
 
                                             // Payment Check
-                                            $isPaid = in_array($appointment->payment_status, ['paid', 'health_card']);
+                                            $paymentStatus = $appointment->payment_status;
+                                            $isPaid = in_array($paymentStatus, ['paid', 'health_card']);
 
-                                            // Chat: Enabled for any Future/Active appointment (Paid or Unpaid)
-                                            // User said: "if available appointment in future... enable chat"
-                                            // We remove the 15m restriction for enabling the button, but maybe keep the "active" check?
-                                            // Let's allow it as long as the appointment is active/future.
+                                            // Action Availability
                                             $canChat = $isFutureActive;
-
-                                            // Cancel: Enabled for any Future/Active appointment
                                             $canCancel = $isFutureActive;
 
-                                            // Session (Call/Video): Requires Paid + On Time (accordingly)
+                                            // Session (Call/Video): Requires Paid + On Time
                                             $sessionStartTime = $apptDateTime->copy()->subMinutes(5);
                                             $isSessionTime = $now->between($sessionStartTime, $slotEndTime);
                                             
-                                            $canCallVideo = $isPaid && $isSessionTime && $appointment->status == '1'; // Must be confirmed too? Usually yes.
+                                            $canCallVideo = $isPaid && $isSessionTime && $appointment->status == '1';
+
+                                            // Profile Data
+                                            $age = null;
+                                            if (!empty($appointment->patient_dob)) {
+                                                try { $age = \Carbon\Carbon::parse($appointment->patient_dob)->age . ' Yrs'; } catch (\Exception $e) {}
+                                            }
+                                            $gender = !empty($appointment->patient_gender) ? ucfirst($appointment->patient_gender) : null;
                                         @endphp
+
                                         <div class="col-lg-6 col-md-12 mb-4 wow fadeInUp">
                                             <div class="appointment-card">
-
-                                                @if($appointment->status == '2')
-                                                    <span class="appointment-status-badge status-cancelled">Cancelled</span>
-                                                @elseif($appointment->status == '3')
-                                                    <span class="appointment-status-badge status-completed">Completed</span>
-                                                @elseif($isExpired)
-                                                    <span class="appointment-status-badge status-expired">Expired</span>
-                                                @elseif($appointment->status == '1')
-                                                    <span class="appointment-status-badge status-upcoming">Confirmed</span>
-                                                @else
-                                                    <span class="appointment-status-badge status-upcoming">Pending</span>
-                                                @endif
-
-                                                <!-- Payment Status Badge -->
-                                                @if($appointment->payment_status == 'paid')
-                                                    <span class="appointment-status-badge bg-success text-white ms-1">Paid</span>
-                                                @elseif($appointment->payment_status == 'health_card')
-                                                    <span class="appointment-status-badge bg-info text-white ms-1">Health Card</span>
-                                                @else
-                                                    <span class="appointment-status-badge bg-danger text-white ms-1">Unpaid</span>
-                                                @endif
-
-
-                                                <div class="appointment-header">
-                                                    <div class="appointment-img-wrapper">
+                                                
+                                                <!-- Header: Profile & Payment Badge -->
+                                                <div class="card-header-flex">
+                                                    <div class="profile-section">
                                                         <img src="{{ $appointment->patient_photo ? asset('public/assets/images/profiles/' . $appointment->patient_photo) : 'https://ui-avatars.com/api/?name=' . $appointment->patient_first_name . '+' . $appointment->patient_last_name . '&background=0D8ABC&color=fff' }}"
-                                                            alt="{{ $appointment->patient_first_name }}">
+                                                             alt="Profile" class="profile-img">
+                                                        <div class="profile-info">
+                                                            <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
+                                                            <div class="profile-meta">
+                                                                @if($gender || $age)
+                                                                    <span>
+                                                                        @if($gender == 'Male') <i class="fas fa-mars"></i> 
+                                                                        @elseif($gender == 'Female') <i class="fas fa-venus"></i> 
+                                                                        @endif
+                                                                        {{ $gender }} • {{ $age }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="profile-meta" style="margin-top: 2px;">
+                                                                <i class="fas fa-phone-alt"></i> {{ $appointment->patient_mobile }}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="appointment-info">
-                                                        <h5>{{ $appointment->patient_first_name }}
-                                                            {{ $appointment->patient_last_name }}
-                                                        </h5>
-                                                        <p class="mb-0">{{ $appointment->patient_mobile }}</p>
-                                                        @php
-                                                            $age = null;
-                                                            if (!empty($appointment->patient_dob)) {
-                                                                try {
-                                                                    $age = \Carbon\Carbon::parse($appointment->patient_dob)->age . ' Yrs';
-                                                                } catch (\Exception $e) {
-                                                                }
-                                                            }
-                                                            $gender = !empty($appointment->patient_gender) ? ucfirst($appointment->patient_gender) : null;
-                                                        @endphp
-                                                        @if($age || $gender)
-                                                            <small class="text-muted">
-                                                                {{ $gender }}{{ $age && $gender ? ', ' : '' }}{{ $age }}
-                                                            </small>
-                                                        @endif
+
+                                                    <!-- Payment Badge -->
+                                                    @if($paymentStatus == 'paid')
+                                                        <span class="badge-payment paid">PAID</span>
+                                                    @elseif($paymentStatus == 'health_card')
+                                                        <span class="badge-payment health_card">HEALTH CARD</span>
+                                                    @else
+                                                        <span class="badge-payment unpaid">UNPAID</span>
+                                                    @endif
+                                                </div>
+
+                                                <!-- Problem Section -->
+                                                <div class="problem-section">
+                                                    <span class="problem-label">Reported Problem</span>
+                                                    <p class="problem-text mb-0">
+                                                        {{ Str::limit($appointment->note, 80, '...') }}
+                                                    </p>
+                                                </div>
+
+                                                <!-- Date & Time Pill Box -->
+                                                <div class="date-time-box">
+                                                    <div class="dt-item">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                        {{ $apptDateTime->format('d M, Y') }}
+                                                    </div>
+                                                    <div class="dt-divider"></div>
+                                                    <div class="dt-item">
+                                                        <i class="far fa-clock"></i>
+                                                        {{ $apptDateTime->format('h:i A') }}
                                                     </div>
                                                 </div>
 
-
-                                                <div class="appointment-problem mt-2 mb-3">
-                                                    <small class="text-muted d-block">Problem:</small>
-                                                    <p class="mb-0">{{ Str::limit($appointment->note, 60) }}</p>
-                                                </div>
-
-
-                                                <div class="appointment-datetime">
-                                                    <i class="far fa-calendar-alt me-2"></i> {{ $apptDateTime->format('d M, Y') }} |
-                                                    <i class="far fa-clock ms-2 me-2"></i> {{ $apptDateTime->format('h:i A') }}
-                                                </div>
-
-
+                                                <!-- Confirm Button (If Status 0) -->
                                                 @if($appointment->status == '0')
-                                                    <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST"
-                                                        class="mt-3 mb-3">
+                                                    <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-success w-100"
-                                                            style="border-radius: 8px; font-weight: 600; padding: 10px;">
-                                                            <i class="fas fa-check me-2"></i> Confirm Appointment
+                                                        <button type="submit" class="btn-confirm-appt">
+                                                            <i class="fas fa-check-circle"></i> Confirm Appointment
                                                         </button>
                                                     </form>
                                                 @endif
 
-
-                                                <div class="appointment-actions d-flex gap-2">
-
-                                                    {{-- 1. Chat Button --}}
+                                                <!-- Action Buttons Row -->
+                                                <div class="action-row">
+                                                    
+                                                    {{-- 1. Chat --}}
                                                     @if($canChat)
-                                                        <a href="/messages" class="action-btn btn-chat flex-grow-1" title="Message Patient">
-                                                            <i class="fas fa-comment-alt"></i>
+                                                        <a href="/messages" class="btn-pastel btn-pastel-chat" title="Chat">
+                                                            <i class="fas fa-comment-dots"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-chat flex-grow-1" disabled
-                                                            title="Available for active future appointments">
-                                                            <i class="fas fa-comment-alt"></i>
+                                                        <button class="btn-pastel btn-pastel-chat" disabled>
+                                                            <i class="fas fa-comment-dots"></i>
                                                         </button>
                                                     @endif
 
-                                                    {{-- 2. Call Button --}}
+                                                    {{-- 2. Call --}}
                                                     @if(!empty($appointment->patient_mobile) && $canCallVideo)
-                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call flex-grow-1"
-                                                            title="Call Patient">
-                                                            <i class="fas fa-phone"></i>
+                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="btn-pastel btn-pastel-call" title="Call">
+                                                            <i class="fas fa-phone-alt"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-call flex-grow-1" disabled title="{{ $canCallVideo ? 'No phone' : 'Available during paid session' }}">
-                                                            <i class="fas fa-phone"></i>
+                                                        <button class="btn-pastel btn-pastel-call" disabled>
+                                                            <i class="fas fa-phone-alt"></i>
                                                         </button>
                                                     @endif
 
-                                                    {{-- 3. Video Call Button --}}
+                                                    {{-- 3. Video --}}
                                                     @if(!empty($appointment->meeting_link) && $canCallVideo)
-                                                        @php
+                                                         @php
                                                             $meetingUrl = $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link;
                                                         @endphp
-                                                        <a href="{{ $meetingUrl }}" target="_blank"
-                                                            class="action-btn btn-video pulsate-active flex-grow-1" title="Join Meeting">
+                                                        <a href="{{ $meetingUrl }}" target="_blank" class="btn-pastel btn-pastel-video" title="Video Call">
                                                             <i class="fas fa-video"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-video flex-grow-1" disabled
-                                                            title="{{ $canCallVideo ? 'Meeting Link missing' : 'Available during paid session' }}">
+                                                        <button class="btn-pastel btn-pastel-video" disabled>
                                                             <i class="fas fa-video"></i>
                                                         </button>
                                                     @endif
-
-
+                                                    
+                                                    {{-- Complete (If Confirmed & Active) --}}
                                                     @if($appointment->status == '1' && !$isExpired)
-                                                        <form action="{{ route('completeAppointment', $appointment->id) }}"
-                                                            method="POST" class="flex-grow-1" style="display: flex;">
+                                                        <form action="{{ route('completeAppointment', $appointment->id) }}" method="POST" style="flex:1; display:flex;">
                                                             @csrf
-                                                            <button type="submit" class="action-btn btn-complete flex-grow-1" title="Mark as Completed">
+                                                            <button type="submit" class="btn-pastel btn-pastel-complete" title="Complete" style="width:100%;">
                                                                 <i class="fas fa-flag-checkered"></i>
                                                             </button>
                                                         </form>
                                                     @endif
 
-                                                    {{-- 4. Cancel Button --}}
+                                                    {{-- 4. Cancel --}}
                                                     @if($canCancel)
-                                                        <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST"
-                                                            class="flex-grow-1" style="display: flex;"
-                                                            onsubmit="return confirm('Cancel this appointment?');">
+                                                        <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST" style="flex:1; display:flex;"
+                                                              onsubmit="return confirm('Cancel this appointment?');">
                                                             @csrf
-                                                            <button type="submit" class="action-btn btn-cancel flex-grow-1"
-                                                                title="Cancel Appointment">
+                                                            <button type="submit" class="btn-pastel btn-pastel-cancel" title="Cancel" style="width:100%;">
                                                                 <i class="fas fa-times"></i>
                                                             </button>
                                                         </form>
                                                     @else
-                                                        <button class="action-btn btn-cancel flex-grow-1" disabled title="Cannot cancel">
+                                                        <button class="btn-pastel btn-pastel-cancel" disabled>
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     @endif
+
                                                 </div>
                                             </div>
                                         </div>
