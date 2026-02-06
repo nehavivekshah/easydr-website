@@ -1107,6 +1107,27 @@ class FrontendController extends Controller
         return back()->with('success', 'Appointment marked as completed.');
     }
 
+    public function markAppointmentPaid($id)
+    {
+        $user = Auth::user();
+        if (!$user || $user->role != 4) {
+            return redirect('/login');
+        }
+
+        $appointment = DB::table('appointments')
+            ->where('id', $id)
+            ->where('did', $user->id)
+            ->first();
+
+        if (!$appointment) {
+            return back()->with('error', 'Appointment not found or unauthorized.');
+        }
+
+        DB::table('appointments')->where('id', $id)->update(['payment_status' => 'paid']);
+
+        return back()->with('success', 'Appointment marked as PAID.');
+    }
+
     public function manageAppointment(Request $request)
     {
         $user = Auth::user();

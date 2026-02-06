@@ -37,6 +37,7 @@ Route::get('/appointments', [FrontendController::class, 'appointments']);
 Route::post('/cancel-appointment/{id}', [FrontendController::class, 'cancelAppointment'])->name('cancelAppointment');
 Route::post('/confirm-appointment/{id}', [FrontendController::class, 'confirmAppointment'])->name('confirmAppointment');
 Route::post('/complete-appointment/{id}', [FrontendController::class, 'completeAppointment'])->name('completeAppointment');
+Route::post('/mark-appointment-paid/{id}', [FrontendController::class, 'markAppointmentPaid'])->name('markAppointmentPaid');
 Route::get('/manage-appointment', [FrontendController::class, 'manageAppointment']);
 
 // Doctor Routes
