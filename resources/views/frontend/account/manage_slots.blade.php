@@ -229,68 +229,121 @@
         document.addEventListener('DOMContentLoaded', function() {
             const addSlotModal = document.getElementById('addSlotModal');
             const fromDateInput = addSlotModal.querySelector('input[name="from_date"]');
+            const toDateInput = addSlotModal.querySelector('input[name="to_date"]');
             const startTimeInput = addSlotModal.querySelector('input[name="start_time"]');
             const endTimeInput = addSlotModal.querySelector('input[name="end_time"]');
             const durationInput = addSlotModal.querySelector('input[name="duration"]');
             
             // Get logged in doctor ID - assuming Auth user is the doctor
             const doctorId = "{{ Auth::id() }}"; 
+            let doctorSlots = []; // Store fetched slots to avoid re-fetching on every change if possible, or just re-fetch.
 
+            // 1. Auto-fill on Date Change (Existing Logic)
             fromDateInput.addEventListener('change', function() {
                 const selectedDate = this.value;
                 if (!selectedDate) return;
 
-                // Sync to_date with from_date for convenience
-                const toDateInput = addSlotModal.querySelector('input[name="to_date"]');
+                // Sync to_date if empty
                 if(!toDateInput.value) {
                     toDateInput.value = selectedDate;
                 }
 
-                // Fetch availability
-                fetch(`/admin/get-doctor-availability/${doctorId}`)
-                    .then(response => response.json())
-                    .then(slots => {
-                        // Filter slots for the selected date
-                        const daySlots = slots.filter(slot => slot.date === selectedDate);
-                        
-                        if (daySlots.length > 0) {
-                            // Find the last slot's time
-                            // Time format from API is "hh:mm A" (e.g., "09:00 AM")
-                            // We need to parse this to find the latest one.
-                            
-                            let lastSlotTime = null;
-                            let maxTimeValue = -1;
-
-                            daySlots.forEach(slot => {
-                                const timeParts = parseTime(slot.time);
-                                if (timeParts > maxTimeValue) {
-                                    maxTimeValue = timeParts;
-                                    lastSlotTime = slot.time;
-                                }
-                            });
-
-                            if (lastSlotTime) {
-                                // Calculate next start time = lastSlotTime + duration (default 15 mins or user input)
-                                const duration = parseInt(durationInput.value) || 15;
-                                const nextTime = addMinutesToTime(lastSlotTime, duration);
-                                
-                                // Set input value (requires HH:mm 24h format for input type="time")
-                                startTimeInput.value = convertTo24Hour(nextTime);
-                                
-                                // Automatically set end time too
-                                const endTime = addMinutesToTime(nextTime, duration);
-                                endTimeInput.value = convertTo24Hour(endTime);
-                            }
-                        } else {
-                            // No slots for this day, maybe set a default start time like 09:00
-                            startTimeInput.value = "09:00";
-                            // Set end time
-                            const duration = parseInt(durationInput.value) || 15;
-                            endTimeInput.value = convertTo24Hour(addMinutesToTime("09:00 AM", duration));
-                        }
-                    })
-                    .catch(error => console.error('Error fetching availability:', error));
+                updateTimeBasedOnDate(selectedDate);
             });
+
+            // 2. Auto-fill on Modal Open (New Logic)
+            // Bootstrap 5 event
+            addSlotModal.addEventListener('shown.bs.modal', function () {
+                // Fetch availability to find the Last Future Slot
+                fetchAvailability().then(slots => {
+                    doctorSlots = slots; // cache
+                    
+                    if (slots.length > 0) {
+                        // Find the absolute last slot by Date and Time
+                        let lastDate = "";
+                        let lastDateSlots = [];
+                        
+                        // Sort slots by date desc, then time desc
+                        slots.sort((a, b) => {
+                           const dateA = new Date(a.date + ' ' + a.time); // rough sort
+                           const dateB = new Date(b.date + ' ' + b.time);
+                           return dateB - dateA;
+                        });
+
+                        const lastSlot = slots[0]; // The latest slot
+
+                        // Pre-fill Date
+                        // Check if fromDate is already set (user might have re-opened without refresh?)
+                        // Usually resetting form is good practice. 
+                        // Let's assume we want to guide them to the NEXT slot.
+                        
+                        if (lastSlot) {
+                            fromDateInput.value = lastSlot.date;
+                            toDateInput.value = lastSlot.date;
+                            
+                            // Update time based on this slot
+                            // We can reuse the logic, but specifically for this last slot
+                             const duration = parseInt(durationInput.value) || 15;
+                             const lastTime = lastSlot.time;
+                             const nextTime = addMinutesToTime(lastTime, duration);
+                             
+                             startTimeInput.value = convertTo24Hour(nextTime);
+                             endTimeInput.value = convertTo24Hour(addMinutesToTime(nextTime, duration));
+                        }
+                    }
+                });
+            });
+
+            function fetchAvailability() {
+                return fetch(`/admin/get-doctor-availability/${doctorId}`)
+                    .then(response => response.json())
+                    .catch(error => {
+                        console.error('Error fetching availability:', error);
+                        return [];
+                    });
+            }
+
+            function updateTimeBasedOnDate(selectedDate) {
+                 // Use cached slots or fetch if empty (though modal open should have fetched)
+                 if(doctorSlots.length === 0) {
+                     fetchAvailability().then(slots => {
+                         doctorSlots = slots;
+                         processDaySlots(selectedDate);
+                     });
+                 } else {
+                     processDaySlots(selectedDate);
+                 }
+            }
+
+            function processDaySlots(selectedDate) {
+                const daySlots = doctorSlots.filter(slot => slot.date === selectedDate);
+                        
+                if (daySlots.length > 0) {
+                    let lastSlotTime = null;
+                    let maxTimeValue = -1;
+
+                    daySlots.forEach(slot => {
+                        const timeParts = parseTime(slot.time);
+                        if (timeParts > maxTimeValue) {
+                            maxTimeValue = timeParts;
+                            lastSlotTime = slot.time;
+                        }
+                    });
+
+                    if (lastSlotTime) {
+                        const duration = parseInt(durationInput.value) || 15;
+                        const nextTime = addMinutesToTime(lastSlotTime, duration);
+                        
+                        startTimeInput.value = convertTo24Hour(nextTime);
+                        endTimeInput.value = convertTo24Hour(addMinutesToTime(nextTime, duration));
+                    }
+                } else {
+                    // Default if no slots on this day
+                    startTimeInput.value = "09:00";
+                    const duration = parseInt(durationInput.value) || 15;
+                    endTimeInput.value = convertTo24Hour(addMinutesToTime("09:00 AM", duration));
+                }
+            }
 
             // Helper to parse "hh:mm A" to minutes since midnight
             function parseTime(timeStr) {
@@ -343,16 +396,30 @@
 
             // Helper to convert "hh:mm A" to "HH:mm" for input fields
             function convertTo24Hour(timeStr) {
-                const [time, modifier] = timeStr.split(' ');
+                let time, modifier;
+                
+                if (timeStr.includes(' ')) {
+                    [time, modifier] = timeStr.split(' ');
+                } else {
+                    // Handle case where it might just be HH:mm
+                    time = timeStr;
+                    modifier = ''; // Assume 24h?
+                }
+                
                 let [hours, minutes] = time.split(':');
                 
-                if (hours === '12') {
+                if (hours === '12' && modifier === 'AM') {
                     hours = '00';
+                } else if (hours === '12' && modifier === 'PM') {
+                    hours = '12';
+                } else if (modifier === 'PM') {
+                    hours = parseInt(hours, 10) + 12;
+                } else if (modifier === 'AM') {
+                     if (hours.length === 1) hours = '0' + hours;
                 }
                 
-                if (modifier === 'PM') {
-                    hours = parseInt(hours, 10) + 12;
-                }
+                // Ensure 2 digits
+                if (hours.toString().length === 1) hours = '0' + hours; 
                 
                 return `${hours}:${minutes}`;
             }
