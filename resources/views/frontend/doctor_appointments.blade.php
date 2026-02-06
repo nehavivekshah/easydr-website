@@ -28,17 +28,31 @@
                                             $duration = $appointment->duration ?? 30;
                                             $slotEndTime = $apptDateTime->copy()->addMinutes($duration);
 
-                                            // Chat starts 15 mins before, ends when slot ends
-                                            $chatStartTime = $apptDateTime->copy()->subMinutes(15);
-                                            $isChatActive = $now->between($chatStartTime, $slotEndTime) && $appointment->status == '1';
+                                            // Status Checks
+                                            $isPendingOrConfirmed = in_array($appointment->status, ['0', '1']);
+                                            $isExpired = $now->gt($slotEndTime) && !$isPendingOrConfirmed; 
+                                            // Fix Expired Logic: if status is 2 (cancel) or 3 (complete), it's not "expired" in the pending sense, but done.
+                                            // User said "available appointment in future".
+                                            // Let's define "Future/Active" as: Not Cancelled, Not Completed, Not Time-Expired.
+                                            $isFutureActive = $isPendingOrConfirmed && $now->lte($slotEndTime);
 
-                                            // Session (Call/Video) starts at appt time, ends when slot ends
+                                            // Payment Check
+                                            $isPaid = in_array($appointment->payment_status, ['paid', 'health_card']);
+
+                                            // Chat: Enabled for any Future/Active appointment (Paid or Unpaid)
+                                            // User said: "if available appointment in future... enable chat"
+                                            // We remove the 15m restriction for enabling the button, but maybe keep the "active" check?
+                                            // Let's allow it as long as the appointment is active/future.
+                                            $canChat = $isFutureActive;
+
+                                            // Cancel: Enabled for any Future/Active appointment
+                                            $canCancel = $isFutureActive;
+
+                                            // Session (Call/Video): Requires Paid + On Time (accordingly)
                                             $sessionStartTime = $apptDateTime->copy()->subMinutes(5);
-                                            $isSessionActive = $now->between($sessionStartTime, $slotEndTime) && $appointment->status == '1';
-
-                                            // Expired after slot ends
-                                            $isExpired = $now->gt($slotEndTime) && $appointment->status != '3' && $appointment->status != '2';
-                                            $isOnTime = $isSessionActive; 
+                                            $isSessionTime = $now->between($sessionStartTime, $slotEndTime);
+                                            
+                                            $canCallVideo = $isPaid && $isSessionTime && $appointment->status == '1'; // Must be confirmed too? Usually yes.
                                         @endphp
                                         <div class="col-lg-6 col-md-12 mb-4 wow fadeInUp">
                                             <div class="appointment-card">
@@ -121,31 +135,31 @@
                                                 <div class="appointment-actions">
 
                                                     {{-- 1. Chat Button --}}
-                                                    @if($isChatActive && !$isExpired)
+                                                    @if($canChat)
                                                         <a href="/messages" class="action-btn btn-chat" title="Message Patient">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </a>
                                                     @else
                                                         <button class="action-btn btn-chat" disabled
-                                                            title="{{ $now->lt($chatStartTime) ? 'Chat opens 15m before' : 'Messaging closed' }}">
+                                                            title="Available for active future appointments">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </button>
                                                     @endif
 
                                                     {{-- 2. Call Button --}}
-                                                    @if(!empty($appointment->patient_mobile))
+                                                    @if(!empty($appointment->patient_mobile) && $canCallVideo)
                                                         <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call"
                                                             title="Call Patient">
                                                             <i class="fas fa-phone"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-call" disabled title="No phone provided">
+                                                        <button class="action-btn btn-call" disabled title="{{ $canCallVideo ? 'No phone' : 'Available during paid session' }}">
                                                             <i class="fas fa-phone"></i>
                                                         </button>
                                                     @endif
 
                                                     {{-- 3. Video Call Button --}}
-                                                    @if(!empty($appointment->meeting_link) && $isSessionActive && !$isExpired)
+                                                    @if(!empty($appointment->meeting_link) && $canCallVideo)
                                                         @php
                                                             $meetingUrl = $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link;
                                                         @endphp
@@ -174,7 +188,7 @@
                                                     @endif
 
                                                     {{-- 4. Cancel Button --}}
-                                                    @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
+                                                    @if($canCancel)
                                                         <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST"
                                                             class="flex-grow-1" style="flex: 1; display: flex;"
                                                             onsubmit="return confirm('Cancel this appointment?');">
