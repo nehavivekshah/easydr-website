@@ -227,14 +227,20 @@
                                             $isPaid = in_array($paymentStatus, ['paid', 'health_card']);
 
                                             // Action Availability
+                                            // Chat: Enabled for any Future/Active appointment (Paid or Unpaid)
                                             $canChat = $isFutureActive;
-                                            $canCancel = $isFutureActive;
+
+                                            // Cancel: Enabled only if Paid (User request: "if unpaid only chat enabled")
+                                            $canCancel = $isFutureActive && $isPaid;
 
                                             // Session (Call/Video): Requires Paid + On Time
                                             $sessionStartTime = $apptDateTime->copy()->subMinutes(5);
                                             $isSessionTime = $now->between($sessionStartTime, $slotEndTime);
                                             
                                             $canCallVideo = $isPaid && $isSessionTime && $appointment->status == '1';
+                                            
+                                            // Complete: Requires Paid + Active
+                                            $canComplete = $isPaid && $appointment->status == '1' && !$isExpired;
 
                                             // Profile Data
                                             $age = null;
@@ -257,10 +263,10 @@
                                                             <div class="profile-meta">
                                                                 @if($gender || $age)
                                                                     <span>
-                                                                        @if($gender == 'Male') <i class="fas fa-mars"></i> 
-                                                                        @elseif($gender == 'Female') <i class="fas fa-venus"></i> 
+                                                                        @if($gender == '1') <i class="fas fa-mars"></i> Male
+                                                                        @elseif($gender == '2') <i class="fas fa-venus"></i> Female 
                                                                         @endif
-                                                                        {{ $gender }} • {{ $age }}
+                                                                        • {{ $age }}
                                                                     </span>
                                                                 @endif
                                                             </div>
@@ -276,7 +282,16 @@
                                                     @elseif($paymentStatus == 'health_card')
                                                         <span class="badge-payment health_card">HEALTH CARD</span>
                                                     @else
-                                                        <span class="badge-payment unpaid">UNPAID</span>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <span class="badge-payment unpaid">UNPAID</span>
+                                                            <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
+                                                                  onsubmit="return confirm('Mark this appointment as PAID manually?');">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 0.7rem; border-radius: 20px; height: 24px;">
+                                                                    Mark Paid
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     @endif
                                                 </div>
 
@@ -305,7 +320,7 @@
                                                 @if($appointment->status == '0')
                                                     <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn-confirm-appt">
+                                                        <button type="submit" class="btn-confirm-appt" {{ !$isPaid ? 'disabled title=Payment_Required style=opacity:0.6' : '' }}>
                                                             <i class="fas fa-check-circle"></i> Confirm Appointment
                                                         </button>
                                                     </form>
@@ -331,7 +346,7 @@
                                                             <i class="fas fa-phone-alt"></i>
                                                         </a>
                                                     @else
-                                                        <button class="btn-pastel btn-pastel-call" disabled>
+                                                        <button class="btn-pastel btn-pastel-call" disabled title="{{ !$isPaid ? 'Payment Required' : 'Available during session' }}">
                                                             <i class="fas fa-phone-alt"></i>
                                                         </button>
                                                     @endif
@@ -345,13 +360,13 @@
                                                             <i class="fas fa-video"></i>
                                                         </a>
                                                     @else
-                                                        <button class="btn-pastel btn-pastel-video" disabled>
+                                                        <button class="btn-pastel btn-pastel-video" disabled title="{{ !$isPaid ? 'Payment Required' : 'Available during session' }}">
                                                             <i class="fas fa-video"></i>
                                                         </button>
                                                     @endif
                                                     
                                                     {{-- Complete (If Confirmed & Active) OR Show Completed State --}}
-                                                    @if($appointment->status == '1' && !$isExpired)
+                                                    @if($canComplete)
                                                         <form action="{{ route('completeAppointment', $appointment->id) }}" method="POST" style="flex:1; display:flex;">
                                                             @csrf
                                                             <button type="submit" class="btn-pastel btn-pastel-complete" title="Mark as Completed" style="width:100%;">
@@ -376,7 +391,7 @@
                                                                 </button>
                                                             </form>
                                                         @else
-                                                            <button class="btn-pastel btn-pastel-cancel" disabled>
+                                                            <button class="btn-pastel btn-pastel-cancel" disabled title="{{ !$isPaid ? 'Payment Required' : 'Cannot Cancel' }}">
                                                                 <i class="fas fa-times"></i>
                                                             </button>
                                                         @endif
