@@ -179,7 +179,7 @@
                                                 @php
                                                     $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                                                 @endphp
-                                                <div class="d-flex flex-wrap gap-2">
+                                                <div class="d-flex flex-wrap align-items-center g-10">
                                                     @foreach($days as $day)
                                                         <div class="form-check me-3">
                                                             <input class="form-check-input" type="checkbox" name="days[]"
