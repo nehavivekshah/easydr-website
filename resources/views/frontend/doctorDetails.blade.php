@@ -118,7 +118,7 @@
                                         {{-- About Section --}}
                                         <div class="mb-5">
                                             <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                                                                                        {{ $doctor->last_name ?? '' }}</h5> -->
+                                                                                                                                {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -278,7 +278,7 @@
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form action="/appointment" method="POST" id="appointmentForm">
+                    <form action="/appointment" method="POST" id="appointmentForm" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="doctor_id" value="{{ $doctor->uid }}">
                         {{-- Maybe include the token if needed --}}
@@ -344,12 +344,22 @@
                                 </select>
                             </div>
 
-                            {{-- Dynamic Health Card Input --}}
                             <div class="form-group mb-3 d-none" id="health-card-group">
                                 <label for="health_card_number" class="form-label">Health Card Number <span
                                         class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="health_card_number" name="health_card_number"
                                     placeholder="Enter your Health Card No.">
+                            </div>
+
+                            {{-- Referral Document Upload --}}
+                            <div class="form-group mb-3">
+                                <label for="referral_file" class="form-label" id="referral_file_label">Referral Document
+                                    <span class="text-danger d-none" id="referral_required_asterisk">*</span> <small
+                                        class="text-muted">(Optional)</small></label>
+                                <input type="file" class="form-control" id="referral_file" name="referral_file"
+                                    accept=".jpg,.jpeg,.png,.pdf">
+                                <small class="form-text text-muted">Mandatory for Health Card. Accepted: JPG, PNG, PDF (Max
+                                    2MB).</small>
                             </div>
 
                             <div class="form-group mb-3">
@@ -404,6 +414,9 @@
             // Load gateways once
             let gatewaysLoaded = false;
 
+            const referralFile = document.getElementById('referral_file');
+            const referralRequiredAsterisk = document.getElementById('referral_required_asterisk');
+
             if (paymentModeSelect) {
                 paymentModeSelect.addEventListener('change', function () {
                     const mode = this.value;
@@ -415,6 +428,10 @@
                     healthCardGroup.classList.add('d-none');
                     healthCardInput.removeAttribute('required');
 
+                    // Reset Referral Requirement
+                    referralFile.removeAttribute('required');
+                    referralRequiredAsterisk.classList.add('d-none');
+
                     if (mode === 'Online Payment') {
                         gatewayGroup.classList.remove('d-none');
                         gatewaySelect.setAttribute('required', 'required');
@@ -425,6 +442,10 @@
                     } else if (mode === 'Health Card') {
                         healthCardGroup.classList.remove('d-none');
                         healthCardInput.setAttribute('required', 'required');
+
+                        // Make Referral Mandatory for Health Card
+                        referralFile.setAttribute('required', 'required');
+                        referralRequiredAsterisk.classList.remove('d-none');
                     }
                 });
             }

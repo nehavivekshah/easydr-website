@@ -1153,6 +1153,7 @@ class FrontendController extends Controller
             'problem_description' => 'required|string|min:10',
             'payment_gateway' => 'required_if:payment_mode,Online Payment',
             'health_card_number' => 'required_if:payment_mode,Health Card',
+            'referral_file' => 'nullable|required_if:payment_mode,Health Card|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'terms_accepted' => 'required|accepted',
         ]);
 
@@ -1179,6 +1180,15 @@ class FrontendController extends Controller
         // Handle conditionally required fields
         if ($request->payment_mode == 'Health Card') {
             $appointment->health_card_file = $request->health_card_number;
+        }
+
+        // Handle Referral File Upload
+        if ($request->hasFile('referral_file')) {
+            $file = $request->file('referral_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            // Store in public/assets/images/referrals
+            $file->move(public_path('assets/images/referrals'), $filename);
+            $appointment->referral_file = $filename;
         }
 
         if ($request->payment_mode == 'Online Payment') {
