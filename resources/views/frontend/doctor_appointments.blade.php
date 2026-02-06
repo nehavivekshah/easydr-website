@@ -69,6 +69,23 @@
         .badge-payment.paid { background: #d1e7dd; color: #0f5132; }
         .badge-payment.unpaid { background: #fad7d7; color: #842029; }
         .badge-payment.health_card { background: #cff4fc; color: #055160; }
+        
+        /* Appointment Status Badge (Equal Style) */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px; /* Equal Size */
+            text-align: center;
+            display: inline-block;
+        }
+        .badge-status.pending { background: #fff3cd; color: #856404; }
+        .badge-status.confirmed { background: #d1e7dd; color: #0f5132; }
+        .badge-status.cancelled { background: #f8d7da; color: #721c24; }
+        .badge-status.completed { background: #cfe2ff; color: #084298; }
 
         /* Reported Problem */
         .problem-section {
@@ -265,18 +282,6 @@
                                                              alt="Profile" class="profile-img">
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
-                                                            <!-- Appointment Status Badge -->
-                                                            <div class="mb-1">
-                                                                @if($appointment->status == '0')
-                                                                    <span class="badge bg-warning text-dark">Pending</span>
-                                                                @elseif($appointment->status == '1')
-                                                                    <span class="badge bg-success">Confirmed</span>
-                                                                @elseif($appointment->status == '2')
-                                                                    <span class="badge bg-danger">Cancelled</span>
-                                                                @elseif($appointment->status == '3')
-                                                                    <span class="badge bg-primary">Completed</span>
-                                                                @endif
-                                                            </div>
                                                             <div class="profile-meta">
                                                                 @if($gender || $age)
                                                                     <span>
@@ -293,26 +298,41 @@
                                                         </div>
                                                     </div>
 
-                                                    <!-- Payment Badge -->
-                                                    @if($paymentStatus == 'paid')
-                                                        <span class="badge-payment paid">PAID</span>
-                                                    @elseif($paymentStatus == 'health_card')
-                                                        <span class="badge-payment health_card">HEALTH CARD</span>
-                                                    @else
-                                                        <div class="d-flex flex-wrap align-items-center gap-2">
-                                                            {{-- Show "Mark Paid" only if NOT Cancelled (2) and NOT Expired --}}
-                                                            @if($appointment->status != '2' && !$isExpired)
-                                                                <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
-                                                                      onsubmit="return confirm('Mark this appointment as PAID manually?');">
-                                                                    @csrf
-                                                                    <button type="submit" class="btn btn-sm btn-outline-danger py-3 px-3 mb-2" style="font-size: 13px;border-radius: 20px;height: 40px;">
-                                                                        Mark Paid
-                                                                    </button>
-                                                                </form>
-                                                            @endif
-                                                        </div>
-                                                        <span class="badge-payment unpaid">UNPAID</span>
-                                                    @endif
+                                                    <!-- Right Side: Status & Payment (Vertical Stack) -->
+                                                    <div class="d-flex flex-column align-items-end gap-2">
+                                                        
+                                                        <!-- Appointment Status -->
+                                                        @if($appointment->status == '0')
+                                                            <span class="badge-status pending">PENDING</span>
+                                                        @elseif($appointment->status == '1')
+                                                            <span class="badge-status confirmed">CONFIRMED</span>
+                                                        @elseif($appointment->status == '2')
+                                                            <span class="badge-status cancelled">CANCELLED</span>
+                                                        @elseif($appointment->status == '3')
+                                                            <span class="badge-status completed">COMPLETED</span>
+                                                        @endif
+
+                                                        <!-- Payment Badge -->
+                                                        @if($paymentStatus == 'paid')
+                                                            <span class="badge-payment paid">PAID</span>
+                                                        @elseif($paymentStatus == 'health_card')
+                                                            <span class="badge-payment health_card">HEALTH CARD</span>
+                                                        @else
+                                                            <div class="d-flex flex-column align-items-end gap-1">
+                                                                <span class="badge-payment unpaid">UNPAID</span>
+                                                                {{-- Show "Mark Paid" only if NOT Cancelled (2) and NOT Expired --}}
+                                                                @if($appointment->status != '2' && !$isExpired)
+                                                                    <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
+                                                                          onsubmit="return confirm('Mark this appointment as PAID manually?');">
+                                                                        @csrf
+                                                                        <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2" style="font-size: 0.7rem; border-radius: 12px;">
+                                                                            Mark Paid
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
 
                                                 <!-- Problem Section -->
