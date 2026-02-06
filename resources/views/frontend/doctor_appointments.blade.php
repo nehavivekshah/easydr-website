@@ -59,12 +59,26 @@
 
         /* Payment Badge */
         .badge-payment {
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            min-width: 100px;
+            text-align: center;
+            margin-top: 7px;
+        }
+        .badge-markPaid {
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
+            text-align: center;
+            margin-top: 7px;
         }
         .badge-payment.paid { background: #d1e7dd; color: #0f5132; }
         .badge-payment.unpaid { background: #fad7d7; color: #842029; }
@@ -72,7 +86,7 @@
         
         /* Appointment Status Badge (Equal Style) */
         .badge-status {
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -325,7 +339,7 @@
                                                                     <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
                                                                           onsubmit="return confirm('Mark this appointment as PAID manually?');">
                                                                         @csrf
-                                                                        <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2" style="font-size: 0.7rem; border-radius: 12px;">
+                                                                        <button type="submit" class="btn btn-sm markPaid">
                                                                             Mark Paid
                                                                         </button>
                                                                     </form>
