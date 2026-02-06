@@ -1,6 +1,40 @@
 @extends('frontend.layout')
 
 @section('content')
+    <style>
+        .appointment-actions .action-btn {
+            transition: all 0.3s ease;
+            border: none;
+            color: white !important;
+            border-radius: 8px; /* Smooth corners */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px; /* Consistent height */
+            width: 100%;
+        }
+        .appointment-actions .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+        .appointment-actions .action-btn i {
+            font-size: 1.1rem;
+        }
+
+        .btn-chat { background-color: #0dcaf0; }
+        .btn-call { background-color: #198754; }
+        .btn-video { background-color: #20c997; }
+        .btn-complete { background-color: #6f42c1; }
+        .btn-cancel { background-color: #dc3545; }
+
+        .action-btn:disabled {
+            background-color: #e9ecef !important;
+            color: #adb5bd !important;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+    </style>
     <main>
         <section class="pt-100 pb-40">
             <div class="container">
@@ -132,15 +166,15 @@
                                                 @endif
 
 
-                                                <div class="appointment-actions">
+                                                <div class="appointment-actions d-flex gap-2">
 
                                                     {{-- 1. Chat Button --}}
                                                     @if($canChat)
-                                                        <a href="/messages" class="action-btn btn-chat" title="Message Patient">
+                                                        <a href="/messages" class="action-btn btn-chat flex-grow-1" title="Message Patient">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-chat" disabled
+                                                        <button class="action-btn btn-chat flex-grow-1" disabled
                                                             title="Available for active future appointments">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </button>
@@ -148,12 +182,12 @@
 
                                                     {{-- 2. Call Button --}}
                                                     @if(!empty($appointment->patient_mobile) && $canCallVideo)
-                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call"
+                                                        <a href="tel:{{ $appointment->patient_mobile }}" class="action-btn btn-call flex-grow-1"
                                                             title="Call Patient">
                                                             <i class="fas fa-phone"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-call" disabled title="{{ $canCallVideo ? 'No phone' : 'Available during paid session' }}">
+                                                        <button class="action-btn btn-call flex-grow-1" disabled title="{{ $canCallVideo ? 'No phone' : 'Available during paid session' }}">
                                                             <i class="fas fa-phone"></i>
                                                         </button>
                                                     @endif
@@ -164,13 +198,12 @@
                                                             $meetingUrl = $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link;
                                                         @endphp
                                                         <a href="{{ $meetingUrl }}" target="_blank"
-                                                            class="action-btn btn-video pulsate-active" title="Join Meeting"
-                                                            style="background: #17a2b8; color: #fff;">
+                                                            class="action-btn btn-video pulsate-active flex-grow-1" title="Join Meeting">
                                                             <i class="fas fa-video"></i>
                                                         </a>
                                                     @else
-                                                        <button class="action-btn btn-video" disabled
-                                                            title="{{ $isExpired ? 'Meeting Expired' : 'Join active during session' }}">
+                                                        <button class="action-btn btn-video flex-grow-1" disabled
+                                                            title="{{ $canCallVideo ? 'Meeting Link missing' : 'Available during paid session' }}">
                                                             <i class="fas fa-video"></i>
                                                         </button>
                                                     @endif
@@ -178,10 +211,9 @@
 
                                                     @if($appointment->status == '1' && !$isExpired)
                                                         <form action="{{ route('completeAppointment', $appointment->id) }}"
-                                                            method="POST" class="flex-grow-1" style="flex: 1; display: flex;">
+                                                            method="POST" class="flex-grow-1" style="display: flex;">
                                                             @csrf
-                                                            <button type="submit" class="action-btn" title="Mark as Completed"
-                                                                style="width: 100%; background: #6f42c1; color: #fff; border-color: #6f42c1;">
+                                                            <button type="submit" class="action-btn btn-complete flex-grow-1" title="Mark as Completed">
                                                                 <i class="fas fa-flag-checkered"></i>
                                                             </button>
                                                         </form>
@@ -190,16 +222,16 @@
                                                     {{-- 4. Cancel Button --}}
                                                     @if($canCancel)
                                                         <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST"
-                                                            class="flex-grow-1" style="flex: 1; display: flex;"
+                                                            class="flex-grow-1" style="display: flex;"
                                                             onsubmit="return confirm('Cancel this appointment?');">
                                                             @csrf
-                                                            <button type="submit" class="action-btn btn-cancel"
-                                                                title="Cancel Appointment" style="width: 100%;">
+                                                            <button type="submit" class="action-btn btn-cancel flex-grow-1"
+                                                                title="Cancel Appointment">
                                                                 <i class="fas fa-times"></i>
                                                             </button>
                                                         </form>
                                                     @else
-                                                        <button class="action-btn btn-cancel" disabled title="Cannot cancel">
+                                                        <button class="action-btn btn-cancel flex-grow-1" disabled title="Cannot cancel">
                                                             <i class="fas fa-times"></i>
                                                         </button>
                                                     @endif
