@@ -67,6 +67,7 @@
                                 .wizard-buttons { margin-top: 25px; display: flex; justify-content: space-between; }
                                 .is-invalid { border-color: #dc3545 !important; }
                                 .is-invalid:focus { box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important; }
+                                .user-photo{ width:100px;height:100px;object-fit:cover; }
                             </style>
 
                             @php
@@ -322,7 +323,7 @@
                                                 @if($user->photo)
                                                     <div class="mt-2">
                                                         <img src="{{ asset('public/assets/images/profiles/' . $user->photo) }}"
-                                                            alt="Profile" width="60" class="rounded-circle">
+                                                            alt="Profile" width="60" class="rounded-circle user-photo">
                                                     </div>
                                                 @endif
                                             </div>
