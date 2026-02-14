@@ -361,13 +361,6 @@ select:focus {
     animation-delay: 0.4s;
 }
 
-.d-flex.align-items-center.justify-content-center.rounded-circle.mb-1.bg-primary.text-white {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    margin: auto;
-}
-
 /* ==================== Mobile Responsiveness ==================== */
 @media (max-width: 768px) {
     .slider-bg {
