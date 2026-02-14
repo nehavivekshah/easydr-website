@@ -14,6 +14,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
         }
         .appointment-card:hover {
             transform: translateY(-5px);
@@ -87,13 +88,13 @@
         
         /* Appointment Status Badge (Equal Style) */
         .badge-status {
-            padding: 5px 12px;
+            padding: 5px 10px;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            min-width: 100px; /* Equal Size */
+            min-width: 135px;
             text-align: center;
             display: inline-block;
         }
@@ -297,26 +298,10 @@
                                                              alt="Profile" class="profile-img">
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
-                                                            <!-- Payment Badge -->
-                                                            @if($paymentStatus == 'paid')
-                                                                <span class="badge-payment paid" style="min-width: auto;margin-left: 5px;">PAID</span>
-                                                            @elseif($paymentStatus == 'health_card')
-                                                                <span class="badge-payment health_card" style="min-width: auto;margin-left: 5px;">HEALTH CARD</span>
-                                                            @else
-                                                                <div class="d-flex flex-column align-items-end gap-1" style="min-width: auto;margin-left: 5px;">
-                                                                    <span class="badge-payment unpaid">UNPAID</span>
-                                                                    {{-- Show "Mark Paid" only if NOT Cancelled (2) and NOT Expired --}}
-                                                                    @if($appointment->status != '2' && !$isExpired)
-                                                                        <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
-                                                                            onsubmit="return confirm('Mark this appointment as PAID manually?');">
-                                                                            @csrf
-                                                                            <button type="submit" class="btn btn-sm badge-markPaid">
-                                                                                Mark Paid
-                                                                            </button>
-                                                                        </form>
-                                                                    @endif
-                                                                </div>
+                                                            @if($paymentStatus != 'paid' && $paymentStatus != 'health_card')
+                                                            <span class="badge-payment unpaid" style="min-width: auto;margin-left: 5px;">UNPAID</span>
                                                             @endif
+                                                            
                                                             <div class="profile-meta">
                                                                 @if($gender || $age)
                                                                     <span>
@@ -330,12 +315,23 @@
                                                             <div class="profile-meta" style="margin-top: 2px;">
                                                                 <i class="fas fa-phone-alt"></i> {{ $appointment->patient_mobile }}
                                                             </div>
+                                                            <!-- Date & Time Pill Box -->
+                                                            <div class="date-time-box">
+                                                                <div class="dt-item">
+                                                                    <i class="far fa-calendar-alt"></i>
+                                                                    {{ $apptDateTime->format('d M, Y') }}
+                                                                </div>
+                                                                <div class="dt-divider"></div>
+                                                                <div class="dt-item">
+                                                                    <i class="far fa-clock"></i>
+                                                                    {{ $apptDateTime->format('h:i A') }}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                     <!-- Right Side: Status & Payment (Vertical Stack) -->
                                                     <div class="d-flex flex-column align-items-end gap-2">
-                                                        
                                                         <!-- Appointment Status -->
                                                         @if($appointment->status == '0')
                                                             <span class="badge-status pending" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">PENDING</span>
@@ -345,6 +341,25 @@
                                                             <span class="badge-status cancelled" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">CANCELLED</span>
                                                         @elseif($appointment->status == '3')
                                                             <span class="badge-status completed" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">COMPLETED</span>
+                                                        @endif
+
+                                                        <!-- Payment Badge -->
+                                                        @if($paymentStatus == 'paid')
+                                                            <span class="badge-payment paid">PAID</span>
+                                                        @elseif($paymentStatus == 'health_card')
+                                                            <span class="badge-payment health_card">HEALTH CARD</span>
+                                                        @else
+                                                            <div class="d-flex flex-column align-items-end gap-1">
+                                                                @if($appointment->status != '2' && !$isExpired)
+                                                                    <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
+                                                                        onsubmit="return confirm('Mark this appointment as PAID manually?');">
+                                                                        @csrf
+                                                                        <button type="submit" class="btn btn-sm badge-markPaid">
+                                                                            Mark Paid
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
+                                                            </div>
                                                         @endif
 
                                                         <!-- Payment Mode Display -->
@@ -369,19 +384,6 @@
                                                             </a>
                                                         </div>
                                                     @endif
-                                                </div>
-
-                                                <!-- Date & Time Pill Box -->
-                                                <div class="date-time-box">
-                                                    <div class="dt-item">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                        {{ $apptDateTime->format('d M, Y') }}
-                                                    </div>
-                                                    <div class="dt-divider"></div>
-                                                    <div class="dt-item">
-                                                        <i class="far fa-clock"></i>
-                                                        {{ $apptDateTime->format('h:i A') }}
-                                                    </div>
                                                 </div>
 
                                                 <!-- Confirm Button (If Status 0) -->
