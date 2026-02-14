@@ -299,7 +299,7 @@
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
                                                             @if($paymentStatus != 'paid' && $paymentStatus != 'health_card')
-                                                            <span class="badge-payment unpaid" style="min-width: auto;margin-left: 5px;">UNPAID</span>
+                                                            <span class="badge-status text-danger" style="min-width: auto;margin-left: 5px;">UNPAID</span>
                                                             @endif
                                                             
                                                             <div class="profile-meta">
@@ -316,13 +316,13 @@
                                                                 <i class="fas fa-phone-alt"></i> {{ $appointment->patient_mobile }}
                                                             </div>
                                                             <!-- Date & Time Pill Box -->
-                                                            <div class="date-time-box">
-                                                                <div class="dt-item">
+                                                            <div class="date-time-box" style="border: 0; padding: 0; margin: 0; gap: 5px; justify-content: start; background: #fff;">
+                                                                <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
                                                                     <i class="far fa-calendar-alt"></i>
                                                                     {{ $apptDateTime->format('d M, Y') }}
                                                                 </div>
                                                                 <div class="dt-divider"></div>
-                                                                <div class="dt-item">
+                                                                <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
                                                                     <i class="far fa-clock"></i>
                                                                     {{ $apptDateTime->format('h:i A') }}
                                                                 </div>
@@ -380,10 +380,23 @@
                                                     @if(!empty($appointment->referral_file))
                                                         <div class="mt-2">
                                                             <a href="{{ asset('public/assets/images/referrals/' . $appointment->referral_file) }}" target="_blank" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
-                                                                <i class="fas fa-paperclip me-1 text-primary"></i> View Referral Document
+                                                                <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> View Referral Document
                                                             </a>
                                                         </div>
                                                     @endif
+                                                </div>
+
+                                                <!-- Date & Time Pill Box -->
+                                                <div class="date-time-box" style="
+                                                position: absolute;
+                                                right: 6%;
+                                                top: 25%;
+                                                /* border-bottom-right-radius: 0; */
+                                                /* border-top-right-radius: 0; */
+                                                border-right: 0;
+                                            ">
+                                                    <div class="dt-item">
+                                                        01:15 </div>
                                                 </div>
 
                                                 <!-- Confirm Button (If Status 0) -->
