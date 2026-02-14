@@ -297,6 +297,26 @@
                                                              alt="Profile" class="profile-img">
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
+                                                            <!-- Payment Badge -->
+                                                            @if($paymentStatus == 'paid')
+                                                                <span class="badge-payment paid" style="min-width: auto;margin-left: 5px;">PAID</span>
+                                                            @elseif($paymentStatus == 'health_card')
+                                                                <span class="badge-payment health_card" style="min-width: auto;margin-left: 5px;">HEALTH CARD</span>
+                                                            @else
+                                                                <div class="d-flex flex-column align-items-end gap-1" style="min-width: auto;margin-left: 5px;">
+                                                                    <span class="badge-payment unpaid">UNPAID</span>
+                                                                    {{-- Show "Mark Paid" only if NOT Cancelled (2) and NOT Expired --}}
+                                                                    @if($appointment->status != '2' && !$isExpired)
+                                                                        <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
+                                                                            onsubmit="return confirm('Mark this appointment as PAID manually?');">
+                                                                            @csrf
+                                                                            <button type="submit" class="btn btn-sm badge-markPaid">
+                                                                                Mark Paid
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
+                                                                </div>
+                                                            @endif
                                                             <div class="profile-meta">
                                                                 @if($gender || $age)
                                                                     <span>
@@ -318,36 +338,15 @@
                                                         
                                                         <!-- Appointment Status -->
                                                         @if($appointment->status == '0')
-                                                            <span class="badge-status pending">PENDING</span>
+                                                            <span class="badge-status pending" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">PENDING</span>
                                                         @elseif($appointment->status == '1')
-                                                            <span class="badge-status confirmed">CONFIRMED</span>
+                                                            <span class="badge-status confirmed" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">CONFIRMED</span>
                                                         @elseif($appointment->status == '2')
-                                                            <span class="badge-status cancelled">CANCELLED</span>
+                                                            <span class="badge-status cancelled" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">CANCELLED</span>
                                                         @elseif($appointment->status == '3')
-                                                            <span class="badge-status completed">COMPLETED</span>
+                                                            <span class="badge-status completed" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">COMPLETED</span>
                                                         @endif
 
-                                                        <!-- Payment Badge -->
-                                                        @if($paymentStatus == 'paid')
-                                                            <span class="badge-payment paid">PAID</span>
-                                                        @elseif($paymentStatus == 'health_card')
-                                                            <span class="badge-payment health_card">HEALTH CARD</span>
-                                                        @else
-                                                            <div class="d-flex flex-column align-items-end gap-1">
-                                                                <span class="badge-payment unpaid">UNPAID</span>
-                                                                {{-- Show "Mark Paid" only if NOT Cancelled (2) and NOT Expired --}}
-                                                                @if($appointment->status != '2' && !$isExpired)
-                                                                    <form action="{{ route('markAppointmentPaid', $appointment->id) }}" method="POST"
-                                                                          onsubmit="return confirm('Mark this appointment as PAID manually?');">
-                                                                        @csrf
-                                                                        <button type="submit" class="btn btn-sm badge-markPaid">
-                                                                            Mark Paid
-                                                                        </button>
-                                                                    </form>
-                                                                @endif
-                                                            </div>
-                                                        @endif
-                                                        
                                                         <!-- Payment Mode Display -->
                                                         @if(!empty($appointment->payment_mode))
                                                             <small class="text-muted fw-bold" style="font-size: 0.7rem; margin-top: -2px;">
