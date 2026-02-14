@@ -45,6 +45,7 @@
             font-weight: 700;
             color: #2c3e50;
             margin-bottom: 2px;
+            display: inline-block;
         }
         .profile-meta {
             font-size: 0.85rem;
@@ -299,7 +300,7 @@
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
                                                             @if($paymentStatus != 'paid' && $paymentStatus != 'health_card')
-                                                            <span class="badge-status text-danger" style="min-width: auto;margin-left: 5px;">UNPAID</span>
+                                                            * <span class="badge-status text-danger" style="min-width: auto;margin-left: 5px;">UNPAID</span>
                                                             @endif
                                                             
                                                             <div class="profile-meta">
@@ -318,12 +319,12 @@
                                                             <!-- Date & Time Pill Box -->
                                                             <div class="date-time-box" style="border: 0; padding: 0; margin: 0; gap: 5px; justify-content: start; background: #fff;">
                                                                 <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
-                                                                    <i class="far fa-calendar-alt"></i>
+                                                                    <!-- <i class="far fa-calendar-alt"></i> -->
                                                                     {{ $apptDateTime->format('d M, Y') }}
                                                                 </div>
                                                                 <div class="dt-divider"></div>
                                                                 <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
-                                                                    <i class="far fa-clock"></i>
+                                                                    <!-- <i class="far fa-clock"></i> -->
                                                                     {{ $apptDateTime->format('h:i A') }}
                                                                 </div>
                                                             </div>
