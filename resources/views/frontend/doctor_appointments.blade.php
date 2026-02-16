@@ -303,7 +303,7 @@
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
                                                             @if($paymentStatus != 'paid' && $paymentStatus != 'health_card')
-                                                            <span class="badge-status text-danger ml-0" style="min-width: auto;padding: 5px 5px 5px 0px;">* UNPAID</span>
+                                                            <span class="badge-status text-danger ml-0" style="min-width: auto;">* UNPAID</span>
                                                             @endif
                                                             
                                                             <div class="profile-meta">
@@ -363,8 +363,8 @@
                                                         <!-- Date & Time Pill Box -->
                                                         <div class="date-time-box" style="
                                                             position: absolute;
-                                                            right: 6%;
-                                                            top: 23%;
+                                                            right: 7%;
+                                                            top: 24%;
                                                             min-width: 100px;
                                                         ">
                                                             <div class="dt-item text-danger font-weight-bold">
