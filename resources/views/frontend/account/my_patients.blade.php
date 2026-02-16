@@ -218,6 +218,9 @@
             padding: 16px;
             height: 100%;
             transition: all 0.2s;
+            display: flex;
+            justify-content: start;
+            gap: 15px;
         }
 
         .info-card:hover {
@@ -448,7 +451,8 @@
                         <a class="nav-link" data-bs-toggle="tab" href="#tab-refer">Refer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#tab-add-prescription" onclick="preparePrescriptionForm()">Add Prescription</a>
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-add-prescription"
+                            onclick="preparePrescriptionForm()">Add Prescription</a>
                     </li>
                 </ul>
 
@@ -459,8 +463,10 @@
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-blue"><i class="fas fa-phone-alt"></i></div>
-                                    <div class="info-card-label">Mobile Number</div>
-                                    <div id="ov-mobile" class="info-card-value">-</div>
+                                    <div>
+                                        <div class="info-card-label">Mobile Number</div>
+                                        <div id="ov-mobile" class="info-card-value">-</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -562,7 +568,8 @@
                             <input type="hidden" id="presc-patient-id">
                             <div class="col-12">
                                 <label class="form-label fw-bold small text-uppercase">Medicine Name</label>
-                                <input type="text" class="form-control rounded-3 p-3" id="presc-medicine" required placeholder="e.g. Paracetamol 500mg">
+                                <input type="text" class="form-control rounded-3 p-3" id="presc-medicine" required
+                                    placeholder="e.g. Paracetamol 500mg">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-uppercase">Dosage</label>
@@ -596,7 +603,8 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-bold small text-uppercase">Instructions / Notes</label>
-                                <textarea class="form-control rounded-3 p-3" id="presc-notes" rows="3" placeholder="Additional instructions for the patient..."></textarea>
+                                <textarea class="form-control rounded-3 p-3" id="presc-notes" rows="3"
+                                    placeholder="Additional instructions for the patient..."></textarea>
                             </div>
                             <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 shadow-sm fw-bold">
@@ -681,21 +689,21 @@
                 }
 
                 list.innerHTML = data.prescriptions.map((p, idx) => `
-                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                            <div class="history-info">
-                                                                                                <div class="history-icon icon-purple"><i class="fas fa-file-prescription"></i></div>
-                                                                                                <div class="history-content">
-                                                                                                    <h6>Prescription #${p.id}</h6>
-                                                                                                    <div class="history-date">
-                                                                                                        <i class="far fa-calendar-alt"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary px-3 rounded-3 fw-bold">
-                                                                                                <i class="fas fa-download me-1"></i> Download
-                                                                                            </a>
-                                                                                        </div>
-                                                                                    `).join('');
+                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                            <div class="history-info">
+                                                                                                                <div class="history-icon icon-purple"><i class="fas fa-file-prescription"></i></div>
+                                                                                                                <div class="history-content">
+                                                                                                                    <h6>Prescription #${p.id}</h6>
+                                                                                                                    <div class="history-date">
+                                                                                                                        <i class="far fa-calendar-alt"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary px-3 rounded-3 fw-bold">
+                                                                                                                <i class="fas fa-download me-1"></i> Download
+                                                                                                            </a>
+                                                                                                        </div>
+                                                                                                    `).join('');
             }
 
             async function loadPatientHistory() {
@@ -709,21 +717,21 @@
                 }
 
                 list.innerHTML = data.appointments.map((a, idx) => `
-                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                            <div class="history-info">
-                                                                                                <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
-                                                                                                <div class="history-content">
-                                                                                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
-                                                                                                    <div class="history-date">
-                                                                                                        <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
-                                                                                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                    `).join('');
+                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                            <div class="history-info">
+                                                                                                                <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
+                                                                                                                <div class="history-content">
+                                                                                                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                                                                                                    <div class="history-date">
+                                                                                                                        <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
+                                                                                                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    `).join('');
             }
 
             async function loadPatientPayments() {
@@ -739,21 +747,21 @@
                 }
 
                 list.innerHTML = paid.map((a, idx) => `
-                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                            <div class="history-info">
-                                                                                                <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
-                                                                                                <div class="history-content">
-                                                                                                    <h6>Amount: ₹${a.fees || '0'}</h6>
-                                                                                                    <div class="history-date">
-                                                                                                        <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
-                                                                                                ${a.payment_status.replace('_', ' ').toUpperCase()}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                    `).join('');
+                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                            <div class="history-info">
+                                                                                                                <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
+                                                                                                                <div class="history-content">
+                                                                                                                    <h6>Amount: ₹${a.fees || '0'}</h6>
+                                                                                                                    <div class="history-date">
+                                                                                                                        <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
+                                                                                                                ${a.payment_status.replace('_', ' ').toUpperCase()}
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    `).join('');
             }
 
             document.getElementById('referralForm').onsubmit = function (e) {
@@ -769,13 +777,13 @@
                     try {
                         const response = await fetch('/get-prescription-meta');
                         const data = await response.json();
-                        
+
                         populateSelect('presc-dosage', data.dosages, 'dosage');
                         populateSelect('presc-frequency', data.frequencies, 'frequency');
                         populateSelect('presc-duration', data.durations, 'duration');
                         populateSelect('presc-route', data.routes, 'route');
                         populateSelect('presc-meal', data.meals, 'meal');
-                        
+
                         metaDataLoaded = true;
                     } catch (e) {
                         console.error("Failed to load prescription metadata", e);
@@ -793,11 +801,11 @@
                 });
             }
 
-            document.getElementById('prescriptionForm').onsubmit = async function(e) {
+            document.getElementById('prescriptionForm').onsubmit = async function (e) {
                 e.preventDefault();
                 const btn = e.target.querySelector('button[type="submit"]');
                 const originalHtml = btn.innerHTML;
-                
+
                 btn.disabled = true;
                 btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
 
@@ -830,7 +838,7 @@
                     if (response.ok) {
                         alert('Prescription saved successfully!');
                         document.getElementById('prescriptionForm').reset();
-                        
+
                         // Switch to prescriptions tab to see the result
                         const prescTab = document.querySelector('a[href="#tab-prescriptions"]');
                         bootstrap.Tab.getInstance(prescTab).show();
