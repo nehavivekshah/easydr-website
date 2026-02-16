@@ -1376,4 +1376,20 @@ class FrontendController extends Controller
     {
         return view('frontend/help');
     }
+
+    public function searchMedicines(Request $request)
+    {
+        $query = $request->query('q');
+        if (empty($query) || strlen($query) < 2) {
+            return response()->json([]);
+        }
+
+        $medicines = DB::table('medicines')
+            ->where('name', 'LIKE', "%{$query}%")
+            ->where('status', 1)
+            ->limit(10)
+            ->get(['id', 'name', 'medicine_category', 'description']);
+
+        return response()->json($medicines);
+    }
 }

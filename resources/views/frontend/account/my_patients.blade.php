@@ -338,6 +338,48 @@
                 transform: translateY(0);
             }
         }
+
+        .medicine-search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 1050;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .medicine-search-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .medicine-search-item:last-child {
+            border-bottom: none;
+        }
+
+        .medicine-search-item:hover {
+            background: #f8fafc;
+        }
+
+        .medicine-search-item .med-name {
+            font-weight: 600;
+            color: #1e293b;
+            display: block;
+        }
+
+        .medicine-search-item .med-meta {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
     </style>
 
     <main>
@@ -577,10 +619,11 @@
                             <input type="hidden" id="presc-patient-id">
                             <input type="hidden" id="presc-id">
                             <input type="hidden" id="presc-medicine-id">
-                            <div class="col-12">
+                            <div class="col-12 position-relative">
                                 <label class="form-label fw-bold small text-uppercase">Medicine Name</label>
-                                <input type="text" class="form-control rounded-3 p-3" id="presc-medicine" required
-                                    placeholder="e.g. Paracetamol 500mg">
+                                <input type="text" class="form-control rounded-3 p-3" id="presc-medicine" autocomplete="off"
+                                    required placeholder="Search for medicine (e.g. Paracetamol)...">
+                                <div id="medicine-search-results" class="medicine-search-results"></div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-uppercase">Dosage</label>
@@ -701,41 +744,41 @@
                 }
 
                 list.innerHTML = data.prescriptions.map((p, idx) => `
-                        <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideIn 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
-                            <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-uppercase fw-bold text-muted small letter-spacing-1">Prescription #${p.id}</span>
-                                    <div class="text-dark fw-bold small">
-                                        <i class="far fa-calendar-alt me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                    </div>
-                                </div>
-                                <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
-                                    <i class="fas fa-download me-1"></i> PDF
-                                </a>
-                            </div>
-                            <div class="card-body p-0">
-                                <div class="list-group list-group-flush">
-                                    ${(p.medicines || []).map(m => `
-                                        <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                            <div class="d-flex align-items-center">
-                                                <div class="medicine-icon me-3 bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                    <i class="fas fa-pills"></i>
+                                                <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideIn 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
+                                                    <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <span class="text-uppercase fw-bold text-muted small letter-spacing-1">Prescription #${p.id}</span>
+                                                            <div class="text-dark fw-bold small">
+                                                                <i class="far fa-calendar-alt me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                            </div>
+                                                        </div>
+                                                        <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                                            <i class="fas fa-download me-1"></i> PDF
+                                                        </a>
+                                                    </div>
+                                                    <div class="card-body p-0">
+                                                        <div class="list-group list-group-flush">
+                                                            ${(p.medicines || []).map(m => `
+                                                                <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="medicine-icon me-3 bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                                            <i class="fas fa-pills"></i>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="fw-bold text-dark">${m.medicine_name}</div>
+                                                                            <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick='editMedicine(${JSON.stringify(m)}, ${p.id})'>
+                                                                        <i class="fas fa-edit me-1"></i> Edit
+                                                                    </button>
+                                                                </div>
+                                                            `).join('')}
+                                                            ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <div class="fw-bold text-dark">${m.medicine_name}</div>
-                                                    <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick='editMedicine(${JSON.stringify(m)}, ${p.id})'>
-                                                <i class="fas fa-edit me-1"></i> Edit
-                                            </button>
-                                        </div>
-                                    `).join('')}
-                                    ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
-                                </div>
-                            </div>
-                        </div>
-                        `).join('');
+                                                `).join('');
             }
 
             async function loadPatientHistory() {
@@ -749,21 +792,21 @@
                 }
 
                 list.innerHTML = data.appointments.map((a, idx) => `
-                                                                                                                                                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                                                                                                    <div class="history-info">
-                                                                                                                                                                        <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
-                                                                                                                                                                        <div class="history-content">
-                                                                                                                                                                            <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
-                                                                                                                                                                            <div class="history-date">
-                                                                                                                                                                                <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
-                                                                                                                                                                            </div>
-                                                                                                                                                                        </div>
-                                                                                                                                                                    </div>
-                                                                                                                                                                    <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
-                                                                                                                                                                        ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
-                                                                                                                                                                    </span>
-                                                                                                                                                                </div>
-                                                                                                                                                            `).join('');
+                                                                                                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                                                                                                            <div class="history-info">
+                                                                                                                                                                                                <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
+                                                                                                                                                                                                <div class="history-content">
+                                                                                                                                                                                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                                                                                                                                                                                    <div class="history-date">
+                                                                                                                                                                                                        <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                            <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
+                                                                                                                                                                                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                                                                                                                                                                                            </span>
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                    `).join('');
             }
 
             async function loadPatientPayments() {
@@ -779,21 +822,21 @@
                 }
 
                 list.innerHTML = paid.map((a, idx) => `
-                                                                                                                                                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                                                                                                    <div class="history-info">
-                                                                                                                                                                        <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
-                                                                                                                                                                        <div class="history-content">
-                                                                                                                                                                            <h6>Amount: ₹${a.fees || '0'}</h6>
-                                                                                                                                                                            <div class="history-date">
-                                                                                                                                                                                <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                                                                                                                                                            </div>
-                                                                                                                                                                        </div>
-                                                                                                                                                                    </div>
-                                                                                                                                                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
-                                                                                                                                                                        ${a.payment_status.replace('_', ' ').toUpperCase()}
-                                                                                                                                                                    </span>
-                                                                                                                                                                </div>
-                                                                                                                                                            `).join('');
+                                                                                                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                                                                                                            <div class="history-info">
+                                                                                                                                                                                                <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
+                                                                                                                                                                                                <div class="history-content">
+                                                                                                                                                                                                    <h6>Amount: ₹${a.fees || '0'}</h6>
+                                                                                                                                                                                                    <div class="history-date">
+                                                                                                                                                                                                        <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
+                                                                                                                                                                                                ${a.payment_status.replace('_', ' ').toUpperCase()}
+                                                                                                                                                                                            </span>
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                    `).join('');
             }
 
             document.getElementById('referralForm').onsubmit = function (e) {
@@ -806,10 +849,11 @@
             let metaDataLoaded = false;
             async function preparePrescriptionForm() {
                 document.getElementById('prescriptionForm').reset();
+                if (document.getElementById('medicine-search-results')) document.getElementById('medicine-search-results').style.display = 'none';
                 document.getElementById('presc-patient-id').value = currentPatientTableId;
                 document.getElementById('presc-id').value = '';
                 document.getElementById('presc-medicine-id').value = '';
-                
+
                 const btn = document.getElementById('presc-submit-btn');
                 btn.innerHTML = '<i class="fas fa-plus-circle me-1"></i> Save Prescription';
                 btn.className = "btn btn-primary w-100 py-3 rounded-4 shadow-sm fw-bold";
@@ -857,6 +901,8 @@
 
             function populateSelect(id, items, field) {
                 const select = document.getElementById(id);
+                // Clear existing options except first
+                while (select.options.length > 1) select.remove(1);
                 items.forEach(item => {
                     const opt = document.createElement('option');
                     opt.value = item[field];
@@ -864,6 +910,56 @@
                     select.appendChild(opt);
                 });
             }
+
+            // Medicine Search logic
+            const medInput = document.getElementById('presc-medicine');
+            const medResults = document.getElementById('medicine-search-results');
+            let searchTimeout = null;
+
+            medInput.addEventListener('input', (e) => {
+                const query = e.target.value;
+                clearTimeout(searchTimeout);
+
+                if (query.length < 2) {
+                    medResults.style.display = 'none';
+                    return;
+                }
+
+                searchTimeout = setTimeout(async () => {
+                    try {
+                        const response = await fetch(`/search-medicines?q=${encodeURIComponent(query)}`);
+                        const data = await response.json();
+
+                        if (data.length > 0) {
+                            medResults.innerHTML = data.map(m => `
+                                        <div class="medicine-search-item" onclick="selectMedicine('${m.name.replace(/'/g, "\\'")}')">
+                                            <span class="med-name">${m.name}</span>
+                                            <span class="med-meta">${m.medicine_category || 'General'}</span>
+                                        </div>
+                                    `).join('');
+                            medResults.style.display = 'block';
+                        } else {
+                            medResults.style.display = 'none';
+                        }
+                    } catch (e) {
+                        console.error("Search failed", e);
+                    }
+                }, 300);
+            });
+
+            function selectMedicine(name) {
+                medInput.value = name;
+                medResults.style.display = 'none';
+            }
+
+            // Close results on click outside
+            document.addEventListener('click', (e) => {
+                const medInput = document.getElementById('presc-medicine');
+                const medResults = document.getElementById('medicine-search-results');
+                if (medInput && !medInput.contains(e.target) && !medResults.contains(e.target)) {
+                    medResults.style.display = 'none';
+                }
+            });
 
             document.getElementById('prescriptionForm').onsubmit = async function (e) {
                 e.preventDefault();
