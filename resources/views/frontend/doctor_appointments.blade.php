@@ -143,14 +143,14 @@
             /* background: #fff;
             border: 1px solid #e9ecef; */
             border-radius: 50px;
-            padding: 12px 20px;
+            padding: 12px 0px;
             /* margin-bottom: 20px; */
         }
         .dt-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 20px;
+            font-size: 15px;
             font-weight: 600;
             color: #34495e;
         }
@@ -376,12 +376,7 @@
                                                         <div class="date-time-box timer-countdown" 
                                                             data-start="{{ $apptDateTime->timestamp * 1000 }}" 
                                                             data-end="{{ $slotEndTime->timestamp * 1000 }}"
-                                                            style="
-                                                            position: absolute;
-                                                            right: 7%;
-                                                            top: 24%;
-                                                            min-width: 100px;
-                                                        ">
+                                                            style="position: absolute; right: 23px; top: 30%; min-width: 100px;">
                                                             <div class="dt-item text-danger font-weight-bold">
                                                             </div>
                                                         </div>
