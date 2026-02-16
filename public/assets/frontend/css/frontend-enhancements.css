@@ -1260,6 +1260,10 @@ textarea.form-control {
     margin: auto !important;
 }
 
+.modal-content {
+    border-radius: 20px;
+}
+
 /* ==================== Animations ==================== */
 @keyframes pulsate {
     0% {
