@@ -16,10 +16,14 @@
             justify-content: space-between;
             overflow: hidden;
         }
-        .appointment-card:hover {
+        /* .appointment-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
+        } */
+
+        h5#viewProblemModalLabel4 {
+    margin: 0px;
+}
 
         /* Profile & Header */
         .card-header-flex {
@@ -425,9 +429,9 @@
                                                             <div class="modal-body">
                                                                 <p class="problem-text">{{ $appointment->note ?: 'No specific problem reported.' }}</p>
                                                             </div>
-                                                            <div class="modal-footer">
+                                                            <!-- <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                 </div>
