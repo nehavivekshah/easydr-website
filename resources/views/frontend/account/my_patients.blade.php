@@ -863,11 +863,11 @@
                         const response = await fetch('/get-prescription-meta');
                         const data = await response.json();
 
-                        populateSelect('presc-dosage', data.dosages, 'dosage');
-                        populateSelect('presc-frequency', data.frequencies, 'frequency');
-                        populateSelect('presc-duration', data.durations, 'duration');
-                        populateSelect('presc-route', data.routes, 'route');
-                        populateSelect('presc-meal', data.meals, 'meal');
+                        populateSelect('presc-dosage', data.dosages, 'name');
+                        populateSelect('presc-frequency', data.frequencies, 'name');
+                        populateSelect('presc-duration', data.durations, 'name');
+                        populateSelect('presc-route', data.routes, 'name');
+                        populateSelect('presc-meal', data.meals, 'name');
 
                         metaDataLoaded = true;
                     } catch (e) {
@@ -933,8 +933,11 @@
                         if (data.length > 0) {
                             medResults.innerHTML = data.map(m => `
                                         <div class="medicine-search-item" onclick="selectMedicine('${m.name.replace(/'/g, "\\'")}')">
-                                            <span class="med-name">${m.name}</span>
-                                            <span class="med-meta">${m.medicine_category || 'General'}</span>
+                                            <div class="med-name">${m.name}</div>
+                                            <div class="med-meta mt-1">
+                                                ${m.type_name ? `<span class="badge bg-primary-subtle text-primary border-0 me-1" style="font-size: 0.65rem;">${m.type_name}</span>` : ''}
+                                                <span class="text-muted small">${m.medicine_category || 'General'}</span>
+                                            </div>
                                         </div>
                                     `).join('');
                             medResults.style.display = 'block';

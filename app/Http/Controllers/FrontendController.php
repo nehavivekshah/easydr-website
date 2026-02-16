@@ -1385,10 +1385,17 @@ class FrontendController extends Controller
         }
 
         $medicines = DB::table('medicines')
-            ->where('name', 'LIKE', "%{$query}%")
-            ->where('status', 1)
+            ->leftJoin('medicine_types', 'medicines.type_id', '=', 'medicine_types.id')
+            ->where('medicines.name', 'LIKE', "%{$query}%")
+            ->where('medicines.status', 1)
             ->limit(10)
-            ->get(['id', 'name', 'medicine_category', 'description']);
+            ->get([
+                'medicines.id',
+                'medicines.name',
+                'medicines.medicine_category',
+                'medicines.description',
+                'medicine_types.name as type_name'
+            ]);
 
         return response()->json($medicines);
     }
