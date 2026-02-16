@@ -364,6 +364,8 @@
                                                                 Via {{ $appointment->payment_mode }}
                                                             </small>
                                                         @endif
+                                                        
+                                                        @if($appointment->status != '2' && !$isExpired)
                                                         <!-- Date & Time Pill Box -->
                                                         <div class="date-time-box" style="
                                                             position: absolute;
@@ -372,8 +374,9 @@
                                                             min-width: 100px;
                                                         ">
                                                             <div class="dt-item text-danger font-weight-bold">
-                                                                01:15 </div>
+                                                                {{ $isFutureActive }} </div>
                                                         </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <!-- Date & Time Pill Box -->
