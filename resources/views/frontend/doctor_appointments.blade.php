@@ -393,16 +393,18 @@
                                                 </div>
                                                 <!-- Problem Section -->
                                                 <div class="problem-section">
-                                                    <span class="problem-label">Reported Problem</span>
+                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewProblemModal{{ $appointment->id }}" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
+                                                        <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> View Reported Problem
+                                                    </a>
+                                                    <!-- <span class="problem-label">Reported Problem</span> -->
                                                     <!-- <p class="problem-text mb-2">
                                                         {{ Str::limit($appointment->note, 80, '...') }}
                                                     </p> -->
+                                                    <div class="dt-divider"></div>
                                                     @if(!empty($appointment->referral_file))
-                                                        <div class="mt-2">
-                                                            <a href="{{ asset('public/assets/images/referrals/' . $appointment->referral_file) }}" target="_blank" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
-                                                                <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> View Referral Document
-                                                            </a>
-                                                        </div>
+                                                        <a href="{{ asset('public/assets/images/referrals/' . $appointment->referral_file) }}" target="_blank" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
+                                                            <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> View Referral Document
+                                                        </a>
                                                     @endif
                                                 </div>
 
