@@ -40,6 +40,9 @@
             object-fit: cover;
             border: 2px solid #eef2f6;
         }
+        .profile-info {
+            line-height: 1.7;
+        }
         .profile-info h5 {
             font-size: 1.1rem;
             font-weight: 700;
@@ -316,18 +319,6 @@
                                                             <div class="profile-meta" style="margin-top: 2px;">
                                                                 <i class="fas fa-phone-alt"></i> {{ $appointment->patient_mobile }}
                                                             </div>
-                                                            <!-- Date & Time Pill Box -->
-                                                            <div class="date-time-box" style="border: 0; padding: 0; margin: 0; gap: 5px; justify-content: start; background: #fff;">
-                                                                <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
-                                                                    <!-- <i class="far fa-calendar-alt"></i> -->
-                                                                    {{ $apptDateTime->format('d M, Y') }}
-                                                                </div>
-                                                                <div class="dt-divider"></div>
-                                                                <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
-                                                                    <!-- <i class="far fa-clock"></i> -->
-                                                                    {{ $apptDateTime->format('h:i A') }}
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -365,13 +356,24 @@
 
                                                         <!-- Payment Mode Display -->
                                                         @if(!empty($appointment->payment_mode))
-                                                            <small class="text-muted fw-bold" style="font-size: 0.7rem; margin-top: -2px;">
+                                                            <small class="text-muted fw-bold" style="font-size: 0.7rem; margin-top: -2px; margin-right: 1px;">
                                                                 Via {{ $appointment->payment_mode }}
                                                             </small>
                                                         @endif
                                                     </div>
                                                 </div>
-
+                                                <!-- Date & Time Pill Box -->
+                                                <div class="date-time-box" style="border: 0; padding: 0; margin: 0; gap: 5px; justify-content: start; background: #fff;">
+                                                    <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
+                                                        <!-- <i class="far fa-calendar-alt"></i> -->
+                                                        {{ $apptDateTime->format('d M, Y') }}
+                                                    </div>
+                                                    <div class="dt-divider"></div>
+                                                    <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
+                                                        <!-- <i class="far fa-clock"></i> -->
+                                                        {{ $apptDateTime->format('h:i A') }}
+                                                    </div>
+                                                </div>
                                                 <!-- Problem Section -->
                                                 <div class="problem-section">
                                                     <span class="problem-label">Reported Problem</span>
