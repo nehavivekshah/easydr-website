@@ -589,22 +589,71 @@ class FrontendController extends Controller
         if ($user->role != 4)
             return redirect('/my-account');
 
-        // Fetch unique patients for this doctor
-        $patients = \App\Models\Appointments::leftJoin('patients', 'appointments.pid', '=', 'patients.id')
-            ->leftJoin('users as patient', 'patients.uid', '=', 'patient.id')
+        // Fetch unique patients for this doctor with additional details and visit count
+        $patients = \App\Models\Appointments::where('appointments.did', $user->id)
+            ->join('users as patient', 'appointments.pid', '=', 'patient.id')
+            ->leftJoin('patients as pt_details', 'patient.id', '=', 'pt_details.uid')
+            ->leftJoin('usermetas', 'patient.id', '=', 'usermetas.uid')
             ->select(
                 'patient.id',
                 'patient.first_name',
                 'patient.last_name',
                 'patient.email',
                 'patient.mobile',
-                'patient.photo'
+                'patient.photo',
+                'patient.dob',
+                'patient.gender',
+                'pt_details.blood_group',
+                'usermetas.address',
+                'usermetas.city',
+                'usermetas.state',
+                DB::raw('COUNT(appointments.id) as total_appointments'),
+                DB::raw('MAX(appointments.date) as last_visit')
             )
-            ->where('appointments.did', $user->id)
-            ->distinct('appointments.pid')
+            ->groupBy(
+                'patient.id',
+                'patient.first_name',
+                'patient.last_name',
+                'patient.email',
+                'patient.mobile',
+                'patient.photo',
+                'patient.dob',
+                'patient.gender',
+                'pt_details.blood_group',
+                'usermetas.address',
+                'usermetas.city',
+                'usermetas.state'
+            )
             ->get();
 
-        return view('frontend.account.my_patients', compact('patients'));
+        // Also fetch specialists and doctors for referral option
+        $specialists = \App\Models\Specialists::where('status', 1)->get();
+        $doctors = \App\Models\User::where('role', 4)->where('status', 1)->get();
+
+        return view('frontend.account.my_patients', compact('patients', 'specialists', 'doctors'));
+    }
+
+    public function getPatientDetails($id)
+    {
+        $doctor_id = Auth::id();
+
+        // Appointment History for this patient/doctor
+        $appointments = \App\Models\Appointments::where('pid', $id)
+            ->where('did', $doctor_id)
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
+            ->get();
+
+        // Prescriptions for this patient/doctor
+        $prescriptions = \App\Models\Prescriptions::where('patient_id', $id)
+            ->where('doctor_id', $doctor_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'appointments' => $appointments,
+            'prescriptions' => $prescriptions
+        ]);
     }
 
     public function manageSlots()
