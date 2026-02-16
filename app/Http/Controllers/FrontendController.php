@@ -659,6 +659,17 @@ class FrontendController extends Controller
         ]);
     }
 
+    public function getPrescriptionMeta()
+    {
+        return response()->json([
+            'dosages' => DB::table('dosages')->where('status', 1)->get(),
+            'frequencies' => DB::table('frequencies')->where('status', 1)->get(),
+            'durations' => DB::table('durations')->where('status', 1)->get(),
+            'routes' => DB::table('routes')->where('status', 1)->get(),
+            'meals' => DB::table('meals')->where('status', 1)->get(),
+        ]);
+    }
+
     public function manageSlots()
     {
         $user = Auth::user();

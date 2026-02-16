@@ -284,7 +284,7 @@
                                             $canChat = $isSessionTime && $isPendingOrConfirmed;
 
                                             // Cancel: Enabled for Future Active (Before or During), Paid Only
-                                            $canCancel = $isFutureActive && $isPaid;
+                                            $canCancel = $isFutureActive; // && $isPaid
 
                                             // Call/Video: Requires Paid + Session Time + Confirmed
                                             $canCallVideo = $isPaid && $isSessionTime && $appointment->status == '1';

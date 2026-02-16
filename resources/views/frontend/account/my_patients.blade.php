@@ -109,9 +109,9 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #f8f9fa 0%, #eef2f6 100%);
+            /* background: linear-gradient(135deg, #f8f9fa 0%, #eef2f6 100%); */
             border-bottom: none;
-            padding: 30px;
+            padding: 15px 30px;
             position: relative;
         }
 
@@ -127,7 +127,7 @@
             height: 100px;
             border-radius: 24px;
             object-fit: cover;
-            border: 4px solid #fff;
+            border: 4px solid #f1f1f1;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
@@ -169,7 +169,7 @@
         }
 
         .nav-tabs-custom {
-            background: #fff;
+            background: #f9f9f9;
             padding: 0 30px;
             border-bottom: 1px solid #e2e8f0;
             gap: 32px;
@@ -447,41 +447,44 @@
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#tab-refer">Refer</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-add-prescription" onclick="preparePrescriptionForm()">Add Prescription</a>
+                    </li>
                 </ul>
 
                 <div class="tab-content overflow-auto" style="max-height: 60vh;">
                     <!-- Overview -->
                     <div class="tab-pane fade show active modal-body" id="tab-overview">
                         <div class="row g-4">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-blue"><i class="fas fa-phone-alt"></i></div>
                                     <div class="info-card-label">Mobile Number</div>
                                     <div id="ov-mobile" class="info-card-value">-</div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-purple"><i class="fas fa-envelope"></i></div>
                                     <div class="info-card-label">Email Address</div>
                                     <div id="ov-email" class="info-card-value">-</div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-green"><i class="fas fa-birthday-cake"></i></div>
                                     <div class="info-card-label">Date of Birth</div>
                                     <div id="ov-dob" class="info-card-value">-</div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-orange"><i class="fas fa-map-marker-alt"></i></div>
                                     <div class="info-card-label">Location / City</div>
                                     <div id="ov-city" class="info-card-value">-</div>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-blue"><i class="fas fa-home"></i></div>
                                     <div class="info-card-label">Full Address</div>
@@ -550,6 +553,56 @@
                             </div>
                             <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold">Send Referral
                                 Request</button>
+                        </form>
+                    </div>
+
+                    <!-- Add Prescription -->
+                    <div class="tab-pane fade modal-body" id="tab-add-prescription">
+                        <form id="prescriptionForm" class="row g-3">
+                            <input type="hidden" id="presc-patient-id">
+                            <div class="col-12">
+                                <label class="form-label fw-bold small text-uppercase">Medicine Name</label>
+                                <input type="text" class="form-control rounded-3 p-3" id="presc-medicine" required placeholder="e.g. Paracetamol 500mg">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-uppercase">Dosage</label>
+                                <select class="form-select rounded-3 p-3" id="presc-dosage" required>
+                                    <option value="">Select Dosage</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-uppercase">Frequency</label>
+                                <select class="form-select rounded-3 p-3" id="presc-frequency" required>
+                                    <option value="">Select Frequency</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-uppercase">Duration</label>
+                                <select class="form-select rounded-3 p-3" id="presc-duration" required>
+                                    <option value="">Select Duration</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-uppercase">Route</label>
+                                <select class="form-select rounded-3 p-3" id="presc-route">
+                                    <option value="">Select Route</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold small text-uppercase">Food Intake (Meal)</label>
+                                <select class="form-select rounded-3 p-3" id="presc-meal">
+                                    <option value="">Select Timing</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small text-uppercase">Instructions / Notes</label>
+                                <textarea class="form-control rounded-3 p-3" id="presc-notes" rows="3" placeholder="Additional instructions for the patient..."></textarea>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 shadow-sm fw-bold">
+                                    <i class="fas fa-plus-circle me-1"></i> Save Prescription
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -628,21 +681,21 @@
                 }
 
                 list.innerHTML = data.prescriptions.map((p, idx) => `
-                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                            <div class="history-info">
-                                <div class="history-icon icon-purple"><i class="fas fa-file-prescription"></i></div>
-                                <div class="history-content">
-                                    <h6>Prescription #${p.id}</h6>
-                                    <div class="history-date">
-                                        <i class="far fa-calendar-alt"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary px-3 rounded-3 fw-bold">
-                                <i class="fas fa-download me-1"></i> Download
-                            </a>
-                        </div>
-                    `).join('');
+                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                            <div class="history-info">
+                                                                                                <div class="history-icon icon-purple"><i class="fas fa-file-prescription"></i></div>
+                                                                                                <div class="history-content">
+                                                                                                    <h6>Prescription #${p.id}</h6>
+                                                                                                    <div class="history-date">
+                                                                                                        <i class="far fa-calendar-alt"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary px-3 rounded-3 fw-bold">
+                                                                                                <i class="fas fa-download me-1"></i> Download
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    `).join('');
             }
 
             async function loadPatientHistory() {
@@ -656,21 +709,21 @@
                 }
 
                 list.innerHTML = data.appointments.map((a, idx) => `
-                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                            <div class="history-info">
-                                <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
-                                <div class="history-content">
-                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
-                                    <div class="history-date">
-                                        <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})} at ${a.time}
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="badge rounded-pill px-3 py-2 ${a.status == '3' ? 'bg-success' : 'bg-info'}">
-                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
-                            </span>
-                        </div>
-                    `).join('');
+                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                            <div class="history-info">
+                                                                                                <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
+                                                                                                <div class="history-content">
+                                                                                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                                                                                    <div class="history-date">
+                                                                                                        <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
+                                                                                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    `).join('');
             }
 
             async function loadPatientPayments() {
@@ -686,21 +739,21 @@
                 }
 
                 list.innerHTML = paid.map((a, idx) => `
-                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                            <div class="history-info">
-                                <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
-                                <div class="history-content">
-                                    <h6>Amount: ₹${a.fees || '0'}</h6>
-                                    <div class="history-date">
-                                        <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
-                                ${a.payment_status.replace('_', ' ').toUpperCase()}
-                            </span>
-                        </div>
-                    `).join('');
+                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                            <div class="history-info">
+                                                                                                <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
+                                                                                                <div class="history-content">
+                                                                                                    <h6>Amount: ₹${a.fees || '0'}</h6>
+                                                                                                    <div class="history-date">
+                                                                                                        <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
+                                                                                                ${a.payment_status.replace('_', ' ').toUpperCase()}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    `).join('');
             }
 
             document.getElementById('referralForm').onsubmit = function (e) {
@@ -708,6 +761,91 @@
                 alert('Referral request sent successfully!');
                 bootstrap.Modal.getInstance(document.getElementById('patientDetailsModal')).hide();
             }
+
+            // Prescription Creation Logic
+            let metaDataLoaded = false;
+            async function preparePrescriptionForm() {
+                if (!metaDataLoaded) {
+                    try {
+                        const response = await fetch('/get-prescription-meta');
+                        const data = await response.json();
+                        
+                        populateSelect('presc-dosage', data.dosages, 'dosage');
+                        populateSelect('presc-frequency', data.frequencies, 'frequency');
+                        populateSelect('presc-duration', data.durations, 'duration');
+                        populateSelect('presc-route', data.routes, 'route');
+                        populateSelect('presc-meal', data.meals, 'meal');
+                        
+                        metaDataLoaded = true;
+                    } catch (e) {
+                        console.error("Failed to load prescription metadata", e);
+                    }
+                }
+            }
+
+            function populateSelect(id, items, field) {
+                const select = document.getElementById(id);
+                items.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item[field];
+                    opt.innerText = item[field];
+                    select.appendChild(opt);
+                });
+            }
+
+            document.getElementById('prescriptionForm').onsubmit = async function(e) {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalHtml = btn.innerHTML;
+                
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
+
+                const formData = {
+                    doctor_id: {{ Auth::id() }},
+                    patient_id: currentPatientTableId,
+                    prescribed_date: new Date().toISOString().split('T')[0],
+                    medicine_name: document.getElementById('presc-medicine').value,
+                    dosage: document.getElementById('presc-dosage').value,
+                    frequency: document.getElementById('presc-frequency').value,
+                    duration: document.getElementById('presc-duration').value,
+                    route: document.getElementById('presc-route').value,
+                    meal: document.getElementById('presc-meal').value,
+                    notes: document.getElementById('presc-notes').value,
+                    _token: '{{ csrf_token() }}'
+                };
+
+                try {
+                    const response = await fetch('/create-prescription', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        alert('Prescription saved successfully!');
+                        document.getElementById('prescriptionForm').reset();
+                        
+                        // Switch to prescriptions tab to see the result
+                        const prescTab = document.querySelector('a[href="#tab-prescriptions"]');
+                        bootstrap.Tab.getInstance(prescTab).show();
+                        loadPatientPrescriptions();
+                    } else {
+                        alert('Failed to save prescription: ' + (result.message || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error("Prescription error:", error);
+                    alert('An error occurred while saving the prescription.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            };
         </script>
     @endpush
 @endsection
