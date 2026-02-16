@@ -300,7 +300,7 @@
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
                                                             @if($paymentStatus != 'paid' && $paymentStatus != 'health_card')
-                                                            * <span class="badge-status text-danger" style="min-width: auto;margin-left: 5px;">UNPAID</span>
+                                                            <span class="badge-status text-danger ml-0" style="min-width: auto;padding: 5px 5px 5px 0px;">* UNPAID</span>
                                                             @endif
                                                             
                                                             <div class="profile-meta">
