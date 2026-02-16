@@ -586,24 +586,27 @@ class FrontendController extends Controller
     public function myPatients()
     {
         $user = Auth::user();
-        if ($user->role != 4)
-            return redirect('/my-account');
+        if (!$user || $user->role != 4)
+            return redirect('/login');
 
-        // Fetch unique patients for this doctor with additional details and visit count
-        $patients = \App\Models\Appointments::where('appointments.did', $user->id)
-            ->join('users as patient', 'appointments.pid', '=', 'patient.id')
-            ->leftJoin('patients as pt_details', 'patient.id', '=', 'pt_details.uid')
-            ->leftJoin('usermetas', 'patient.id', '=', 'usermetas.uid')
+        // Robust query using DB table directly to match other frontend methods
+        // We select both users.id (for profile) and patients.id (for history lookups)
+        $patients = DB::table('appointments')
+            ->where('appointments.did', $user->id)
+            ->leftJoin('patients', 'appointments.pid', '=', 'patients.id')
+            ->leftJoin('users', 'patients.uid', '=', 'users.id')
+            ->leftJoin('usermetas', 'users.id', '=', 'usermetas.uid')
             ->select(
-                'patient.id',
-                'patient.first_name',
-                'patient.last_name',
-                'patient.email',
-                'patient.mobile',
-                'patient.photo',
-                'patient.dob',
-                'patient.gender',
-                'pt_details.blood_group',
+                'users.id',
+                'patients.id as patient_table_id',
+                'users.first_name',
+                'users.last_name',
+                'users.email',
+                'users.mobile',
+                'users.photo',
+                'users.dob',
+                'users.gender',
+                'patients.blood_group',
                 'usermetas.address',
                 'usermetas.city',
                 'usermetas.state',
@@ -611,24 +614,24 @@ class FrontendController extends Controller
                 DB::raw('MAX(appointments.date) as last_visit')
             )
             ->groupBy(
-                'patient.id',
-                'patient.first_name',
-                'patient.last_name',
-                'patient.email',
-                'patient.mobile',
-                'patient.photo',
-                'patient.dob',
-                'patient.gender',
-                'pt_details.blood_group',
+                'users.id',
+                'patients.id',
+                'users.first_name',
+                'users.last_name',
+                'users.email',
+                'users.mobile',
+                'users.photo',
+                'users.dob',
+                'users.gender',
+                'patients.blood_group',
                 'usermetas.address',
                 'usermetas.city',
                 'usermetas.state'
             )
             ->get();
 
-        // Also fetch specialists and doctors for referral option
-        $specialists = \App\Models\Specialists::where('status', 1)->get();
-        $doctors = \App\Models\User::where('role', 4)->where('status', 1)->get();
+        $specialists = Specialists::where('status', 1)->get();
+        $doctors = User::where('role', 4)->where('status', 1)->get();
 
         return view('frontend.account.my_patients', compact('patients', 'specialists', 'doctors'));
     }

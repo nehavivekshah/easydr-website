@@ -195,7 +195,7 @@
                             <div class="row">
                                 @if(isset($patients) && count($patients) > 0)
                                     @foreach($patients as $patient)
-                                        <div class="col-lg-6 col-md-12 mb-4 wow fadeInUp">
+                                        <div class="col-lg-6 col-md-12 mb-4">
                                             <div class="patient-card">
                                                 <div>
                                                     <div class="patient-profile">
@@ -224,7 +224,7 @@
                                                 </div>
 
                                                 <button class="btn-view-details"
-                                                    onclick="openPatientDetails({{ $patient->id }}, '{{ $patient->first_name }} {{ $patient->last_name }}')">
+                                                    onclick="openPatientDetails({{ $patient->id }}, '{{ $patient->first_name }} {{ $patient->last_name }}', {{ $patient->patient_table_id }})">
                                                     View Patient Details
                                                 </button>
                                             </div>
@@ -377,11 +377,13 @@
     @push('scripts')
         <script>
             let currentPatientId = null;
+            let currentPatientTableId = null;
             let patientData = @json($patients);
 
-            function openPatientDetails(id, name) {
-                currentPatientId = id;
-                const patient = patientData.find(p => p.id === id);
+            function openPatientDetails(userId, name, patientTableId) {
+                currentPatientId = userId;
+                currentPatientTableId = patientTableId;
+                const patient = patientData.find(p => p.id === userId);
 
                 document.getElementById('modalPatientName').innerText = name;
                 document.getElementById('ov-mobile').innerText = patient.mobile || '-';
@@ -403,7 +405,7 @@
             }
 
             async function fetchHistory() {
-                const response = await fetch(`/get-patient-details/${currentPatientId}`);
+                const response = await fetch(`/get-patient-details/${currentPatientTableId}`);
                 return await response.json();
             }
 
@@ -418,16 +420,16 @@
                 }
 
                 list.innerHTML = data.prescriptions.map(p => `
-                        <div class="history-item">
-                            <div class="history-info">
-                                <h6>Prescription #${p.id}</h6>
-                                <span class="history-date">${new Date(p.created_at).toLocaleDateString()}</span>
-                            </div>
-                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary btn-action-sm">
-                                <i class="fas fa-download"></i> Download
-                            </a>
-                        </div>
-                    `).join('');
+                                <div class="history-item">
+                                    <div class="history-info">
+                                        <h6>Prescription #${p.id}</h6>
+                                        <span class="history-date">${new Date(p.created_at).toLocaleDateString()}</span>
+                                    </div>
+                                    <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary btn-action-sm">
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                </div>
+                            `).join('');
             }
 
             async function loadPatientHistory() {
@@ -441,14 +443,14 @@
                 }
 
                 list.innerHTML = data.appointments.map(a => `
-                        <div class="history-item">
-                            <div class="history-info">
-                                <h6>${a.note ? (a.note.length > 30 ? a.note.substring(0, 30) + '...' : a.note) : 'Consultation'}</h6>
-                                <span class="history-date">${new Date(a.date).toLocaleDateString()} at ${a.time}</span>
-                            </div>
-                            <span class="badge ${a.status == '3' ? 'bg-success' : 'bg-info'}">${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}</span>
-                        </div>
-                    `).join('');
+                                <div class="history-item">
+                                    <div class="history-info">
+                                        <h6>${a.note ? (a.note.length > 30 ? a.note.substring(0, 30) + '...' : a.note) : 'Consultation'}</h6>
+                                        <span class="history-date">${new Date(a.date).toLocaleDateString()} at ${a.time}</span>
+                                    </div>
+                                    <span class="badge ${a.status == '3' ? 'bg-success' : 'bg-info'}">${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}</span>
+                                </div>
+                            `).join('');
             }
 
             async function loadPatientPayments() {
@@ -464,14 +466,14 @@
                 }
 
                 list.innerHTML = paid.map(a => `
-                        <div class="history-item">
-                            <div class="history-info">
-                                <h6>Amount: ₹${a.fees || '0'}</h6>
-                                <span class="history-date">${new Date(a.date).toLocaleDateString()} via ${a.payment_mode || 'Online'}</span>
-                            </div>
-                            <span class="badge bg-success">${a.payment_status.replace('_', ' ').toUpperCase()}</span>
-                        </div>
-                    `).join('');
+                                <div class="history-item">
+                                    <div class="history-info">
+                                        <h6>Amount: ₹${a.fees || '0'}</h6>
+                                        <span class="history-date">${new Date(a.date).toLocaleDateString()} via ${a.payment_mode || 'Online'}</span>
+                                    </div>
+                                    <span class="badge bg-success">${a.payment_status.replace('_', ' ').toUpperCase()}</span>
+                                </div>
+                            `).join('');
             }
 
             document.getElementById('referralForm').onsubmit = function (e) {
