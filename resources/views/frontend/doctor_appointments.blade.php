@@ -415,10 +415,11 @@
                                                 </div>
 
                                                 <!-- Confirm Button (If Status 0) -->
-                                                @if($appointment->status == '0')
+                                                @if($appointment->status == '0' && !$isExpired)
                                                     <form action="{{ route('confirmAppointment', $appointment->id) }}" method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn-confirm-appt" {{ !$isPaid ? 'disabled title=Payment_Required style=opacity:0.6' : '' }}>
+                                                         <!-- {{ !$isPaid ? 'disabled title=Payment_Required style=opacity:0.6' : '' }} -->
+                                                        <button type="submit" class="btn-confirm-appt">
                                                             <i class="fas fa-check-circle"></i> Confirm Appointment
                                                         </button>
                                                     </form>
