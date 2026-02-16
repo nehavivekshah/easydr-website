@@ -259,7 +259,7 @@
 
                                             // Status Checks
                                             $isPendingOrConfirmed = in_array($appointment->status, ['0', '1']);
-                                            $isExpired = $now->gt($slotEndTime) && !$isPendingOrConfirmed; 
+                                            $isExpired = $now->gt($slotEndTime) && $isPendingOrConfirmed; 
                                             // Future/Active Logic
                                             $isFutureActive = $isPendingOrConfirmed && $now->lte($slotEndTime);
 
@@ -333,7 +333,7 @@
                                                             <span class="badge-status pending" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">PENDING</span>
                                                         @elseif($appointment->status == '1' && !$isExpired)
                                                             <span class="badge-status confirmed" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">CONFIRMED</span>
-                                                        @elseif($appointment->status == '2' && !$isExpired)
+                                                        @elseif($appointment->status == '2')
                                                             <span class="badge-status cancelled" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">CANCELLED</span>
                                                         @elseif($appointment->status == '3')
                                                             <span class="badge-status completed" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">COMPLETED</span>
@@ -369,14 +369,14 @@
                                                         
                                                         @if($appointment->status != '2' && !$isExpired)
                                                         <!-- Date & Time Pill Box -->
-                                                        <div class="date-time-box" style="
+                                                        <div class="date-time-box timer-countdown" style="
                                                             position: absolute;
                                                             right: 7%;
                                                             top: 24%;
                                                             min-width: 100px;
                                                         ">
                                                             <div class="dt-item text-danger font-weight-bold">
-                                                                {{ $isFutureActive }} </div>
+                                                            </div>
                                                         </div>
                                                         @endif
                                                     </div>
