@@ -374,14 +374,18 @@
                                                 </div>
                                                 <!-- Date & Time Pill Box -->
                                                 <div class="date-time-box" style="border: 0; padding: 0; margin: 0; gap: 5px; justify-content: start; background: #fff;">
-                                                    <div class="dt-item font-weight-bold" style=" color: #6c757d; font-size: 15px; ">
-                                                        <i class="far fa-calendar-alt"></i>
-                                                        {{ $apptDateTime->format('d M, Y') }}
+                                                    <div class="dt-item" style=" color: #6c757d; font-size: 15px; ">
+                                                        <div>
+                                                            <i class="far fa-calendar-alt"></i>
+                                                            {{ $apptDateTime->format('d M, Y') }}
+                                                        </div>
                                                     </div>
                                                     <div class="dt-divider"></div>
-                                                    <div class="dt-item font-weight-bold" style=" color: #6c757d; font-size: 15px; ">
-                                                        <i class="far fa-clock"></i>
-                                                        {{ $apptDateTime->format('h:i A') }}
+                                                    <div class="dt-item" style=" color: #6c757d; font-size: 15px; ">
+                                                        <div>
+                                                            <i class="far fa-clock"></i>
+                                                            {{ $apptDateTime->format('h:i A') }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!-- Problem Section -->
