@@ -95,7 +95,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            min-width: 135px;
+            min-width: 175px;
             text-align: center;
             display: inline-block;
         }
@@ -335,13 +335,13 @@
                                                     <div class="d-flex flex-column align-items-end gap-2">
                                                         <!-- Appointment Status -->
                                                         @if($appointment->status == '0')
-                                                            <span class="badge-status pending" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">PENDING</span>
+                                                            <span class="badge-status pending" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">PENDING</span>
                                                         @elseif($appointment->status == '1')
-                                                            <span class="badge-status confirmed" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">CONFIRMED</span>
+                                                            <span class="badge-status confirmed" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">CONFIRMED</span>
                                                         @elseif($appointment->status == '2')
-                                                            <span class="badge-status cancelled" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">CANCELLED</span>
+                                                            <span class="badge-status cancelled" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">CANCELLED</span>
                                                         @elseif($appointment->status == '3')
-                                                            <span class="badge-status completed" style=" position: absolute; left: -28px; transform: rotate(-45deg); ">COMPLETED</span>
+                                                            <span class="badge-status completed" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">COMPLETED</span>
                                                         @endif
 
                                                         <!-- Payment Badge -->
