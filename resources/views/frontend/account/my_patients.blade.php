@@ -472,29 +472,37 @@
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-purple"><i class="fas fa-envelope"></i></div>
-                                    <div class="info-card-label">Email Address</div>
-                                    <div id="ov-email" class="info-card-value">-</div>
+                                    <div>
+                                        <div class="info-card-label">Email Address</div>
+                                        <div id="ov-email" class="info-card-value">-</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-green"><i class="fas fa-birthday-cake"></i></div>
-                                    <div class="info-card-label">Date of Birth</div>
-                                    <div id="ov-dob" class="info-card-value">-</div>
+                                    <div>
+                                        <div class="info-card-label">Date of Birth</div>
+                                        <div id="ov-dob" class="info-card-value">-</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-orange"><i class="fas fa-map-marker-alt"></i></div>
-                                    <div class="info-card-label">Location / City</div>
-                                    <div id="ov-city" class="info-card-value">-</div>
+                                    <div>
+                                        <div class="info-card-label">Location / City</div>
+                                        <div id="ov-city" class="info-card-value">-</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 mb-3">
                                 <div class="info-card">
                                     <div class="info-card-icon icon-blue"><i class="fas fa-home"></i></div>
-                                    <div class="info-card-label">Full Address</div>
-                                    <div id="ov-address" class="info-card-value">-</div>
+                                    <div>
+                                        <div class="info-card-label">Full Address</div>
+                                        <div id="ov-address" class="info-card-value">-</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -689,21 +697,21 @@
                 }
 
                 list.innerHTML = data.prescriptions.map((p, idx) => `
-                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                                            <div class="history-info">
-                                                                                                                <div class="history-icon icon-purple"><i class="fas fa-file-prescription"></i></div>
-                                                                                                                <div class="history-content">
-                                                                                                                    <h6>Prescription #${p.id}</h6>
-                                                                                                                    <div class="history-date">
-                                                                                                                        <i class="far fa-calendar-alt"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                                    <div class="history-info">
+                                                                                                                        <div class="history-icon icon-purple"><i class="fas fa-file-prescription"></i></div>
+                                                                                                                        <div class="history-content">
+                                                                                                                            <h6>Prescription #${p.id}</h6>
+                                                                                                                            <div class="history-date">
+                                                                                                                                <i class="far fa-calendar-alt"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                                            </div>
+                                                                                                                        </div>
                                                                                                                     </div>
+                                                                                                                    <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary px-3 rounded-3 fw-bold">
+                                                                                                                        <i class="fas fa-download me-1"></i> Download
+                                                                                                                    </a>
                                                                                                                 </div>
-                                                                                                            </div>
-                                                                                                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-outline-primary px-3 rounded-3 fw-bold">
-                                                                                                                <i class="fas fa-download me-1"></i> Download
-                                                                                                            </a>
-                                                                                                        </div>
-                                                                                                    `).join('');
+                                                                                                            `).join('');
             }
 
             async function loadPatientHistory() {
@@ -717,21 +725,21 @@
                 }
 
                 list.innerHTML = data.appointments.map((a, idx) => `
-                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                                            <div class="history-info">
-                                                                                                                <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
-                                                                                                                <div class="history-content">
-                                                                                                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
-                                                                                                                    <div class="history-date">
-                                                                                                                        <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                                                                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                                    <div class="history-info">
+                                                                                                                        <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
+                                                                                                                        <div class="history-content">
+                                                                                                                            <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                                                                                                            <div class="history-date">
+                                                                                                                                <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                                                                                            </div>
+                                                                                                                        </div>
                                                                                                                     </div>
+                                                                                                                    <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
+                                                                                                                        ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                                                                                                                    </span>
                                                                                                                 </div>
-                                                                                                            </div>
-                                                                                                            <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
-                                                                                                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                    `).join('');
+                                                                                                            `).join('');
             }
 
             async function loadPatientPayments() {
@@ -747,21 +755,21 @@
                 }
 
                 list.innerHTML = paid.map((a, idx) => `
-                                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                                            <div class="history-info">
-                                                                                                                <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
-                                                                                                                <div class="history-content">
-                                                                                                                    <h6>Amount: ₹${a.fees || '0'}</h6>
-                                                                                                                    <div class="history-date">
-                                                                                                                        <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                                                    <div class="history-info">
+                                                                                                                        <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
+                                                                                                                        <div class="history-content">
+                                                                                                                            <h6>Amount: ₹${a.fees || '0'}</h6>
+                                                                                                                            <div class="history-date">
+                                                                                                                                <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                                            </div>
+                                                                                                                        </div>
                                                                                                                     </div>
+                                                                                                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
+                                                                                                                        ${a.payment_status.replace('_', ' ').toUpperCase()}
+                                                                                                                    </span>
                                                                                                                 </div>
-                                                                                                            </div>
-                                                                                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
-                                                                                                                ${a.payment_status.replace('_', ' ').toUpperCase()}
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                    `).join('');
+                                                                                                            `).join('');
             }
 
             document.getElementById('referralForm').onsubmit = function (e) {
