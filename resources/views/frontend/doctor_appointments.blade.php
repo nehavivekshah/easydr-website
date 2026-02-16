@@ -113,6 +113,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
         }
         .problem-label {
             font-size: 0.7rem;
@@ -394,7 +395,7 @@
                                                 <!-- Problem Section -->
                                                 <div class="problem-section">
                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewProblemModal{{ $appointment->id }}" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
-                                                        <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> View Reported Problem
+                                                        <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> Reported Problem
                                                     </a>
                                                     <!-- <span class="problem-label">Reported Problem</span> -->
                                                     <!-- <p class="problem-text mb-2">
@@ -403,7 +404,7 @@
                                                     <div class="dt-divider"></div>
                                                     @if(!empty($appointment->referral_file))
                                                         <a href="{{ asset('public/assets/images/referrals/' . $appointment->referral_file) }}" target="_blank" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
-                                                            <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> View Referral Document
+                                                            <i class="fas fa-paperclip me-1 text-primary" style="font-size: 0.85rem; font-weight: 500;"></i> Referral Document
                                                         </a>
                                                     @endif
                                                 </div>
