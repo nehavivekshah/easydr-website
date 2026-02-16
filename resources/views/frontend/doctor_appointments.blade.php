@@ -110,6 +110,9 @@
         /* Reported Problem */
         .problem-section {
             margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .problem-label {
             font-size: 0.7rem;
@@ -391,9 +394,9 @@
                                                 <!-- Problem Section -->
                                                 <div class="problem-section">
                                                     <span class="problem-label">Reported Problem</span>
-                                                    <p class="problem-text mb-2">
+                                                    <!-- <p class="problem-text mb-2">
                                                         {{ Str::limit($appointment->note, 80, '...') }}
-                                                    </p>
+                                                    </p> -->
                                                     @if(!empty($appointment->referral_file))
                                                         <div class="mt-2">
                                                             <a href="{{ asset('public/assets/images/referrals/' . $appointment->referral_file) }}" target="_blank" class="text-decoration-none" style="font-size: 0.85rem; font-weight: 500;">
