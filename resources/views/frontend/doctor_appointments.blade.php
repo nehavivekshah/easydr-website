@@ -373,7 +373,10 @@
                                                         
                                                         @if($appointment->status != '2' && !$isExpired)
                                                         <!-- Date & Time Pill Box -->
-                                                        <div class="date-time-box timer-countdown" style="
+                                                        <div class="date-time-box timer-countdown" 
+                                                            data-start="{{ $apptDateTime->timestamp * 1000 }}" 
+                                                            data-end="{{ $slotEndTime->timestamp * 1000 }}"
+                                                            style="
                                                             position: absolute;
                                                             right: 7%;
                                                             top: 24%;
@@ -542,3 +545,49 @@
         </section>
     </main>
 @endsection
+
+@push('scripts')
+    <script>
+        function updateCountdowns() {
+            document.querySelectorAll('.timer-countdown').forEach(el => {
+                const start = parseInt(el.dataset.start);
+                const end = parseInt(el.dataset.end);
+                const now = new Date().getTime();
+                const display = el.querySelector('.dt-item');
+
+                if (!display) return;
+
+                if (now < start) {
+                    // Future: show countdown to start
+                    const diff = start - now;
+                    const h = Math.floor(diff / 3600000);
+                    const m = Math.floor((diff % 3600000) / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+                    
+                    let timeStr = "";
+                    if (h > 0) timeStr += h + "h ";
+                    timeStr += m + "m " + s + "s";
+                    
+                    display.innerText = timeStr;
+                    display.classList.add('text-danger');
+                    display.classList.remove('text-success');
+                } else if (now >= start && now <= end) {
+                    // Ongoing
+                    display.innerText = "Ongoing";
+                    display.classList.remove('text-danger');
+                    display.classList.add('text-success');
+                } else {
+                    // Ended
+                    display.innerText = "Ended";
+                    display.classList.remove('text-danger', 'text-success');
+                    display.style.color = '#6c757d';
+                    display.style.fontSize = '14px';
+                }
+            });
+        }
+
+        // Initialize and run every second
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns();
+    </script>
+@endpush

@@ -12,4 +12,9 @@ class Patients extends Model
     {
         return $this->belongsTo(User::class, 'family_doctor_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'uid', 'id');
+    }
 }
