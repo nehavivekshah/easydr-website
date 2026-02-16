@@ -995,10 +995,10 @@ select:focus {
     margin-bottom: 24px;
 }
 
-.appointment-card:hover {
+/* .appointment-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .appointment-header {
     display: flex;
@@ -1256,8 +1256,8 @@ textarea.form-control {
 }
 
 .d-flex.align-items-center.justify-content-center.rounded-circle.mb-1.bg-primary.text-white {
-    width: 40px!important;
-    margin: auto!important;
+    width: 40px !important;
+    margin: auto !important;
 }
 
 /* ==================== Animations ==================== */
