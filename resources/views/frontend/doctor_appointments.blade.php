@@ -307,7 +307,7 @@
                                                         <div class="profile-info">
                                                             <h5>{{ $appointment->patient_first_name }} {{ $appointment->patient_last_name }}</h5>
                                                             @if($paymentStatus != 'paid' && $paymentStatus != 'health_card')
-                                                            <span class="badge-status text-danger ml-0" style="min-width: auto;">* UNPAID</span>
+                                                            <span class="badge-status text-danger ml-0" style="min-width: auto;padding: 0px; font-size: 12px;">* UNPAID</span>
                                                             @endif
                                                             
                                                             <div class="profile-meta">
@@ -329,14 +329,16 @@
                                                     <!-- Right Side: Status & Payment (Vertical Stack) -->
                                                     <div class="d-flex flex-column align-items-end gap-2">
                                                         <!-- Appointment Status -->
-                                                        @if($appointment->status == '0')
+                                                        @if($appointment->status == '0' && !$isExpired)
                                                             <span class="badge-status pending" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">PENDING</span>
-                                                        @elseif($appointment->status == '1')
+                                                        @elseif($appointment->status == '1' && !$isExpired)
                                                             <span class="badge-status confirmed" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">CONFIRMED</span>
-                                                        @elseif($appointment->status == '2')
+                                                        @elseif($appointment->status == '2' && !$isExpired)
                                                             <span class="badge-status cancelled" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">CANCELLED</span>
                                                         @elseif($appointment->status == '3')
                                                             <span class="badge-status completed" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">COMPLETED</span>
+                                                        @elseif($isExpired)
+                                                            <span class="badge-status cancelled" style=" position: absolute; top: 21px; left: -55px; transform: rotate(-45deg); ">EXPIRED</span>
                                                         @endif
 
                                                         <!-- Payment Badge -->
