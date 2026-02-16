@@ -8367,7 +8367,7 @@ a.specialists-icon img {
 
 .nav-tabs {
 	border-bottom: 1px solid #dee2e6;
-	background: var(--color-heading) !important;
+	/* background: var(--color-heading) !important; */
 	color: var(--color-white);
 	/* border-radius: 50px; */
 	overflow: hidden;
