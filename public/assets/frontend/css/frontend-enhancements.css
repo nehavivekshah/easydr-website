@@ -760,7 +760,7 @@ select:focus {
 .dashboard_content h5 {
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     text-transform: capitalize;
     color: #333;
 }
