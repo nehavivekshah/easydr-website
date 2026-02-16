@@ -132,8 +132,8 @@
             align-items: center;
             justify-content: center;
             gap: 20px;
-            background: #fff;
-            border: 1px solid #e9ecef;
+            /* background: #fff;
+            border: 1px solid #e9ecef; */
             border-radius: 50px;
             padding: 12px 20px;
             margin-bottom: 20px;
@@ -142,7 +142,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.95rem;
+            font-size: 20px;
             font-weight: 600;
             color: #34495e;
         }
@@ -360,6 +360,16 @@
                                                                 Via {{ $appointment->payment_mode }}
                                                             </small>
                                                         @endif
+                                                        <!-- Date & Time Pill Box -->
+                                                        <div class="date-time-box" style="
+                                                            position: absolute;
+                                                            right: 6%;
+                                                            top: 23%;
+                                                            min-width: 100px;
+                                                        ">
+                                                            <div class="dt-item text-danger">
+                                                                01:15 </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!-- Date & Time Pill Box -->
@@ -387,19 +397,6 @@
                                                             </a>
                                                         </div>
                                                     @endif
-                                                </div>
-
-                                                <!-- Date & Time Pill Box -->
-                                                <div class="date-time-box" style="
-                                                position: absolute;
-                                                right: 6%;
-                                                top: 25%;
-                                                /* border-bottom-right-radius: 0; */
-                                                /* border-top-right-radius: 0; */
-                                                border-right: 0;
-                                            ">
-                                                    <div class="dt-item">
-                                                        01:15 </div>
                                                 </div>
 
                                                 <!-- Confirm Button (If Status 0) -->
