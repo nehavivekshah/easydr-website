@@ -653,6 +653,10 @@ class FrontendController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        foreach ($prescriptions as $prescription) {
+            $prescription->medicines = \App\Models\Prescription_medinices::where('prescribe_id', $prescription->id)->get();
+        }
+
         return response()->json([
             'appointments' => $appointments,
             'prescriptions' => $prescriptions

@@ -48,6 +48,7 @@ Route::post('/manage-slots/save', [FrontendController::class, 'saveSlot'])->name
 Route::get('/doctor-prescriptions', [FrontendController::class, 'doctorPrescriptions']);
 Route::get('/get-prescription-meta', [FrontendController::class, 'getPrescriptionMeta'])->name('getPrescriptionMeta');
 Route::post('/create-prescription', [App\Http\Controllers\PrescriptionController::class, 'prescriptionPost'])->name('createPrescription');
+Route::put('/update-prescription-medicine/{id}', [App\Http\Controllers\PrescriptionController::class, 'prescriptionMedicinePut'])->name('updatePrescriptionMedicine');
 Route::get('/download-prescription/{id}', [App\Http\Controllers\PrescriptionController::class, 'downloadPrescription'])->name('downloadPrescription');
 Route::get('/doctor-billing', [FrontendController::class, 'doctorBilling']);
 
