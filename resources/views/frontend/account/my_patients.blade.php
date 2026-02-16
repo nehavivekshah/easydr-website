@@ -224,7 +224,7 @@
                                                 </div>
 
                                                 <button class="btn-view-details"
-                                                    onclick="openPatientDetails({{ $patient->id }}, '{{ $patient->first_name }} {{ $patient->last_name }}', {{ $patient->patient_table_id }})">
+                                                    onclick="openPatientDetails({{ $patient->id }}, '{{ addslashes($patient->first_name . " " . $patient->last_name) }}', {{ $patient->patient_table_id }})">
                                                     View Patient Details
                                                 </button>
                                             </div>
@@ -383,7 +383,8 @@
             function openPatientDetails(userId, name, patientTableId) {
                 currentPatientId = userId;
                 currentPatientTableId = patientTableId;
-                const patient = patientData.find(p => p.id === userId);
+                // Use loose equality == in case of string/number mismatch
+                const patient = patientData.find(p => p.id == userId);
 
                 document.getElementById('modalPatientName').innerText = name;
                 document.getElementById('ov-mobile').innerText = patient.mobile || '-';
@@ -393,14 +394,19 @@
                 document.getElementById('ov-blood').innerText = patient.blood_group || 'Unknown';
                 document.getElementById('ov-address').innerText = [patient.address, patient.city, patient.state].filter(Boolean).join(', ') || '-';
 
-                document.getElementById('btn-chat').href = `/messages?user_id=${id}`;
+                document.getElementById('btn-chat').href = `/messages?user_id=${userId}`;
 
-                // Reset tabs
+                // Reset tabs to first tab (Overview)
                 const tabEl = document.querySelector('a[href="#tab-overview"]');
                 const tab = new bootstrap.Tab(tabEl);
                 tab.show();
 
-                const modal = new bootstrap.Modal(document.getElementById('patientDetailsModal'));
+                // Get or create modal instance
+                const modalEl = document.getElementById('patientDetailsModal');
+                let modal = bootstrap.Modal.getInstance(modalEl);
+                if (!modal) {
+                    modal = new bootstrap.Modal(modalEl);
+                }
                 modal.show();
             }
 
