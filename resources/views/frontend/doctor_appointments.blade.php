@@ -92,9 +92,9 @@
         
         /* Appointment Status Badge (Equal Style) */
         .badge-status {
-            padding: 5px 10px;
+            padding: 0px 10px;
             border-radius: 30px;
-            font-size: 0.75rem;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -109,12 +109,12 @@
 
         /* Reported Problem */
         .problem-section {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
         .problem-label {
             font-size: 0.7rem;
             font-weight: 700;
@@ -330,13 +330,13 @@
                                                     <div class="d-flex flex-column align-items-end gap-2">
                                                         <!-- Appointment Status -->
                                                         @if($appointment->status == '0')
-                                                            <span class="badge-status pending" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">PENDING</span>
+                                                            <span class="badge-status pending" style=" position: absolute; top: 21px; left: -45px; transform: rotate(-45deg); ">PENDING</span>
                                                         @elseif($appointment->status == '1')
-                                                            <span class="badge-status confirmed" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">CONFIRMED</span>
+                                                            <span class="badge-status confirmed" style=" position: absolute; top: 21px; left: -45px; transform: rotate(-45deg); ">CONFIRMED</span>
                                                         @elseif($appointment->status == '2')
-                                                            <span class="badge-status cancelled" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">CANCELLED</span>
+                                                            <span class="badge-status cancelled" style=" position: absolute; top: 21px; left: -45px; transform: rotate(-45deg); ">CANCELLED</span>
                                                         @elseif($appointment->status == '3')
-                                                            <span class="badge-status completed" style=" position: absolute; left: -45px; transform: rotate(-45deg); ">COMPLETED</span>
+                                                            <span class="badge-status completed" style=" position: absolute; top: 21px; left: -45px; transform: rotate(-45deg); ">COMPLETED</span>
                                                         @endif
 
                                                         <!-- Payment Badge -->
