@@ -26,7 +26,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
         .profile-section {
             display: flex;
@@ -356,7 +356,7 @@
 
                                                         <!-- Payment Mode Display -->
                                                         @if(!empty($appointment->payment_mode))
-                                                            <small class="text-muted fw-bold" style="font-size: 0.7rem; margin-top: -2px; margin-right: 1px;">
+                                                            <small class="text-muted fw-bold" style="font-size: 0.7rem; margin-top: -2px; margin-right: 2px;">
                                                                 Via {{ $appointment->payment_mode }}
                                                             </small>
                                                         @endif
@@ -367,20 +367,20 @@
                                                             top: 23%;
                                                             min-width: 100px;
                                                         ">
-                                                            <div class="dt-item text-danger">
+                                                            <div class="dt-item text-danger font-weight-bold">
                                                                 01:15 </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- Date & Time Pill Box -->
                                                 <div class="date-time-box" style="border: 0; padding: 0; margin: 0; gap: 5px; justify-content: start; background: #fff;">
-                                                    <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
-                                                        <!-- <i class="far fa-calendar-alt"></i> -->
+                                                    <div class="dt-item font-weight-bold" style=" color: #6c757d; font-size: 15px; ">
+                                                        <i class="far fa-calendar-alt"></i>
                                                         {{ $apptDateTime->format('d M, Y') }}
                                                     </div>
                                                     <div class="dt-divider"></div>
-                                                    <div class="dt-item" style=" color: #6c757d; font-size: 13px; ">
-                                                        <!-- <i class="far fa-clock"></i> -->
+                                                    <div class="dt-item font-weight-bold" style=" color: #6c757d; font-size: 15px; ">
+                                                        <i class="far fa-clock"></i>
                                                         {{ $apptDateTime->format('h:i A') }}
                                                     </div>
                                                 </div>
