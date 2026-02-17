@@ -794,7 +794,7 @@ select:focus {
     text-align: center;
     background: #fff;
     /* White circle */
-    color: var(--color-secondary);
+    color: var(--color-primary);
     /* Blue Icon */
     border-radius: 50%;
     font-size: 24px;
@@ -898,7 +898,7 @@ select:focus {
     border-bottom: 2px solid var(--color-secondary);
     display: inline-block;
     padding-bottom: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     color: #333;
 }
 
@@ -906,25 +906,38 @@ select:focus {
     position: absolute;
     top: 0;
     right: 0;
-    background: var(--color-primary-dark);
-    color: var(--color-white);
-    padding: 5px 25px;
+    padding: 12px 26px;
     border-radius: 50px;
     font-size: 14px;
     text-decoration: none;
     text-transform: capitalize;
+    width: 100px;
+    margin-top: -7px;
 }
 
 .dashboard_profile ul {
-    padding: 0;
     margin: 0;
+    padding: 20px 25px;
+    margin-top: 25px;
+    border: 1px solid #cccccc45;
+    border-radius: 10px;
 }
 
-.dashboard_profile ul li {
+/* .dashboard_profile ul li {
     display: flex;
     padding: 15px 0;
     border-bottom: 1px solid #eee;
     font-size: 15px;
+} */
+
+.dashboard_profile ul li {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0px;
+    border-bottom: 0px solid #eee;
+    padding-bottom: 0px;
+    padding: 6px 0px;
 }
 
 .dashboard_profile ul li:last-child {

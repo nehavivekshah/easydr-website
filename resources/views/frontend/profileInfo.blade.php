@@ -45,7 +45,6 @@
                                 </ul>
 
                                 @if(Auth::user()->role == 5 && isset($patient))
-                                    <hr>
                                     <h5>Medical Information</h5>
                                     <ul>
                                         <li><span>Blood Group:</span>
@@ -82,7 +81,6 @@
                                         @endif
                                     </ul>
                                 @elseif(Auth::user()->role == 4 && isset($doctorInfo))
-                                    <hr>
                                     <h5>Professional Details</h5>
                                     <ul>
                                         <li><span>Specialist:</span> {{ $doctorInfo->specialist ?? 'Not Set' }}</li>
@@ -95,17 +93,16 @@
                                             {{ $doctorInfo->about ?? 'No About Available' }}
                                         </li>
                                     </ul>
-                                    <hr>
                                     @if(isset($doctorAvailability))
                                         <!-- <h5 class="mt-3">Availability</h5>
-                                                                                                                            <ul>
-                                                                                                                                <li><span>Days:</span>
-                                                                                                                                    {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
-                                                                                                                                <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
-                                                                                                                                    {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
-                                                                                                                                </li>
-                                                                                                                                <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
-                                                                                                                            </ul> -->
+                                            <ul>
+                                                <li><span>Days:</span>
+                                                    {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
+                                                <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
+                                                    {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
+                                                </li>
+                                                <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
+                                            </ul> -->
                                     @endif
                                 @endif
                             </div>
