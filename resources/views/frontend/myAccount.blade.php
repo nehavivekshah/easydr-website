@@ -30,16 +30,18 @@
                                                     <i class="fas fa-calendar-check fa-lg"></i>
                                                 </div>
                                                 <div>
-                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Total Appointments</p>
+                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Total
+                                                        Appointments</p>
                                                     <h3 class="mb-0 fw-bold">{{ $appointmentsCount ?? 0 }}</h3>
                                                 </div>
                                             </div>
                                             <div class="border-top pt-2">
-                                                <span class="badge badge-soft-primary">{{ $todayAppointmentsCount ?? 0 }} Scheduled Today</span>
+                                                <span class="badge badge-soft-primary">{{ $todayAppointmentsCount ?? 0 }}
+                                                    Scheduled Today</span>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-xl-4 col-md-6 mb-4 animate-fade-in-up delay-1">
                                         <div class="card-modern p-4 h-100 border-left-success">
                                             <div class="d-flex align-items-center mb-3">
@@ -47,7 +49,8 @@
                                                     <i class="fas fa-user-injured fa-lg"></i>
                                                 </div>
                                                 <div>
-                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">My Patients</p>
+                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">My Patients
+                                                    </p>
                                                     <h3 class="mb-0 fw-bold">{{ $patientsCount ?? 0 }}</h3>
                                                 </div>
                                             </div>
@@ -64,38 +67,44 @@
                                                     <i class="fas fa-wallet fa-lg"></i>
                                                 </div>
                                                 <div>
-                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Wallet Balance</p>
+                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Wallet
+                                                        Balance</p>
                                                     <h3 class="mb-0 fw-bold">₹{{ number_format($walletAmount ?? 0, 2) }}</h3>
                                                 </div>
                                             </div>
                                             <div class="border-top pt-2 d-flex justify-content-between">
-                                                <span class="text-muted small">Revenue: ₹{{ number_format($totalRevenue ?? 0, 2) }}</span>
-                                                <a href="/doctor-billing" class="small fw-bold">View Billing <i class="fas fa-arrow-right ml-1"></i></a>
+                                                <span class="text-muted small">Revenue:
+                                                    ₹{{ number_format($totalRevenue ?? 0, 2) }}</span>
+                                                <a href="/doctor-billing" class="small fw-bold">View Billing <i
+                                                        class="fas fa-arrow-right ml-1"></i></a>
                                             </div>
                                         </div>
                                     </div>
-                                @endif
-                            </div>
-
-                                    <!-- New Section: Calendar & Revenue Graph -->
                                     <div class="row mt-4">
                                         <!-- Calendar Section -->
                                         <div class="col-lg-6 mb-4 animate-fade-in-up delay-3">
                                             <div class="card-modern h-100">
                                                 <div class="card-header bg-white border-bottom py-3">
-                                                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-calendar-alt mr-2"></i>Upcoming Appointments</h5>
+                                                    <h5 class="mb-0 fw-bold text-primary"><i
+                                                            class="fas fa-calendar-alt mr-2"></i>Upcoming Appointments</h5>
                                                 </div>
                                                 <div class="card-body p-4">
                                                     <!-- Simple Custom Calendar UI -->
                                                     <div class="custom-calendar">
-                                                        <div class="calendar-header d-flex justify-content-between align-items-center mb-4">
-                                                            <button class="btn btn-sm btn-light border rounded-pill px-3 shadow-sm" id="prevMonth"
-                                                                style="width: 40px; height: 40px;"><i class="fas fa-chevron-left"></i></button>
+                                                        <div
+                                                            class="calendar-header d-flex justify-content-between align-items-center mb-4">
+                                                            <button
+                                                                class="btn btn-sm btn-light border rounded-pill px-3 shadow-sm"
+                                                                id="prevMonth" style="width: 40px; height: 40px;"><i
+                                                                    class="fas fa-chevron-left"></i></button>
                                                             <h6 class="mb-0 fw-bold" id="monthYear"></h6>
-                                                            <button class="btn btn-sm btn-light border rounded-pill px-3 shadow-sm" id="nextMonth"
-                                                                style="width: 40px; height: 40px;"><i class="fas fa-chevron-right"></i></button>
+                                                            <button
+                                                                class="btn btn-sm btn-light border rounded-pill px-3 shadow-sm"
+                                                                id="nextMonth" style="width: 40px; height: 40px;"><i
+                                                                    class="fas fa-chevron-right"></i></button>
                                                         </div>
-                                                        <div class="calendar-days d-flex justify-content-between text-muted small mb-3 text-center fw-bold opacity-75">
+                                                        <div
+                                                            class="calendar-days d-flex justify-content-between text-muted small mb-3 text-center fw-bold opacity-75">
                                                             <div style="width: 14%">S</div>
                                                             <div style="width: 14%">M</div>
                                                             <div style="width: 14%">T</div>
@@ -116,7 +125,9 @@
                                         <div class="col-lg-6 mb-4 animate-fade-in-up delay-4">
                                             <div class="card-modern h-100">
                                                 <div class="card-header bg-white border-bottom py-3">
-                                                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-chart-line mr-2"></i>Monthly Revenue ({{ date('Y') }})</h5>
+                                                    <h5 class="mb-0 fw-bold text-primary"><i
+                                                            class="fas fa-chart-line mr-2"></i>Monthly Revenue ({{ date('Y') }})
+                                                    </h5>
                                                 </div>
                                                 <div class="card-body p-4">
                                                     <div style="height: 300px;">
@@ -256,12 +267,12 @@
                                     @endpush
                                 @endif
 
+                            </div>
+
+
                         </div>
-
-
                     </div>
                 </div>
-            </div>
             </div>
         </section>
     </main>
