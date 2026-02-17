@@ -18,6 +18,7 @@ use App\Models\Roles;
 use App\Models\Usermetas;
 use App\Models\Patients;
 use App\Models\Specialists;
+use App\Models\Wallets;
 
 class FrontendController extends Controller
 {
@@ -847,7 +848,33 @@ class FrontendController extends Controller
 
     public function doctorBilling()
     {
-        return view('frontend.account.doctor_billing');
+        $user = Auth::user();
+        $doctor = Doctors::where('uid', $user->id)->first();
+
+        if (!$doctor) {
+            return back()->with('error', 'Doctor profile not found.');
+        }
+
+        $transactions = Wallets::where('did', $doctor->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        $totalEarnings = Wallets::where('did', $doctor->id)
+            ->where('status', 'credit')
+            ->sum('amount');
+
+        $availableBalance = $doctor->wallet ?? 0;
+
+        $pendingPayments = Wallets::where('did', $doctor->id)
+            ->where('status', 'pending')
+            ->sum('amount');
+
+        return view('frontend.account.doctor_billing', compact(
+            'transactions',
+            'totalEarnings',
+            'availableBalance',
+            'pendingPayments'
+        ));
     }
 
     /* Patient Methods */

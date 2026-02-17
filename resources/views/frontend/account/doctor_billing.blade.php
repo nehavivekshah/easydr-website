@@ -24,7 +24,7 @@
                                             style="width: 60px; height: 60px; font-size: 24px;">
                                             <i class="fas fa-wallet"></i>
                                         </div>
-                                        <h3 class="mb-1 text-primary">₹0.00</h3>
+                                        <h3 class="mb-1 text-primary">₹{{ number_format($totalEarnings, 2) }}</h3>
                                         <p class="text-muted small mb-0">Total Earnings</p>
                                     </div>
                                 </div>
@@ -34,7 +34,7 @@
                                             style="width: 60px; height: 60px; font-size: 24px;">
                                             <i class="fas fa-hand-holding-usd"></i>
                                         </div>
-                                        <h3 class="mb-1 text-success">₹0.00</h3>
+                                        <h3 class="mb-1 text-success">₹{{ number_format($availableBalance, 2) }}</h3>
                                         <p class="text-muted small mb-0">Available Balance</p>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@
                                             style="width: 60px; height: 60px; font-size: 24px;">
                                             <i class="fas fa-clock"></i>
                                         </div>
-                                        <h3 class="mb-1 text-warning">₹0.00</h3>
+                                        <h3 class="mb-1 text-warning">₹{{ number_format($pendingPayments, 2) }}</h3>
                                         <p class="text-muted small mb-0">Pending Payments</p>
                                     </div>
                                 </div>
@@ -64,21 +64,42 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td colspan="5" class="text-center py-5">
-                                                        <div class="mb-3">
-                                                            <i class="fas fa-file-invoice-dollar text-muted"
-                                                                style="font-size: 48px; opacity: 0.3;"></i>
-                                                        </div>
-                                                        <h6 class="text-muted">No transactions found.</h6>
-                                                        <p class="small text-muted">Your billing and payment history will
-                                                            appear here.</p>
-                                                    </td>
-                                                </tr>
+                                                @forelse($transactions as $t)
+                                                    <tr>
+                                                        <td class="font-weight-bold">#{{ $t->id }}</td>
+                                                        <td>{{ $t->created_at->format('d M, Y') }}</td>
+                                                        <td>{{ $t->details }}</td>
+                                                        <td class="font-weight-bold text-success">
+                                                            ₹{{ number_format($t->amount, 2) }}</td>
+                                                        <td>
+                                                            <span
+                                                                class="badge badge-pill badge-pill-modern {{ $t->status == 'credit' ? 'badge-soft-success' : 'badge-soft-warning' }}">
+                                                                {{ ucfirst($t->status) }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center py-5">
+                                                            <div class="mb-3">
+                                                                <i class="fas fa-file-invoice-dollar text-muted"
+                                                                    style="font-size: 48px; opacity: 0.3;"></i>
+                                                            </div>
+                                                            <h6 class="text-muted">No transactions found.</h6>
+                                                            <p class="small text-muted">Your billing and payment history will
+                                                                appear here.</p>
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                @if($transactions->hasPages())
+                                    <div class="p-3 d-flex justify-content-center">
+                                        {{ $transactions->links('pagination::bootstrap-5') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
