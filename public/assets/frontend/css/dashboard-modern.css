@@ -139,8 +139,6 @@
     height: 45px !important;
     font-size: 14px;
     border-radius: 50px !important;
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
 }
 
 .input-group input.form-control {
@@ -162,7 +160,9 @@
 }
 
 .input-group .form-control {
-    border: 2px solid #eee !important;
+    border: 1px solid #eee !important;
     padding: 12px 18px !important;
     font-size: 1rem !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
 }
