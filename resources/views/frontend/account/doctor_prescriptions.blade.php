@@ -54,7 +54,7 @@
                                             <tbody>
                                                 @forelse($prescriptions as $k=>$p)
                                                     <tr>
-                                                        <td class="font-weight-bold text-dark">#{{ $k+1 }}</td>
+                                                        <td class="text-dark">#{{ $k+1 }}</td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar-initials mr-3">
@@ -123,19 +123,17 @@
     <div class="modal fade" id="medicineModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content border-0 shadow-lg overflow-hidden" style="border-radius: 20px;">
-                <div class="modal-header bg-primary text-white border-0 py-4">
+                <div class="modal-header bg-wite dark-white border-0 py-4">
                     <div class="d-flex align-items-center">
                         <div class="bg-white rounded-circle p-2 mr-3 shadow-sm">
-                            <i class="fas fa-prescription text-primary"></i>
+                            <i class="fas fa-prescription text-dark"></i>
                         </div>
                         <div>
-                            <h5 class="modal-title mb-0 text-white" id="modalPatientName">Medicine Details</h5>
-                            <small class="text-white-50">Issued Prescription Items</small>
+                            <h5 class="modal-title mb-0 text-dark" id="modalPatientName">Medicine Details</h5>
+                            <small class="text-dark-50">Issued Prescription Items</small>
                         </div>
                     </div>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
                     <div class="table-responsive">
@@ -156,7 +154,7 @@
                     </div>
                 </div>
                 <div class="modal-footer border-0 p-4">
-                    <button type="button" class="btn btn-light px-4 btn-pill-modern border" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light px-4 btn-pill-modern border" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary px-4 btn-pill-modern shadow-sm" id="btnDownloadFromModal">
                         <i class="fas fa-download mr-1"></i> Download PDF
                     </button>
