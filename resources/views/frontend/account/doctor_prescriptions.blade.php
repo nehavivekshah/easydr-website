@@ -76,7 +76,7 @@
                                                             </span>
                                                         </td>
                                                         <td class="text-right">
-                                                            <div class="btn-group shadow-sm border rounded overflow-hidden">
+                                                            <div class="btn-group cs-btn-group overflow-hidden">
                                                                 <button type="button" class="btn btn-white btn-sm text-primary py-2 px-3 border-right" 
                                                                         onclick="viewMedicines({{ json_encode($p->medicines) }}, '{{ $p->patient_first_name }} {{ $p->patient_last_name }}', {{ $p->id }})"
                                                                         title="View Summary">

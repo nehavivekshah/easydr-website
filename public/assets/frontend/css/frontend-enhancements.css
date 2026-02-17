@@ -1278,6 +1278,11 @@ textarea.form-control {
     border-radius: 20px;
 }
 
+.cs-btn-group {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 50px !important;
+}
+
 /* ==================== Animations ==================== */
 @keyframes pulsate {
     0% {
@@ -1295,4 +1300,19 @@ textarea.form-control {
 
 .pulsate-active {
     animation: pulsate 2s infinite;
+}
+
+.cs-btn-group button {
+    height: 45px;
+    width: 60px;
+    color: #1e0b9b !important;
+    border-right: 1px solid #ccc !important;
+}
+
+.cs-btn-group a {
+    color: #09b7e3 !important;
+    height: 45px;
+    width: 60px;
+    padding: 15px 0px !important;
+    border-left: 1px solid #ccc;
 }
