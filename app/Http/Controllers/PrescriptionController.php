@@ -227,6 +227,12 @@ class PrescriptionController extends Controller
         $doctor = Doctors::where('uid', $prescription->doctor_id)->with('user')->first();
         $patient = Patients::where('id', $prescription->patient_id)->with('user')->first();
 
+        // Ensure font directory exists for dompdf cache
+        $fontPath = storage_path('fonts');
+        if (!file_exists($fontPath)) {
+            mkdir($fontPath, 0755, true);
+        }
+
         $pdf = Pdf::loadView('prescriptions.download', compact('prescription', 'medicines', 'doctor', 'patient'));
 
         return $pdf->download("prescription_{$id}.pdf");
