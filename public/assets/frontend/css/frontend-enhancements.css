@@ -223,9 +223,9 @@ select:focus {
 }
 
 .input-group .form-control {
-    border: 2px solid #eee;
-    padding: 12px 18px;
-    font-size: 1rem;
+    border: 2px solid #eee !important;
+    padding: 12px 18px !important;
+    font-size: 1rem !important;
 }
 
 .input-group .form-control:focus {
