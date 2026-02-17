@@ -25,58 +25,58 @@
                                     <!-- Doctor Role 4 Overview -->
                                     <div class="col-xl-4 col-md-6 mb-4 animate-fade-in-up">
                                         <div class="card-modern p-4 h-100 border-left-primary">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="bg-primary-subtle text-primary rounded-circle p-3 mr-3">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center mr-3 shadow-sm" style="width: 56px; height: 56px; min-width: 56px;">
                                                     <i class="fas fa-calendar-check fa-lg"></i>
                                                 </div>
-                                                <div>
-                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Total
-                                                        Appointments</p>
-                                                    <h3 class="mb-0 fw-bold">{{ $appointmentsCount ?? 0 }}</h3>
+                                                <div class="flex-grow-1">
+                                                    <p class="text-muted small mb-0 fw-bold text-uppercase letter-spacing-1">Appointments</p>
+                                                    <h3 class="mb-0 fw-bold text-dark">{{ $appointmentsCount ?? 0 }}</h3>
                                                 </div>
                                             </div>
-                                            <div class="border-top pt-2">
-                                                <span class="badge badge-soft-primary">{{ $todayAppointmentsCount ?? 0 }}
-                                                    Scheduled Today</span>
+                                            <div class="border-top pt-3">
+                                                <span class="badge badge-soft-primary px-3 py-2 rounded-pill fw-bold">
+                                                    <i class="fas fa-clock mr-1"></i> {{ $todayAppointmentsCount ?? 0 }} Scheduled Today
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="col-xl-4 col-md-6 mb-4 animate-fade-in-up delay-1">
                                         <div class="card-modern p-4 h-100 border-left-success">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="bg-success-subtle text-success rounded-circle p-3 mr-3">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <div class="bg-success-subtle text-success rounded-circle d-flex align-items-center justify-content-center mr-3 shadow-sm" style="width: 56px; height: 56px; min-width: 56px;">
                                                     <i class="fas fa-user-injured fa-lg"></i>
                                                 </div>
-                                                <div>
-                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">My Patients
-                                                    </p>
-                                                    <h3 class="mb-0 fw-bold">{{ $patientsCount ?? 0 }}</h3>
+                                                <div class="flex-grow-1">
+                                                    <p class="text-muted small mb-0 fw-bold text-uppercase letter-spacing-1">My Patients</p>
+                                                    <h3 class="mb-0 fw-bold text-dark">{{ $patientsCount ?? 0 }}</h3>
                                                 </div>
                                             </div>
-                                            <div class="border-top pt-2">
-                                                <span class="text-muted small">Unique patient records</span>
+                                            <div class="border-top pt-3">
+                                                <span class="badge badge-soft-success px-3 py-2 rounded-pill fw-bold">
+                                                    <i class="fas fa-users mr-1"></i> Unique Records
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-xl-4 col-md-6 mb-4 animate-fade-in-up delay-2">
                                         <div class="card-modern p-4 h-100 border-left-purple">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="bg-purple-subtle text-purple rounded-circle p-3 mr-3">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <div class="bg-purple-subtle text-purple rounded-circle d-flex align-items-center justify-content-center mr-3 shadow-sm" style="width: 56px; height: 56px; min-width: 56px;">
                                                     <i class="fas fa-wallet fa-lg"></i>
                                                 </div>
-                                                <div>
-                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Wallet
-                                                        Balance</p>
-                                                    <h3 class="mb-0 fw-bold">₹{{ number_format($walletAmount ?? 0, 2) }}</h3>
+                                                <div class="flex-grow-1">
+                                                    <p class="text-muted small mb-0 fw-bold text-uppercase letter-spacing-1">Wallet Balance</p>
+                                                    <h3 class="mb-0 fw-bold text-dark">₹{{ number_format($walletAmount ?? 0, 2) }}</h3>
                                                 </div>
                                             </div>
-                                            <div class="border-top pt-2 d-flex justify-content-between">
-                                                <span class="text-muted small">Revenue:
-                                                    ₹{{ number_format($totalRevenue ?? 0, 2) }}</span>
-                                                <a href="/doctor-billing" class="small fw-bold">View Billing <i
-                                                        class="fas fa-arrow-right ml-1"></i></a>
+                                            <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                                                <span class="text-muted small fw-bold">Revenue: ₹{{ number_format($totalRevenue ?? 0, 2) }}</span>
+                                                <a href="/doctor-billing" class="btn-link-modern small fw-bold">
+                                                    View Billing <i class="fas fa-chevron-right ml-1 small"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -84,9 +84,8 @@
                                         <!-- Calendar Section -->
                                         <div class="col-lg-6 mb-4 animate-fade-in-up delay-3">
                                             <div class="card-modern h-100">
-                                                <div class="card-header bg-white border-bottom py-3">
-                                                    <h5 class="mb-0 fw-bold text-primary"><i
-                                                            class="fas fa-calendar-alt mr-2"></i>Upcoming Appointments</h5>
+                                                <div class="card-header-modern">
+                                                    <h5 class="fw-bold text-primary"><i class="fas fa-calendar-alt mr-2"></i>Upcoming Appointments</h5>
                                                 </div>
                                                 <div class="card-body p-4">
                                                     <!-- Simple Custom Calendar UI -->
@@ -124,10 +123,8 @@
                                         <!-- Revenue Graph Section -->
                                         <div class="col-lg-6 mb-4 animate-fade-in-up delay-4">
                                             <div class="card-modern h-100">
-                                                <div class="card-header bg-white border-bottom py-3">
-                                                    <h5 class="mb-0 fw-bold text-primary"><i
-                                                            class="fas fa-chart-line mr-2"></i>Monthly Revenue ({{ date('Y') }})
-                                                    </h5>
+                                                <div class="card-header-modern">
+                                                    <h5 class="fw-bold text-primary"><i class="fas fa-chart-line mr-2"></i>Monthly Revenue ({{ date('Y') }})</h5>
                                                 </div>
                                                 <div class="card-body p-4">
                                                     <div style="height: 300px;">
@@ -222,11 +219,12 @@
                                                         datasets: [{
                                                             label: 'Revenue (₹)',
                                                             data: monthlyRevenue,
-                                                            backgroundColor: 'rgba(26, 75, 140, 0.7)',
+                                                            backgroundColor: 'rgba(26, 75, 140, 0.85)',
                                                             borderColor: '#1a4b8c',
                                                             borderWidth: 0,
-                                                            borderRadius: 5,
-                                                            hoverBackgroundColor: '#0d6efd'
+                                                            borderRadius: 8,
+                                                            hoverBackgroundColor: '#0d6efd',
+                                                            barThickness: 24,
                                                         }]
                                                     },
                                                     options: {
