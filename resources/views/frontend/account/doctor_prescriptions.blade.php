@@ -72,9 +72,13 @@
                                                         <td class="fw-bold text-primary">#{{ $p->id }}</td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
-                                                                <div class="avatar-initials mr-3 shadow-sm" style="background: #f0f7ff; color: #0d6efd; border: 1px solid #c2d9ff;">
-                                                                    {{ substr($p->patient_first_name, 0, 1) }}{{ substr($p->patient_last_name, 0, 1) }}
-                                                                </div>
+                                                                @if($p->patient_image && file_exists(public_path($p->patient_image)))
+                                                                    <img src="{{ asset($p->patient_image) }}" class="mr-3 shadow-sm" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff;">
+                                                                @else
+                                                                    <div class="avatar-initials mr-3 shadow-sm" style="background: #f0f7ff; color: #0d6efd; border: 1px solid #c2d9ff;">
+                                                                        <i class="fas fa-user small"></i>
+                                                                    </div>
+                                                                @endif
                                                                 <div>
                                                                     <span class="d-block fw-bold text-dark">{{ $p->patient_first_name }} {{ $p->patient_last_name }}</span>
                                                                     <small class="text-muted mb-0">Record ID: <span class="text-primary-emphasis fw-medium">#{{ $p->patient_id }}</span></small>
@@ -95,9 +99,12 @@
                                                         <td class="text-right">
                                                             <div class="d-flex justify-content-end align-items-center" style="gap: 8px;">
                                                                 <button type="button" class="btn btn-sm btn-light border rounded-pill px-3 fw-bold text-primary shadow-sm" 
-                                                                        onclick="viewMedicines({{ json_encode($p->medicines) }}, '{{ $p->patient_first_name }} {{ $p->patient_last_name }}', {{ $p->id }})">
+                                                                        onclick="viewMedicines({{ json_encode($p->medicines) }}, '{{ $p->patient_first_name }} {{ $p->patient_last_name }}', {{ $p->id }}, '{{ $p->patient_image ? asset($p->patient_image) : '' }}', {{ $p->patient_id }})">
                                                                     <i class="fas fa-eye mr-1"></i> View
                                                                 </button>
+                                                                <a href="{{ url('/my-patients?edit_prescription=' . $p->id . '&patient_id=' . $p->patient_id) }}" class="btn btn-sm btn-light border rounded-pill px-3 fw-bold text-info shadow-sm">
+                                                                    <i class="fas fa-edit mr-1"></i> Edit
+                                                                </a>
                                                                 <a href="{{ route('downloadPrescription', $p->id) }}" class="btn btn-sm btn-outline-info rounded-pill px-3 fw-bold shadow-sm">
                                                                     <i class="fas fa-download mr-1"></i> PDF
                                                                 </a>
@@ -139,18 +146,22 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content border-0 shadow-lg overflow-hidden" style="border-radius: 24px;">
                 <div class="modal-header bg-white border-bottom py-4 px-4 align-items-center">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-primary-subtle text-primary rounded-circle p-3 mr-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                            <i class="fas fa-prescription-bottle-alt fa-lg"></i>
+                    <div class="d-flex align-items-center w-100">
+                        <div id="modalPatientPhotoContainer" class="mr-3">
+                            <!-- JS Populated Photo -->
+                            <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-user fa-lg"></i>
+                            </div>
                         </div>
-                        <div>
+                        <div class="flex-grow-1">
                             <h4 class="modal-title fw-bold mb-0 text-primary" id="modalPatientName">Prescription Details</h4>
-                            <p class="text-muted mb-0 small">Review the Issued Medication for this Prescription</p>
+                            <p class="text-muted mb-0 small" id="modalSubTitle">Review Issued Medication</p>
                         </div>
+                        <button type="button" class="btn btn-outline-primary btn-pill-modern border rounded-pill px-3 mr-4 d-none" id="btnEditFromModal">
+                           <i class="fas fa-edit mr-1"></i> Edit
+                        </button>
                     </div>
-                    <button type="button" class="close p-4 position-absolute top-0 right-0" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="h4 mb-0">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 1.5rem; right: 1.5rem;"></button>
                 </div>
                 <div class="modal-body p-0">
                     <div class="table-responsive">
@@ -182,10 +193,28 @@
 
     <script>
         let currentPrescriptionId = null;
+        let currentPatientId = null;
 
-        function viewMedicines(medicines, patientName, prescriptionId) {
+        function viewMedicines(medicines, patientName, prescriptionId, patientPhoto, patientId) {
             currentPrescriptionId = prescriptionId;
-            $('#modalPatientName').text('Prescription for ' + patientName);
+            currentPatientId = patientId;
+            
+            $('#modalPatientName').text(patientName);
+            $('#modalSubTitle').text('Reviewing Prescription #' + prescriptionId);
+            
+            // Set Photo
+            const photoContainer = $('#modalPatientPhotoContainer');
+            if (patientPhoto) {
+                photoContainer.html(`<img src="${patientPhoto}" class="shadow-sm" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #f0f7ff;">`);
+            } else {
+                photoContainer.html(`<div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-user fa-lg"></i></div>`);
+            }
+
+            // Show Edit Button in Modal
+            $('#btnEditFromModal').removeClass('d-none').off('click').on('click', function() {
+                window.location.href = `/my-patients?edit_prescription=${prescriptionId}&patient_id=${patientId}`;
+            });
+
             const tbody = $('#medicineTableBody');
             tbody.empty();
 
@@ -233,6 +262,13 @@
             if (currentPrescriptionId) {
                 window.location.href = `/download-prescription/${currentPrescriptionId}`;
             }
+        });
+
+        // Ensure modal closing stability for BS5
+        $(document).on('click', '[data-bs-dismiss="modal"]', function() {
+            var modalEl = $(this).closest('.modal');
+            var modal = bootstrap.Modal.getInstance(modalEl[0]) || new bootstrap.Modal(modalEl[0]);
+            modal.hide();
         });
     </script>
 
