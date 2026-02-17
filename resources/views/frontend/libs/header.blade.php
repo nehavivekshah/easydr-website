@@ -26,3 +26,4 @@
 
 <!-- Frontend Enhancements -->
 <link rel="stylesheet" href="/public/assets/frontend/css/frontend-enhancements.css">
+<link rel="stylesheet" href="/public/assets/frontend/css/dashboard-modern.css">

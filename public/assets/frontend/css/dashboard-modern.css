@@ -1,0 +1,130 @@
+/* ============================================
+   EasyDoctor Dashboard Modernization
+   Standardized UI/UX Components
+   ============================================ */
+
+.dashboard-container {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.dashboard-container h1, 
+.dashboard-container h2, 
+.dashboard-container h3, 
+.dashboard-container h4, 
+.dashboard-container h5, 
+.dashboard-container h6 {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700;
+    color: #1a4b8c !important;
+    letter-spacing: -0.5px;
+}
+
+/* Modern Card Layout */
+.card-modern {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #f0f0f0 !important;
+}
+
+/* Consistent Avatars */
+.avatar-initials {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: 700;
+    text-align: center;
+    background: #eef5ff;
+    color: #1a4b8c;
+    border: 1px solid #ddecff;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* Soft Badges */
+.badge-soft-primary { background-color: #e3f2fd !important; color: #0d47a1 !important; border: 1px solid #bbdefb !important; }
+.badge-soft-success { background-color: #e6fffa !important; color: #065f46 !important; border: 1px solid #b2f5ea !important; }
+.badge-soft-warning { background-color: #fff9e6 !important; color: #856404 !important; border: 1px solid #ffeeba !important; }
+.badge-soft-danger { background-color: #ffebee !important; color: #c62828 !important; border: 1px solid #ffcdd2 !important; }
+.badge-soft-info { background-color: #e1f5fe !important; color: #0288d1 !important; border: 1px solid #b3e5fc !important; }
+
+.badge-pill-modern {
+    padding: 0.5rem 1rem !important;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    border-radius: 50px !important;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Modern Table */
+.table-modern thead th {
+    background-color: #f8f9fa !important;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #6c757d !important;
+    border: none !important;
+    padding: 15px 20px !important;
+}
+
+.table-modern tbody td {
+    border-top: 1px solid #f1f3f5 !important;
+    vertical-align: middle;
+    padding: 15px 20px !important;
+    color: #4a5764;
+}
+
+.table-modern tr:hover {
+    background-color: #fbfcfe !important;
+}
+
+/* Filters Card */
+.filters-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    margin-bottom: 2rem;
+    border: 1px solid #f0f0f0;
+}
+
+.filters-container .input-group {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.filters-container .input-group:focus-within {
+    border-color: #1a4b8c;
+    box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.1);
+}
+
+.filters-container .form-control {
+    border: none !important;
+    box-shadow: none !important;
+    height: 45px !important;
+    font-size: 14px;
+}
+
+.btn-pill-modern {
+    border-radius: 50px !important;
+    padding: 10px 25px !important;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-pill-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
