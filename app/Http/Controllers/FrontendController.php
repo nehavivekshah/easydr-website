@@ -810,12 +810,10 @@ class FrontendController extends Controller
     {
         $query = DB::table('prescriptions')
             ->leftJoin('users as patient', 'prescriptions.patient_id', '=', 'patient.id')
-            ->leftJoin('usermetas', 'patient.id', '=', 'usermetas.uid')
             ->select(
                 'prescriptions.*',
                 'patient.first_name as patient_first_name',
-                'patient.last_name as patient_last_name',
-                'usermetas.image as patient_image'
+                'patient.last_name as patient_last_name'
             )
             ->where('prescriptions.doctor_id', Auth::id())
             ->orderBy('prescriptions.created_at', 'desc');
