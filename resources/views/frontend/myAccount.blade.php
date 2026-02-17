@@ -13,139 +13,96 @@
                     <!-- Content Area -->
                     <div class="col-lg-9">
                         <div class="dashboard_content">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h4 class="mb-0">Overview</h4>
-                                @if(Auth::user()->role == 4)
-                                    <a href="/manage-slots" class="btn btn-sm btn-primary text-white px-3"><i
-                                            class="fas fa-clock pe-1"></i> Availability</a>
+                            <div class="section-title mb-4">
+                                <h3 class="fw-bold mb-0">Dashboard Overview</h3>
+                                <p class="text-muted small mb-0">Welcome back, Dr. {{ Auth::user()->first_name }}</p>
+                            </div>
+
+                            <div class="row">
+                                @if(Auth::user()->role == 5)
+                                    <!-- Patient Overview (Legacy Role 5 handling - skip for now as I'm focusing on Doctor Role 4) -->
+                                @else
+                                    <!-- Doctor Role 4 Overview -->
+                                    <div class="col-xl-4 col-md-6 mb-4 animate-fade-in-up">
+                                        <div class="card-modern p-4 h-100 border-left-primary">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="bg-primary-subtle text-primary rounded-circle p-3 mr-3">
+                                                    <i class="fas fa-calendar-check fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Total Appointments</p>
+                                                    <h3 class="mb-0 fw-bold">{{ $appointmentsCount ?? 0 }}</h3>
+                                                </div>
+                                            </div>
+                                            <div class="border-top pt-2">
+                                                <span class="badge badge-soft-primary">{{ $todayAppointmentsCount ?? 0 }} Scheduled Today</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-xl-4 col-md-6 mb-4 animate-fade-in-up delay-1">
+                                        <div class="card-modern p-4 h-100 border-left-success">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="bg-success-subtle text-success rounded-circle p-3 mr-3">
+                                                    <i class="fas fa-user-injured fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">My Patients</p>
+                                                    <h3 class="mb-0 fw-bold">{{ $patientsCount ?? 0 }}</h3>
+                                                </div>
+                                            </div>
+                                            <div class="border-top pt-2">
+                                                <span class="text-muted small">Unique patient records</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4 col-md-6 mb-4 animate-fade-in-up delay-2">
+                                        <div class="card-modern p-4 h-100 border-left-purple">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="bg-purple-subtle text-purple rounded-circle p-3 mr-3">
+                                                    <i class="fas fa-wallet fa-lg"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted small mb-0 font-weight-bold text-uppercase">Wallet Balance</p>
+                                                    <h3 class="mb-0 fw-bold">₹{{ number_format($walletAmount ?? 0, 2) }}</h3>
+                                                </div>
+                                            </div>
+                                            <div class="border-top pt-2 d-flex justify-content-between">
+                                                <span class="text-muted small">Revenue: ₹{{ number_format($totalRevenue ?? 0, 2) }}</span>
+                                                <a href="/doctor-billing" class="small fw-bold">View Billing <i class="fas fa-arrow-right ml-1"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
-                            <div class="row">
-
-                                @if(Auth::user()->role == 5)
-                                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview">
-                                            <div class="icon"><i class="fas fa-handshake" aria-hidden="true"></i></div>
-                                            <div class="text">
-                                                <p>Total Appointment</p>
-                                                <h3>{{ $appointmentsCount ?? 0 }}</h3>
-                                                <p>{{ $todayAppointmentsCount ?? 0 }} Today</p>
-                                            </div>
-                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview bg-success">
-                                            <div class="icon"><i class="far fa-check-circle" aria-hidden="true"></i></div>
-                                            <div class="text">
-                                                <p>Done Appointment</p>
-                                                <h3>{{ $completedAppointmentsCount ?? 0 }}</h3>
-                                                <p>{{ $todayCompletedCount ?? 0 }} Today</p>
-                                            </div>
-                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview bg-warning">
-                                            <div class="icon"><i class="far fa-file-alt" aria-hidden="true"></i></div>
-                                            <div class="text">
-                                                <p>Pending Appointment</p>
-                                                <h3>{{ $pendingAppointmentsCount ?? 0 }}</h3>
-                                                <p>{{ $todayPendingCount ?? 0 }} Today</p>
-                                            </div>
-                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview bg-purple">
-                                            <div class="icon"><i class="fas fa-hand-holding-usd" aria-hidden="true"></i></div>
-                                            <div class="text">
-                                                <p>Total Payment</p>
-                                                <h3>{{ $billingAmount ?? 0 }}</h3>
-                                                <p>{{ $todayPaymentCount ?? 0 }} Today</p>
-                                            </div>
-                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                        <div class="dashboard_overview bg-info">
-                                            <div class="icon"><i class="fal fa-stars" aria-hidden="true"></i></div>
-                                            <div class="text">
-                                                <p>Total Review</p>
-                                                <h3>{{ $favoritesCount ?? 0 }}</h3>
-                                                <p>0 Today</p>
-                                            </div>
-                                            <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                        </div>
-                                    </div>
-
-                                @else
-
-                                        <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                            <div class="dashboard_overview">
-                                                <div class="icon"><i class="fas fa-handshake" aria-hidden="true"></i></div>
-                                                <div class="text">
-                                                    <p>Total Appointment</p>
-                                                    <h3>{{ $appointmentsCount ?? 0 }}</h3>
-                                                    <p>{{ $todayAppointmentsCount ?? 0 }} Today</p>
-                                                </div>
-                                                <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                            <div class="dashboard_overview bg-success">
-                                                <div class="icon"><i class="fas fa-users" aria-hidden="true"></i></div>
-                                                <div class="text">
-                                                    <p>My Patients</p>
-                                                    <h3>{{ $patientsCount ?? 0 }}</h3>
-                                                    <p>Unique Patients</p>
-                                                </div>
-                                                <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
-                                            <div class="dashboard_overview bg-purple">
-                                                <div class="icon"><i class="fas fa-wallet" aria-hidden="true"></i></div>
-                                                <div class="text">
-                                                    <p>Wallet Balance</p>
-                                                    <h3>{{ $walletAmount ?? 0 }}</h3>
-                                                    <p>Total Revenue: {{ $totalRevenue ?? 0 }}</p>
-                                                </div>
-                                                <div class="bg-icon"><i class="fas fa-heartbeat"></i></div>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <!-- New Section: Calendar & Revenue Graph -->
                                     <div class="row mt-4">
                                         <!-- Calendar Section -->
-                                        <div class="col-lg-12 mb-4">
-                                            <div class="card shadow-sm border-0">
-                                                <div class="card-header bg-white">
-                                                    <h5 class="mb-0">Upcoming Appointments</h5>
+                                        <div class="col-lg-6 mb-4 animate-fade-in-up delay-3">
+                                            <div class="card-modern h-100">
+                                                <div class="card-header bg-white border-bottom py-3">
+                                                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-calendar-alt mr-2"></i>Upcoming Appointments</h5>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body p-4">
                                                     <!-- Simple Custom Calendar UI -->
                                                     <div class="custom-calendar">
-                                                        <div
-                                                            class="calendar-header d-flex justify-content-between align-items-center mb-3">
-                                                            <button class="btn btn-sm btn-outline-primary" id="prevMonth"
-                                                                style="padding: 8px 15px 8px 13px;"><i
-                                                                    class="fas fa-chevron-left"></i></button>
-                                                            <h6 class="mb-0" id="monthYear"></h6>
-                                                            <button class="btn btn-sm btn-outline-primary" id="nextMonth"
-                                                                style="padding: 8px 13px 8px 15px;"><i
-                                                                    class="fas fa-chevron-right"></i></button>
+                                                        <div class="calendar-header d-flex justify-content-between align-items-center mb-4">
+                                                            <button class="btn btn-sm btn-light border rounded-pill px-3 shadow-sm" id="prevMonth"
+                                                                style="width: 40px; height: 40px;"><i class="fas fa-chevron-left"></i></button>
+                                                            <h6 class="mb-0 fw-bold" id="monthYear"></h6>
+                                                            <button class="btn btn-sm btn-light border rounded-pill px-3 shadow-sm" id="nextMonth"
+                                                                style="width: 40px; height: 40px;"><i class="fas fa-chevron-right"></i></button>
                                                         </div>
-                                                        <div
-                                                            class="calendar-days d-flex justify-content-between text-muted small mb-2 text-center font-weight-bold">
-                                                            <div style="width: 14%">Sun</div>
-                                                            <div style="width: 14%">Mon</div>
-                                                            <div style="width: 14%">Tue</div>
-                                                            <div style="width: 14%">Wed</div>
-                                                            <div style="width: 14%">Thu</div>
-                                                            <div style="width: 14%">Fri</div>
-                                                            <div style="width: 14%">Sat</div>
+                                                        <div class="calendar-days d-flex justify-content-between text-muted small mb-3 text-center fw-bold opacity-75">
+                                                            <div style="width: 14%">S</div>
+                                                            <div style="width: 14%">M</div>
+                                                            <div style="width: 14%">T</div>
+                                                            <div style="width: 14%">W</div>
+                                                            <div style="width: 14%">T</div>
+                                                            <div style="width: 14%">F</div>
+                                                            <div style="width: 14%">S</div>
                                                         </div>
                                                         <div class="calendar-grid d-flex flex-wrap" id="calendarGrid">
                                                             <!-- Days generated by JS -->
@@ -156,13 +113,15 @@
                                         </div>
 
                                         <!-- Revenue Graph Section -->
-                                        <div class="col-lg-12 mb-4">
-                                            <div class="card shadow-sm border-0 h-100">
-                                                <div class="card-header bg-white">
-                                                    <h5 class="mb-0">Monthly Revenue ({{ date('Y') }})</h5>
+                                        <div class="col-lg-6 mb-4 animate-fade-in-up delay-4">
+                                            <div class="card-modern h-100">
+                                                <div class="card-header bg-white border-bottom py-3">
+                                                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-chart-line mr-2"></i>Monthly Revenue ({{ date('Y') }})</h5>
                                                 </div>
-                                                <div class="card-body">
-                                                    <canvas id="revenueChart" style="width:100%; height:300px;"></canvas>
+                                                <div class="card-body p-4">
+                                                    <div style="height: 300px;">
+                                                        <canvas id="revenueChart"></canvas>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,18 +209,44 @@
                                                     data: {
                                                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                                                         datasets: [{
-                                                            label: 'Revenue ($)',
+                                                            label: 'Revenue (₹)',
                                                             data: monthlyRevenue,
-                                                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                                                            borderColor: 'rgba(54, 162, 235, 1)',
-                                                            borderWidth: 1
+                                                            backgroundColor: 'rgba(26, 75, 140, 0.7)',
+                                                            borderColor: '#1a4b8c',
+                                                            borderWidth: 0,
+                                                            borderRadius: 5,
+                                                            hoverBackgroundColor: '#0d6efd'
                                                         }]
                                                     },
                                                     options: {
                                                         responsive: true,
+                                                        maintainAspectRatio: false,
+                                                        plugins: {
+                                                            legend: {
+                                                                display: false
+                                                            }
+                                                        },
                                                         scales: {
                                                             y: {
-                                                                beginAtZero: true
+                                                                beginAtZero: true,
+                                                                grid: {
+                                                                    display: true,
+                                                                    drawBorder: false,
+                                                                    color: '#f0f0f0'
+                                                                },
+                                                                ticks: {
+                                                                    color: '#6c757d',
+                                                                    font: { family: 'Poppins' }
+                                                                }
+                                                            },
+                                                            x: {
+                                                                grid: {
+                                                                    display: false
+                                                                },
+                                                                ticks: {
+                                                                    color: '#6c757d',
+                                                                    font: { family: 'Poppins' }
+                                                                }
                                                             }
                                                         }
                                                     }
