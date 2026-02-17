@@ -19,7 +19,7 @@
 
                             <!-- Filters -->
                             <div class="filters-container mb-4">
-                                <form action="{{ url('/doctor-prescriptions') }}" method="GET" class="row no-gutters align-items-center">
+                                <form action="{{ url('/doctor-prescriptions') }}" method="GET" class="row no-gutters align-items-center justify-content-between">
                                     <div class="col-md-5 mr-md-3 mb-3 mb-md-0">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -32,7 +32,7 @@
                                         <input type="date" name="date" value="{{ request('date') }}" class="form-control rounded-lg border">
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="submit" class="btn btn-primary btn-block btn-pill-modern shadow-sm">Filter</button>
+                                        <button type="submit" class="btn btn-primary btn-block btn-pill-modern shadow-sm py-2">Filter</button>
                                     </div>
                                 </form>
                             </div>
