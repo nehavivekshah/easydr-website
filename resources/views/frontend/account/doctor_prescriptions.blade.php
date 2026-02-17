@@ -32,7 +32,7 @@
                                         <input type="date" name="date" value="{{ request('date') }}" class="form-control rounded-lg border">
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="submit" class="btn btn-primary btn-block btn-pill-modern shadow-sm" style="padding: 10px 25px;">Filter</button>
+                                        <button type="submit" class="btn btn-primary btn-block btn-pill-modern shadow-sm" style="padding: 10px 25px;height: 45px;">Filter</button>
                                     </div>
                                 </form>
                             </div>
@@ -52,9 +52,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @forelse($prescriptions as $p)
+                                                @forelse($prescriptions as $k=>$p)
                                                     <tr>
-                                                        <td class="font-weight-bold text-primary">#{{ $p->id }}</td>
+                                                        <td class="font-weight-bold text-dark">#{{ $k+1 }}</td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar-initials mr-3">
