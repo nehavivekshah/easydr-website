@@ -962,10 +962,10 @@ select:focus {
     background: var(--color-primary-dark, #0056b3);
 }
 
-.dashboard_profile ul {
+/* .dashboard_profile ul {
     margin: 0;
     padding: 0;
-}
+} */
 
 /* .dashboard_profile ul li {
     list-style: none;
