@@ -967,14 +967,14 @@ select:focus {
     padding: 0;
 }
 
-.dashboard_profile ul li {
+/* .dashboard_profile ul li {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 15px;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
-}
+} */
 
 .dashboard_profile ul li:last-child {
     margin-bottom: 0;
