@@ -64,9 +64,9 @@
   /* ==================== Typography Variables ==================== */
 
   /* Font Families */
-  --font-heading: 'Titillium Web', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-secondary: 'Poppins', sans-serif;
+  --font-heading: 'poppins', sans-serif;
+  --font-body: 'poppins', sans-serif;
+  --font-secondary: 'poppins', sans-serif;
 
   /* Font Sizes */
   --font-size-xs: 12px;

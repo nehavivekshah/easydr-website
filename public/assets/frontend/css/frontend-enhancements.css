@@ -852,13 +852,13 @@ select:focus {
 }
 
 .dashboard_overview.bg-purple {
-    background: #9575cd;
+    background: #5b3799;
     /* Purple */
-    box-shadow: 0 5px 15px rgba(149, 117, 205, 0.2);
+    box-shadow: 0 5px 15px rgba(91, 55, 153, 0.2);
 }
 
 .dashboard_overview.bg-purple:hover {
-    box-shadow: 0 8px 25px rgba(149, 117, 205, 0.3);
+    box-shadow: 0 8px 25px rgba(91, 55, 153, 0.3);
 }
 
 .dashboard_overview .text h3 {

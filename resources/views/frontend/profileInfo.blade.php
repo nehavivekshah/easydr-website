@@ -14,8 +14,9 @@
                     <div class="col-lg-9">
                         <div class="dashboard_content">
                             <div class="dashboard_profile">
-                                <h4>Profile information</h4>
-                                <a href="/my-profile"><i class="fas fa-edit pe-1"></i> edit</a>
+                                <h4 class="mb-0">Profile information</h4>
+                                <a class="btn btn-sm btn-primary text-white px-3" href="/my-profile"><i
+                                        class="fas fa-edit pe-1"></i> edit</a>
                                 <ul>
                                     <li><span>Name:</span> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</li>
                                     <li><span>Mobile No.:</span> {{ Auth::user()->mobile }}, {{ Auth::user()->altr_mobile }}
@@ -97,14 +98,14 @@
                                     <hr>
                                     @if(isset($doctorAvailability))
                                         <!-- <h5 class="mt-3">Availability</h5>
-                                                                <ul>
-                                                                    <li><span>Days:</span>
-                                                                        {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
-                                                                    <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
-                                                                        {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
-                                                                    </li>
-                                                                    <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
-                                                                </ul> -->
+                                                                                                                            <ul>
+                                                                                                                                <li><span>Days:</span>
+                                                                                                                                    {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
+                                                                                                                                <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
+                                                                                                                                    {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
+                                                                                                                                </li>
+                                                                                                                                <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
+                                                                                                                            </ul> -->
                                     @endif
                                 @endif
                             </div>
