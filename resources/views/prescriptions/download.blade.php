@@ -3,24 +3,32 @@
 <head>
     <meta charset="utf-8">
     <title>Prescription #{{ $prescription->id }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         @page { margin: 0; }
-        body { font-family: 'Helvetica', 'Arial', sans-serif; color: #333; margin: 0; padding: 0; line-height: 1.6; background: #fff; }
+        body { font-family: 'Poppins', 'Helvetica', 'Arial', sans-serif; color: #333; margin: 0; padding: 0; line-height: 1.6; background: #fff; }
         
         /* Watermark */
         #watermark {
             position: fixed;
-            top: 25%;
-            left: 10%;
-            width: 80%;
-            height: 50%;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            margin-top: -250px; /* Half of height */
+            margin-left: -250px; /* Half of width */
             z-index: -1000;
-            opacity: 0.1;
+            opacity: 0.07; /* Light gray effect */
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         #watermark img {
-            width: 400px;
+            width: 100%;
             height: auto;
+            /* Grayscale filter if supported, otherwise opacity handles the 'light' feel */
+            filter: grayscale(100%); 
         }
 
         .container { padding: 40px 40px 40px 60px; position: relative; }
