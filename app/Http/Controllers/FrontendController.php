@@ -806,9 +806,41 @@ class FrontendController extends Controller
         return redirect()->back()->with('success', 'Availability slot added successfully!');
     }
 
-    public function doctorPrescriptions()
+    public function doctorPrescriptions(Request $request)
     {
-        return view('frontend.account.doctor_prescriptions');
+        $query = DB::table('prescriptions')
+            ->leftJoin('users as patient', 'prescriptions.patient_id', '=', 'patient.id')
+            ->select(
+                'prescriptions.*',
+                'patient.first_name as patient_first_name',
+                'patient.last_name as patient_last_name'
+            )
+            ->where('prescriptions.doctor_id', Auth::id())
+            ->orderBy('prescriptions.created_at', 'desc');
+
+        if ($request->filled('q')) {
+            $q = $request->query('q');
+            $query->where(function ($sub) use ($q) {
+                $sub->where('patient.first_name', 'LIKE', "%{$q}%")
+                    ->orWhere('patient.last_name', 'LIKE', "%{$q}%")
+                    ->orWhere('prescriptions.id', 'LIKE', "%{$q}%");
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('prescriptions.prescribed_date', $request->query('date'));
+        }
+
+        $prescriptions = $query->paginate(10)->withQueryString();
+
+        foreach ($prescriptions as $p) {
+            $p->medicines = DB::table('prescription_medinices')
+                ->where('prescribe_id', $p->id)
+                ->get();
+            $p->medicine_count = count($p->medicines);
+        }
+
+        return view('frontend.account.doctor_prescriptions', compact('prescriptions'));
     }
 
     public function doctorBilling()
