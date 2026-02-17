@@ -11,47 +11,90 @@
                         @include('frontend.inc.user_sidebar')
                     </div>
 
-                            <div class="card-modern p-4 mb-4" id="wizardContainer">
-                                <div class="card-header bg-transparent border-0 mb-4 px-0">
-                                    <h5 class="fw-bold text-primary mb-0">Edit Profile</h5>
-                                    <p class="text-muted small">Update your personal and professional information</p>
-                                </div>
+                    <!-- Content Area -->
+                    <div class="col-lg-9">
+                        <div class="dashboard_content">
+                            <h4>Edit Profile</h4>
 
+                            <style>
+                                .form-step { display: none; }
+                                .form-step-active { display: block; }
+                                .wizard-progress { 
+                                    display: flex; 
+                                    justify-content: space-between; 
+                                    margin-bottom: 30px; 
+                                    position: relative;
+                                }
+                                .wizard-progress::before {
+                                    content: "";
+                                    position: absolute;
+                                    top: 15px;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 2px;
+                                    background: #e0e0e0;
+                                    z-index: 1;
+                                }
+                                .step-item {
+                                    position: relative;
+                                    z-index: 2;
+                                    text-align: center;
+                                }
+                                .step-circle {
+                                    width: 30px;
+                                    height: 30px;
+                                    background: #fff;
+                                    border: 2px solid #e0e0e0;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    margin: 0 auto 5px;
+                                    font-weight: bold;
+                                    color: #999;
+                                }
+                                .step-item.active .step-circle {
+                                    border-color: var(--primary-color);
+                                    color: var(--primary-color);
+                                }
+                                .step-item.completed .step-circle {
+                                    background: var(--primary-color);
+                                    border-color: var(--primary-color);
+                                    color: #fff;
+                                }
+                                .step-label { font-size: 12px; color: #666; }
+                                .step-item.active .step-label { color: var(--primary-color); font-weight: bold; }
+                                .wizard-buttons { margin-top: 25px; display: flex; justify-content: space-between; }
+                                .is-invalid { border-color: #dc3545 !important; }
+                                .is-invalid:focus { box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important; }
+                                .user-photo{ width:100px;height:100px;object-fit:cover; }
+                            </style>
+
+                            @php
+                                $role = Auth::user()->role;
+                                $pageType = $role == 4 ? 'doctor-directory' : ($role == 5 ? 'patient-directory' : 'admin-accounts');
+                            @endphp
+
+                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm);" id="wizardContainer">
                                 <!-- Progress Bar -->
-                                <div class="wizard-progress mb-5 px-lg-5">
+                                <div class="wizard-progress">
                                     <div class="step-item active" id="step-1-indicator">
-                                        <div class="step-circle shadow-sm">1</div>
-                                        <div class="step-label fw-bold">Basic Info</div>
+                                        <div class="step-circle">1</div>
+                                        <div class="step-label">Basic Info</div>
                                     </div>
                                     <div class="step-item" id="step-2-indicator">
-                                        <div class="step-circle shadow-sm">2</div>
-                                        <div class="step-label fw-bold">Address</div>
+                                        <div class="step-circle">2</div>
+                                        <div class="step-label">Address</div>
                                     </div>
                                     <div class="step-item" id="step-3-indicator">
-                                        <div class="step-circle shadow-sm">3</div>
-                                        <div class="step-label fw-bold">{{ $role == 4 ? 'Professional' : 'Medical' }}</div>
+                                        <div class="step-circle">3</div>
+                                        <div class="step-label">{{ $role == 4 ? 'Professional' : 'Medical' }}</div>
                                     </div>
                                     <div class="step-item" id="step-4-indicator">
-                                        <div class="step-circle shadow-sm">4</div>
-                                        <div class="step-label fw-bold">Security</div>
+                                        <div class="step-circle">4</div>
+                                        <div class="step-label">Security</div>
                                     </div>
-                                <style>
-                                    .form-step { display: none; }
-                                    .form-step-active { display: block; }
-                                    .wizard-progress { display: flex; justify-content: space-between; position: relative; }
-                                    .wizard-progress::before { content: ""; position: absolute; top: 16px; left: 0; width: 100%; height: 2px; background: #eef2f6; z-index: 1; }
-                                    .step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
-                                    .step-circle { width: 32px; height: 32px; background: #fff; border: 2px solid #eef2f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-weight: 700; color: #cbd5e0; transition: all 0.3s; font-size: 14px; }
-                                    .step-item.active .step-circle { border-color: #1a4b8c; color: #1a4b8c; transform: scale(1.1); box-shadow: 0 0 0 4px rgba(26, 75, 140, 0.1); }
-                                    .step-item.completed .step-circle { background: #1a4b8c; border-color: #1a4b8c; color: #fff; }
-                                    .step-label { font-size: 11px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; }
-                                    .step-item.active .step-label { color: #1a4b8c; }
-                                    .wizard-buttons { margin-top: 30px; display: flex; justify-content: space-between; gap: 15px; }
-                                    .form-control { border-radius: 8px !important; padding: 10px 15px !important; border: 1px solid #e2e8f0 !important; }
-                                    .form-control:focus { border-color: #1a4b8c !important; box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.1) !important; }
-                                    .form-label { font-weight: 600; color: #4a5568; font-size: 14px; margin-bottom: 8px; }
-                                    .user-photo-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-                                </style>
+                                </div>
 
                                 <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data" id="wizardForm" oninput="clearInvalid(event)">
                                     @csrf
@@ -274,20 +317,15 @@
                                     <div class="form-step" id="step-4">
                                         <h5>Security & Profile Photo</h5>
                                         <div class="row">
-                                            <div class="col-md-6 mb-3 text-center text-md-start">
-                                                <label class="form-label d-block">Profile Photo</label>
-                                                <div class="d-flex align-items-center flex-column flex-md-row">
-                                                    @if($user->photo)
-                                                        <div class="mr-md-3 mb-3 mb-md-0">
-                                                            <img src="{{ asset('public/assets/images/profiles/' . $user->photo) }}"
-                                                                alt="Profile" class="user-photo-preview">
-                                                        </div>
-                                                    @endif
-                                                    <div class="flex-grow-1 w-100">
-                                                        <input type="file" class="form-control" name="profile_photo">
-                                                        <small class="text-muted">Recommended: Square image, max 2MB</small>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Profile Photo</label>
+                                                <input type="file" class="form-control" name="profile_photo">
+                                                @if($user->photo)
+                                                    <div class="mt-2">
+                                                        <img src="{{ asset('public/assets/images/profiles/' . $user->photo) }}"
+                                                            alt="Profile" width="60" class="rounded-circle user-photo">
                                                     </div>
-                                                </div>
+                                                @endif
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">New Password (Optional)</label>
@@ -298,17 +336,10 @@
                                     </div>
 
                                     <!-- Buttons -->
-                                    <div class="wizard-buttons mt-5">
-                                        <button type="button" class="btn btn-light btn-pill-modern border fw-bold text-muted" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">
-                                            <i class="fas fa-arrow-left mr-2"></i> Previous
-                                        </button>
-                                        <div class="flex-grow-1"></div>
-                                        <button type="button" class="btn btn-primary btn-pill-modern fw-bold px-5 py-3 shadow-sm" id="nextBtn" onclick="nextPrev(1)">
-                                            Next Step <i class="fas fa-arrow-right ml-2"></i>
-                                        </button>
-                                        <button type="submit" class="btn btn-success btn-pill-modern fw-bold px-5 py-3 shadow-sm" id="submitBtn" style="display:none;">
-                                            Save Changes <i class="fas fa-check-circle ml-2"></i>
-                                        </button>
+                                    <div class="wizard-buttons">
+                                        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="nextPrev(-1)" style="display:none;">Previous</button>
+                                        <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                        <button type="submit" class="btn btn-success" id="submitBtn" style="display:none;">Update Profile</button>
                                     </div>
                                 </form>
                             </div>
