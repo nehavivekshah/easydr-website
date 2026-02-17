@@ -58,11 +58,11 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar-initials mr-3">
-                                                                    {{ substr($p->patient_name, 0, 2) }}
+                                                                    {{ substr($p->patient_first_name, 0, 1) }}{{ substr($p->patient_last_name, 0, 1) }}
                                                                 </div>
                                                                 <div>
-                                                                    <span class="d-block font-weight-bold text-dark">{{ $p->patient_name }}</span>
-                                                                    <small class="text-muted">ID: #{{ $p->patient_id }}</small>
+                                                                    <span class="d-block font-weight-bold text-dark">{{ $p->patient_first_name }} {{ $p->patient_last_name }}</span>
+                                                                    <small class="text-muted">PID: #{{ $p->patient_id }}</small>
                                                                 </div>
                                                             </div>
                                                         </td>

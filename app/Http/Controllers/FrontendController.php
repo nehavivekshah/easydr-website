@@ -809,11 +809,13 @@ class FrontendController extends Controller
     public function doctorPrescriptions(Request $request)
     {
         $query = DB::table('prescriptions')
-            ->leftJoin('users as patient', 'prescriptions.patient_id', '=', 'patient.id')
+            ->leftJoin('patients', 'prescriptions.patient_id', '=', 'patients.id')
+            ->leftJoin('users as patient', 'patients.uid', '=', 'patient.id')
             ->select(
                 'prescriptions.*',
                 'patient.first_name as patient_first_name',
-                'patient.last_name as patient_last_name'
+                'patient.last_name as patient_last_name',
+                'patients.id as patient_id'
             )
             ->where('prescriptions.doctor_id', Auth::id())
             ->orderBy('prescriptions.created_at', 'desc');
