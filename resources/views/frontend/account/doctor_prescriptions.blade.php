@@ -32,7 +32,7 @@
                                         <input type="date" name="date" value="{{ request('date') }}" class="form-control rounded-lg border">
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="submit" class="btn btn-primary btn-block btn-pill-modern shadow-sm py-2">Filter</button>
+                                        <button type="submit" class="btn btn-primary btn-block btn-pill-modern shadow-sm" style="padding: 10px 25px;">Filter</button>
                                     </div>
                                 </form>
                             </div>
@@ -58,10 +58,10 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar-initials mr-3">
-                                                                    {{ substr($p->patient_first_name, 0, 1) }}{{ substr($p->patient_last_name, 0, 1) }}
+                                                                    {{ substr($p->patient_name, 0, 2) }}
                                                                 </div>
                                                                 <div>
-                                                                    <span class="d-block font-weight-bold text-dark">{{ $p->patient_first_name }} {{ $p->patient_last_name }}</span>
+                                                                    <span class="d-block font-weight-bold text-dark">{{ $p->patient_name }}</span>
                                                                     <small class="text-muted">ID: #{{ $p->patient_id }}</small>
                                                                 </div>
                                                             </div>
