@@ -22,10 +22,10 @@
                                         <h6 class="mb-3 font-weight-bold" style="color: #333;">Messages</h6>
                                         <div class="search-box position-relative">
                                             <i class='fas fa-search position-absolute'
-                                                style="left: 12px; top: 12px; color: #999; font-size: 0.9rem;"></i>
+                                                style="left: 15px; top: 12px; color: #adb5bd; font-size: 0.9rem;"></i>
                                             <input type="text" id="contact-search"
-                                                class="form-control form-control-sm pl-5 border-light bg-light rounded-pill"
-                                                placeholder="Search contacts..." style="height: 38px;">
+                                                class="form-control form-control-sm border-0 bg-light rounded-pill"
+                                                placeholder="Search contacts..." style="height: 38px; padding-left: 40px;">
                                         </div>
                                     </div>
                                     <div class="contacts-list overflow-auto flex-grow-1" style="scrollbar-width: none;">
@@ -35,7 +35,7 @@
                                                 id="contact-{{ $contact->id }}">
                                                 <div class="position-relative">
                                                     <img src="{{ !empty($contact->photo) ? asset('public/assets/images/profiles/' . $contact->photo) : asset('public/assets/images/doctor-placeholder.png') }}"
-                                                        class="rounded-circle mr-3"
+                                                        class="rounded-circle me-3"
                                                         style="width: 48px; height: 48px; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                                                     <span class="status-indicator online"></span>
                                                 </div>
@@ -71,15 +71,16 @@
                                         <!-- Chat Header -->
                                         <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center shadow-sm"
                                             style="flex: 0 0 auto;">
-                                            <div class="header-avatar mr-3">
+                                            <div class="header-avatar me-3">
                                                 <img id="header-photo" src="" class="rounded-circle"
                                                     style="width: 40px; height: 40px; object-fit: cover;">
                                             </div>
                                             <div class="header-info flex-grow-1">
-                                                <h6 class="mb-0 font-weight-bold" id="chat-with-name" style="color: #333;">
+                                                <h6 class="mb-0 font-weight-bold text-truncate" id="chat-with-name"
+                                                    style="color: #333; max-width: 250px;">
                                                     ...</h6>
                                                 <span class="small text-success d-flex align-items-center">
-                                                    <span class="status-dot mr-1"></span> Online
+                                                    <span class="status-dot me-1"></span> Online
                                                 </span>
                                             </div>
                                             <div class="header-actions">
@@ -97,16 +98,16 @@
                                         <!-- Chat Footer -->
                                         <div class="chat-footer p-3 bg-white border-top" style="flex: 0 0 auto;">
                                             <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
-                                                <div
-                                                    class="input-group align-items-center bg-light rounded-pill px-2 shadow-sm">
+                                                <div class="input-group align-items-center bg-white rounded-pill px-2 shadow-sm"
+                                                    style="border: 1px solid #f0f0f0;">
                                                     <input type="text" id="chat-input"
-                                                        class="form-control border-0 bg-transparent px-2"
+                                                        class="form-control border-0 bg-transparent px-3"
                                                         placeholder="Type your message here..." required autocomplete="off"
-                                                        style="height: 48px;">
+                                                        style="height: 50px;">
                                                     <div class="input-group-append">
                                                         <button type="submit"
                                                             class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center shadow-lg"
-                                                            style="width: 42px; height: 42px; flex: 0 0 42px; padding: 0; margin-left: 5px;">
+                                                            style="width: 42px; height: 42px; flex: 0 0 42px; padding: 0; margin-left: 8px;">
                                                             <i class='fas fa-paper-plane' style="font-size: 1.1rem;"></i>
                                                         </button>
                                                     </div>
@@ -155,6 +156,7 @@
         .contact-item.active {
             background-color: #f0f7ff;
             border-left: 4px solid #007bff;
+            box-shadow: inset 2px 0 0 #007bff;
         }
 
         .status-indicator {
@@ -237,8 +239,7 @@
         }
 
         .search-box input:focus {
-            box-shadow: none;
-            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
             background-color: #fff !important;
         }
 

@@ -1318,10 +1318,25 @@ textarea.form-control {
 }
 
 .attachbtn {
-    width: 48px;
-    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #6c757d !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.attachbtn:hover {
+    background-color: #f1f3f4;
+    color: #007bff !important;
 }
 
 .attachbtn i {
-    color: #fff;
-}   
+    color: inherit;
+    font-size: 1.1rem;
+}
