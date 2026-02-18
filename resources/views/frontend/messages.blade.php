@@ -22,7 +22,7 @@
                                         <h6 class="mb-3 font-weight-bold" style="color: #333;">Messages</h6>
                                         <div class="search-box position-relative">
                                             <i class='fas fa-search position-absolute'
-                                                style="left: 15px; top: 12px; color: #adb5bd; font-size: 0.9rem;"></i>
+                                                style="left: 15px; top: 15px; color: #adb5bd; font-size: 0.9rem;"></i>
                                             <input type="text" id="contact-search"
                                                 class="form-control form-control-sm border-0 bg-light rounded-pill"
                                                 placeholder="Search contacts..." style="height: 38px; padding-left: 40px;">
@@ -70,7 +70,7 @@
                                         style="max-height: 100%; position: relative; z-index: 1;">
                                         <!-- Chat Header -->
                                         <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center shadow-sm"
-                                            style="flex: 0 0 auto;">
+                                            style="flex: 0 0 auto; gap: 10px;">
                                             <div class="header-avatar me-3">
                                                 <img id="header-photo" src="" class="rounded-circle"
                                                     style="width: 40px; height: 40px; object-fit: cover;">
@@ -79,7 +79,8 @@
                                                 <h6 class="mb-0 font-weight-bold text-truncate" id="chat-with-name"
                                                     style="color: #333; max-width: 250px;">
                                                     ...</h6>
-                                                <span class="small text-success d-flex align-items-center">
+                                                <span class="small text-success d-flex align-items-center"
+                                                    style="gap: 5px;">
                                                     <span class="status-dot me-1"></span> Online
                                                 </span>
                                             </div>
