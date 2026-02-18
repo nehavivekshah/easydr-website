@@ -44,34 +44,23 @@
                                 </div>
 
                                 <!-- Chat Area -->
-                                <div class="chat-area flex-grow-1 d-flex flex-column bg-light" style="position: relative;">
-                                    <!-- Welcome Screen -->
-                                    <div id="chat-welcome"
-                                        class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center p-5">
-                                        <div class="mb-4">
-                                            <i class='bx bx-message-rounded-dots text-muted'
-                                                style="font-size: 5rem; opacity: 0.2;"></i>
-                                        </div>
-                                        <h5 class="text-muted">Direct Messaging</h5>
-                                        <p class="text-muted small">Select a conversation to start chatting with your doctor or
-                                            patient.</p>
-                                    </div>
+                                <div class="chat-area flex-grow-1 d-flex flex-column bg-light" style="position: relative; overflow: hidden;">
  
                                     <!-- Chat Box -->
-                                    <div id="chat-box" class="d-none flex-column h-100 w-100">
+                                    <div id="chat-box" class="d-none flex-column h-100 w-100" style="max-height: 100%;">
                                         <!-- Chat Header -->
-                                        <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center">
+                                        <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center" style="flex: 0 0 auto;">
                                             <h6 class="mb-0 font-weight-bold text-primary" id="chat-with-name">...</h6>
                                         </div>
  
                                         <!-- Messages Area -->
-                                        <div id="messages-display" class="p-4 overflow-auto flex-grow-1"
-                                            style="background: #f0f2f5; display: flex; flex-direction: column;">
+                                        <div id="messages-display" class="p-4"
+                                            style="background: #f0f2f5; display: flex; flex-direction: column; flex: 1 1 auto; overflow-y: auto; scrollbar-width: thin;">
                                             <!-- Messages will appear here -->
                                         </div>
  
                                         <!-- Chat Footer -->
-                                        <div class="chat-footer p-3 border-top bg-white">
+                                        <div class="chat-footer p-3 border-top bg-white" style="flex: 0 0 auto;">
                                             <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
                                                 <div class="input-group align-items-center">
                                                     <input type="text" id="chat-input"
@@ -177,7 +166,6 @@
             // UI updates
             $('.contact-item').removeClass('active');
             $(`#contact-${id}`).addClass('active');
-            $('#chat-welcome').addClass('d-none');
             $('#chat-box').removeClass('d-none').addClass('d-flex');
             $('#chat-with-name').text(name);
             $('#messages-display').empty();
