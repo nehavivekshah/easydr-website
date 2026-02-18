@@ -1427,19 +1427,24 @@ class FrontendController extends Controller
             if (!$alreadyCredited) {
                 $doctor = Doctors::where('uid', $appointment->did)->first();
                 if ($doctor) {
-                    $fee = $appointment->fees ?? 0;
+                    // Fallback to doctor's current fee if appointment fee is zero/empty
+                    $fee = (!empty($appointment->fees) && $appointment->fees > 0)
+                        ? $appointment->fees
+                        : ($doctor->fees ?? 0);
 
-                    // Increment doctor wallet
-                    $doctor->increment('wallet', $fee);
+                    if ($fee > 0) {
+                        // Increment doctor wallet
+                        $doctor->increment('wallet', $fee);
 
-                    // Create wallet record
-                    Wallets::create([
-                        'did' => $doctor->id,
-                        'aid' => $appointmentId,
-                        'details' => 'Payment credited for Appointment ID: ' . $appointmentId,
-                        'amount' => $fee,
-                        'status' => 'credit',
-                    ]);
+                        // Create wallet record
+                        Wallets::create([
+                            'did' => $doctor->id,
+                            'aid' => $appointmentId,
+                            'details' => 'Payment credited for Appointment ID: ' . $appointmentId,
+                            'amount' => $fee,
+                            'status' => 'credit',
+                        ]);
+                    }
                 }
             }
         }
@@ -1515,6 +1520,7 @@ class FrontendController extends Controller
         $doc = Doctors::where('uid', $request->doctor_id)->first();
         if ($doc) {
             $appointment->did = $doc->uid;
+            $appointment->fees = $doc->fees ?? 0; // Save fees at the time of booking
         } else {
             return back()->with('error', 'Details related to doctor not found.');
         }
