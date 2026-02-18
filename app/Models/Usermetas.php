@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Usermetas extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['uid', 'key', 'value'];
 }
