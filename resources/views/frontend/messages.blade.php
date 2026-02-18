@@ -17,7 +17,7 @@
                             <div class="chat-container d-flex" style="height: 650px;">
                                 <!-- Contacts Sidebar -->
                                 <div class="chat-contacts border-end"
-                                    style="flex: 0 0 300px; background: #fff; display: flex; flex-direction: column;">
+                                    style="flex: 0 0 270px; background: #fff; display: flex; flex-direction: column; border-right: 1px solid #dddddd85;">
                                     <div class="p-3 border-bottom bg-white">
                                         <h6 class="mb-3 font-weight-bold" style="color: #333;">Messages</h6>
                                         <div class="search-box position-relative">
@@ -40,7 +40,7 @@
                                                     <span class="status-indicator online"></span>
                                                 </div>
                                                 <div class="overflow-hidden flex-grow-1">
-                                                    <h6 class="mb-1 text-truncate font-weight-bold contact-name"
+                                                    <h6 class="text-truncate font-weight-bold contact-name"
                                                         style="font-size: 0.95rem; color: #333;">
                                                         {{ $contact->first_name }} {{ $contact->last_name }}
                                                     </h6>
