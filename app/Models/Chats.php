@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Chats extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['pid', 'did', 'sender_id', 'aid', 'msg', 'file', 'status'];
 }

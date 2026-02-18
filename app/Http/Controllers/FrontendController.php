@@ -19,6 +19,7 @@ use App\Models\Usermetas;
 use App\Models\Patients;
 use App\Models\Specialists;
 use App\Models\Wallets;
+use App\Models\Chats;
 
 class FrontendController extends Controller
 {
@@ -1094,7 +1095,102 @@ class FrontendController extends Controller
         if (!$user) {
             return redirect('/login');
         }
-        return view('frontend/messages');
+
+        if ($user->role == 4) {
+            // I am a Doctor, get Patients
+            $contacts = DB::table('appointments')
+                ->join('users', 'appointments.pid', '=', 'users.id')
+                ->where('appointments.did', $user->id)
+                ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
+                ->distinct()
+                ->get();
+        } else {
+            // I am a Patient, get Doctors
+            $contacts = DB::table('appointments')
+                ->join('users', 'appointments.did', '=', 'users.id')
+                ->where('appointments.pid', $user->id)
+                ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
+                ->distinct()
+                ->get();
+        }
+
+        return view('frontend/messages', compact('contacts'));
+    }
+
+    public function getChatContacts()
+    {
+        $user = Auth::user();
+        if (!$user)
+            return response()->json(['error' => 'Unauthorized'], 401);
+
+        if ($user->role == 4) {
+            // I am a Doctor, get Patients
+            $contacts = DB::table('appointments')
+                ->join('users', 'appointments.pid', '=', 'users.id')
+                ->where('appointments.did', $user->id)
+                ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
+                ->distinct()
+                ->get();
+        } else {
+            // I am a Patient, get Doctors
+            $contacts = DB::table('appointments')
+                ->join('users', 'appointments.did', '=', 'users.id')
+                ->where('appointments.pid', $user->id)
+                ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
+                ->distinct()
+                ->get();
+        }
+
+        return response()->json($contacts);
+    }
+
+    public function fetchMessages($recipient_id)
+    {
+        $user = Auth::user();
+        if (!$user)
+            return response()->json(['error' => 'Unauthorized'], 401);
+
+        $messages = Chats::where(function ($query) use ($user, $recipient_id) {
+            $query->where('pid', $user->id)->where('did', $recipient_id);
+        })
+            ->orWhere(function ($query) use ($user, $recipient_id) {
+                $query->where('pid', $recipient_id)->where('did', $user->id);
+            })
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return response()->json($messages);
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user)
+            return response()->json(['error' => 'Unauthorized'], 401);
+
+        $request->validate([
+            'recipient_id' => 'required|integer',
+            'message' => 'required|string',
+        ]);
+
+        $pid = ($user->role == 5) ? $user->id : $request->recipient_id;
+        $did = ($user->role == 4) ? $user->id : $request->recipient_id;
+
+        // Ensure recipient exists and is a valid role
+        $recipient = User::find($request->recipient_id);
+        if (!$recipient) {
+            return response()->json(['error' => 'Recipient not found'], 404);
+        }
+
+        $chat = Chats::create([
+            'pid' => $pid,
+            'did' => $did,
+            'sender_id' => $user->id,
+            'msg' => $request->message,
+            'status' => 0
+        ]);
+
+        return response()->json(['success' => true, 'chat' => $chat]);
     }
 
     public function appointments(Request $request)

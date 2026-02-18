@@ -3,32 +3,89 @@
 @section('content')
     <main>
         <section class="pt-100 pb-40">
-            <div class="container">
+            <div class="container-fluid px-lg-5">
                 <div class="row">
                     <!-- Sidebar -->
                     <div class="col-lg-3 mb-4">
                         @include('frontend.inc.user_sidebar')
                     </div>
 
-                    <!-- Content Area -->
+                    <!-- Chat Interface -->
                     <div class="col-lg-9">
-                        <div class="dashboard_content">
-                            <h5>Message</h5>
-
-                            <div style="background: #fff; padding: 25px; border-radius: 5px; box-shadow: var(--shadow-sm); min-height: 400px;"
-                                class="d-flex flex-column align-items-center justify-content-center text-center">
-                                <div class="mb-4">
-                                    <i class='bx bx-message-rounded-dots text-muted'
-                                        style="font-size: 5rem; opacity: 0.3;"></i>
+                        <div class="chat-container bg-white rounded-3 shadow-sm d-flex overflow-hidden"
+                            style="height: 600px; border: 1px solid #eee;">
+                            <!-- Contacts Sidebar -->
+                            <div class="chat-contacts border-end" style="width: 300px; background: #fff;">
+                                <div class="p-3 border-bottom bg-light">
+                                    <h6 class="mb-0 font-weight-bold">Conversations</h6>
                                 </div>
-                                <h5 class="text-muted mb-3">No Messages Yet</h5>
-                                <p class="text-muted mb-4" style="max-width: 400px;">
-                                    You don't have any new messages at the moment. When you receive updates from your doctor
-                                    or the administration, they will appear here.
-                                </p>
-                                <a href="/contact-us" class="btn btn-outline-primary rounded-pill px-4">
-                                    <i class='bx bx-support me-2'></i> Contact Support
-                                </a>
+                                <div class="contacts-list overflow-auto" style="height: calc(100% - 53px);">
+                                    @forelse($contacts as $contact)
+                                        <div class="contact-item p-3 border-bottom d-flex align-items-center cursor-pointer hover-bg-light"
+                                            onclick="loadChat({{ $contact->id }}, '{{ $contact->first_name }} {{ $contact->last_name }}')"
+                                            id="contact-{{ $contact->id }}">
+                                            <div class="position-relative">
+                                                <img src="{{ !empty($contact->photo) ? asset('public/assets/images/profiles/' . $contact->photo) : asset('public/assets/images/doctor-placeholder.png') }}"
+                                                    class="rounded-circle mr-3"
+                                                    style="width: 45px; height: 45px; object-fit: cover;">
+                                            </div>
+                                            <div class="overflow-hidden flex-grow-1">
+                                                <h6 class="mb-0 text-truncate font-weight-bold" style="font-size: 0.95rem;">
+                                                    {{ $contact->first_name }} {{ $contact->last_name }}</h6>
+                                                <p class="mb-0 text-muted small text-truncate">Click to open chat</p>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="p-4 text-center text-muted">
+                                            <p class="small">No contacts found from your appointments.</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+
+                            <!-- Chat Area -->
+                            <div class="chat-area flex-grow-1 d-flex flex-column bg-light">
+                                <!-- Welcome Screen -->
+                                <div id="chat-welcome"
+                                    class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center p-5">
+                                    <div class="mb-4">
+                                        <i class='bx bx-message-rounded-dots text-muted'
+                                            style="font-size: 5rem; opacity: 0.2;"></i>
+                                    </div>
+                                    <h5 class="text-muted">Direct Messaging</h5>
+                                    <p class="text-muted small">Select a conversation to start chatting with your doctor or
+                                        patient.</p>
+                                </div>
+
+                                <!-- Chat Box -->
+                                <div id="chat-box" class="d-none flex-grow-1 flex-column h-100">
+                                    <!-- Chat Header -->
+                                    <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center">
+                                        <h6 class="mb-0 font-weight-bold text-primary" id="chat-with-name">...</h6>
+                                    </div>
+
+                                    <!-- Messages Area -->
+                                    <div id="messages-display" class="p-3 overflow-auto flex-grow-1"
+                                        style="background: #f0f2f5; display: flex; flex-direction: column;">
+                                        <!-- Messages will appear here -->
+                                    </div>
+
+                                    <!-- Chat Footer -->
+                                    <div class="chat-footer p-3 border-top bg-white">
+                                        <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
+                                            <div class="input-group">
+                                                <input type="text" id="chat-input"
+                                                    class="form-control border-0 bg-light rounded-pill px-3"
+                                                    placeholder="Type a message..." required autocomplete="off">
+                                                <button type="submit"
+                                                    class="btn btn-primary rounded-circle ml-2 d-flex align-items-center justify-content-center"
+                                                    style="width: 40px; height: 40px;">
+                                                    <i class='bx bxs-paper-plane'></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -36,4 +93,157 @@
             </div>
         </section>
     </main>
+
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .hover-bg-light:hover {
+            background-color: #f8f9fa;
+        }
+
+        .contact-item.active {
+            background-color: #f0f7ff;
+            border-left: 4px solid #007bff;
+        }
+
+        #messages-display {
+            scrollbar-width: thin;
+            scrollbar-color: #ccc transparent;
+        }
+
+        #messages-display::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #messages-display::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+        .msg-bubble {
+            max-width: 75%;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            line-height: 1.4;
+        }
+
+        .msg-sent {
+            align-self: flex-end;
+            background-color: #007bff;
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-received {
+            align-self: flex-start;
+            background-color: white;
+            color: #333;
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-time {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .msg-sent .msg-time {
+            text-align: right;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let currentRecipientId = null;
+        let lastMessageId = 0;
+        let pollingInterval = null;
+        const myId = {{ Auth::id() }};
+
+        function loadChat(id, name) {
+            if (currentRecipientId === id) return;
+
+            currentRecipientId = id;
+            lastMessageId = 0;
+
+            // UI updates
+            $('.contact-item').removeClass('active');
+            $(`#contact-${id}`).addClass('active');
+            $('#chat-welcome').addClass('d-none');
+            $('#chat-box').removeClass('d-none').addClass('d-flex');
+            $('#chat-with-name').text(name);
+            $('#messages-display').empty();
+
+            fetchMessages();
+
+            // Manage polling
+            if (pollingInterval) clearInterval(pollingInterval);
+            pollingInterval = setInterval(fetchMessages, 4000);
+        }
+
+        function fetchMessages() {
+            if (!currentRecipientId) return;
+
+            $.get(`/chat/fetch/${currentRecipientId}`, function (messages) {
+                let hasNew = false;
+                messages.forEach(msg => {
+                    if (msg.id > lastMessageId) {
+                        appendMessage(msg);
+                        lastMessageId = msg.id;
+                        hasNew = true;
+                    }
+                });
+
+                if (hasNew) {
+                    scrollToBottom();
+                }
+            });
+        }
+
+        function appendMessage(msg) {
+            const isSent = msg.sender_id == myId;
+            const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const html = `
+                    <div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
+                        ${msg.msg}
+                        <span class="msg-time">${time}</span>
+                    </div>
+                `;
+            $('#messages-display').append(html);
+        }
+
+        function sendMessage() {
+            const message = $('#chat-input').val().trim();
+            if (!message || !currentRecipientId) return;
+
+            $('#chat-input').val('');
+
+            $.post('/chat/send', {
+                _token: '{{ csrf_token() }}',
+                recipient_id: currentRecipientId,
+                message: message
+            }, function (response) {
+                if (response.success) {
+                    // Message will be fetched by next poll, or we can append it immediately
+                    // fetchMessages(); 
+                }
+            });
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('messages-display');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Clean up interval on page leave
+        window.onbeforeunload = function () {
+            if (pollingInterval) clearInterval(pollingInterval);
+        };
+    </script>
 @endsection

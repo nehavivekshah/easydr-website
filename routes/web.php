@@ -85,7 +85,10 @@ Route::get('/contact-us', [FrontendController::class, 'contact']);
 Route::post('/contact-us', [FrontendController::class, 'contactPost']);
 Route::get('/help', [FrontendController::class, 'help']);
 Route::post('/appointment', [FrontendController::class, 'bookAppointment']);
-Route::get('/messages', [FrontendController::class, 'messages']);
+Route::get('/messages', [FrontendController::class, 'messages'])->name('messages');
+Route::get('/chat/contacts', [FrontendController::class, 'getChatContacts'])->name('chat.contacts');
+Route::get('/chat/fetch/{recipient_id}', [FrontendController::class, 'fetchMessages'])->name('chat.fetch');
+Route::post('/chat/send', [FrontendController::class, 'sendMessage'])->name('chat.send');
 
 // Payment Routes
 Route::get('/payment', [WebPaymentController::class, 'payment'])->name('payment');
