@@ -1156,7 +1156,7 @@ class FrontendController extends Controller
             ->orWhere(function ($query) use ($user, $recipient_id) {
                 $query->where('pid', $recipient_id)->where('did', $user->id);
             })
-            ->orderBy('created_at', 'asc')
+            ->orderBy('id', 'asc')
             ->get();
 
         return response()->json($messages);

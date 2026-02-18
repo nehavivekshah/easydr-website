@@ -209,13 +209,12 @@
             const isSent = msg.sender_id == myId;
             const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            const html = `
-                    <div class="msg-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
-                        ${msg.msg}
-                        <span class="msg-time">${time}</span>
-                    </div>
-                `;
-            $('#messages-display').append(html);
+            const msgDiv = $('<div>').addClass('msg-bubble').addClass(isSent ? 'msg-sent' : 'msg-received');
+            const msgText = $('<span>').text(msg.msg);
+            const timeSpan = $('<span>').addClass('msg-time').text(time);
+
+            msgDiv.append(msgText).append(timeSpan);
+            $('#messages-display').append(msgDiv);
         }
 
         function sendMessage() {
@@ -230,15 +229,21 @@
                 message: message
             }, function (response) {
                 if (response.success) {
-                    // Message will be fetched by next poll, or we can append it immediately
-                    // fetchMessages(); 
+                    // Update if not already polled
+                    if (response.chat.id > lastMessageId) {
+                        appendMessage(response.chat);
+                        lastMessageId = response.chat.id;
+                        scrollToBottom();
+                    }
                 }
             });
         }
 
         function scrollToBottom() {
             const container = document.getElementById('messages-display');
-            container.scrollTop = container.scrollHeight;
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
         }
 
         // Clean up interval on page leave
