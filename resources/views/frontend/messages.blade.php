@@ -90,6 +90,22 @@
                                             </div>
                                         </div>
 
+                                        <!-- Appointment Alert Banner -->
+                                        <div id="appointment-alert"
+                                            class="d-none alert alert-info m-3 shadow-sm border-0 d-flex align-items-center justify-content-between"
+                                            style="border-radius: 12px; background: #e3f2fd; color: #0d47a1; z-index: 10;">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-clock me-3" style="font-size: 1.2rem;"></i>
+                                                <div>
+                                                    <span class="font-weight-bold d-block">Session Finished?</span>
+                                                    <small>The scheduled time for this appointment has elapsed.</small>
+                                                </div>
+                                            </div>
+                                            <button onclick="completeAppointmentNow()"
+                                                class="btn btn-sm btn-primary rounded-pill px-3 py-1 font-weight-bold shadow-sm">Complete
+                                                Now</button>
+                                        </div>
+
                                         <!-- Messages Area -->
                                         <div id="messages-display" class="p-4"
                                             style="display: flex; flex-direction: column; flex: 1 1 auto; overflow-y: auto; scrollbar-width: thin;">
@@ -257,9 +273,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         let currentRecipientId = null;
+        let currentAppointmentId = null;
         let lastMessageId = 0;
         let pollingInterval = null;
+        let statusCheckInterval = null;
         const myId = {{ Auth::id() }};
+        const myRole = {{ Auth::user()->role }};
 
         // Contact search logic
         $('#contact-search').on('input', function () {
@@ -287,10 +306,51 @@
             $('#messages-display').empty();
 
             fetchMessages();
+            checkAppointmentStatus();
 
             // Manage polling
             if (pollingInterval) clearInterval(pollingInterval);
             pollingInterval = setInterval(fetchMessages, 4000);
+
+            if (statusCheckInterval) clearInterval(statusCheckInterval);
+            if (myRole == 4) {
+                statusCheckInterval = setInterval(checkAppointmentStatus, 30000); // Check every 30s
+            }
+        }
+
+        function checkAppointmentStatus() {
+            if (!currentRecipientId || myRole != 4) return;
+
+            $.get(`/chat/appointment-status/${currentRecipientId}`, function (response) {
+                if (response.appointment && response.appointment.is_overdue) {
+                    currentAppointmentId = response.appointment.id;
+                    $('#appointment-alert').removeClass('d-none');
+                } else {
+                    $('#appointment-alert').addClass('d-none');
+                    currentAppointmentId = null;
+                }
+            });
+        }
+
+        function completeAppointmentNow() {
+            if (!currentAppointmentId) return;
+
+            const btn = $('#appointment-alert button');
+            const originalText = btn.text();
+            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+            $.post(`/chat/appointment-complete/${currentAppointmentId}`, {
+                _token: '{{ csrf_token() }}'
+            }, function (response) {
+                if (response.success) {
+                    $('#appointment-alert').fadeOut(function () {
+                        $(this).addClass('d-none').show();
+                    });
+                } else {
+                    alert(response.error || 'Failed to complete appointment.');
+                    btn.prop('disabled', false).text(originalText);
+                }
+            });
         }
 
         function fetchMessages() {
@@ -356,6 +416,7 @@
         // Clean up interval on page leave
         window.onbeforeunload = function () {
             if (pollingInterval) clearInterval(pollingInterval);
+            if (statusCheckInterval) clearInterval(statusCheckInterval);
         };
     </script>
 @endsection

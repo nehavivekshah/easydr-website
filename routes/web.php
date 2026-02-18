@@ -89,6 +89,8 @@ Route::get('/messages', [FrontendController::class, 'messages'])->name('messages
 Route::get('/chat/contacts', [FrontendController::class, 'getChatContacts'])->name('chat.contacts');
 Route::get('/chat/fetch/{recipient_id}', [FrontendController::class, 'fetchMessages'])->name('chat.fetch');
 Route::post('/chat/send', [FrontendController::class, 'sendMessage'])->name('chat.send');
+Route::get('/chat/appointment-status/{recipient_id}', [FrontendController::class, 'checkAppointmentStatus'])->name('chat.appointment.status');
+Route::post('/chat/appointment-complete/{id}', [FrontendController::class, 'ajaxCompleteAppointment'])->name('chat.appointment.complete');
 
 // Payment Routes
 Route::get('/payment', [WebPaymentController::class, 'payment'])->name('payment');

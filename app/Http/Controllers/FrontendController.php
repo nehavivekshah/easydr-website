@@ -1202,6 +1202,72 @@ class FrontendController extends Controller
         return response()->json(['success' => true, 'chat' => $chat]);
     }
 
+    public function checkAppointmentStatus($recipient_id)
+    {
+        $user = Auth::user();
+        if (!$user)
+            return response()->json(['error' => 'Unauthorized'], 401);
+
+        // Only doctors need these alerts
+        if ($user->role == 4) {
+            // recipient_id is the patient's USER ID
+            $patient = DB::table('patients')->where('uid', $recipient_id)->first();
+            if (!$patient)
+                return response()->json(['appointment' => null]);
+
+            $appointment = DB::table('appointments')
+                ->where('did', $user->id)
+                ->where('pid', $patient->id)
+                ->where('status', '1') // Confirmed
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
+                ->first();
+
+            if ($appointment) {
+                $apptDateTime = Carbon::parse($appointment->date . ' ' . $appointment->time);
+                $duration = $appointment->duration ?? 30;
+                $endTime = $apptDateTime->copy()->addMinutes($duration);
+                $now = Carbon::now();
+
+                return response()->json([
+                    'appointment' => [
+                        'id' => $appointment->id,
+                        'is_overdue' => $now->gt($endTime),
+                        'end_time' => $endTime->toDateTimeString(),
+                    ]
+                ]);
+            }
+        }
+        return response()->json(['appointment' => null]);
+    }
+
+    public function ajaxCompleteAppointment($id)
+    {
+        $user = Auth::user();
+        if (!$user || $user->role != 4) {
+            return response()->json(['success' => false, 'error' => 'Unauthorized'], 403);
+        }
+
+        $appointment = DB::table('appointments')
+            ->where('id', $id)
+            ->where('did', $user->id)
+            ->first();
+
+        if (!$appointment) {
+            return response()->json(['success' => false, 'error' => 'Appointment not found.'], 404);
+        }
+
+        if ($appointment->status != '1') {
+            return response()->json(['success' => false, 'error' => 'Only confirmed appointments can be completed.'], 400);
+        }
+
+        DB::table('appointments')->where('id', $id)->update(['status' => '3']);
+
+        $this->creditDoctorWallet($id);
+
+        return response()->json(['success' => true]);
+    }
+
     public function appointments(Request $request)
     {
         $user = Auth::user();
