@@ -1249,14 +1249,13 @@ class FrontendController extends Controller
 
         $now = Carbon::now();
 
-        $appointment = DB::table('appointments')
+        // Find all confirmed appointments for this doctor
+        $appointments = DB::table('appointments')
             ->where('did', $user->id)
             ->where('status', '1') // Confirmed
-            ->orderBy('date', 'desc')
-            ->orderBy('time', 'desc')
-            ->first();
+            ->get();
 
-        if ($appointment) {
+        foreach ($appointments as $appointment) {
             $apptDateTime = Carbon::parse($appointment->date . ' ' . $appointment->time);
             $duration = $appointment->duration ?? 30;
             $endTime = $apptDateTime->copy()->addMinutes($duration);

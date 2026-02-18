@@ -82,51 +82,54 @@
                 class="btn btn-xs btn-warning w-100 rounded-pill small font-weight-bold shadow-sm">Complete Now</button>
         </div>
 
-        <script>
-            let globalAppointmentId = null;
-            let globalStatusInterval = null;
+        @push('scripts')
+            <script>
+                let globalAppointmentId = null;
+                let globalStatusInterval = null;
 
-            function checkGlobalOverdue() {
-                // Don't check if we're on the messages page (it has its own specific check)
-                if (window.location.pathname.includes('/messages')) return;
+                function checkGlobalOverdue() {
+                    // Don't check if we're on the messages page (it has its own specific check)
+                    if (window.location.pathname.includes('/messages')) return;
 
-                $.get('/chat/check-any-overdue', function (response) {
-                    if (response.appointment) {
-                        globalAppointmentId = response.appointment.id;
-                        $('#global-patient-name').text(response.appointment.patient_name);
-                        $('#global-appointment-alert').removeClass('d-none');
-                    } else {
-                        $('#global-appointment-alert').addClass('d-none');
-                    }
+                    $.get('/chat/check-any-overdue', function (response) {
+                        if (response.appointment) {
+                            globalAppointmentId = response.appointment.id;
+                            $('#global-patient-name').text(response.appointment.patient_name);
+                            $('#global-appointment-alert').removeClass('d-none');
+                        } else {
+                            $('#global-appointment-alert').addClass('d-none');
+                        }
+                    });
+                }
+
+                function completeGlobalAppointment() {
+                    if (!globalAppointmentId) return;
+
+                    const btn = $('#global-appointment-alert button');
+                    const originalText = btn.text();
+                    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+
+                    $.post(`/chat/appointment-complete/${globalAppointmentId}`, {
+                        _token: '{{ csrf_token() }}'
+                    }, function (response) {
+                        if (response.success) {
+                            $('#global-appointment-alert').fadeOut(function () {
+                                $(this).addClass('d-none').show();
+                            });
+                        } else {
+                            alert(response.error || 'Failed to complete appointment.');
+                            btn.prop('disabled', false).text(originalText);
+                        }
+                    });
+                }
+
+                // Start polling
+                $(document).ready(function () {
+                    checkGlobalOverdue();
+                    if (globalStatusInterval) clearInterval(globalStatusInterval);
+                    globalStatusInterval = setInterval(checkGlobalOverdue, 30000);
                 });
-            }
-
-            function completeGlobalAppointment() {
-                if (!globalAppointmentId) return;
-
-                const btn = $('#global-appointment-alert button');
-                const originalText = btn.text();
-                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
-
-                $.post(`/chat/appointment-complete/${globalAppointmentId}`, {
-                    _token: '{{ csrf_token() }}'
-                }, function (response) {
-                    if (response.success) {
-                        $('#global-appointment-alert').fadeOut(function () {
-                            $(this).addClass('d-none').show();
-                        });
-                    } else {
-                        alert(response.error || 'Failed to complete appointment.');
-                        btn.prop('disabled', false).text(originalText);
-                    }
-                });
-            }
-
-            // Start polling
-            $(document).ready(function () {
-                checkGlobalOverdue();
-                globalStatusInterval = setInterval(checkGlobalOverdue, 30000);
-            });
-        </script>
+            </script>
+        @endpush
     @endif
 @endif
