@@ -1241,6 +1241,47 @@ class FrontendController extends Controller
         return response()->json(['appointment' => null]);
     }
 
+    public function checkAnyOverdueAppointment()
+    {
+        $user = Auth::user();
+        if (!$user || $user->role != 4)
+            return response()->json(['appointment' => null]);
+
+        $now = Carbon::now();
+
+        $appointment = DB::table('appointments')
+            ->where('did', $user->id)
+            ->where('status', '1') // Confirmed
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
+            ->first();
+
+        if ($appointment) {
+            $apptDateTime = Carbon::parse($appointment->date . ' ' . $appointment->time);
+            $duration = $appointment->duration ?? 30;
+            $endTime = $apptDateTime->copy()->addMinutes($duration);
+
+            if ($now->gt($endTime)) {
+                // Get patient name for the global alert
+                $patientUser = DB::table('users')
+                    ->join('patients', 'users.id', '=', 'patients.uid')
+                    ->where('patients.id', $appointment->pid)
+                    ->select('users.first_name', 'users.last_name')
+                    ->first();
+
+                return response()->json([
+                    'appointment' => [
+                        'id' => $appointment->id,
+                        'patient_name' => $patientUser ? $patientUser->first_name . ' ' . $patientUser->last_name : 'Patient',
+                        'end_time' => $endTime->toDateTimeString(),
+                    ]
+                ]);
+            }
+        }
+
+        return response()->json(['appointment' => null]);
+    }
+
     public function ajaxCompleteAppointment($id)
     {
         $user = Auth::user();

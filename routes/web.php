@@ -90,6 +90,7 @@ Route::get('/chat/contacts', [FrontendController::class, 'getChatContacts'])->na
 Route::get('/chat/fetch/{recipient_id}', [FrontendController::class, 'fetchMessages'])->name('chat.fetch');
 Route::post('/chat/send', [FrontendController::class, 'sendMessage'])->name('chat.send');
 Route::get('/chat/appointment-status/{recipient_id}', [FrontendController::class, 'checkAppointmentStatus'])->name('chat.appointment.status');
+Route::get('/chat/check-any-overdue', [FrontendController::class, 'checkAnyOverdueAppointment'])->name('chat.overdue.all');
 Route::post('/chat/appointment-complete/{id}', [FrontendController::class, 'ajaxCompleteAppointment'])->name('chat.appointment.complete');
 
 // Payment Routes

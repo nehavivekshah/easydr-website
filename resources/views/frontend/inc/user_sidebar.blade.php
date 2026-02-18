@@ -67,4 +67,66 @@
                 class="btn-logout bg-dark text-white rounded-pill mt-4 justify-content-center">Logout <i
                     class="fas fa-sign-out-alt ml-2"></i></a></li>
     </ul>
+
+    @if(Auth::user()->role == 4)
+        <!-- Global Appointment Alert -->
+        <div id="global-appointment-alert" class="d-none mt-4 p-3 shadow-sm border-0"
+            style="border-radius: 12px; background: #fff3cd; border-left: 4px solid #ffc107 !important;">
+            <div class="d-flex align-items-center mb-2">
+                <i class="fas fa-exclamation-circle text-warning me-2"></i>
+                <span class="font-weight-bold small text-dark">Session Finished</span>
+            </div>
+            <p class="small text-muted mb-2">Your session with <strong id="global-patient-name">Patient</strong> has ended.
+            </p>
+            <button onclick="completeGlobalAppointment()"
+                class="btn btn-xs btn-warning w-100 rounded-pill small font-weight-bold shadow-sm">Complete Now</button>
+        </div>
+
+        <script>
+            let globalAppointmentId = null;
+            let globalStatusInterval = null;
+
+            function checkGlobalOverdue() {
+                // Don't check if we're on the messages page (it has its own specific check)
+                if (window.location.pathname.includes('/messages')) return;
+
+                $.get('/chat/check-any-overdue', function (response) {
+                    if (response.appointment) {
+                        globalAppointmentId = response.appointment.id;
+                        $('#global-patient-name').text(response.appointment.patient_name);
+                        $('#global-appointment-alert').removeClass('d-none');
+                    } else {
+                        $('#global-appointment-alert').addClass('d-none');
+                    }
+                });
+            }
+
+            function completeGlobalAppointment() {
+                if (!globalAppointmentId) return;
+
+                const btn = $('#global-appointment-alert button');
+                const originalText = btn.text();
+                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+
+                $.post(`/chat/appointment-complete/${globalAppointmentId}`, {
+                    _token: '{{ csrf_token() }}'
+                }, function (response) {
+                    if (response.success) {
+                        $('#global-appointment-alert').fadeOut(function () {
+                            $(this).addClass('d-none').show();
+                        });
+                    } else {
+                        alert(response.error || 'Failed to complete appointment.');
+                        btn.prop('disabled', false).text(originalText);
+                    }
+                });
+            }
+
+            // Start polling
+            $(document).ready(function () {
+                checkGlobalOverdue();
+                globalStatusInterval = setInterval(checkGlobalOverdue, 30000);
+            });
+        </script>
+    @endif
 @endif
