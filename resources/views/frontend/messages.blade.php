@@ -83,9 +83,8 @@
                                                 </span>
                                             </div>
                                             <div class="header-actions">
-                                                <button class="btn btn-link text-muted"><i
-                                                        class='fas fa-ellipsis-v'
-                                                        style="font-size: 1.2rem;"></i></button>
+                                                <button type="button" class="btn btn-link text-muted px-2 mr-1"><i
+                                                        class='fas fa-paperclip' style="font-size: 1.2rem;"></i></button>
                                             </div>
                                         </div>
 
@@ -100,10 +99,6 @@
                                             <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
                                                 <div class="input-group align-items-center bg-light rounded-pill px-2 shadow-sm"
                                                     style="border: 1px solid #ebebeb;">
-                                                    <button type="button" class="btn btn-link text-muted px-2"><i
-                                                            class='far fa-smile' style="font-size: 1.3rem;"></i></button>
-                                                    <button type="button" class="btn btn-link text-muted px-2 mr-1"><i
-                                                            class='fas fa-paperclip' style="font-size: 1.2rem;"></i></button>
                                                     <input type="text" id="chat-input"
                                                         class="form-control border-0 bg-transparent px-2"
                                                         placeholder="Type your message here..." required autocomplete="off"
@@ -112,8 +107,7 @@
                                                         <button type="submit"
                                                             class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center shadow-lg"
                                                             style="width: 42px; height: 42px; flex: 0 0 42px; padding: 0; margin-left: 5px;">
-                                                            <i class='fas fa-paper-plane'
-                                                                style="font-size: 1.1rem;"></i>
+                                                            <i class='fas fa-paper-plane' style="font-size: 1.1rem;"></i>
                                                         </button>
                                                     </div>
                                                 </div>
