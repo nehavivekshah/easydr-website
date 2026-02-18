@@ -44,7 +44,7 @@
                                 </div>
 
                                 <!-- Chat Area -->
-                                <div class="chat-area flex-grow-1 d-flex flex-column bg-light">
+                                <div class="chat-area flex-grow-1 d-flex flex-column bg-light" style="position: relative;">
                                     <!-- Welcome Screen -->
                                     <div id="chat-welcome"
                                         class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center p-5">
@@ -56,32 +56,34 @@
                                         <p class="text-muted small">Select a conversation to start chatting with your doctor or
                                             patient.</p>
                                     </div>
-
+ 
                                     <!-- Chat Box -->
-                                    <div id="chat-box" class="d-none flex-grow-1 flex-column h-100">
+                                    <div id="chat-box" class="d-none flex-column h-100 w-100">
                                         <!-- Chat Header -->
                                         <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center">
                                             <h6 class="mb-0 font-weight-bold text-primary" id="chat-with-name">...</h6>
                                         </div>
-
+ 
                                         <!-- Messages Area -->
                                         <div id="messages-display" class="p-4 overflow-auto flex-grow-1"
                                             style="background: #f0f2f5; display: flex; flex-direction: column;">
                                             <!-- Messages will appear here -->
                                         </div>
-
+ 
                                         <!-- Chat Footer -->
                                         <div class="chat-footer p-3 border-top bg-white">
                                             <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
-                                                <div class="input-group">
+                                                <div class="input-group align-items-center">
                                                     <input type="text" id="chat-input"
                                                         class="form-control border-0 bg-light rounded-pill px-3"
-                                                        placeholder="Type a message..." required autocomplete="off">
-                                                    <button type="submit"
-                                                        class="btn btn-primary rounded-circle ml-2 d-flex align-items-center justify-content-center"
-                                                        style="width: 40px; height: 40px;">
-                                                        <i class='bx bxs-paper-plane'></i>
-                                                    </button>
+                                                        placeholder="Type a message..." required autocomplete="off" style="height: 45px;">
+                                                    <div class="input-group-append">
+                                                        <button type="submit"
+                                                            class="btn btn-primary rounded-circle ml-2 d-flex align-items-center justify-content-center"
+                                                            style="width: 45px; height: 45px; flex: 0 0 45px; padding: 0;">
+                                                            <i class='bx bxs-paper-plane' style="font-size: 1.2rem;"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
