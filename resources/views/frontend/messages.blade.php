@@ -3,7 +3,7 @@
 @section('content')
     <main>
         <section class="pt-100 pb-40">
-            <div class="container-fluid px-lg-5">
+            <div class="container">
                 <div class="row">
                     <!-- Sidebar -->
                     <div class="col-lg-3 mb-4">
@@ -12,78 +12,79 @@
 
                     <!-- Chat Interface -->
                     <div class="col-lg-9">
-                        <div class="chat-container bg-white rounded-3 shadow-sm d-flex overflow-hidden"
-                            style="height: 600px; border: 1px solid #eee;">
-                            <!-- Contacts Sidebar -->
-                            <div class="chat-contacts border-end" style="width: 300px; background: #fff;">
-                                <div class="p-3 border-bottom bg-light">
-                                    <h6 class="mb-0 font-weight-bold">Conversations</h6>
+                        <div class="dashboard_content" style="padding: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                            <div class="chat-container bg-white d-flex" style="height: 650px;">
+                                <!-- Contacts Sidebar -->
+                                <div class="chat-contacts border-end" style="flex: 0 0 280px; background: #fff;">
+                                    <div class="p-3 border-bottom bg-light">
+                                        <h6 class="mb-0 font-weight-bold">Conversations</h6>
+                                    </div>
+                                    <div class="contacts-list overflow-auto" style="height: calc(100% - 53px);">
+                                        @forelse($contacts as $contact)
+                                            <div class="contact-item p-3 border-bottom d-flex align-items-center cursor-pointer hover-bg-light"
+                                                onclick="loadChat({{ $contact->id }}, '{{ $contact->first_name }} {{ $contact->last_name }}')"
+                                                id="contact-{{ $contact->id }}">
+                                                <div class="position-relative">
+                                                    <img src="{{ !empty($contact->photo) ? asset('public/assets/images/profiles/' . $contact->photo) : asset('public/assets/images/doctor-placeholder.png') }}"
+                                                        class="rounded-circle mr-3"
+                                                        style="width: 45px; height: 45px; object-fit: cover;">
+                                                </div>
+                                                <div class="overflow-hidden flex-grow-1">
+                                                    <h6 class="mb-0 text-truncate font-weight-bold" style="font-size: 0.95rem;">
+                                                        {{ $contact->first_name }} {{ $contact->last_name }}</h6>
+                                                    <p class="mb-0 text-muted small text-truncate">Click to open chat</p>
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="p-4 text-center text-muted">
+                                                <p class="small">No contacts found from your appointments.</p>
+                                            </div>
+                                        @endforelse
+                                    </div>
                                 </div>
-                                <div class="contacts-list overflow-auto" style="height: calc(100% - 53px);">
-                                    @forelse($contacts as $contact)
-                                        <div class="contact-item p-3 border-bottom d-flex align-items-center cursor-pointer hover-bg-light"
-                                            onclick="loadChat({{ $contact->id }}, '{{ $contact->first_name }} {{ $contact->last_name }}')"
-                                            id="contact-{{ $contact->id }}">
-                                            <div class="position-relative">
-                                                <img src="{{ !empty($contact->photo) ? asset('public/assets/images/profiles/' . $contact->photo) : asset('public/assets/images/doctor-placeholder.png') }}"
-                                                    class="rounded-circle mr-3"
-                                                    style="width: 45px; height: 45px; object-fit: cover;">
-                                            </div>
-                                            <div class="overflow-hidden flex-grow-1">
-                                                <h6 class="mb-0 text-truncate font-weight-bold" style="font-size: 0.95rem;">
-                                                    {{ $contact->first_name }} {{ $contact->last_name }}</h6>
-                                                <p class="mb-0 text-muted small text-truncate">Click to open chat</p>
-                                            </div>
+
+                                <!-- Chat Area -->
+                                <div class="chat-area flex-grow-1 d-flex flex-column bg-light">
+                                    <!-- Welcome Screen -->
+                                    <div id="chat-welcome"
+                                        class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center p-5">
+                                        <div class="mb-4">
+                                            <i class='bx bx-message-rounded-dots text-muted'
+                                                style="font-size: 5rem; opacity: 0.2;"></i>
                                         </div>
-                                    @empty
-                                        <div class="p-4 text-center text-muted">
-                                            <p class="small">No contacts found from your appointments.</p>
+                                        <h5 class="text-muted">Direct Messaging</h5>
+                                        <p class="text-muted small">Select a conversation to start chatting with your doctor or
+                                            patient.</p>
+                                    </div>
+
+                                    <!-- Chat Box -->
+                                    <div id="chat-box" class="d-none flex-grow-1 flex-column h-100">
+                                        <!-- Chat Header -->
+                                        <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center">
+                                            <h6 class="mb-0 font-weight-bold text-primary" id="chat-with-name">...</h6>
                                         </div>
-                                    @endforelse
-                                </div>
-                            </div>
 
-                            <!-- Chat Area -->
-                            <div class="chat-area flex-grow-1 d-flex flex-column bg-light">
-                                <!-- Welcome Screen -->
-                                <div id="chat-welcome"
-                                    class="flex-grow-1 d-flex flex-column align-items-center justify-content-center text-center p-5">
-                                    <div class="mb-4">
-                                        <i class='bx bx-message-rounded-dots text-muted'
-                                            style="font-size: 5rem; opacity: 0.2;"></i>
-                                    </div>
-                                    <h5 class="text-muted">Direct Messaging</h5>
-                                    <p class="text-muted small">Select a conversation to start chatting with your doctor or
-                                        patient.</p>
-                                </div>
+                                        <!-- Messages Area -->
+                                        <div id="messages-display" class="p-4 overflow-auto flex-grow-1"
+                                            style="background: #f0f2f5; display: flex; flex-direction: column;">
+                                            <!-- Messages will appear here -->
+                                        </div>
 
-                                <!-- Chat Box -->
-                                <div id="chat-box" class="d-none flex-grow-1 flex-column h-100">
-                                    <!-- Chat Header -->
-                                    <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center">
-                                        <h6 class="mb-0 font-weight-bold text-primary" id="chat-with-name">...</h6>
-                                    </div>
-
-                                    <!-- Messages Area -->
-                                    <div id="messages-display" class="p-3 overflow-auto flex-grow-1"
-                                        style="background: #f0f2f5; display: flex; flex-direction: column;">
-                                        <!-- Messages will appear here -->
-                                    </div>
-
-                                    <!-- Chat Footer -->
-                                    <div class="chat-footer p-3 border-top bg-white">
-                                        <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
-                                            <div class="input-group">
-                                                <input type="text" id="chat-input"
-                                                    class="form-control border-0 bg-light rounded-pill px-3"
-                                                    placeholder="Type a message..." required autocomplete="off">
-                                                <button type="submit"
-                                                    class="btn btn-primary rounded-circle ml-2 d-flex align-items-center justify-content-center"
-                                                    style="width: 40px; height: 40px;">
-                                                    <i class='bx bxs-paper-plane'></i>
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <!-- Chat Footer -->
+                                        <div class="chat-footer p-3 border-top bg-white">
+                                            <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
+                                                <div class="input-group">
+                                                    <input type="text" id="chat-input"
+                                                        class="form-control border-0 bg-light rounded-pill px-3"
+                                                        placeholder="Type a message..." required autocomplete="off">
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-circle ml-2 d-flex align-items-center justify-content-center"
+                                                        style="width: 40px; height: 40px;">
+                                                        <i class='bx bxs-paper-plane'></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -206,7 +207,7 @@
         }
 
         function appendMessage(msg) {
-            const isSent = msg.sender_id == myId;
+            const isSent = msg.pid == myId; // pid is now sender_id
             const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             const msgDiv = $('<div>').addClass('msg-bubble').addClass(isSent ? 'msg-sent' : 'msg-received');

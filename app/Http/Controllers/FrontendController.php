@@ -1096,8 +1096,9 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
+        // Get contacts based on existing appointments (Patient/Doctor links)
         if ($user->role == 4) {
-            // I am a Doctor, get Patients
+            // I am a Doctor, get Patients I've seen
             $contacts = DB::table('appointments')
                 ->join('users', 'appointments.pid', '=', 'users.id')
                 ->where('appointments.did', $user->id)
@@ -1105,7 +1106,7 @@ class FrontendController extends Controller
                 ->distinct()
                 ->get();
         } else {
-            // I am a Patient, get Doctors
+            // I am a Patient, get Doctors I've visited
             $contacts = DB::table('appointments')
                 ->join('users', 'appointments.did', '=', 'users.id')
                 ->where('appointments.pid', $user->id)
@@ -1124,7 +1125,6 @@ class FrontendController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
 
         if ($user->role == 4) {
-            // I am a Doctor, get Patients
             $contacts = DB::table('appointments')
                 ->join('users', 'appointments.pid', '=', 'users.id')
                 ->where('appointments.did', $user->id)
@@ -1132,7 +1132,6 @@ class FrontendController extends Controller
                 ->distinct()
                 ->get();
         } else {
-            // I am a Patient, get Doctors
             $contacts = DB::table('appointments')
                 ->join('users', 'appointments.did', '=', 'users.id')
                 ->where('appointments.pid', $user->id)
@@ -1150,6 +1149,8 @@ class FrontendController extends Controller
         if (!$user)
             return response()->json(['error' => 'Unauthorized'], 401);
 
+        // Fetch messages where:
+        // (sender = me AND receiver = them) OR (sender = them AND receiver = me)
         $messages = Chats::where(function ($query) use ($user, $recipient_id) {
             $query->where('pid', $user->id)->where('did', $recipient_id);
         })
@@ -1173,19 +1174,11 @@ class FrontendController extends Controller
             'message' => 'required|string',
         ]);
 
-        $pid = ($user->role == 5) ? $user->id : $request->recipient_id;
-        $did = ($user->role == 4) ? $user->id : $request->recipient_id;
-
-        // Ensure recipient exists and is a valid role
-        $recipient = User::find($request->recipient_id);
-        if (!$recipient) {
-            return response()->json(['error' => 'Recipient not found'], 404);
-        }
-
+        // pid = sender_id, did = receiver_id
         $chat = Chats::create([
-            'pid' => $pid,
-            'did' => $did,
-            'sender_id' => $user->id,
+            'pid' => $user->id,
+            'did' => $request->recipient_id,
+            'sender_id' => $user->id, // Keeping this for consistency with user's schema
             'msg' => $request->message,
             'status' => 0
         ]);
