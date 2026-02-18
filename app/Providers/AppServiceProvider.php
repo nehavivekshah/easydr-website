@@ -19,6 +19,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        try {
+            $currency = \App\Models\Settings::where('key', 'currency_symbol')->first();
+            $symbol = $currency ? $currency->value : '$';
+        } catch (\Exception $e) {
+            $symbol = '$';
+        }
+
+        view()->share('currency_symbol', $symbol);
     }
 }

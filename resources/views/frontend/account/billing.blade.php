@@ -36,7 +36,8 @@
                                                         {{ $bill->doctor_last_name }}<br><small
                                                             class="text-muted">{{ $bill->specialist }}</small>
                                                     </td>
-                                                    <td class="align-middle fw-bold">₹{{ number_format($bill->fees, 2) }}</td>
+                                                    <td class="align-middle fw-bold">
+                                                        {{ $currency_symbol }}{{ number_format($bill->fees, 2) }}</td>
                                                     <td class="align-middle">
                                                         @if($bill->payment_status == 'paid')
                                                             <span class="badge bg-success rounded-pill px-3">Paid</span>

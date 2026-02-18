@@ -30,7 +30,8 @@
                                             style="width: 60px; height: 60px; font-size: 24px;">
                                             <i class="fas fa-wallet"></i>
                                         </div>
-                                        <h3 class="mb-1 text-primary">₹{{ number_format($totalEarnings, 2) }}</h3>
+                                        <h3 class="mb-1 text-primary">
+                                            {{ $currency_symbol }}{{ number_format($totalEarnings, 2) }}</h3>
                                         <p class="text-muted small mb-0">Total Earnings</p>
                                     </div>
                                 </div>
@@ -40,7 +41,8 @@
                                             style="width: 60px; height: 60px; font-size: 24px;">
                                             <i class="fas fa-hand-holding-usd"></i>
                                         </div>
-                                        <h3 class="mb-1 text-success">₹{{ number_format($availableBalance, 2) }}</h3>
+                                        <h3 class="mb-1 text-success">
+                                            {{ $currency_symbol }}{{ number_format($availableBalance, 2) }}</h3>
                                         <p class="text-muted small mb-0">Available Balance</p>
                                     </div>
                                 </div>
@@ -50,7 +52,8 @@
                                             style="width: 60px; height: 60px; font-size: 24px;">
                                             <i class="fas fa-clock"></i>
                                         </div>
-                                        <h3 class="mb-1 text-warning">₹{{ number_format($pendingPayments, 2) }}</h3>
+                                        <h3 class="mb-1 text-warning">
+                                            {{ $currency_symbol }}{{ number_format($pendingPayments, 2) }}</h3>
                                         <p class="text-muted small mb-0">Pending Payments</p>
                                     </div>
                                 </div>
@@ -76,7 +79,7 @@
                                                         <td>{{ $t->created_at->format('d M, Y') }}</td>
                                                         <td>{{ $t->details }}</td>
                                                         <td class="font-weight-bold text-success">
-                                                            ₹{{ number_format($t->amount, 2) }}</td>
+                                                            {{ $currency_symbol }}{{ number_format($t->amount, 2) }}</td>
                                                         <td>
                                                             <span
                                                                 class="badge badge-pill badge-pill-modern {{ $t->status == 'credit' ? 'badge-soft-success' : 'badge-soft-warning' }}">
@@ -129,11 +132,11 @@
                     <div class="modal-body p-4">
                         <div class="alert alert-info small mb-4">
                             <i class="fas fa-info-circle mr-1"></i> Available Balance:
-                            <strong>₹{{ number_format($availableBalance, 2) }}</strong>
+                            <strong>{{ $currency_symbol }}{{ number_format($availableBalance, 2) }}</strong>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label class="font-weight-bold small">Withdrawal Amount (₹)</label>
+                            <label class="font-weight-bold small">Withdrawal Amount ({{ $currency_symbol }})</label>
                             <input type="number" name="amount" class="form-control" placeholder="Enter amount" min="1"
                                 max="{{ $availableBalance }}" required>
                         </div>

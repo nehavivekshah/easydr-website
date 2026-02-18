@@ -167,7 +167,7 @@
                                         @if(!empty($doctor->fees))
                                             <h6 class="text-dark mb-3 fw-bold d-flex align-items-center justify-content-center">
                                                 <span class="text-muted font-12 fw-normal me-1">Consultation:</span>
-                                                ₹{{ number_format($doctor->fees, 0) }}
+                                                {{ $currency_symbol }}{{ number_format($doctor->fees, 0) }}
                                             </h6>
                                         @endif
 
