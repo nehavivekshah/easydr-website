@@ -52,6 +52,7 @@ Route::put('/update-prescription-medicine/{id}', [App\Http\Controllers\Prescript
 Route::get('/search-medicines', [FrontendController::class, 'searchMedicines'])->name('searchMedicines');
 Route::get('/download-prescription/{id}', [App\Http\Controllers\PrescriptionController::class, 'downloadPrescription'])->name('downloadPrescription');
 Route::get('/doctor-billing', [FrontendController::class, 'doctorBilling']);
+Route::post('/doctor-payment-request', [FrontendController::class, 'postPaymentRequest'])->name('doctorPaymentRequest');
 
 // Patient Routes
 Route::get('/my-doctors', [FrontendController::class, 'myDoctors']);

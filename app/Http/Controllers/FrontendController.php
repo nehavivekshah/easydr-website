@@ -869,12 +869,71 @@ class FrontendController extends Controller
             ->where('status', 'pending')
             ->sum('amount');
 
+        $bankDetails = Usermetas::where('uid', $user->id)
+            ->whereIn('key', ['bank_name', 'account_number', 'ifsc_code', 'account_name'])
+            ->pluck('value', 'key');
+
         return view('frontend.account.doctor_billing', compact(
             'transactions',
             'totalEarnings',
             'availableBalance',
-            'pendingPayments'
+            'pendingPayments',
+            'bankDetails'
         ));
+    }
+
+    public function postPaymentRequest(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'bank_name' => 'required|string|max:255',
+            'account_number' => 'required|string|max:255',
+            'ifsc_code' => 'required|string|max:255',
+            'account_name' => 'required|string|max:255',
+        ]);
+
+        $user = Auth::user();
+        $doctor = Doctors::where('uid', $user->id)->first();
+
+        if (!$doctor) {
+            return back()->with('error', 'Doctor profile not found.');
+        }
+
+        if ($request->amount > ($doctor->wallet ?? 0)) {
+            return back()->with('error', 'Insufficient balance for this withdrawal.');
+        }
+
+        // Save bank details to usermetas for future use
+        $bankDetails = [
+            'bank_name' => $request->bank_name,
+            'account_number' => $request->account_number,
+            'ifsc_code' => $request->ifsc_code,
+            'account_name' => $request->account_name,
+        ];
+
+        foreach ($bankDetails as $key => $value) {
+            Usermetas::updateOrCreate(
+                ['uid' => $user->id, 'key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        // Create a withdrawal transaction in wallets
+        Wallets::create([
+            'did' => $doctor->id,
+            'amount' => $request->amount,
+            'details' => "Withdrawal request to {$request->bank_name} (Acc: {$request->account_number})",
+            'status' => 'pending', // We'll use 'pending' for withdrawal requests as well.
+            // In Wallets table, 'status' is credit / pending / health_card.
+            // We can use 'pending' to indicate a withdrawal that hasn't been processed yet.
+            // Or we can add a new status if we really want to, but 'pending' fits existing schema well enough.
+        ]);
+
+        // Note: We DON'T decrement the doctor's wallet yet. 
+        // We only decrement it when the admin approves/pays it. 
+        // Admin approval logic is out of scope for now, but we expect it to change status to 'paid' and decrement doctor->wallet.
+
+        return back()->with('success', 'Payment request submitted successfully. Admin will review it shortly.');
     }
 
     /* Patient Methods */
