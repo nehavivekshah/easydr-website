@@ -36,9 +36,10 @@
                                             $duration = $appointment->duration ?? 30;
                                             $slotEndTime = $apptDateTime->copy()->addMinutes($duration);
 
-                                            // Chat starts 15 mins before, ends when slot ends
-                                            $chatStartTime = $apptDateTime->copy()->subMinutes(15);
-                                            $isChatActive = $now->between($chatStartTime, $slotEndTime) && $appointment->status == '1';
+                                            // Chat starts 2 hours before, ends 24 hours after
+                                            $chatStartTime = $apptDateTime->copy()->subHours(2);
+                                            $chatEndTime = $slotEndTime->copy()->addHours(24);
+                                            $isChatActive = $now->between($chatStartTime, $chatEndTime) && ($appointment->status == '1' || $appointment->status == '3');
 
                                             // Session (Call/Video) starts at appt time, ends when slot ends
                                             // We add a small 5 min early window for convenience

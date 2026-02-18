@@ -1100,16 +1100,24 @@ class FrontendController extends Controller
         if ($user->role == 4) {
             // I am a Doctor, get Patients I've seen
             $contacts = DB::table('appointments')
-                ->join('users', 'appointments.pid', '=', 'users.id')
+                ->join('patients', 'appointments.pid', '=', 'patients.id')
+                ->join('users', 'patients.uid', '=', 'users.id')
                 ->where('appointments.did', $user->id)
                 ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
                 ->distinct()
                 ->get();
         } else {
             // I am a Patient, get Doctors I've visited
+            $patient = DB::table('patients')->where('uid', $user->id)->first();
+            $pid = $patient ? $patient->id : 0;
+
             $contacts = DB::table('appointments')
                 ->join('users', 'appointments.did', '=', 'users.id')
-                ->where('appointments.pid', $user->id)
+                ->where(function ($q) use ($user, $pid) {
+                    $q->where('appointments.pid', $user->id);
+                    if ($pid > 0)
+                        $q->orWhere('appointments.pid', $pid);
+                })
                 ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
                 ->distinct()
                 ->get();
@@ -1126,15 +1134,23 @@ class FrontendController extends Controller
 
         if ($user->role == 4) {
             $contacts = DB::table('appointments')
-                ->join('users', 'appointments.pid', '=', 'users.id')
+                ->join('patients', 'appointments.pid', '=', 'patients.id')
+                ->join('users', 'patients.uid', '=', 'users.id')
                 ->where('appointments.did', $user->id)
                 ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
                 ->distinct()
                 ->get();
         } else {
+            $patient = DB::table('patients')->where('uid', $user->id)->first();
+            $pid = $patient ? $patient->id : 0;
+
             $contacts = DB::table('appointments')
                 ->join('users', 'appointments.did', '=', 'users.id')
-                ->where('appointments.pid', $user->id)
+                ->where(function ($q) use ($user, $pid) {
+                    $q->where('appointments.pid', $user->id);
+                    if ($pid > 0)
+                        $q->orWhere('appointments.pid', $pid);
+                })
                 ->select('users.id', 'users.first_name', 'users.last_name', 'users.photo')
                 ->distinct()
                 ->get();
