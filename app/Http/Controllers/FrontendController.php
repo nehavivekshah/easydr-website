@@ -1359,6 +1359,8 @@ class FrontendController extends Controller
 
         DB::table('appointments')->where('id', $id)->update(['status' => '1']);
 
+        $this->creditDoctorWallet($id);
+
         return back()->with('success', 'Appointment confirmed successfully.');
     }
 
@@ -1379,6 +1381,8 @@ class FrontendController extends Controller
         }
 
         DB::table('appointments')->where('id', $id)->update(['status' => '3']);
+
+        $this->creditDoctorWallet($id);
 
         return back()->with('success', 'Appointment marked as completed.');
     }
@@ -1401,7 +1405,44 @@ class FrontendController extends Controller
 
         DB::table('appointments')->where('id', $id)->update(['payment_status' => 'paid']);
 
+        $this->creditDoctorWallet($id);
+
         return back()->with('success', 'Appointment marked as PAID.');
+    }
+
+    private function creditDoctorWallet($appointmentId)
+    {
+        $appointment = DB::table('appointments')->where('id', $appointmentId)->first();
+        if (!$appointment)
+            return;
+
+        // Condition for credit: Status is 1 (Confirmed) or 3 (Completed) AND payment_status is 'paid'
+        $isValidStatus = in_array($appointment->status, ['1', '3']);
+        $isPaid = $appointment->payment_status == 'paid';
+
+        if ($isValidStatus && $isPaid) {
+            // Check if already credited
+            $alreadyCredited = Wallets::where('aid', $appointmentId)->where('status', 'credit')->exists();
+
+            if (!$alreadyCredited) {
+                $doctor = Doctors::where('uid', $appointment->did)->first();
+                if ($doctor) {
+                    $fee = $appointment->fees ?? 0;
+
+                    // Increment doctor wallet
+                    $doctor->increment('wallet', $fee);
+
+                    // Create wallet record
+                    Wallets::create([
+                        'did' => $doctor->id,
+                        'aid' => $appointmentId,
+                        'details' => 'Payment credited for Appointment ID: ' . $appointmentId,
+                        'amount' => $fee,
+                        'status' => 'credit',
+                    ]);
+                }
+            }
+        }
     }
 
     public function manageAppointment(Request $request)
