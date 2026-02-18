@@ -1261,17 +1261,18 @@ class FrontendController extends Controller
             $endTime = $apptDateTime->copy()->addMinutes($duration);
 
             if ($now->gt($endTime)) {
-                // Get patient name for the global alert
+                // Get patient name and user ID for the global alert
                 $patientUser = DB::table('users')
                     ->join('patients', 'users.id', '=', 'patients.uid')
                     ->where('patients.id', $appointment->pid)
-                    ->select('users.first_name', 'users.last_name')
+                    ->select('users.id as uid', 'users.first_name', 'users.last_name')
                     ->first();
 
                 return response()->json([
                     'appointment' => [
                         'id' => $appointment->id,
-                        'patient_name' => $patientUser ? $patientUser->first_name . ' ' . $patientUser->last_name : 'Patient',
+                        'patient_user_id' => $patientUser ? $patientUser->uid : null,
+                        'patient_name' => $patientUser ? ($patientUser->first_name . ' ' . $patientUser->last_name) : 'Patient',
                         'end_time' => $endTime->toDateTimeString(),
                     ]
                 ]);

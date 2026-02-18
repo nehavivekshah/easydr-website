@@ -83,53 +83,68 @@
         </div>
 
         @push('scripts')
-            <script>
-                let globalAppointmentId = null;
-                let globalStatusInterval = null;
+        <script>
+            let globalAppointmentId = null;
+            let globalStatusInterval = null;
 
-                function checkGlobalOverdue() {
-                    // Don't check if we're on the messages page (it has its own specific check)
-                    if (window.location.pathname.includes('/messages')) return;
+            function checkGlobalOverdue() {
+                $.get('/chat/check-any-overdue', function (response) {
+                    if (response.appointment) {
+                        globalAppointmentId = response.appointment.id;
+                        
+                        // Coordination logic: Hide sidebar alert if we're on the chat page 
+                        // AND that specific patient is already the active chat recipient.
+                        let isChattingWithThisPatient = false;
+                        if (window.location.pathname.includes('/messages') && typeof currentRecipientId !== 'undefined') {
+                            if (currentRecipientId == response.appointment.patient_user_id) {
+                                isChattingWithThisPatient = true;
+                            }
+                        }
 
-                    $.get('/chat/check-any-overdue', function (response) {
-                        if (response.appointment) {
-                            globalAppointmentId = response.appointment.id;
+                        if (isChattingWithThisPatient) {
+                            $('#global-appointment-alert').addClass('d-none');
+                        } else {
                             $('#global-patient-name').text(response.appointment.patient_name);
                             $('#global-appointment-alert').removeClass('d-none');
-                        } else {
-                            $('#global-appointment-alert').addClass('d-none');
                         }
-                    });
-                }
-
-                function completeGlobalAppointment() {
-                    if (!globalAppointmentId) return;
-
-                    const btn = $('#global-appointment-alert button');
-                    const originalText = btn.text();
-                    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
-
-                    $.post(`/chat/appointment-complete/${globalAppointmentId}`, {
-                        _token: '{{ csrf_token() }}'
-                    }, function (response) {
-                        if (response.success) {
-                            $('#global-appointment-alert').fadeOut(function () {
-                                $(this).addClass('d-none').show();
-                            });
-                        } else {
-                            alert(response.error || 'Failed to complete appointment.');
-                            btn.prop('disabled', false).text(originalText);
-                        }
-                    });
-                }
-
-                // Start polling
-                $(document).ready(function () {
-                    checkGlobalOverdue();
-                    if (globalStatusInterval) clearInterval(globalStatusInterval);
-                    globalStatusInterval = setInterval(checkGlobalOverdue, 30000);
+                    } else {
+                        $('#global-appointment-alert').addClass('d-none');
+                    }
                 });
-            </script>
+            }
+
+            function completeGlobalAppointment() {
+                if (!globalAppointmentId) return;
+
+                const btn = $('#global-appointment-alert button');
+                const originalText = btn.text();
+                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+
+                $.post(`/chat/appointment-complete/${globalAppointmentId}`, {
+                    _token: '{{ csrf_token() }}'
+                }, function (response) {
+                    if (response.success) {
+                        $('#global-appointment-alert').fadeOut(function () {
+                            $(this).addClass('d-none').show();
+                        });
+                        // Also trigger chat header refresh if present
+                        if (typeof fetchAppointmentStatus === 'function') {
+                            fetchAppointmentStatus();
+                        }
+                    } else {
+                        alert(response.error || 'Failed to complete appointment.');
+                        btn.prop('disabled', false).text(originalText);
+                    }
+                });
+            }
+
+            // Start polling
+            $(document).ready(function () {
+                checkGlobalOverdue();
+                if (globalStatusInterval) clearInterval(globalStatusInterval);
+                globalStatusInterval = setInterval(checkGlobalOverdue, 30000);
+            });
+        </script>
         @endpush
     @endif
 @endif
