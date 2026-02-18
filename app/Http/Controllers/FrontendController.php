@@ -470,9 +470,9 @@ class FrontendController extends Controller
             $doctorInfo = \App\Models\Doctors::where('uid', $user->id)->first();
             $walletAmount = $doctorInfo ? $doctorInfo->wallet : 0;
 
-            // Total Revenue (Sum of fees from completed appointments)
+            // Total Revenue (Sum of fees from completed or confirmed/paid appointments)
             $totalRevenue = \App\Models\Appointments::where('did', $doctorId)
-                ->where('status', 1) // 1 = Completed
+                ->whereIn('status', [1, 3]) // 1 = Confirmed, 3 = Completed
                 ->sum('fees');
 
             // Recent Appointments
@@ -504,7 +504,7 @@ class FrontendController extends Controller
 
             // Revenue Data: Monthly revenue for current year
             $revenueRaw = \App\Models\Appointments::where('did', $doctorId)
-                ->where('status', 1) // Completed
+                ->whereIn('status', [1, 3]) // Confirmed or Completed
                 ->whereYear('date', Carbon::now()->year)
                 ->selectRaw('MONTH(date) as month, SUM(fees) as total')
                 ->groupBy('month')
@@ -542,11 +542,11 @@ class FrontendController extends Controller
                 ->count();
 
             $completedAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('status', 1)
+                ->where('status', 3) // 3 = Completed
                 ->count();
             $todayCompletedCount = \App\Models\Appointments::where('pid', $user->id)
                 ->where('date', $today)
-                ->where('status', 1)
+                ->where('status', 3)
                 ->count();
 
             $pendingAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
@@ -1297,11 +1297,23 @@ class FrontendController extends Controller
             return response()->json(['success' => false, 'error' => 'Appointment not found.'], 404);
         }
 
+        if ($appointment->status == '3') {
+            return response()->json(['success' => true, 'message' => 'Already completed.']);
+        }
+
         if ($appointment->status != '1') {
             return response()->json(['success' => false, 'error' => 'Only confirmed appointments can be completed.'], 400);
         }
 
-        DB::table('appointments')->where('id', $id)->update(['status' => '3']);
+        $updated = DB::table('appointments')->where('id', $id)->update(['status' => '3']);
+
+        if (!$updated) {
+            // Verify if it actually changed to 3 (maybe another request handled it)
+            $check = DB::table('appointments')->where('id', $id)->where('status', '3')->exists();
+            if (!$check) {
+                return response()->json(['success' => false, 'error' => 'Database update failed.'], 500);
+            }
+        }
 
         $this->creditDoctorWallet($id);
 
