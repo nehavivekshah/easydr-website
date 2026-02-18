@@ -83,7 +83,7 @@
                                                 </span>
                                             </div>
                                             <div class="header-actions">
-                                                <button type="button" class="btn btn-link text-muted px-2 mr-1"><i
+                                                <button type="button" class="btn btn-link text-muted px-2 mr-1 attachbtn"><i
                                                         class='fas fa-paperclip' style="font-size: 1.2rem;"></i></button>
                                             </div>
                                         </div>
@@ -97,12 +97,12 @@
                                         <!-- Chat Footer -->
                                         <div class="chat-footer p-3 bg-white border-top" style="flex: 0 0 auto;">
                                             <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
-                                                <div class="input-group align-items-center bg-light rounded-pill px-2 shadow-sm"
-                                                    style="border: 1px solid #ebebeb;">
+                                                <div
+                                                    class="input-group align-items-center bg-light rounded-pill px-2 shadow-sm">
                                                     <input type="text" id="chat-input"
                                                         class="form-control border-0 bg-transparent px-2"
                                                         placeholder="Type your message here..." required autocomplete="off"
-                                                        style="height: 48px; box-shadow: none;">
+                                                        style="height: 48px;">
                                                     <div class="input-group-append">
                                                         <button type="submit"
                                                             class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center shadow-lg"
@@ -244,6 +244,11 @@
 
         .shadow-lg {
             box-shadow: 0 10px 15px -3px rgba(0, 123, 255, 0.4);
+        }
+
+        #chat-input:focus {
+            box-shadow: none !important;
+            outline: none !important;
         }
     </style>
 

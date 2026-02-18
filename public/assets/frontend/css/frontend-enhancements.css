@@ -1316,3 +1316,12 @@ textarea.form-control {
     padding: 15px 0px !important;
     border-left: 1px solid #ccc;
 }
+
+.attachbtn {
+    width: 48px;
+    color: #fff;
+}
+
+.attachbtn i {
+    color: #fff;
+}   
