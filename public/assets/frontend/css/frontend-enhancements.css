@@ -1340,3 +1340,7 @@ textarea.form-control {
     color: inherit;
     font-size: 1.1rem;
 }
+
+input#contact-search {
+    padding: 10px 10px 10px 35px !important;
+}
