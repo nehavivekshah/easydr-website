@@ -21,8 +21,8 @@
                                     <div class="p-3 border-bottom bg-white">
                                         <h6 class="mb-3 font-weight-bold" style="color: #333;">Messages</h6>
                                         <div class="search-box position-relative">
-                                            <i class='bx bx-search position-absolute'
-                                                style="left: 12px; top: 10px; color: #999; font-size: 1.1rem;"></i>
+                                            <i class='fas fa-search position-absolute'
+                                                style="left: 12px; top: 12px; color: #999; font-size: 0.9rem;"></i>
                                             <input type="text" id="contact-search"
                                                 class="form-control form-control-sm pl-5 border-light bg-light rounded-pill"
                                                 placeholder="Search contacts..." style="height: 38px;">
@@ -50,7 +50,7 @@
                                         @empty
                                             <div
                                                 class="p-5 text-center text-muted h-100 d-flex flex-column align-items-center justify-content-center">
-                                                <i class='bx bx-user-plus text-light mb-2' style="font-size: 3rem;"></i>
+                                                <i class='fas fa-users text-light mb-2' style="font-size: 3rem;"></i>
                                                 <p class="small">No active conversations found.</p>
                                             </div>
                                         @endforelse
@@ -84,8 +84,8 @@
                                             </div>
                                             <div class="header-actions">
                                                 <button class="btn btn-link text-muted"><i
-                                                        class='bx bx-dots-vertical-rounded'
-                                                        style="font-size: 1.4rem;"></i></button>
+                                                        class='fas fa-ellipsis-v'
+                                                        style="font-size: 1.2rem;"></i></button>
                                             </div>
                                         </div>
 
@@ -101,9 +101,9 @@
                                                 <div class="input-group align-items-center bg-light rounded-pill px-2 shadow-sm"
                                                     style="border: 1px solid #ebebeb;">
                                                     <button type="button" class="btn btn-link text-muted px-2"><i
-                                                            class='bx bx-happy-alt' style="font-size: 1.5rem;"></i></button>
+                                                            class='far fa-smile' style="font-size: 1.3rem;"></i></button>
                                                     <button type="button" class="btn btn-link text-muted px-2 mr-1"><i
-                                                            class='bx bx-paperclip' style="font-size: 1.4rem;"></i></button>
+                                                            class='fas fa-paperclip' style="font-size: 1.2rem;"></i></button>
                                                     <input type="text" id="chat-input"
                                                         class="form-control border-0 bg-transparent px-2"
                                                         placeholder="Type your message here..." required autocomplete="off"
@@ -112,8 +112,8 @@
                                                         <button type="submit"
                                                             class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center shadow-lg"
                                                             style="width: 42px; height: 42px; flex: 0 0 42px; padding: 0; margin-left: 5px;">
-                                                            <i class='bx bxs-send'
-                                                                style="font-size: 1.2rem; margin-left: 3px;"></i>
+                                                            <i class='fas fa-paper-plane'
+                                                                style="font-size: 1.1rem;"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -126,14 +126,14 @@
                                         class="h-100 w-100 d-flex flex-column align-items-center justify-content-center text-center p-5"
                                         style="background: #fff; z-index: 2;">
                                         <div class="mb-4 bg-light p-4 rounded-circle">
-                                            <i class='bx bx-message-rounded-check text-primary'
+                                            <i class='fas fa-comments text-primary'
                                                 style="font-size: 5rem; opacity: 0.8;"></i>
                                         </div>
                                         <h4 class="font-weight-bold" style="color: #333;">EasyDoctor Chat</h4>
                                         <p class="text-muted mx-auto" style="max-width: 400px;">Connect safely with your
                                             patients or doctors. Select a contact from the left to start a conversation.</p>
                                         <div class="mt-2 small text-muted">
-                                            <i class='bx bx-lock-alt'></i> End-to-end encrypted
+                                            <i class='fas fa-lock'></i> End-to-end encrypted
                                         </div>
                                     </div>
                                 </div>

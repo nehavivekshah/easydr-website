@@ -4178,6 +4178,7 @@ div.single-cta:last-child {
 
 .contact-name {
 	position: relative;
+	margin-bottom: 0px;
 }
 
 .contact-field label {
