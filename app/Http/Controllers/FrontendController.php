@@ -1466,8 +1466,18 @@ class FrontendController extends Controller
             return back()->with('error', 'Appointment not found or unauthorized.');
         }
 
-        if ($appointment->status != '0') {
-            return back()->with('error', 'Only pending appointments can be cancelled.');
+        // Allow cancellation for status 0 (Pending) and status 1 (Confirmed)
+        if (!in_array($appointment->status, ['0', '1'])) {
+            return back()->with('error', 'This appointment cannot be cancelled in its current state.');
+        }
+
+        // 30-minute rule check
+        $now = Carbon::now();
+        $apptDateTime = Carbon::parse($appointment->date . ' ' . $appointment->time);
+        $deadline = $apptDateTime->copy()->subMinutes(30);
+
+        if ($now->gt($deadline)) {
+            return back()->with('error', 'Cancellations are only allowed until 30 minutes before the scheduled time.');
         }
 
         // status '2' = Cancelled
