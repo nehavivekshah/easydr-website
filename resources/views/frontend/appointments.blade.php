@@ -131,14 +131,6 @@
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
-                                                    {{-- Pay Now Button --}}
-                                                    @if($appointment->payment_status == 'unpaid' && !$isExpired && $appointment->status != '2')
-                                                        <a href="{{ route('repay', $appointment->id) }}" class="action-btn"
-                                                            style="background: #28a745; max-width: 100px;" title="Pay Now">
-                                                            <i class="fas fa-credit-card me-1"></i> Pay
-                                                        </a>
-                                                    @endif
-
                                                     {{-- Chat Button --}}
                                                     @php
                                                         $canChat = $isChatActive && $now->lt($slotEndTime);
@@ -167,30 +159,37 @@
                                                         </button>
                                                     @endif
 
-                                                    {{-- Video Button --}}
-                                                    {{-- Only enabled if On Time logic is met AND link exists AND status is
-                                                    confirmed (1) --}}
-                                                    @if(!empty($appointment->meeting_link) && $isSessionActive && !$isExpired)
-                                                        @if($appointment->meeting_provider == 'whatsapp')
-                                                            <a href="https://wa.me/{{ $appointment->meeting_link }}" target="_blank"
-                                                                class="action-btn btn-video pulsate-active" title="Join WhatsApp Video"
-                                                                style="background: #17a2b8; color: #fff;">
-                                                                <i class="fab fa-whatsapp"></i>
-                                                            </a>
-                                                        @else
-                                                            <a href="{{ $appointment->meeting_link }}" target="_blank"
-                                                                class="action-btn btn-video pulsate-active" title="Join Video Call"
-                                                                style="background: #17a2b8; color: #fff;">
-                                                                <i class="fas fa-video"></i>
-                                                            </a>
-                                                        @endif
+                                                    {{-- Video OR Pay Button --}}
+                                                    @if($appointment->payment_status == 'unpaid' && !$isExpired && $appointment->status != '2')
+                                                        {{-- Replace Video with Pay Button if Unpaid --}}
+                                                        <a href="{{ route('repay', $appointment->id) }}" class="action-btn"
+                                                            style="background: #28a745;" title="Pay Now">
+                                                            <i class="fas fa-credit-card me-1"></i> Pay
+                                                        </a>
                                                     @else
-                                                        {{-- Disabled State --}}
-                                                        <button class="action-btn btn-video" disabled
-                                                            title="{{ $isExpired ? 'Meeting Expired' : 'Join active during session' }}">
-                                                            <i
-                                                                class="fas fa-video{{ !empty($appointment->meeting_link) ? '' : '-slash' }}"></i>
-                                                        </button>
+                                                        {{-- Show Video Button logic if Paid/Expired --}}
+                                                        @if(!empty($appointment->meeting_link) && $isSessionActive && !$isExpired)
+                                                            @if($appointment->meeting_provider == 'whatsapp')
+                                                                <a href="https://wa.me/{{ $appointment->meeting_link }}" target="_blank"
+                                                                    class="action-btn btn-video pulsate-active" title="Join WhatsApp Video"
+                                                                    style="background: #17a2b8; color: #fff;">
+                                                                    <i class="fab fa-whatsapp"></i>
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ $appointment->meeting_link }}" target="_blank"
+                                                                    class="action-btn btn-video pulsate-active" title="Join Video Call"
+                                                                    style="background: #17a2b8; color: #fff;">
+                                                                    <i class="fas fa-video"></i>
+                                                                </a>
+                                                            @endif
+                                                        @else
+                                                            {{-- Disabled State --}}
+                                                            <button class="action-btn btn-video" disabled
+                                                                title="{{ $isExpired ? 'Meeting Expired' : ($appointment->payment_status == 'unpaid' ? 'Payment Required' : 'Join active during session') }}">
+                                                                <i
+                                                                    class="fas fa-video{{ !empty($appointment->meeting_link) ? '' : '-slash' }}"></i>
+                                                            </button>
+                                                        @endif
                                                     @endif
 
                                                     {{-- Cancel Button (Hide calculation logic: only cancellable if upcoming and
