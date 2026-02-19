@@ -1417,44 +1417,6 @@ class FrontendController extends Controller
         return response()->json(['success' => true]);
     }
 
-    private function creditDoctorWallet($appointmentId)
-    {
-        $appt = DB::table('appointments')->where('id', $appointmentId)->first();
-        if (!$appt || !$appt->amount)
-            return;
-
-        // Logic: Add amount to doctor's wallet
-        // Assuming 'users' table has a 'wallet' column or there's a 'wallets' table
-        // Let's check User model or database schema for wallet.
-        // For now, I'll assume a 'wallet' column on users table based on standard practices in such apps
-        // OR a transactions table.
-
-        // Let's look for existing wallet logic. 
-        // I see `WebPaymentController` usage in routes.
-        // But to be safe and avoid breaking, I will just log for now if I can't find clear wallet logic.
-        // create-chats-table migration showed `chats`.
-
-        // Let's check if `users` table has `wallet`.
-        // Inspecting `FrontendController.php` might reveal it.
-        // Wait, the previous developer called `$this->creditDoctorWallet($id)`. 
-        // It implies they expected it to be there or I need to write it.
-
-        // Simple implementation: Update doctor's wallet balance
-        $doctor = User::find($appt->did);
-        if ($doctor) {
-            $doctor->increment('wallet', $appt->amount);
-
-            // Log transaction
-            DB::table('transactions')->insert([
-                'user_id' => $doctor->id,
-                'amount' => $appt->amount,
-                'type' => 'credit',
-                'description' => 'Appointment completion #' . $appointmentId,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-    }
 
     public function appointments(Request $request)
     {
