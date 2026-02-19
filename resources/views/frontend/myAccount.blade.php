@@ -226,7 +226,7 @@
                                             <h5 class="mb-0 font-weight-bold" style="color: #1a4b8c;"><i
                                                     class="fas fa-history me-2"></i> Recent Sessions</h5>
                                         </div>
-                                        <div class="flex-grow-1 overflow-auto p-0" style="max-height: 450px;">
+                                        <div class="flex-grow-1 overflow-auto p-0" style="max-height: 531px;">
                                             @forelse($recentAppointments as $appt)
                                                 <div class="p-3 border-bottom hover-bg-light transition-all">
                                                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -249,10 +249,10 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between align-items-center mt-2">
                                                         <span
-                                                            class="small font-weight-bold text-primary">${{ $appt->fees }}</span>
+                                                            class="font-weight-bold text-primary">${{ $appt->fees }}</span>
                                                         <a href="/messages?recipient={{ Auth::user()->role == 4 ? $appt->pid : $appt->did }}"
                                                             class="btn btn-xs btn-outline-primary rounded-pill py-0 px-2"
-                                                            style="font-size: 10px;">Chat</a>
+                                                            style="font-size: 12px;    padding: 8px 28px !important;">Chat</a>
                                                     </div>
                                                 </div>
                                             @empty
