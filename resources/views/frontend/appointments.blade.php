@@ -84,6 +84,14 @@
                                                     {{ $apptDateTime->format('d M, Y') }} | {{ $apptDateTime->format('h:i A') }}
                                                 </div>
 
+                                                {{-- Countdown Timer --}}
+                                                @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
+                                                    <div class="timer-countdown mb-3" data-start="{{ $apptDateTime->timestamp * 1000 }}"
+                                                        data-end="{{ $slotEndTime->timestamp * 1000 }}">
+                                                        <div class="dt-item text-danger"></div>
+                                                    </div>
+                                                @endif
+
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
 
@@ -184,3 +192,47 @@
         </section>
     </main>
 @endsection
+
+@push('scripts')
+    <script>
+        function updateCountdowns() {
+            document.querySelectorAll('.timer-countdown').forEach(el => {
+                const start = parseInt(el.dataset.start);
+                const end = parseInt(el.dataset.end);
+                const now = new Date().getTime();
+                const display = el.querySelector('.dt-item');
+
+                if (!display) return;
+
+                if (now < start) {
+                    // Future: show countdown to start
+                    const diff = start - now;
+                    const h = Math.floor(diff / 3600000);
+                    const m = Math.floor((diff % 3600000) / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+
+                    let timeStr = "";
+                    if (h > 0) timeStr += h + "h ";
+                    timeStr += m + "m " + s + "s";
+
+                    display.innerText = "Starts in " + timeStr;
+                    el.classList.remove('ongoing', 'ended');
+                } else if (now >= start && now <= end) {
+                    // Ongoing
+                    display.innerText = "Session Ongoing";
+                    el.classList.add('ongoing');
+                    el.classList.remove('ended');
+                } else {
+                    // Ended
+                    display.innerText = "Session Ended";
+                    el.classList.add('ended');
+                    el.classList.remove('ongoing');
+                }
+            });
+        }
+
+        // Initialize and run every second
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns();
+    </script>
+@endpush

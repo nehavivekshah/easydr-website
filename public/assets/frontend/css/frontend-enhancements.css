@@ -1294,3 +1294,40 @@ textarea.form-control {
 input#contact-search {
     padding: 10px 10px 10px 35px !important;
 }
+
+/* ==================== Countdown Timer ==================== */
+.timer-countdown {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(220, 53, 69, 0.05);
+    border: 1px dashed rgba(220, 53, 69, 0.2);
+    border-radius: 30px;
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+}
+
+.timer-countdown .dt-item {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.timer-countdown.ongoing {
+    background: rgba(40, 167, 69, 0.05);
+    border-color: rgba(40, 167, 69, 0.2);
+}
+
+.timer-countdown.ongoing .dt-item {
+    color: #28a745 !important;
+}
+
+.timer-countdown.ended {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+    opacity: 0.7;
+}
+
+.timer-countdown.ended .dt-item {
+    color: #6c757d;
+}

@@ -568,20 +568,18 @@
                     if (h > 0) timeStr += h + "h ";
                     timeStr += m + "m " + s + "s";
                     
-                    display.innerText = timeStr;
-                    display.classList.add('text-danger');
-                    display.classList.remove('text-success');
+                    display.innerText = "Starts in " + timeStr;
+                    el.classList.remove('ongoing', 'ended');
                 } else if (now >= start && now <= end) {
                     // Ongoing
-                    display.innerText = "Ongoing";
-                    display.classList.remove('text-danger');
-                    display.classList.add('text-success');
+                    display.innerText = "Session Ongoing";
+                    el.classList.add('ongoing');
+                    el.classList.remove('ended');
                 } else {
                     // Ended
-                    display.innerText = "Ended";
-                    display.classList.remove('text-danger', 'text-success');
-                    display.style.color = '#6c757d';
-                    display.style.fontSize = '14px';
+                    display.innerText = "Session Ended";
+                    el.classList.add('ended');
+                    el.classList.remove('ongoing');
                 }
             });
         }

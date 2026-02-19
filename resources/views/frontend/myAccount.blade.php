@@ -241,6 +241,20 @@
                                                             <span class="text-muted" style="font-size: 11px;"><i
                                                                     class="far fa-clock me-1"></i> {{ $appt->date }} at
                                                                 {{ $appt->time }}</span>
+                                                            
+                                                            @php
+                                                                $apptDateTime = \Carbon\Carbon::parse($appt->date . ' ' . $appt->time);
+                                                                $slotEndTime = (clone $apptDateTime)->addMinutes(30);
+                                                                $isUpcomingToday = $apptDateTime->isToday() && $apptDateTime->isFuture();
+                                                            @endphp
+
+                                                            @if($isUpcomingToday && ($appt->status == 0 || $appt->status == 1))
+                                                                <div class="timer-countdown mt-1" style="transform: scale(0.85); transform-origin: left;"
+                                                                    data-start="{{ $apptDateTime->timestamp * 1000 }}" 
+                                                                    data-end="{{ $slotEndTime->timestamp * 1000 }}">
+                                                                    <div class="dt-item text-danger"></div>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                         <span
                                                             class="badge {{ $appt->status == 3 ? 'badge-soft-success' : ($appt->status == 1 ? 'badge-soft-primary' : 'badge-soft-warning') }} badge-pill-modern">
@@ -379,7 +393,42 @@
                         }
                     });
                 @endif
-                    });
+            });
+
+            function updateCountdowns() {
+                document.querySelectorAll('.timer-countdown').forEach(el => {
+                    const start = parseInt(el.dataset.start);
+                    const end = parseInt(el.dataset.end);
+                    const now = new Date().getTime();
+                    const display = el.querySelector('.dt-item');
+
+                    if (!display) return;
+
+                    if (now < start) {
+                        const diff = start - now;
+                        const h = Math.floor(diff / 3600000);
+                        const m = Math.floor((diff % 3600000) / 60000);
+                        const s = Math.floor((diff % 60000) / 1000);
+                        
+                        let timeStr = "";
+                        if (h > 0) timeStr += h + "h ";
+                        timeStr += m + "m " + s + "s";
+                        
+                        display.innerText = "Starts in " + timeStr;
+                        el.classList.remove('ongoing', 'ended');
+                    } else if (now >= start && now <= end) {
+                        display.innerText = "Session Ongoing";
+                        el.classList.add('ongoing');
+                        el.classList.remove('ended');
+                    } else {
+                        display.innerText = "Session Ended";
+                        el.classList.add('ended');
+                        el.classList.remove('ongoing');
+                    }
+                });
+            }
+            setInterval(updateCountdowns, 1000);
+            updateCountdowns();
         </script>
     @endpush
 @endsection
