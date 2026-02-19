@@ -68,16 +68,20 @@
                                                         <span class="appointment-status-badge status-upcoming"
                                                             style="position: static;">Confirmed</span>
                                                     @else
-                                                        <span class="appointment-status-badge status-upcoming"
-                                                            style="position: static;">Pending</span>
+                                                        @if($appointment->payment_status == 'unpaid')
+                                                            <span class="badge-payment text-danger unpaid">Unpaid</span>
+                                                        @else
+                                                            <span class="appointment-status-badge status-upcoming"
+                                                                style="position: static;">Pending</span>
+                                                        @endif
                                                     @endif
 
                                                     @if($appointment->payment_status == 'paid')
-                                                        <span class="badge-payment paid">Paid</span>
+                                                        <!-- <span class="badge-payment paid">Paid</span> -->
                                                     @elseif($appointment->payment_status == 'health_card')
                                                         <span class="badge-payment health_card">Health Card</span>
                                                     @else
-                                                        <span class="badge-payment unpaid">Unpaid</span>
+                                                        <!-- <span class="badge-payment unpaid">Unpaid</span> -->
                                                     @endif
                                                 </div>
 
@@ -164,7 +168,7 @@
                                                         {{-- Replace Video with Pay Button if Unpaid --}}
                                                         <a href="{{ route('repay', $appointment->id) }}" class="action-btn"
                                                             style="background: #28a745;" title="Pay Now">
-                                                            <i class="fas fa-credit-card me-1"></i> Pay
+                                                            Pay
                                                         </a>
                                                     @else
                                                         {{-- Show Video Button logic if Paid/Expired --}}
