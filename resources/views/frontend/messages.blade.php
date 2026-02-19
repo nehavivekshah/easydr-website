@@ -362,6 +362,41 @@
             }
         }
 
+        function checkAppointmentStatus() {
+            if (!currentRecipientId || myRole != 4) return;
+
+            $.get(`/chat/appointment-status/${currentRecipientId}`, function (response) {
+                if (response.appointment && response.appointment.is_overdue) {
+                    currentAppointmentId = response.appointment.id;
+                    $('#appointment-alert').removeClass('d-none');
+                } else {
+                    $('#appointment-alert').addClass('d-none');
+                    currentAppointmentId = null;
+                }
+            });
+        }
+
+        function completeAppointmentNow() {
+            if (!currentAppointmentId) return;
+
+            const btn = $('#appointment-alert button');
+            const originalText = btn.text();
+            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+            $.post(`/chat/appointment-complete/${currentAppointmentId}`, {
+                _token: '{{ csrf_token() }}'
+            }, function (response) {
+                if (response.success) {
+                    $('#appointment-alert').fadeOut(function () {
+                        $(this).addClass('d-none').show();
+                    });
+                } else {
+                    alert(response.error || 'Failed to complete appointment.');
+                    btn.prop('disabled', false).text(originalText);
+                }
+            });
+        }
+
         function fetchMessages(forceScroll = false) {
             if (!currentRecipientId) return;
 
