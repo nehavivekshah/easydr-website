@@ -76,7 +76,7 @@
                                             <li><span>Health Card File:</span>
                                                 <a href="{{ asset('public/assets/images/healthCards/' . $patient->health_card_file) }}"
                                                     target="_blank" class="text-primary"
-                                                    style="min-width: 170px; right: 120px; padding: 8px 35px; background: var(--gradient-primary) 0% 0% no-repeat padding-box; color: #fff !important;"><i
+                                                    style="min-width: 160px;text-align: center; right: 120px; padding: 8px 35px; background: var(--gradient-primary) 0% 0% no-repeat padding-box; color: #fff !important;"><i
                                                         class="fas fa-file-medical"></i> View
                                                     Card</a>
                                             </li>
@@ -97,14 +97,14 @@
                                     </ul>
                                     @if(isset($doctorAvailability))
                                         <!-- <h5 class="mt-3">Availability</h5>
-                                                                                                                    <ul>
-                                                                                                                        <li><span>Days:</span>
-                                                                                                                            {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
-                                                                                                                        <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
-                                                                                                                            {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
-                                                                                                                        </li>
-                                                                                                                        <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
-                                                                                                                    </ul> -->
+                                                                    <ul>
+                                                                        <li><span>Days:</span>
+                                                                            {{ implode(', ', json_decode($doctorAvailability->available_days) ?? []) }}</li>
+                                                                        <li><span>Time:</span> {{ date('g:i A', strtotime($doctorAvailability->start_time)) }} -
+                                                                            {{ date('g:i A', strtotime($doctorAvailability->end_time)) }}
+                                                                        </li>
+                                                                        <li><span>Duration:</span> {{ $doctorAvailability->duration }} mins</li>
+                                                                    </ul> -->
                                     @endif
                                 @endif
                             </div>
