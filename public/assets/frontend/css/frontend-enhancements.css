@@ -1331,3 +1331,24 @@ input#contact-search {
 .timer-countdown.ended .dt-item {
     color: #6c757d;
 }
+/* Inline timer specific (for appointment list) */
+.timer-countdown.inline-timer {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    gap: 0 !important;
+}
+
+.timer-countdown.inline-timer .dt-item {
+    font-size: 1.05rem !important;
+    color: #dc3545 !important;
+}
+
+.timer-countdown.inline-timer.ongoing {
+    background: transparent !important;
+    border: none !important;
+}
+
+.timer-countdown.inline-timer.ongoing .dt-item {
+    color: #28a745 !important;
+}

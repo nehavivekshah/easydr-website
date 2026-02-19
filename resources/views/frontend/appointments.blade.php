@@ -79,18 +79,32 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- Date Time --}}
-                                                <div class="appointment-datetime">
-                                                    {{ $apptDateTime->format('d M, Y') }} | {{ $apptDateTime->format('h:i A') }}
-                                                </div>
-
-                                                {{-- Countdown Timer --}}
-                                                @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
-                                                    <div class="timer-countdown mb-3" data-start="{{ $apptDateTime->timestamp * 1000 }}"
-                                                        data-end="{{ $slotEndTime->timestamp * 1000 }}">
-                                                        <div class="dt-item text-danger"></div>
+                                                {{-- Date Time & Countdown Row --}}
+                                                <div class="d-flex align-items-center flex-wrap gap-2 mb-3 mt-1"
+                                                    style="font-size: 0.95rem; color: #4b5563;">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="far fa-calendar-alt me-2 text-muted"></i>
+                                                        <span class="font-weight-bold">{{ $apptDateTime->format('d M, Y') }}</span>
                                                     </div>
-                                                @endif
+
+                                                    <div style="width: 1px; height: 16px; background: #dee2e6; margin: 0 4px;">
+                                                    </div>
+
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="far fa-clock me-2 text-muted"></i>
+                                                        <span class="font-weight-bold">{{ $apptDateTime->format('h:i A') }}</span>
+                                                    </div>
+
+                                                    {{-- Countdown Timer --}}
+                                                    @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
+                                                        <div class="timer-countdown inline-timer ms-3"
+                                                            data-start="{{ $apptDateTime->timestamp * 1000 }}"
+                                                            data-end="{{ $slotEndTime->timestamp * 1000 }}">
+                                                            <div class="dt-item text-danger font-weight-bold"
+                                                                style="font-size: 1.05rem;"></div>
+                                                        </div>
+                                                    @endif
+                                                </div>
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
@@ -215,7 +229,7 @@
                     if (h > 0) timeStr += h + "h ";
                     timeStr += m + "m " + s + "s";
 
-                    display.innerText = "Starts in " + timeStr;
+                    display.innerText = timeStr;
                     el.classList.remove('ongoing', 'ended');
                 } else if (now >= start && now <= end) {
                     // Ongoing
