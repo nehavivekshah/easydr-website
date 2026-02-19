@@ -107,6 +107,9 @@
                                                             <div class="dt-item text-danger font-weight-bold"
                                                                 style="font-size: 1.05rem;"></div>
                                                         </div>
+                                                    @else
+                                                        <div class="dt-item text-dark font-weight-bold" style="font-size: 1.05rem;">
+                                                            Ended</div>
                                                     @endif
                                                 </div>
 
