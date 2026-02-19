@@ -531,6 +531,7 @@ class FrontendController extends Controller
                 'monthlyRevenue'
             ));
 
+        } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
             $pid = $patient ? $patient->id : 0;
