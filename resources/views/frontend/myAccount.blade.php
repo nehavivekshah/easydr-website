@@ -211,7 +211,7 @@
 
                                     @if(Auth::user()->role == 4)
                                         <!-- Revenue Chart for Doctors -->
-                                        <div class="card-modern p-4 mb-4">
+                                        <div class="card-modern p-4 my-4">
                                             <h5 class="section-header-modern small mb-3">Revenue Analytics ({{ date('Y') }})
                                             </h5>
                                             <canvas id="revenueChart" style="width:100%; height:200px;"></canvas>
