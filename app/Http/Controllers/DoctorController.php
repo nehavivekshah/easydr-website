@@ -1294,9 +1294,10 @@ class DoctorController extends ApiController
         // Update fields
         $appointment->is_completed = implode(',', $isCompletedArray);
 
-        // If both have marked complete, set status = 1
+        // If both have marked complete, set status = 1 and ensure is_completed is '1,1'
         if ($isCompletedArray[0] === '1' && $isCompletedArray[1] === '1') {
             $appointment->status = 1;
+            $appointment->is_completed = '1,1';
         }
 
         $appointment->save();

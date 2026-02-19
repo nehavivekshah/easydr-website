@@ -102,9 +102,13 @@
                                             style="border-radius: 12px; background: #e3f2fd; color: #0d47a1; z-index: 10;">
                                             <div class="d-flex align-items-center">
                                                 <i class="fas fa-clock me-3" style="font-size: 1.2rem;"></i>
-                                                <div>
+                                                <div class="me-4">
                                                     <span class="font-weight-bold d-block">Session Finished?</span>
                                                     <small>The scheduled time for this appointment has elapsed.</small>
+                                                </div>
+                                                <div class="status-indicators d-flex flex-column small border-start ps-3" style="border-color: #bbdefb !important;">
+                                                    <span class="doctor-status mb-1"></span>
+                                                    <span class="patient-status"></span>
                                                 </div>
                                             </div>
                                             <button onclick="completeAppointmentNow()"
@@ -356,19 +360,40 @@
             pollingInterval = setInterval(() => fetchMessages(false), 4000);
 
             if (statusCheckInterval) clearInterval(statusCheckInterval);
-            if (myRole == 4) {
+            if (myRole == 4 || myRole == 5) {
                 checkAppointmentStatus();
                 statusCheckInterval = setInterval(checkAppointmentStatus, 30000); // Check every 30s
             }
         }
 
         function checkAppointmentStatus() {
-            if (!currentRecipientId || myRole != 4) return;
+            if (!currentRecipientId) return;
 
             $.get(`/chat/appointment-status/${currentRecipientId}`, function (response) {
                 if (response.appointment && response.appointment.is_overdue) {
                     currentAppointmentId = response.appointment.id;
-                    $('#appointment-alert').removeClass('d-none');
+
+                    // Update UI with completion details
+                    const statuses = response.appointment.is_completed.split(',');
+                    const doctorDone = statuses[0] === '1';
+                    const patientDone = statuses[1] === '1';
+
+                    const alertDiv = $('#appointment-alert');
+                    alertDiv.find('.doctor-status').html(doctorDone ? '<i class="fas fa-check-circle text-success"></i> Doctor: Done' : '<i class="fas fa-clock"></i> Doctor: Pending');
+                    alertDiv.find('.patient-status').html(patientDone ? '<i class="fas fa-check-circle text-success"></i> Patient: Done' : '<i class="fas fa-clock"></i> Patient: Pending');
+
+                    // Show/Hide button based on current user's role and completion
+                    let alreadyCompleted = false;
+                    if (myRole == 4 && doctorDone) alreadyCompleted = true;
+                    if (myRole == 5 && patientDone) alreadyCompleted = true;
+
+                    if (alreadyCompleted) {
+                        alertDiv.find('button').addClass('d-none');
+                    } else {
+                        alertDiv.find('button').removeClass('d-none');
+                    }
+
+                    alertDiv.removeClass('d-none');
                 } else {
                     $('#appointment-alert').addClass('d-none');
                     currentAppointmentId = null;
@@ -387,15 +412,12 @@
                 _token: '{{ csrf_token() }}'
             }, function (response) {
                 if (response.success) {
-                    $('#appointment-alert').fadeOut(function () {
-                        $(this).addClass('d-none').show(); // Ensure it's hidden but structure remains
-                        // Ideally we should just rely on checkAppointmentStatus re-enabling it if needed
-                        // But for now, forcing hide is correct.
-                        // However, let's remove the show() call which might be redundant/problematic with d-none
-                        $(this).addClass('d-none');
-                    });
-                    // Force re-check status to verify it's gone
+                    // Refresh status immediately
                     checkAppointmentStatus();
+                    // Also trigger sidebar refresh if present
+                    if (typeof checkGlobalOverdue === 'function') {
+                        checkGlobalOverdue();
+                    }
                 } else {
                     alert(response.error || 'Failed to complete appointment.');
                     btn.prop('disabled', false).text(originalText);

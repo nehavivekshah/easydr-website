@@ -1299,52 +1299,67 @@ class FrontendController extends Controller
         if (!$user)
             return response()->json(['error' => 'Unauthorized'], 401);
 
-        // Only doctors need these alerts
+        $query = DB::table('appointments')->where('status', '1'); // Confirmed
+
         if ($user->role == 4) {
-            // recipient_id is the patient's USER ID
+            // Patient matches
             $patient = DB::table('patients')->where('uid', $recipient_id)->first();
             if (!$patient)
                 return response()->json(['appointment' => null]);
 
-            $appointment = DB::table('appointments')
-                ->where('did', $user->id)
-                ->where('pid', $patient->id)
-                ->where('status', '1') // Confirmed
-                ->orderBy('date', 'desc')
-                ->orderBy('time', 'desc')
-                ->first();
-
-            if ($appointment) {
-                $apptDateTime = Carbon::parse($appointment->date . ' ' . $appointment->time);
-                $duration = $appointment->duration ?? 30;
-                $endTime = $apptDateTime->copy()->addMinutes($duration);
-                $now = Carbon::now();
-
-                return response()->json([
-                    'appointment' => [
-                        'id' => $appointment->id,
-                        'is_overdue' => $now->gt($endTime),
-                        'end_time' => $endTime->toDateTimeString(),
-                    ]
-                ]);
-            }
+            $query->where('did', $user->id)->where('pid', $patient->id);
+        } else {
+            // Doctor matches
+            $query->where('did', $recipient_id)->where('pid', $user->id);
         }
+
+        $appointment = $query->orderBy('date', 'desc')->orderBy('time', 'desc')->first();
+
+        if ($appointment) {
+            $apptDateTime = Carbon::parse($appointment->date . ' ' . $appointment->time);
+            $duration = $appointment->duration ?? 30;
+            $endTime = $apptDateTime->copy()->addMinutes($duration);
+            $now = Carbon::now();
+
+            return response()->json([
+                'appointment' => [
+                    'id' => $appointment->id,
+                    'is_overdue' => $now->gt($endTime),
+                    'is_completed' => $appointment->is_completed ?? '0,0',
+                    'end_time' => $endTime->toDateTimeString(),
+                ]
+            ]);
+        }
+
         return response()->json(['appointment' => null]);
     }
 
     public function checkAnyOverdueAppointment()
     {
         $user = Auth::user();
-        if (!$user || $user->role != 4)
+        if (!$user)
             return response()->json(['appointment' => null]);
 
         $now = Carbon::now();
 
-        // Find all confirmed appointments for this doctor
-        $appointments = DB::table('appointments')
-            ->where('did', $user->id)
-            ->where('status', '1') // Confirmed
-            ->get();
+        // Find all confirmed appointments for this user
+        $query = DB::table('appointments')
+            ->where('status', '1'); // Confirmed
+
+        if ($user->role == 4) {
+            $query->where('did', $user->id);
+        } else {
+            // Patient might be linked by user->id (pid) or patients->id
+            $patient = DB::table('patients')->where('uid', $user->id)->first();
+            $pid = $patient ? $patient->id : 0;
+            $query->where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            });
+        }
+
+        $appointments = $query->get();
 
         foreach ($appointments as $appointment) {
             $apptDateTime = Carbon::parse($appointment->date . ' ' . $appointment->time);
@@ -1352,18 +1367,31 @@ class FrontendController extends Controller
             $endTime = $apptDateTime->copy()->addMinutes($duration);
 
             if ($now->gt($endTime)) {
-                // Get patient name and user ID for the global alert
-                $patientUser = DB::table('users')
-                    ->join('patients', 'users.id', '=', 'patients.uid')
-                    ->where('patients.id', $appointment->pid)
-                    ->select('users.id as uid', 'users.first_name', 'users.last_name')
-                    ->first();
+                // Determine display name (if user is doctor, show patient name; if user is patient, show doctor name)
+                $displayName = 'User';
+                $displayId = null;
+
+                if ($user->role == 4) {
+                    $otherUser = DB::table('users')
+                        ->join('patients', 'users.id', '=', 'patients.uid')
+                        ->where('patients.id', $appointment->pid)
+                        ->orWhere('users.id', $appointment->pid) // Fallback if pid is user id
+                        ->select('users.id as uid', 'users.first_name', 'users.last_name')
+                        ->first();
+                    $displayName = $otherUser ? ($otherUser->first_name . ' ' . $otherUser->last_name) : 'Patient';
+                    $displayId = $otherUser ? $otherUser->uid : null;
+                } else {
+                    $otherUser = DB::table('users')->where('id', $appointment->did)->first();
+                    $displayName = $otherUser ? ($otherUser->first_name . ' ' . $otherUser->last_name) : 'Doctor';
+                    $displayId = $otherUser ? $otherUser->id : null;
+                }
 
                 return response()->json([
                     'appointment' => [
                         'id' => $appointment->id,
-                        'patient_user_id' => $patientUser ? $patientUser->uid : null,
-                        'patient_name' => $patientUser ? ($patientUser->first_name . ' ' . $patientUser->last_name) : 'Patient',
+                        'other_user_id' => $displayId,
+                        'other_user_name' => $displayName,
+                        'is_completed' => $appointment->is_completed ?? '0,0',
                         'end_time' => $endTime->toDateTimeString(),
                     ]
                 ]);
@@ -1376,14 +1404,25 @@ class FrontendController extends Controller
     public function ajaxCompleteAppointment($id)
     {
         $user = Auth::user();
-        if (!$user || $user->role != 4) {
+        if (!$user) {
             return response()->json(['success' => false, 'error' => 'Unauthorized'], 403);
         }
 
-        $appointment = DB::table('appointments')
-            ->where('id', $id)
-            ->where('did', $user->id)
-            ->first();
+        $query = DB::table('appointments')->where('id', $id);
+
+        if ($user->role == 4) {
+            $query->where('did', $user->id);
+        } else {
+            $patient = DB::table('patients')->where('uid', $user->id)->first();
+            $pid = $patient ? $patient->id : 0;
+            $query->where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            });
+        }
+
+        $appointment = $query->first();
 
         if (!$appointment) {
             return response()->json(['success' => false, 'error' => 'Appointment not found.'], 404);
@@ -1393,25 +1432,30 @@ class FrontendController extends Controller
             return response()->json(['success' => true, 'message' => 'Already completed.']);
         }
 
-        if ($appointment->status != '1') {
-            return response()->json(['success' => false, 'error' => 'Only confirmed appointments can be completed.'], 400);
+        // Logic based on user request:
+        // if doctor click -> update 1,0
+        // if patient click -> update 1,1
+        $updateData = [];
+        if ($user->role == 4) {
+            $updateData['is_completed'] = '1,0';
+        } else {
+            $updateData['is_completed'] = '1,1';
+            $updateData['status'] = '3'; // Mark as fully completed if patient finishes it
         }
 
-        $updated = DB::table('appointments')->where('id', $id)->update(['status' => '3']);
+        $updated = DB::table('appointments')->where('id', $id)->update($updateData);
 
-        if (!$updated) {
-            // Verify if it actually changed to 3 (maybe another request handled it)
-            $check = DB::table('appointments')->where('id', $id)->where('status', '3')->exists();
-            if (!$check) {
-                return response()->json(['success' => false, 'error' => 'Database update failed.'], 500);
+        if (!$updated && $appointment->is_completed !== $updateData['is_completed']) {
+            return response()->json(['success' => false, 'error' => 'Database update failed.'], 500);
+        }
+
+        // Credit doctor if fully completed
+        if ($user->role != 4) {
+            try {
+                $this->creditDoctorWallet($id);
+            } catch (\Exception $e) {
+                \Log::error('Wallet credit failed: ' . $e->getMessage());
             }
-        }
-
-        try {
-            $this->creditDoctorWallet($id);
-        } catch (\Exception $e) {
-            \Log::error('Wallet credit failed: ' . $e->getMessage());
-            // Don't fail the request, just log it. Admin can reconcile later.
         }
 
         return response()->json(['success' => true]);

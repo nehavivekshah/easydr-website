@@ -68,7 +68,7 @@
                     class="fas fa-sign-out-alt ml-2"></i></a></li>
     </ul>
 
-    @if(Auth::user()->role == 4)
+    @if(Auth::user()->role == 4 || Auth::user()->role == 5)
         <!-- Global Appointment Alert -->
         <div id="global-appointment-alert" class="d-none mt-4 p-3 shadow-sm border-0"
             style="border-radius: 12px; background: #fff3cd; border-left: 4px solid #ffc107 !important;">
@@ -76,75 +76,107 @@
                 <i class="fas fa-exclamation-circle text-warning me-2"></i>
                 <span class="font-weight-bold small text-dark">Session Finished</span>
             </div>
-            <p class="small text-muted mb-2">Your session with <strong id="global-patient-name">Patient</strong> has ended.
-            </p>
-            <button onclick="completeGlobalAppointment()"
+            <p class="small text-muted mb-2">Your session with <strong id="global-other-name">User</strong> has ended.</p>
+
+            <div class="completion-status small mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span>Doctor:</span>
+                    <span id="status-doctor"><i class="fas fa-clock text-muted"></i> Pending</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>Patient:</span>
+                    <span id="status-patient"><i class="fas fa-clock text-muted"></i> Pending</span>
+                </div>
+            </div>
+
+            <button id="btn-complete-session" onclick="completeGlobalAppointment()"
                 class="btn btn-xs btn-warning w-100 rounded-pill small font-weight-bold shadow-sm">Complete Now</button>
         </div>
 
         @push('scripts')
-        <script>
-            let globalAppointmentId = null;
-            let globalStatusInterval = null;
+            <script>
+                let globalAppointmentId = null;
+                let globalStatusInterval = null;
 
-            function checkGlobalOverdue() {
-                $.get('/chat/check-any-overdue', function (response) {
-                    if (response.appointment) {
-                        globalAppointmentId = response.appointment.id;
-                        
-                        // Coordination logic: Hide sidebar alert if we're on the chat page 
-                        // AND that specific patient is already the active chat recipient.
-                        let isChattingWithThisPatient = false;
-                        if (window.location.pathname.includes('/messages') && typeof currentRecipientId !== 'undefined') {
-                            if (currentRecipientId == response.appointment.patient_user_id) {
-                                isChattingWithThisPatient = true;
+                function checkGlobalOverdue() {
+                    $.get('/chat/check-any-overdue', function (response) {
+                        if (response.appointment) {
+                            globalAppointmentId = response.appointment.id;
+
+                            // Coordination logic: Hide sidebar alert if we're on the chat page 
+                            // AND that specific other user is already the active chat recipient.
+                            let isChattingWithThisUser = false;
+                            if (window.location.pathname.includes('/messages') && typeof currentRecipientId !== 'undefined') {
+                                if (currentRecipientId == response.appointment.other_user_id) {
+                                    isChattingWithThisUser = true;
+                                }
                             }
-                        }
 
-                        if (isChattingWithThisPatient) {
-                            $('#global-appointment-alert').addClass('d-none');
+                            if (isChattingWithThisUser) {
+                                $('#global-appointment-alert').addClass('d-none');
+                            } else {
+                                $('#global-other-name').text(response.appointment.other_user_name);
+
+                                // Update completion statuses
+                                const statuses = response.appointment.is_completed.split(',');
+                                const doctorDone = statuses[0] === '1';
+                                const patientDone = statuses[1] === '1';
+
+                                $('#status-doctor').html(doctorDone ? '<i class="fas fa-check-circle text-success"></i> Done' : '<i class="fas fa-clock text-muted"></i> Pending');
+                                $('#status-patient').html(patientDone ? '<i class="fas fa-check-circle text-success"></i> Done' : '<i class="fas fa-clock text-muted"></i> Pending');
+
+                                // Hide button if current role already completed
+                                const userRole = {{ Auth::user()->role }};
+                                let alreadyCompleted = false;
+                                if (userRole == 4 && doctorDone) alreadyCompleted = true;
+                                if (userRole == 5 && patientDone) alreadyCompleted = true;
+
+                                if (alreadyCompleted) {
+                                    $('#btn-complete-session').addClass('d-none');
+                                } else {
+                                    $('#btn-complete-session').removeClass('d-none');
+                                }
+
+                                $('#global-appointment-alert').removeClass('d-none');
+                            }
                         } else {
-                            $('#global-patient-name').text(response.appointment.patient_name);
-                            $('#global-appointment-alert').removeClass('d-none');
+                            $('#global-appointment-alert').addClass('d-none');
                         }
-                    } else {
-                        $('#global-appointment-alert').addClass('d-none');
-                    }
-                });
-            }
+                    });
+                }
 
-            function completeGlobalAppointment() {
-                if (!globalAppointmentId) return;
+                function completeGlobalAppointment() {
+                    if (!globalAppointmentId) return;
 
-                const btn = $('#global-appointment-alert button');
-                const originalText = btn.text();
-                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+                    const btn = $('#btn-complete-session');
+                    const originalText = btn.text();
+                    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
 
-                $.post(`/chat/appointment-complete/${globalAppointmentId}`, {
-                    _token: '{{ csrf_token() }}'
-                }, function (response) {
-                    if (response.success) {
-                        $('#global-appointment-alert').fadeOut(function () {
-                            $(this).addClass('d-none').show();
-                        });
-                        // Also trigger chat header refresh if present
-                        if (typeof fetchAppointmentStatus === 'function') {
-                            fetchAppointmentStatus();
+                    $.post(`/chat/appointment-complete/${globalAppointmentId}`, {
+                        _token: '{{ csrf_token() }}'
+                    }, function (response) {
+                        if (response.success) {
+                            // Refresh status immediately instead of hiding
+                            checkGlobalOverdue();
+
+                            // Also trigger chat header refresh if present
+                            if (typeof fetchAppointmentStatus === 'function') {
+                                fetchAppointmentStatus();
+                            }
+                        } else {
+                            alert(response.error || 'Failed to complete appointment.');
+                            btn.prop('disabled', false).text(originalText);
                         }
-                    } else {
-                        alert(response.error || 'Failed to complete appointment.');
-                        btn.prop('disabled', false).text(originalText);
-                    }
-                });
-            }
+                    });
+                }
 
-            // Start polling
-            $(document).ready(function () {
-                checkGlobalOverdue();
-                if (globalStatusInterval) clearInterval(globalStatusInterval);
-                globalStatusInterval = setInterval(checkGlobalOverdue, 30000);
-            });
-        </script>
+                // Start polling
+                $(document).ready(function () {
+                    checkGlobalOverdue();
+                    if (globalStatusInterval) clearInterval(globalStatusInterval);
+                    globalStatusInterval = setInterval(checkGlobalOverdue, 30000);
+                });
+            </script>
         @endpush
     @endif
 @endif
