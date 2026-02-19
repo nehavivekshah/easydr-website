@@ -117,13 +117,16 @@
                                                 <div class="appointment-actions">
 
                                                     {{-- Chat Button --}}
-                                                    @if($isChatActive && !$isExpired)
+                                                    @php
+                                                        $canChat = $isChatActive && $now->lt($slotEndTime);
+                                                    @endphp
+                                                    @if($canChat)
                                                         <a href="/messages" class="action-btn btn-chat" title="Message">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </a>
                                                     @else
                                                         <button class="action-btn btn-chat" disabled
-                                                            title="{{ $now->lt($chatStartTime) ? 'Chat opens 15m before' : 'Messaging closed' }}">
+                                                            title="{{ $now->gt($slotEndTime) ? 'Session Ended' : ($now->lt($chatStartTime) ? 'Chat opens 15m before' : 'Messaging closed') }}">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </button>
                                                     @endif
@@ -172,19 +175,20 @@
                                                     @php
                                                         $isCancellable = ($appointment->status == '0' || $appointment->status == '1') && $now->lt($apptDateTime->copy()->subMinutes(30));
                                                     @endphp
-                                                    @if($isCancellable)
+                                                    @if($isCancellable && $now->lt($slotEndTime))
                                                         <form action="{{ route('cancelAppointment', $appointment->id) }}" method="POST"
                                                             class="flex-grow-1" style="flex: 1; display: flex;"
                                                             onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
                                                             @csrf
                                                             <button type="submit" class="action-btn btn-cancel"
-                                                                title="Cancel Appointment" style="width: 100%;">
-                                                                <i class="fas fa-times"></i>
+                                                                title="Cancel Appointment">
+                                                                <i class="fas fa-times-circle"></i>
                                                             </button>
                                                         </form>
                                                     @else
-                                                        <button class="action-btn btn-cancel" disabled title="Cancel window closed">
-                                                            <i class="fas fa-times"></i>
+                                                        <button class="action-btn btn-cancel" disabled style="flex: 1;"
+                                                            title="Cannot cancel after slot end">
+                                                            <i class="fas fa-times-circle"></i>
                                                         </button>
                                                     @endif
                                                 </div>

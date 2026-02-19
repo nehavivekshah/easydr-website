@@ -459,7 +459,7 @@
                                                             <i class="fas fa-comment-dots"></i>
                                                         </a>
                                                     @else
-                                                        <button class="btn-pastel btn-pastel-chat" disabled title="{{ !$isSessionTime ? 'Available 5 mins before appointment' : 'Unavailable' }}">
+                                                        <button class="btn-pastel btn-pastel-chat" disabled title="{{ $now->gt($slotEndTime) ? 'Session Ended' : (!$isSessionTime ? 'Available 5 mins before appointment' : 'Unavailable') }}">
                                                             <i class="fas fa-comment-dots"></i>
                                                         </button>
                                                     @endif
@@ -470,7 +470,7 @@
                                                             <i class="fas fa-phone-alt"></i>
                                                         </a>
                                                     @else
-                                                        <button class="btn-pastel btn-pastel-call" disabled title="{{ !$isPaid ? 'Payment Required' : 'Available during session' }}">
+                                                        <button class="btn-pastel btn-pastel-call" disabled title="{{ $now->gt($slotEndTime) ? 'Session Ended' : (!$isPaid ? 'Payment Required' : 'Available during session') }}">
                                                             <i class="fas fa-phone-alt"></i>
                                                         </button>
                                                     @endif
@@ -484,7 +484,7 @@
                                                             <i class="fas fa-video"></i>
                                                         </a>
                                                     @else
-                                                        <button class="btn-pastel btn-pastel-video" disabled title="{{ !$isPaid ? 'Payment Required' : 'Available during session' }}">
+                                                        <button class="btn-pastel btn-pastel-video" disabled title="{{ $now->gt($slotEndTime) ? 'Session Ended' : (!$isPaid ? 'Payment Required' : 'Available during session') }}">
                                                             <i class="fas fa-video"></i>
                                                         </button>
                                                     @endif
