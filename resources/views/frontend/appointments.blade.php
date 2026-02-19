@@ -120,7 +120,7 @@
                                                     </div>
 
                                                     {{-- Countdown Timer --}}
-                                                    @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1'))
+                                                    @if(!$isExpired && ($appointment->status == '0' || $appointment->status == '1') && $appointment->payment_status == 'paid')
                                                         <div class="timer-countdown inline-timer ms-3"
                                                             data-start="{{ $apptDateTime->timestamp * 1000 }}"
                                                             data-end="{{ $slotEndTime->timestamp * 1000 }}">
