@@ -300,14 +300,14 @@
 
                     for (let i = 0; i < startDayIndex; i++) {
                         const emptyDiv = document.createElement('div');
-                        emptyDiv.style.width = '14.28%';
+                        emptyDiv.style.width = '38px';
                         emptyDiv.style.height = '38px';
                         calendarGrid.appendChild(emptyDiv);
                     }
 
                     for (let i = 1; i <= totalDays; i++) {
                         const dayDiv = document.createElement('div');
-                        dayDiv.style.width = '14.28%';
+                        dayDiv.style.width = '38px';
                         dayDiv.style.height = '38px';
                         dayDiv.classList.add('d-flex', 'align-items-center', 'justify-content-center', 'rounded-circle', 'mb-2', 'small', 'cursor-pointer', 'transition-all');
 
