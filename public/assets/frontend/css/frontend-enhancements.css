@@ -1093,18 +1093,16 @@ select:focus {
 
 .action-btn {
     flex: 1;
-    background: #e0e0e0;
+    background: #f0f0f0;
     color: #fff;
-    /* Icon color usually white on active, but mockup shows icons. */
     border: none;
     border-radius: 8px;
-    /* Slightly rounded rects */
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    transition: all 0.2s ease;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
     text-decoration: none;
 }
 
@@ -1112,105 +1110,45 @@ select:focus {
     color: #fff;
 }
 
-/* Specific Colors matching mockup icons usually */
+/* Enabled States - Default Colors */
 .action-btn.btn-chat {
-    background: #e0e0e0;
+    background: #1a4b8c;
 }
-
-.action-btn.btn-chat i {
-    color: #757575;
-}
-
-.action-btn.btn-chat:hover,
-.action-btn.btn-chat:hover i {
-    background: var(--color-primary);
-    color: #fff;
-}
+.action-btn.btn-chat i { color: #fff; }
 
 .action-btn.btn-call {
-    background: #e0e0e0;
-}
-
-.action-btn.btn-call i {
-    color: #757575;
-}
-
-.action-btn.btn-call:hover,
-.action-btn.btn-call:hover i {
     background: #28a745;
-    color: #fff;
 }
+.action-btn.btn-call i { color: #fff; }
 
 .action-btn.btn-video {
-    background: #e0e0e0;
-}
-
-.action-btn.btn-video i {
-    color: #757575;
-}
-
-.action-btn.btn-video:hover,
-.action-btn.btn-video:hover i {
     background: #17a2b8;
-    color: #fff;
 }
+.action-btn.btn-video i { color: #fff; }
 
 .action-btn.btn-cancel {
-    background: #e0e0e0;
-}
-
-.action-btn.btn-cancel i {
-    color: #757575;
-}
-
-.action-btn.btn-cancel:hover,
-.action-btn.btn-cancel:hover i {
     background: #dc3545;
-    color: #fff;
+}
+.action-btn.btn-cancel i { color: #fff; }
+
+/* Hover Effects */
+.action-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.1);
 }
 
-/* Disabled States */
+/* Standardized Disabled State - Gray for all */
 .action-btn:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
-    background: #f0f0f0 !important;
+    opacity: 0.6;
+    background: #e9ecef !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
 .action-btn:disabled i {
-    color: #999 !important;
-}
-
-/* Specific Disabled Highlights if needed */
-.action-btn.btn-cancel:disabled {
-    background: #f8d7da !important;
-}
-
-.action-btn.btn-cancel:disabled i {
-    color: #dc3545 !important;
-}
-
-.action-btn.btn-video:disabled {
-    background: #e2f3f5 !important;
-}
-
-.action-btn.btn-video:disabled i {
-    color: #17a2b8 !important;
-}
-
-.action-btn.btn-chat:disabled {
-    background: #eef1f1 !important;
-}
-
-.action-btn.btn-chat:disabled i {
-    color: #6c757d !important;
-}
-
-.action-btn.btn-call:disabled {
-    background: #e8f5e9 !important;
-}
-
-.action-btn.btn-call:disabled i {
-    color: #28a745 !important;
+    color: #adb5bd !important;
 }
 
 /* ==================== Custom Pagination ==================== */

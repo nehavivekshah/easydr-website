@@ -92,6 +92,7 @@
 
         .calendar-modern {
             background: #fff;
+            min-height: 350px;
             border-radius: 16px;
             padding: 20px;
             border: 1px solid #f0f0f0;
