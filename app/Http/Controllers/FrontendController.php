@@ -1635,30 +1635,39 @@ class FrontendController extends Controller
                 ->paginate(6);
 
             return view('frontend/appointments', compact('appointments'));
+
+        } else {
+            return redirect('/login');
         }
     }
 
     public function repay($id)
     {
-        if (!Auth::check()) {
-            return redirect('/login')->with('error', 'Please login to pay.');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
         }
 
-        $patient = Patients::where('uid', Auth::id())->first();
-        if (!$patient) {
-            return back()->with('error', 'Patient profile not found.');
-        }
-
-        $appointment = \App\Models\Appointments::where('id', $id)
-            ->where('pid', $patient->id)
-            ->where('payment_status', 'unpaid')
-            ->first();
+        $appointment = \App\Models\Appointments::find($id);
 
         if (!$appointment) {
-            return back()->with('error', 'Appointment not found or already paid.');
+            return redirect('/my-account')->with('error', 'Appointment not found.');
         }
 
-        session(['appointment_id' => $appointment->id]);
+        // Validate ownership
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        $isOwner = ($appointment->pid == $user->id) || ($patient && $appointment->pid == $patient->id);
+
+        if (!$isOwner) {
+            return redirect('/my-account')->with('error', 'Unauthorized access.');
+        }
+
+        if ($appointment->payment_status == 'paid') {
+            return redirect('/my-account')->with('info', 'This appointment is already paid.');
+        }
+
+        session(['appointment_id' => $id]);
+
         return redirect()->route('payment');
     }
 

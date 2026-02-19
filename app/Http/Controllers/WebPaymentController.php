@@ -6,17 +6,17 @@ use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Models\Appointments;
 use App\Models\Doctors;
+use App\Models\PaymentGatewayConfig;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
+use Stripe\Stripe;
+use Stripe\Checkout\Session as StripeSession;
 
 class WebPaymentController extends Controller
 {
     public function payment(Request $request)
     {
-        // This method is called when the user selects 'online' payment
-        // It expects an appointment_id in the session or request
-
         $appointmentId = session('appointment_id');
 
         if (!$appointmentId) {
@@ -29,17 +29,54 @@ class WebPaymentController extends Controller
             return redirect('/my-account')->with('error', 'Appointment not found.');
         }
 
+        // Get active gateway
+        $config = PaymentGatewayConfig::where('is_active', true)->first();
+
+        if (!$config) {
+            return redirect('/my-account')->with('error', 'No active payment gateway configured.');
+        }
+
         // Get Doctor Fees
         $doctor = Doctors::where('uid', $appointment->did)->first();
-
         $amount = 10; // Default
         if ($doctor && $doctor->fees) {
             $amount = $doctor->fees;
         }
 
+        if ($config->gateway_name === 'paypal') {
+            return $this->payPalPayment($config, $amount);
+        } elseif ($config->gateway_name === 'stripe') {
+            return $this->stripePayment($config, $appointment, $amount);
+        }
+
+        return redirect('/my-account')->with('error', 'Unsupported payment gateway.');
+    }
+
+    private function payPalPayment($config, $amount)
+    {
         $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
+
+        $payPalConfig = [
+            'mode' => $config->environment, // 'sandbox' or 'live'
+            'sandbox' => [
+                'client_id' => $config->api_key,
+                'client_secret' => $config->api_secret,
+                'app_id' => 'APP-80W284485P519543T',
+            ],
+            'live' => [
+                'client_id' => $config->api_key,
+                'client_secret' => $config->api_secret,
+                'app_id' => $config->additional_config['app_id'] ?? '',
+            ],
+            'payment_action' => 'Sale',
+            'currency' => 'USD',
+            'notify_url' => '',
+            'locale' => 'en_US',
+            'validate_ssl' => true,
+        ];
+
+        $provider->setApiCredentials($payPalConfig);
+        $provider->getAccessToken();
 
         $response = $provider->createOrder([
             "intent" => "CAPTURE",
@@ -58,16 +95,42 @@ class WebPaymentController extends Controller
         ]);
 
         if (isset($response['id']) && $response['id'] != null) {
-            // redirect to approve href
             foreach ($response['links'] as $links) {
                 if ($links['rel'] == 'approve') {
                     return redirect()->away($links['href']);
                 }
             }
-            return redirect('/my-account')->with('error', 'Something went wrong.');
+            return redirect('/my-account')->with('error', 'Something went wrong with PayPal.');
         } else {
             return redirect('/my-account')->with('error', $response['message'] ?? 'Something went wrong.');
         }
+    }
+
+    private function stripePayment($config, $appointment, $amount)
+    {
+        Stripe::setApiKey($config->api_secret);
+
+        $session = StripeSession::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Doctor Appointment Fees',
+                            'description' => 'Appointment for ' . $appointment->date . ' at ' . $appointment->time,
+                        ],
+                        'unit_amount' => $amount * 100, // Stripe in cents
+                    ],
+                    'quantity' => 1,
+                ]
+            ],
+            'mode' => 'payment',
+            'success_url' => route('stripe.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('stripe.cancel'),
+        ]);
+
+        return redirect()->away($session->url);
     }
 
     public function paymentCancel()
@@ -77,39 +140,90 @@ class WebPaymentController extends Controller
 
     public function paymentSuccess(Request $request)
     {
+        $config = PaymentGatewayConfig::where('gateway_name', 'paypal')->where('is_active', true)->first();
+
+        if (!$config) {
+            return redirect('/my-account')->with('error', 'PayPal configuration not found.');
+        }
+
+        $payPalConfig = [
+            'mode' => $config->environment,
+            'sandbox' => [
+                'client_id' => $config->api_key,
+                'client_secret' => $config->api_secret,
+                'app_id' => 'APP-80W284485P519543T',
+            ],
+            'live' => [
+                'client_id' => $config->api_key,
+                'client_secret' => $config->api_secret,
+                'app_id' => $config->additional_config['app_id'] ?? '',
+            ],
+            'payment_action' => 'Sale',
+            'currency' => 'USD',
+            'notify_url' => '',
+            'locale' => 'en_US',
+            'validate_ssl' => true,
+        ];
+
         $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
+        $provider->setApiCredentials($payPalConfig);
         $provider->getAccessToken();
         $response = $provider->capturePaymentOrder($request['token']);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
-
-            $appointmentId = session('appointment_id');
-            if ($appointmentId) {
-                $appointment = Appointments::find($appointmentId);
-                if ($appointment) {
-                    $appointment->payment_status = 'paid';
-                    $appointment->save();
-
-                    // Send Email Notification
-                    $user = Auth::user();
-                    $doctor = Doctors::where('uid', $appointment->did)->first();
-                    $this->sendAppointmentEmail($appointment, $user, $doctor);
-
-                    // Clear session
-                    session()->forget('appointment_id');
-
-                    return redirect('/my-account')->with('success', 'Transaction complete. Appointment booked successfully.');
-                }
-            }
-            return redirect('/my-account')->with('error', 'Transaction complete but appointment not found.');
-
+            return $this->finalizePayment('PayPal');
         } else {
             return redirect('/my-account')->with('error', $response['message'] ?? 'Something went wrong.');
         }
     }
 
-    private function sendAppointmentEmail($appointment, $user, $doctor)
+    public function stripeSuccess(Request $request)
+    {
+        $config = PaymentGatewayConfig::where('gateway_name', 'stripe')->where('is_active', true)->first();
+
+        if (!$config) {
+            return redirect('/my-account')->with('error', 'Stripe configuration not found.');
+        }
+
+        Stripe::setApiKey($config->api_secret);
+        $session = StripeSession::retrieve($request->get('session_id'));
+
+        if ($session->payment_status === 'paid') {
+            return $this->finalizePayment('Stripe');
+        }
+
+        return redirect('/my-account')->with('error', 'Stripe payment failed.');
+    }
+
+    public function stripeCancel()
+    {
+        return redirect('/my-account')->with('error', 'You have canceled the Stripe transaction.');
+    }
+
+    private function finalizePayment($gateway)
+    {
+        $appointmentId = session('appointment_id');
+        if ($appointmentId) {
+            $appointment = Appointments::find($appointmentId);
+            if ($appointment) {
+                $appointment->payment_status = 'paid';
+                $appointment->save();
+
+                // Send Email Notification
+                $user = Auth::user();
+                $doctor = Doctors::where('uid', $appointment->did)->first();
+                $this->sendAppointmentEmail($appointment, $user, $doctor, $gateway);
+
+                // Clear session
+                session()->forget('appointment_id');
+
+                return redirect('/my-account')->with('success', 'Transaction complete. Appointment booked successfully.');
+            }
+        }
+        return redirect('/my-account')->with('error', 'Transaction complete but appointment not found.');
+    }
+
+    private function sendAppointmentEmail($appointment, $user, $doctor, $gateway = 'PayPal')
     {
         // Send SMS
         try {
@@ -138,7 +252,7 @@ class WebPaymentController extends Controller
             $message .= "Doctor: Dr. " . $docName . "<br>";
             $message .= "Date: " . $date . "<br>";
             $message .= "Time: " . $time . "<br>";
-            $message .= "Status: Paid (PayPal)<br><br>";
+            $message .= "Status: Paid (" . $gateway . ")<br><br>";
             $message .= "Please reach 15 minutes prior to your appointment time.<br><br>";
             $message .= "Regards,<br>Easy Doctor Team";
 

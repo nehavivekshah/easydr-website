@@ -11,7 +11,7 @@ use App\Models\Pages;
 use App\Models\Cities;
 use App\Models\States;
 use App\Models\Countries;
-use App\Models\Payment_gateway_configs;
+use App\Models\PaymentGatewayConfig;
 use App\Models\Video_call_gateway_configs;
 use App\Models\Dosages;
 use App\Models\Frequencies;
@@ -25,12 +25,12 @@ class PageController extends ApiController
     {
         // Fetch the page content by ID
         $page = Pages::find($id);
-    
+
         // Check if the page exists
         if (!$page) {
             return response()->json(['error' => 'Page not found'], 404);
         }
-    
+
         // Construct the HTML content <h1 class='text-center mt-4'>{$page->title}</h1>
         $htmlContent = "
         <!DOCTYPE html>
@@ -66,115 +66,115 @@ class PageController extends ApiController
         </body>
         </html>
         ";
-    
+
         // Return the HTML content as a response
         return response($htmlContent)->header('Content-Type', 'text/html');
     }
-    
+
     public function getMeals(Request $request)
     {
         $meals = Meals::select('name')->where('status', '1')->get();
-        
+
         return response()->json($meals);
     }
-    
+
     public function getRoutes(Request $request)
     {
         $routes = Routes::select('name')->where('status', '1')->get();
-        
+
         return response()->json($routes);
     }
-    
+
     public function getDurations(Request $request)
     {
         $durations = Durations::select('name')->where('status', '1')->get();
-        
+
         return response()->json($durations);
     }
-    
+
     public function getFrequencies(Request $request)
     {
         $frequencies = Frequencies::select('name')->where('status', '1')->get();
-        
+
         return response()->json($frequencies);
     }
-    
+
     public function getDosages(Request $request)
     {
         $dosages = Dosages::select('name')->where('status', '1')->get();
-        
+
         return response()->json($dosages);
     }
-    
+
     public function videoCallGatewayConfigs(Request $request)
     {
         $videoCallGatewayConfigs = Video_call_gateway_configs::where('is_active', '1')->get();
-        
+
         return response()->json($videoCallGatewayConfigs);
     }
-    
+
     public function paymentGatewayConfigs(Request $request)
     {
-        $paymentGatewayConfigs = Payment_gateway_configs::where('is_active', '1')->get();
-        
+        $paymentGatewayConfigs = PaymentGatewayConfig::where('is_active', '1')->get();
+
         return response()->json($paymentGatewayConfigs);
     }
-    
+
     public function getCities(Request $request)
     {
-        if(!empty($request->input('state_id'))){
-            
+        if (!empty($request->input('state_id'))) {
+
             $stateId = $request->input('state_id');
             $cities = Cities::select('name')->where('state', $stateId)->where('status', '1')->get();
-            
-        }elseif(!empty($request->input('country_id'))){
-            
+
+        } elseif (!empty($request->input('country_id'))) {
+
             $countryId = $request->input('country_id');
             $cities = Cities::select('name')->where('country', $countryId)->where('status', '1')->get();
-            
-        }else{
-            
+
+        } else {
+
             $cities = Cities::select('name')->where('status', '1')->get();
-            
+
         }
-        
+
         return response()->json($cities);
     }
-    
+
     public function getStates(Request $request)
     {
-        if(!empty($request->input('state_id'))){
-            
+        if (!empty($request->input('state_id'))) {
+
             $stateId = $request->input('state_id');
             $states = States::select('name')->where('name', $stateId)->where('status', '1')->get();
-            
-        }elseif(!empty($request->input('country_id'))){
-            
+
+        } elseif (!empty($request->input('country_id'))) {
+
             $countryId = $request->input('country_id');
             $states = States::select('name')->where('country', $countryId)->where('status', '1')->get();
-            
-        }else{
-            
+
+        } else {
+
             $states = States::select('name')->where('status', '1')->get();
-            
+
         }
-        
+
         return response()->json($states);
     }
-    
+
     public function getCountries(Request $request)
     {
-        if(!empty($request->input('country_id'))){
-            
+        if (!empty($request->input('country_id'))) {
+
             $countryId = $request->input('country_id');
             $countries = Countries::select('name')->where('name', $countryId)->where('status', '1')->get();
-            
-        }else{
-            
+
+        } else {
+
             $countries = Countries::select('name')->where('status', '1')->get();
-            
+
         }
-        
+
         return response()->json($countries);
     }
 }

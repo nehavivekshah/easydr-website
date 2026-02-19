@@ -20,7 +20,7 @@ use App\Models\Doctor_availables;
 use App\Models\Chats;
 use App\Models\Wishlists;
 use App\Models\Medicines;
-use App\Models\Payment_gateway_configs;
+use App\Models\PaymentGatewayConfig;
 use App\Models\Carts;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -1028,7 +1028,7 @@ class DoctorController extends ApiController
      */
     public function getPaymentGateways()
     {
-        $gateways = Payment_gateway_configs::where('is_active', true)
+        $gateways = PaymentGatewayConfig::where('is_active', 1)
             ->get(['id', 'gateway_name']);
 
         return $this->successResponse($gateways, 'Payment gateways fetched successfully.');
@@ -1077,7 +1077,7 @@ class DoctorController extends ApiController
         if ($request->payment_option == 'Online Payment') {
 
             // MODIFIED: Fetch gateway config from the database
-            $gatewayConfig = Payment_gateway_configs::where('gateway_name', $request->payment_gateway)
+            $gatewayConfig = PaymentGatewayConfig::where('gateway_name', $request->payment_gateway)
                 ->where('is_active', true)
                 ->first();
 
@@ -1213,7 +1213,7 @@ class DoctorController extends ApiController
         }
 
         // MODIFIED: Fetch gateway config from DB for verification
-        $gatewayConfig = Payment_gateway_configs::where('gateway_name', $request->gateway)
+        $gatewayConfig = PaymentGatewayConfig::where('gateway_name', $request->gateway)
             ->where('is_active', true)
             ->first();
 
