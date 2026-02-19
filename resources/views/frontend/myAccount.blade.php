@@ -184,7 +184,7 @@
                             <div class="row">
                                 <!-- Left Column: Calendar & Content -->
                                 <div class="col-lg-7">
-                                    <div class="calendar-modern mb-4">
+                                    <div class="calendar-modern">
                                         <div class="d-flex justify-content-between align-items-center mb-4">
                                             <h5 class="mb-0 font-weight-bold" style="color: #1a4b8c;">Schedule</h5>
                                             <div class="d-flex gap-2">
