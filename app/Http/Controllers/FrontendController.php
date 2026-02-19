@@ -1258,8 +1258,13 @@ class FrontendController extends Controller
 
         $request->validate([
             'recipient_id' => 'required|integer',
-            'message' => 'required|string',
+            'message' => 'nullable|string',
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:2048',
         ]);
+
+        if (!$request->active_appointment && !$request->message && !$request->hasFile('file')) {
+            return response()->json(['error' => 'Message or file is required.'], 422);
+        }
 
         // Strict Check: active appointment required
         $activeAppt = $this->getActiveAppointment($user->id, $request->recipient_id);
@@ -1268,20 +1273,20 @@ class FrontendController extends Controller
             return response()->json(['success' => false, 'error' => 'Chat is disabled. No active appointment slot found for now.'], 403);
         }
 
-        // pid = sender_id, did = receiver_id ?? 
-        // Existing logic used: 'pid' => $user->id, 'did' => $request->recipient_id
-        // But `pid` usually means Patient ID and `did` Doctor ID. 
-        // The previous code was: 'pid' => $user->id, 'did' => $recipient_id.
-        // It seems the Chat model might be using generic column names or the previous dev was inconsistent.
-        // I will stick to exact previous behavior for `pid`/`did` to avoid breaking history, 
-        // BUT I will add `aid` (Appointment ID).
+        $filename = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/images/chats'), $filename);
+        }
 
         $chat = Chats::create([
-            'pid' => $user->id, // Sender (conceptually wrong based on col name but matching constraints)
+            'pid' => $user->id, // Sender 
             'did' => $request->recipient_id, // Receiver
             'sender_id' => $user->id,
             'aid' => $activeAppt->id,
             'msg' => $request->message,
+            'file' => $filename,
             'status' => 0
         ]);
 

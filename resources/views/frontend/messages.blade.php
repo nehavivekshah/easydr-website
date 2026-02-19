@@ -120,12 +120,15 @@
 
                                         <!-- Chat Footer -->
                                         <div class="chat-footer p-3 bg-white border-top" style="flex: 0 0 auto;">
-                                            <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();">
+                                            <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();"
+                                                enctype="multipart/form-data">
+                                                <input type="file" id="chat-file" class="d-none"
+                                                    accept="image/*,.pdf,.doc,.docx">
                                                 <div class="input-group align-items-center bg-white rounded-pill px-2 shadow-sm"
                                                     style="border: 1px solid #f0f0f0;">
                                                     <input type="text" id="chat-input"
                                                         class="form-control border-0 bg-transparent px-3"
-                                                        placeholder="Type your message here..." required autocomplete="off"
+                                                        placeholder="Type your message here..." autocomplete="off"
                                                         style="height: 50px;">
                                                     <div class="input-group-append">
                                                         <button type="submit"
@@ -259,6 +262,31 @@
         #messages-display::-webkit-scrollbar-thumb {
             background: rgba(0, 0, 0, 0.1);
             border-radius: 10px;
+        }
+
+        .chat-image {
+            max-width: 200px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .chat-file-link {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #333;
+            text-decoration: none;
+            margin-bottom: 5px;
+        }
+
+        .chat-file-link:hover {
+            background: #e9ecef;
+            text-decoration: none;
+            color: #000;
         }
 
         .search-box input:focus {
@@ -503,44 +531,90 @@
             });
         }
 
+        // Bind Attachment Button
+        $('.attachbtn').click(function () {
+            $('#chat-file').click();
+        });
+
+        // Handle File Selection - Immediate Send
+        $('#chat-file').change(function () {
+            if (this.files && this.files[0]) {
+                sendMessage(); // Will handle file via FormData
+            }
+        });
+
         function appendMessageToDOM(msg) {
             const isSent = msg.pid == myId;
             const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             const msgDiv = $('<div>').addClass('msg-bubble shadow-sm').addClass(isSent ? 'msg-sent' : 'msg-received');
-            const msgText = $('<span>').text(msg.msg);
+
+            // Handle content
+            let content = '';
+
+            if (msg.file) {
+                const fileExt = msg.file.split('.').pop().toLowerCase();
+                const filePath = `{{ asset('public/assets/images/chats/') }}/${msg.file}`;
+
+                if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExt)) {
+                    content += `<a href="${filePath}" target="_blank"><img src="${filePath}" class="chat-image" alt="Image"></a>`;
+                } else {
+                    content += `<a href="${filePath}" target="_blank" class="chat-file-link"><i class="fas fa-file-alt me-2"></i> ${msg.file}</a>`;
+                }
+            }
+
+            if (msg.msg) {
+                content += $('<span>').text(msg.msg).prop('outerHTML');
+            }
+
             const timeSpan = $('<span>').addClass('msg-time').text(time);
 
-            msgDiv.append(msgText).append(timeSpan);
+            msgDiv.html(content).append(timeSpan);
             $('#messages-display').append(msgDiv);
         }
 
         function sendMessage() {
-            const message = $('#chat-input').val().trim();
-            if (!message || !currentRecipientId) return;
+            const messageInput = $('#chat-input');
+            const fileInput = $('#chat-file')[0];
 
-            // Optimistic UI update? No, wait for strict backend check.
-            // But disable input to prevent double send
-            $('#chat-input').prop('disabled', true);
+            const message = messageInput.val().trim();
+            const hasFile = fileInput.files.length > 0;
 
-            $.post('/chat/send', {
-                _token: '{{ csrf_token() }}',
-                recipient_id: currentRecipientId,
-                message: message
-            }, function (response) {
-                $('#chat-input').prop('disabled', false).focus(); // Re-enable
+            if ((!message && !hasFile) || !currentRecipientId) return;
 
-                if (response.success) {
-                    $('#chat-input').val(''); // Clear only on success
-                    fetchMessages(true); // Refresh to show new message with correct grouping
-                } else {
-                    alert(response.error || 'Failed to send message.');
+            // Disable inputs
+            messageInput.prop('disabled', true);
+
+            const formData = new FormData();
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('recipient_id', currentRecipientId);
+
+            if (message) formData.append('message', message);
+            if (hasFile) formData.append('file', fileInput.files[0]);
+
+            $.ajax({
+                url: '/chat/send',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    messageInput.prop('disabled', false).focus();
+                    if (response.success) {
+                        messageInput.val('');
+                        fileInput.value = ''; // Reset file input
+                        fetchMessages(true);
+                    } else {
+                        alert(response.error || 'Failed to send message.');
+                    }
+                },
+                error: function (xhr) {
+                    messageInput.prop('disabled', false);
+                    fileInput.value = ''; // Reset file input
+                    let err = 'Failed to send';
+                    if (xhr.responseJSON && xhr.responseJSON.error) err = xhr.responseJSON.error;
+                    alert(err);
                 }
-            }).fail(function (xhr) {
-                $('#chat-input').prop('disabled', false);
-                let err = 'Failed to send';
-                if (xhr.responseJSON && xhr.responseJSON.error) err = xhr.responseJSON.error;
-                alert(err);
             });
         }
 
