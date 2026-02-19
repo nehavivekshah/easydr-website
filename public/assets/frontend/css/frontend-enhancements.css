@@ -1331,6 +1331,7 @@ input#contact-search {
 .timer-countdown.ended .dt-item {
     color: #6c757d;
 }
+
 /* Inline timer specific (for appointment list) */
 .timer-countdown.inline-timer {
     background: transparent !important;
@@ -1351,4 +1352,8 @@ input#contact-search {
 
 .timer-countdown.inline-timer.ongoing .dt-item {
     color: #28a745 !important;
+}
+
+.g-2 {
+    gap: 5px !important;
 }
