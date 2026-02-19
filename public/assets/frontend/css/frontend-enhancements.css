@@ -1074,6 +1074,31 @@ select:focus {
     color: #dc3545;
 }
 
+.badge-payment {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.badge-payment.paid {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.badge-payment.unpaid {
+    background: #fad7d7;
+    color: #dc3545;
+}
+
+.badge-payment.health_card {
+    background: #cff4fc;
+    color: #055160;
+}
+
 .appointment-datetime {
     font-size: 0.95rem;
     color: #555;

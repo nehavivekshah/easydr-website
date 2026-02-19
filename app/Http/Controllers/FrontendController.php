@@ -1638,6 +1638,30 @@ class FrontendController extends Controller
         }
     }
 
+    public function repay($id)
+    {
+        if (!Auth::check()) {
+            return redirect('/login')->with('error', 'Please login to pay.');
+        }
+
+        $patient = Patients::where('uid', Auth::id())->first();
+        if (!$patient) {
+            return back()->with('error', 'Patient profile not found.');
+        }
+
+        $appointment = \App\Models\Appointments::where('id', $id)
+            ->where('pid', $patient->id)
+            ->where('payment_status', 'unpaid')
+            ->first();
+
+        if (!$appointment) {
+            return back()->with('error', 'Appointment not found or already paid.');
+        }
+
+        session(['appointment_id' => $appointment->id]);
+        return redirect()->route('payment');
+    }
+
     public function cancelAppointment($id)
     {
         $user = Auth::user();

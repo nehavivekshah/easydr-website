@@ -34,6 +34,7 @@ Route::get('/my-account', [FrontendController::class, 'myAccount']);
 Route::get('/profile-info', [FrontendController::class, 'profileInfo']);
 Route::get('/my-profile', [FrontendController::class, 'myProfile']);
 Route::get('/appointments', [FrontendController::class, 'appointments']);
+Route::get('/repay/{id}', [FrontendController::class, 'repay'])->name('repay');
 Route::post('/cancel-appointment/{id}', [FrontendController::class, 'cancelAppointment'])->name('cancelAppointment');
 Route::post('/confirm-appointment/{id}', [FrontendController::class, 'confirmAppointment'])->name('confirmAppointment');
 Route::post('/complete-appointment/{id}', [FrontendController::class, 'completeAppointment'])->name('completeAppointment');

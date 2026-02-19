@@ -52,18 +52,34 @@
                                         @endphp
                                         <div class="col-lg-6 col-md-12 mb-4 wow fadeInUp">
                                             <div class="appointment-card">
-                                                {{-- Status Badge --}}
-                                                @if($appointment->status == '2')
-                                                    <span class="appointment-status-badge status-cancelled">Cancelled</span>
-                                                @elseif($appointment->status == '3')
-                                                    <span class="appointment-status-badge status-completed">Completed</span>
-                                                @elseif($isExpired)
-                                                    <span class="appointment-status-badge status-expired">Expired</span>
-                                                @elseif($appointment->status == '1')
-                                                    <span class="appointment-status-badge status-upcoming">Confirmed</span>
-                                                @else
-                                                    <span class="appointment-status-badge status-upcoming">Pending</span>
-                                                @endif
+                                                {{-- Status Badge Container --}}
+                                                <div class="d-flex flex-column align-items-end gap-1"
+                                                    style="position: absolute; top: 20px; right: 20px;">
+                                                    @if($appointment->status == '2')
+                                                        <span class="appointment-status-badge status-cancelled"
+                                                            style="position: static;">Cancelled</span>
+                                                    @elseif($appointment->status == '3')
+                                                        <span class="appointment-status-badge status-completed"
+                                                            style="position: static;">Completed</span>
+                                                    @elseif($isExpired)
+                                                        <span class="appointment-status-badge status-expired"
+                                                            style="position: static;">Expired</span>
+                                                    @elseif($appointment->status == '1')
+                                                        <span class="appointment-status-badge status-upcoming"
+                                                            style="position: static;">Confirmed</span>
+                                                    @else
+                                                        <span class="appointment-status-badge status-upcoming"
+                                                            style="position: static;">Pending</span>
+                                                    @endif
+
+                                                    @if($appointment->payment_status == 'paid')
+                                                        <span class="badge-payment paid">Paid</span>
+                                                    @elseif($appointment->payment_status == 'health_card')
+                                                        <span class="badge-payment health_card">Health Card</span>
+                                                    @else
+                                                        <span class="badge-payment unpaid">Unpaid</span>
+                                                    @endif
+                                                </div>
 
                                                 {{-- Header --}}
                                                 <div class="appointment-header">
@@ -115,6 +131,13 @@
 
                                                 {{-- Action Buttons --}}
                                                 <div class="appointment-actions">
+                                                    {{-- Pay Now Button --}}
+                                                    @if($appointment->payment_status == 'unpaid' && !$isExpired && $appointment->status != '2')
+                                                        <a href="{{ route('repay', $appointment->id) }}" class="action-btn"
+                                                            style="background: #28a745; max-width: 100px;" title="Pay Now">
+                                                            <i class="fas fa-credit-card me-1"></i> Pay
+                                                        </a>
+                                                    @endif
 
                                                     {{-- Chat Button --}}
                                                     @php
