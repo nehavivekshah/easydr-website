@@ -82,7 +82,7 @@
                                                 {{-- Date Time & Countdown Row --}}
                                                 <div class="d-flex align-items-center flex-wrap justify-content-between gap-2 mb-3 mt-1"
                                                     style="font-size: 0.95rem; color: #4b5563;">
-                                                    <div>
+                                                    <div class="d-flex align-items-center gap-2">
                                                         <div class="d-flex align-items-center gap-2">
                                                             <i class="far fa-calendar-alt me-2 text-muted"></i>
                                                             <span
