@@ -476,7 +476,7 @@ class FrontendController extends Controller
                 ->sum('fees');
 
             // Recent Appointments
-            $recentAppointments = \App\Models\Appointments::leftJoin('patients', 'appointments.pid', '=', 'patients.uid')
+            $recentAppointments = \App\Models\Appointments::leftJoin('patients', 'appointments.pid', '=', 'patients.id')
                 ->leftJoin('users as patient', 'patients.uid', '=', 'patient.id')
                 ->select(
                     'appointments.*',
@@ -531,40 +531,59 @@ class FrontendController extends Controller
                 'monthlyRevenue'
             ));
 
-        } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
+            $pid = $patient ? $patient->id : 0;
 
-            // Appointment Stats
-            $appointmentsCount = \App\Models\Appointments::where('pid', $user->id)->count();
-            $todayAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('date', $today)
-                ->count();
+            // Appointment Stats - Handling PID ambiguity (User ID vs Patient ID)
+            $appointmentsCount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->count();
 
-            $completedAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('status', 3) // 3 = Completed
-                ->count();
-            $todayCompletedCount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('date', $today)
-                ->where('status', 3)
-                ->count();
+            $todayAppointmentsCount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->where('date', $today)->count();
 
-            $pendingAppointmentsCount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('status', 0)
-                ->count();
-            $todayPendingCount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('date', $today)
-                ->where('status', 0)
-                ->count();
+            $completedAppointmentsCount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->where('status', 3)->count();
+
+            $todayCompletedCount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->where('date', $today)->where('status', 3)->count();
+
+            $pendingAppointmentsCount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->where('status', 0)->count();
+
+            $todayPendingCount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->where('date', $today)->where('status', 0)->count();
 
             // Billing & Payments
-            $billingAmount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('payment_status', 'paid')
-                ->sum('fees');
-            $todayPaymentCount = \App\Models\Appointments::where('pid', $user->id)
-                ->where('date', $today)
-                ->where('payment_status', 'paid')
-                ->count();
+            $billingAmount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->where('payment_status', 'paid')->sum('fees');
+
+            $todayPaymentCount = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })->where('date', $today)->where('payment_status', 'paid')->count();
 
             // Favorites/Reviews placeholders (could be expanded later)
             $favoritesCount = 0;
@@ -577,15 +596,22 @@ class FrontendController extends Controller
                     'doctor.first_name as doctor_first_name',
                     'doctor.last_name as doctor_last_name'
                 )
-                ->where('appointments.pid', $user->id)
+                ->where(function ($q) use ($user, $pid) {
+                    $q->where('appointments.pid', $user->id);
+                    if ($pid > 0)
+                        $q->orWhere('appointments.pid', $pid);
+                })
                 ->orderBy('appointments.date', 'desc')
                 ->orderBy('appointments.time', 'desc')
                 ->limit(5)
                 ->get();
 
             // Calendar Data: Upcoming unique appointment dates
-            $appointmentDates = \App\Models\Appointments::where('pid', $user->id)
-                ->where('date', '>=', $today)
+            $appointmentDates = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                $q->where('appointments.pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('appointments.pid', $pid);
+            })->where('date', '>=', $today)
                 ->distinct()
                 ->pluck('date')
                 ->toArray();

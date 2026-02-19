@@ -221,7 +221,7 @@
 
                                 <!-- Right Column: Recent Activity -->
                                 <div class="col-lg-5">
-                                    <div class="card-modern h-100 overflow-hidden d-flex flex-column">
+                                    <div class="card-modern overflow-hidden d-flex flex-column" style="height: 96.5%;">
                                         <div class="p-4 border-bottom bg-light">
                                             <h5 class="mb-0 font-weight-bold" style="color: #1a4b8c;"><i
                                                     class="fas fa-history me-2"></i> Recent Sessions</h5>
