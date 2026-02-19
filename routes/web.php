@@ -99,6 +99,10 @@ Route::get('/payment', [WebPaymentController::class, 'payment'])->name('payment'
 Route::get('/payment/success', [WebPaymentController::class, 'paymentSuccess'])->name('payment.success');
 Route::get('/payment/cancel', [WebPaymentController::class, 'paymentCancel'])->name('payment.cancel');
 
+// Stripe Routes
+Route::get('/payment/stripe/success', [WebPaymentController::class, 'stripeSuccess'])->name('stripe.success');
+Route::get('/payment/stripe/cancel', [WebPaymentController::class, 'stripeCancel'])->name('stripe.cancel');
+
 /* Dashboard Login / regiter routers */
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/admin/register', [WebAuthController::class, 'register'])->name('register');
