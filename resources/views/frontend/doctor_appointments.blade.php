@@ -225,13 +225,18 @@
         /* Cancel: Light Red */
         .btn-pastel-cancel { background: #fad7d7; color: #dc3545; }
 
-        /* Disabled State */
+        /* Disabled State - Standardized Gray */
         .btn-pastel:disabled, .btn-pastel.disabled {
-            background: #f8f9fa;
-            color: #dee2e6;
+            background: #e9ecef !important;
+            color: #adb5bd !important;
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none !important;
+            opacity: 0.7;
+        }
+
+        .btn-pastel:disabled i, .btn-pastel.disabled i {
+            color: #adb5bd !important;
         }
     </style>
     <main>
