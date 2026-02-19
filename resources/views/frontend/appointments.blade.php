@@ -82,17 +82,21 @@
                                                 {{-- Date Time & Countdown Row --}}
                                                 <div class="d-flex align-items-center flex-wrap justify-content-between gap-2 mb-3 mt-1"
                                                     style="font-size: 0.95rem; color: #4b5563;">
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <i class="far fa-calendar-alt me-2 text-muted"></i>
-                                                        <span class="font-weight-bold">{{ $apptDateTime->format('d M, Y') }}</span>
-                                                    </div>
+                                                    <div>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <i class="far fa-calendar-alt me-2 text-muted"></i>
+                                                            <span
+                                                                class="font-weight-bold">{{ $apptDateTime->format('d M, Y') }}</span>
+                                                        </div>
 
-                                                    <div style="width: 1px; height: 16px; background: #dee2e6; margin: 0 4px;">
-                                                    </div>
+                                                        <div style="width: 1px; height: 16px; background: #dee2e6; margin: 0 4px;">
+                                                        </div>
 
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <i class="far fa-clock me-2 text-muted"></i>
-                                                        <span class="font-weight-bold">{{ $apptDateTime->format('h:i A') }}</span>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <i class="far fa-clock me-2 text-muted"></i>
+                                                            <span
+                                                                class="font-weight-bold">{{ $apptDateTime->format('h:i A') }}</span>
+                                                        </div>
                                                     </div>
 
                                                     {{-- Countdown Timer --}}
