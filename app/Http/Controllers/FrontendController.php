@@ -569,6 +569,27 @@ class FrontendController extends Controller
             // Favorites/Reviews placeholders (could be expanded later)
             $favoritesCount = 0;
 
+            // Recent Appointments
+            $recentAppointments = \App\Models\Appointments::leftJoin('doctors', 'appointments.did', '=', 'doctors.uid')
+                ->leftJoin('users as doctor', 'doctors.uid', '=', 'doctor.id')
+                ->select(
+                    'appointments.*',
+                    'doctor.first_name as doctor_first_name',
+                    'doctor.last_name as doctor_last_name'
+                )
+                ->where('appointments.pid', $user->id)
+                ->orderBy('appointments.date', 'desc')
+                ->orderBy('appointments.time', 'desc')
+                ->limit(5)
+                ->get();
+
+            // Calendar Data: Upcoming unique appointment dates
+            $appointmentDates = \App\Models\Appointments::where('pid', $user->id)
+                ->where('date', '>=', $today)
+                ->distinct()
+                ->pluck('date')
+                ->toArray();
+
             return view('frontend/myAccount', compact(
                 'appointmentsCount',
                 'todayAppointmentsCount',
@@ -580,7 +601,9 @@ class FrontendController extends Controller
                 'todayPaymentCount',
                 'favoritesCount',
                 'patient',
-                'userAddress'
+                'userAddress',
+                'recentAppointments',
+                'appointmentDates'
             ));
         }
     }
