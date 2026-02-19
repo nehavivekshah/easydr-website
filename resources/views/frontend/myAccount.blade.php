@@ -114,7 +114,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="section-header-modern mb-0">Overview</h4>
                                 @if(Auth::user()->role == 4)
-                                    <a href="/manage-slots" class="btn btn-pill-modern btn-primary text-white"><i
+                                    <a href="/manage-slots" class="btn btn-pill-modern btn-primary text-white" style="min-height: 38px; display: flex; gap: 8px; align-items: center;"><i
                                             class="fas fa-clock pe-1"></i> Availability</a>
                                 @endif
                             </div>
