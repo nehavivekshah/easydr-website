@@ -388,12 +388,25 @@
             }, function (response) {
                 if (response.success) {
                     $('#appointment-alert').fadeOut(function () {
-                        $(this).addClass('d-none').show();
+                        $(this).addClass('d-none').show(); // Ensure it's hidden but structure remains
+                        // Ideally we should just rely on checkAppointmentStatus re-enabling it if needed
+                        // But for now, forcing hide is correct.
+                        // However, let's remove the show() call which might be redundant/problematic with d-none
+                        $(this).addClass('d-none');
                     });
+                    // Force re-check status to verify it's gone
+                    checkAppointmentStatus();
                 } else {
                     alert(response.error || 'Failed to complete appointment.');
                     btn.prop('disabled', false).text(originalText);
                 }
+            }).fail(function (xhr) {
+                let err = 'Failed to complete appointment. Please try again.';
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    err = xhr.responseJSON.error;
+                }
+                alert(err);
+                btn.prop('disabled', false).text(originalText);
             });
         }
 
