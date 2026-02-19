@@ -84,7 +84,13 @@
                                                     <span class="status-dot me-1"></span> Online
                                                 </span>
                                             </div>
-                                            <div class="header-actions">
+                                            <div class="header-actions d-flex align-items-center">
+                                                <select id="chat-filter"
+                                                    class="form-select form-select-sm me-2 bg-light border-0"
+                                                    style="width: auto; max-width: 180px; display: none; margin-right: 10px; cursor: pointer;"
+                                                    onchange="applyFilter(this.value)">
+                                                    <option value="all">Show All History</option>
+                                                </select>
                                                 <button type="button" class="btn btn-link text-muted px-2 mr-1 attachbtn"><i
                                                         class='fas fa-paperclip' style="font-size: 1.2rem;"></i></button>
                                             </div>
@@ -277,6 +283,12 @@
         let lastMessageId = 0;
         let pollingInterval = null;
         let statusCheckInterval = null;
+
+        // New Global State
+        let allMessages = [];
+        let appointmentsMap = {};
+        let currentFilter = 'all';
+
         const myId = {{ Auth::id() }};
         const myRole = {{ Auth::user()->role }};
 
@@ -294,6 +306,9 @@
 
             currentRecipientId = id;
             lastMessageId = 0;
+            allMessages = []; // Reset messages
+            appointmentsMap = {};
+            currentFilter = 'all';
 
             // UI updates
             $('.contact-item').removeClass('active');
@@ -304,76 +319,192 @@
             $('#chat-with-name').text(name);
             $('#header-photo').attr('src', photo);
             $('#messages-display').empty();
+            $('#chat-filter').hide().empty().append('<option value="all">Show All History</option>');
 
-            fetchMessages();
-            checkAppointmentStatus();
+            fetchMessages(true); // true = force scroll to bottom
 
             // Manage polling
             if (pollingInterval) clearInterval(pollingInterval);
-            pollingInterval = setInterval(fetchMessages, 4000);
+            pollingInterval = setInterval(() => fetchMessages(false), 4000);
 
             if (statusCheckInterval) clearInterval(statusCheckInterval);
             if (myRole == 4) {
+                checkAppointmentStatus();
                 statusCheckInterval = setInterval(checkAppointmentStatus, 30000); // Check every 30s
             }
         }
 
-        function checkAppointmentStatus() {
-            if (!currentRecipientId || myRole != 4) return;
-
-            $.get(`/chat/appointment-status/${currentRecipientId}`, function (response) {
-                if (response.appointment && response.appointment.is_overdue) {
-                    currentAppointmentId = response.appointment.id;
-                    $('#appointment-alert').removeClass('d-none');
-                } else {
-                    $('#appointment-alert').addClass('d-none');
-                    currentAppointmentId = null;
-                }
-            });
-        }
-
-        function completeAppointmentNow() {
-            if (!currentAppointmentId) return;
-
-            const btn = $('#appointment-alert button');
-            const originalText = btn.text();
-            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
-
-            $.post(`/chat/appointment-complete/${currentAppointmentId}`, {
-                _token: '{{ csrf_token() }}'
-            }, function (response) {
-                if (response.success) {
-                    $('#appointment-alert').fadeOut(function () {
-                        $(this).addClass('d-none').show();
-                    });
-                } else {
-                    alert(response.error || 'Failed to complete appointment.');
-                    btn.prop('disabled', false).text(originalText);
-                }
-            });
-        }
-
-        function fetchMessages() {
+        function fetchMessages(forceScroll = false) {
             if (!currentRecipientId) return;
 
-            $.get(`/chat/fetch/${currentRecipientId}`, function (messages) {
-                let hasNew = false;
-                messages.forEach(msg => {
-                    if (msg.id > lastMessageId) {
-                        appendMessage(msg);
-                        lastMessageId = msg.id;
-                        hasNew = true;
-                    }
-                });
+            $.get(`/chat/fetch/${currentRecipientId}`, function (response) {
+                // response: { messages, active_appointment, can_chat, appointments_map }
 
-                if (hasNew) {
+                // 1. Update Input State
+                updateChatInputState(response.can_chat, response.active_appointment);
+
+                // 2. Update Data
+                if (response.appointments_map) {
+                    appointmentsMap = Object.assign(appointmentsMap, response.appointments_map);
+                }
+
+                const newMsgCount = response.messages.length;
+                const oldMsgCount = allMessages.length;
+
+                if (newMsgCount > oldMsgCount) {
+                    allMessages = response.messages;
+
+                    // Update Filter Dropdown Options
+                    updateFilterOptions();
+
+                    // Render
+                    renderMessages();
+
+                    // Scroll
+                    lastMessageId = allMessages[allMessages.length - 1].id;
+                    scrollToBottom();
+                } else if (forceScroll) {
+                    renderMessages();
                     scrollToBottom();
                 }
             });
         }
 
-        function appendMessage(msg) {
-            const isSent = msg.pid == myId; // pid is now sender_id
+        function updateChatInputState(canChat, activeAppt) {
+            const input = $('#chat-input');
+            const btn = $('#chat-form button');
+
+            if (canChat) {
+                input.prop('disabled', false).attr('placeholder', 'Type your message here...');
+                btn.prop('disabled', false);
+                $('#appointment-alert').addClass('d-none');
+            } else {
+                input.prop('disabled', true).attr('placeholder', 'Chat disabled (Appointment time ended/Not started)');
+                btn.prop('disabled', true);
+
+                // Optionally show alert if it was just active? 
+                // Or just rely on the placeholder.
+            }
+        }
+
+        function updateFilterOptions() {
+            const select = $('#chat-filter');
+            const currentVal = select.val();
+
+            select.empty();
+            select.append('<option value="all">Show All History</option>');
+
+            // Extract Unique Dates and Appointments
+            const dates = new Set();
+            const appts = new Set();
+
+            allMessages.forEach(msg => {
+                if (msg.aid && appointmentsMap[msg.aid]) {
+                    appts.add(msg.aid);
+                } else {
+                    // Extract YYYY-MM-DD
+                    const date = msg.created_at.split('T')[0]; // Assuming ISO format or similar standard from Laravel
+                    // Laravel usually returns "2023-10-27T10:00:00.000000Z" or "2023-10-27 10:00:00"
+                    // Let's safe parse
+                    const d = new Date(msg.created_at);
+                    if (!isNaN(d)) {
+                        dates.add(d.toISOString().split('T')[0]);
+                    }
+                }
+            });
+
+            // Add Appointment Options
+            if (appts.size > 0) {
+                select.append('<optgroup label="By Appointment">');
+                appts.forEach(aid => {
+                    const appt = appointmentsMap[aid];
+                    const label = `Appt: ${appt.date} (${appt.time})`;
+                    select.append(`<option value="aid_${aid}">${label}</option>`);
+                });
+                select.append('</optgroup>');
+            }
+
+            // Add Date Options
+            if (dates.size > 0) {
+                select.append('<optgroup label="By Date">');
+                Array.from(dates).sort().reverse().forEach(date => {
+                    select.append(`<option value="date_${date}">${date}</option>`);
+                });
+                select.append('</optgroup>');
+            }
+
+            select.val(currentVal || 'all');
+            select.show();
+        }
+
+        function applyFilter(val) {
+            currentFilter = val;
+            renderMessages();
+        }
+
+        function renderMessages() {
+            const container = $('#messages-display');
+            container.empty();
+
+            let filtered = [];
+
+            if (currentFilter === 'all') {
+                filtered = allMessages;
+            } else if (currentFilter.startsWith('aid_')) {
+                const targetAid = parseInt(currentFilter.replace('aid_', ''));
+                filtered = allMessages.filter(m => m.aid == targetAid);
+            } else if (currentFilter.startsWith('date_')) {
+                const targetDate = currentFilter.replace('date_', '');
+                filtered = allMessages.filter(m => {
+                    if (m.aid) return false; // If linked to appt, use appt filter (preference) or show in date? 
+                    // Let's assume date filter is for non-appt messages OR all messages on that date.
+                    // User requirement: "chat date wise AND appointment wise". 
+                    // Simple approach: Date filter matches creation date.
+                    const mDate = new Date(m.created_at).toISOString().split('T')[0];
+                    return mDate === targetDate;
+                });
+            }
+
+            let lastAid = null;
+            let lastDate = null;
+
+            filtered.forEach(msg => {
+                // Grouping Logic
+                let showHeader = false;
+                let headerText = '';
+
+                if (msg.aid) {
+                    if (msg.aid !== lastAid) {
+                        showHeader = true;
+                        const appt = appointmentsMap[msg.aid];
+                        headerText = appt ? `Appointment: ${appt.date} at ${appt.time}` : `Appointment #${msg.aid}`;
+                        lastAid = msg.aid;
+                        lastDate = null; // Reset date group
+                    }
+                } else {
+                    const mDate = new Date(msg.created_at).toISOString().split('T')[0];
+                    if (mDate !== lastDate || lastAid !== null) { // Also show if we just switched from an Appt block
+                        showHeader = true;
+                        headerText = `Date: ${mDate}`;
+                        lastDate = mDate;
+                        lastAid = null;
+                    }
+                }
+
+                if (showHeader) {
+                    // Render Header
+                    const header = $('<div>').addClass('text-center my-3').html(
+                        `<span class="badge bg-light text-dark border px-3 py-2 rounded-pill shadow-sm">${headerText}</span>`
+                    );
+                    container.append(header);
+                }
+
+                appendMessageToDOM(msg);
+            });
+        }
+
+        function appendMessageToDOM(msg) {
+            const isSent = msg.pid == myId;
             const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             const msgDiv = $('<div>').addClass('msg-bubble shadow-sm').addClass(isSent ? 'msg-sent' : 'msg-received');
@@ -388,21 +519,28 @@
             const message = $('#chat-input').val().trim();
             if (!message || !currentRecipientId) return;
 
-            $('#chat-input').val('');
+            // Optimistic UI update? No, wait for strict backend check.
+            // But disable input to prevent double send
+            $('#chat-input').prop('disabled', true);
 
             $.post('/chat/send', {
                 _token: '{{ csrf_token() }}',
                 recipient_id: currentRecipientId,
                 message: message
             }, function (response) {
+                $('#chat-input').prop('disabled', false).focus(); // Re-enable
+
                 if (response.success) {
-                    // Update if not already polled
-                    if (response.chat.id > lastMessageId) {
-                        appendMessage(response.chat);
-                        lastMessageId = response.chat.id;
-                        scrollToBottom();
-                    }
+                    $('#chat-input').val(''); // Clear only on success
+                    fetchMessages(true); // Refresh to show new message with correct grouping
+                } else {
+                    alert(response.error || 'Failed to send message.');
                 }
+            }).fail(function (xhr) {
+                $('#chat-input').prop('disabled', false);
+                let err = 'Failed to send';
+                if (xhr.responseJSON && xhr.responseJSON.error) err = xhr.responseJSON.error;
+                alert(err);
             });
         }
 
@@ -416,7 +554,6 @@
         // Clean up interval on page leave
         window.onbeforeunload = function () {
             if (pollingInterval) clearInterval(pollingInterval);
-            if (statusCheckInterval) clearInterval(statusCheckInterval);
         };
     </script>
 @endsection

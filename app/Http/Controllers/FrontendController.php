@@ -1159,14 +1159,70 @@ class FrontendController extends Controller
         return response()->json($contacts);
     }
 
+    private function getActiveAppointment($user1_id, $user2_id)
+    {
+        // Identify who is doctor and who is patient
+        $user1 = User::find($user1_id);
+        $user2 = User::find($user2_id);
+
+        if (!$user1 || !$user2)
+            return null;
+
+        $doctorId = null;
+        $patientId = null;
+
+        if ($user1->role == 4)
+            $doctorId = $user1->id;
+        if ($user1->role == 5) {
+            $p = \App\Models\Patients::where('uid', $user1->id)->first();
+            $patientId = $p ? $p->id : null;
+        }
+
+        if ($user2->role == 4)
+            $doctorId = $user2->id;
+        if ($user2->role == 5) {
+            $p = \App\Models\Patients::where('uid', $user2->id)->first();
+            $patientId = $p ? $p->id : null;
+        }
+
+        if (!$doctorId || !$patientId)
+            return null;
+
+        $now = Carbon::now();
+        $date = $now->toDateString();
+
+        // Get confirmed appointments for today
+        $appointments = DB::table('appointments')
+            ->where('did', $doctorId)
+            ->where('pid', $patientId)
+            ->where('date', $date)
+            ->where('status', '1') // Confirmed
+            ->get();
+
+        foreach ($appointments as $appt) {
+            $start = Carbon::parse($appt->date . ' ' . $appt->time);
+            $duration = $appt->duration ?? 30;
+            $end = $start->copy()->addMinutes($duration);
+
+            if ($now->between($start, $end)) {
+                return $appt;
+            }
+        }
+
+        return null;
+    }
+
     public function fetchMessages($recipient_id)
     {
         $user = Auth::user();
         if (!$user)
             return response()->json(['error' => 'Unauthorized'], 401);
 
-        // Fetch messages where:
-        // (sender = me AND receiver = them) OR (sender = them AND receiver = me)
+        // Check for active appointment to determine if chat is allowed
+        $activeAppt = $this->getActiveAppointment($user->id, $recipient_id);
+        $canChat = !is_null($activeAppt);
+
+        // Fetch messages
         $messages = Chats::where(function ($query) use ($user, $recipient_id) {
             $query->where('pid', $user->id)->where('did', $recipient_id);
         })
@@ -1176,7 +1232,22 @@ class FrontendController extends Controller
             ->orderBy('id', 'asc')
             ->get();
 
-        return response()->json($messages);
+        // Collect Appointment IDs to fetch details for headers
+        $apptIds = $messages->pluck('aid')->filter()->unique();
+        $appointmentsMap = [];
+        if ($apptIds->isNotEmpty()) {
+            $appointmentsMap = DB::table('appointments')
+                ->whereIn('id', $apptIds)
+                ->get()
+                ->keyBy('id');
+        }
+
+        return response()->json([
+            'messages' => $messages,
+            'active_appointment' => $activeAppt,
+            'can_chat' => $canChat,
+            'appointments_map' => $appointmentsMap
+        ]);
     }
 
     public function sendMessage(Request $request)
@@ -1190,11 +1261,26 @@ class FrontendController extends Controller
             'message' => 'required|string',
         ]);
 
-        // pid = sender_id, did = receiver_id
+        // Strict Check: active appointment required
+        $activeAppt = $this->getActiveAppointment($user->id, $request->recipient_id);
+
+        if (!$activeAppt) {
+            return response()->json(['success' => false, 'error' => 'Chat is disabled. No active appointment slot found for now.'], 403);
+        }
+
+        // pid = sender_id, did = receiver_id ?? 
+        // Existing logic used: 'pid' => $user->id, 'did' => $request->recipient_id
+        // But `pid` usually means Patient ID and `did` Doctor ID. 
+        // The previous code was: 'pid' => $user->id, 'did' => $recipient_id.
+        // It seems the Chat model might be using generic column names or the previous dev was inconsistent.
+        // I will stick to exact previous behavior for `pid`/`did` to avoid breaking history, 
+        // BUT I will add `aid` (Appointment ID).
+
         $chat = Chats::create([
-            'pid' => $user->id,
-            'did' => $request->recipient_id,
-            'sender_id' => $user->id, // Keeping this for consistency with user's schema
+            'pid' => $user->id, // Sender (conceptually wrong based on col name but matching constraints)
+            'did' => $request->recipient_id, // Receiver
+            'sender_id' => $user->id,
+            'aid' => $activeAppt->id,
             'msg' => $request->message,
             'status' => 0
         ]);
