@@ -36,7 +36,7 @@
                                             <div class="d-grid gap-3">
                                                 @foreach($gateways as $gateway)
                                                     <a href="{{ route('payment', ['gateway' => $gateway->gateway_name]) }}"
-                                                        class="btn btn-outline-light text-dark p-3 d-flex align-items-center justify-content-between border rounded-3 shadow-sm hover-shadow transition-all"
+                                                        class="btn btn-outline-light text-dark p-3 mb-3 d-flex align-items-center justify-content-between border rounded-3 shadow-sm hover-shadow transition-all"
                                                         style="background: #fff; border-color: #e9ecef;">
                                                         <div class="d-flex align-items-center">
                                                             @if(strtolower($gateway->gateway_name) == 'paypal')
