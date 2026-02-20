@@ -29,13 +29,6 @@ class WebPaymentController extends Controller
             return redirect('/my-account')->with('error', 'Appointment not found.');
         }
 
-        // Get active gateway
-        $config = PaymentGatewayConfig::where('is_active', true)->first();
-
-        if (!$config) {
-            return redirect('/my-account')->with('error', 'No active payment gateway configured.');
-        }
-
         // Get Doctor Fees
         $doctor = Doctors::where('uid', $appointment->did)->first();
         $amount = 10; // Default
@@ -43,6 +36,35 @@ class WebPaymentController extends Controller
             $amount = $doctor->fees;
         }
 
+        // Get all active gateways
+        $gateways = PaymentGatewayConfig::where('is_active', true)->get();
+
+        if ($gateways->isEmpty()) {
+            return redirect('/my-account')->with('error', 'No active payment gateway configured.');
+        }
+
+        // If a specific gateway is requested, or if only one exists
+        $selectedGatewayName = $request->query('gateway');
+
+        if ($selectedGatewayName) {
+            $config = $gateways->firstWhere('gateway_name', $selectedGatewayName);
+
+            if (!$config) {
+                return redirect('/my-account')->with('error', 'Selected payment gateway is not available.');
+            }
+        } elseif ($gateways->count() === 1) {
+            $config = $gateways->first();
+        } else {
+            // Multiple gateways available, show selection screen
+            return view('frontend.payment_selection', [
+                'gateways' => $gateways,
+                'appointment' => $appointment,
+                'amount' => $amount,
+                'doctor_name' => $doctor ? $doctor->first_name . ' ' . $doctor->last_name : 'Doctor'
+            ]);
+        }
+
+        // Proceed with the selected config
         if ($config->gateway_name === 'paypal') {
             return $this->payPalPayment($config, $amount);
         } elseif ($config->gateway_name === 'stripe') {
