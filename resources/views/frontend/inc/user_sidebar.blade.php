@@ -60,11 +60,7 @@
                         class="fas fa-unlock-alt mr-2"></i> Change Password</a></li>
         @endif
 
-        <form action="/logout" method="POST" class="d-none" id="logout-form">
-            @csrf
-        </form>
-        <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                class="btn-logout bg-dark text-white rounded-pill mt-4 justify-content-center">Logout <i
+        <li><a href="/logout" class="btn-logout bg-dark text-white rounded-pill mt-4 justify-content-center">Logout <i
                     class="fas fa-sign-out-alt ml-2"></i></a></li>
     </ul>
 
