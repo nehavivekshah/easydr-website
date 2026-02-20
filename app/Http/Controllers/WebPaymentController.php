@@ -65,13 +65,15 @@ class WebPaymentController extends Controller
         }
 
         // Proceed with the selected config
-        if ($config->gateway_name === 'paypal') {
+        $gatewayName = strtolower($config->gateway_name);
+
+        if ($gatewayName === 'paypal') {
             return $this->payPalPayment($config, $amount);
-        } elseif ($config->gateway_name === 'stripe') {
+        } elseif ($gatewayName === 'stripe') {
             return $this->stripePayment($config, $appointment, $amount);
         }
 
-        return redirect('/my-account')->with('error', 'Unsupported payment gateway.');
+        return redirect('/my-account')->with('error', 'Unsupported payment gateway: ' . $config->gateway_name);
     }
 
     private function payPalPayment($config, $amount)
