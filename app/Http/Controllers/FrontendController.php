@@ -1896,7 +1896,7 @@ class FrontendController extends Controller
 
         $appointment->save();
 
-        if ($appointment->payment_mode == 'online') {
+        if ($appointment->payment_mode == 'Online Payment') {
             session(['appointment_id' => $appointment->id]);
             return redirect()->route('payment');
         }
