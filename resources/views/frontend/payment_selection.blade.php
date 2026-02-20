@@ -14,7 +14,7 @@
                     <div class="col-lg-9">
                         <div class="dashboard_content">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="col-md-12">
+                                <div class="col-md-12 p-0">
                                     <div class="card border-0 shadow-sm rounded-4">
                                         <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
                                             <h4 class="fw-bold text-dark mb-1">Select Payment Method</h4>
