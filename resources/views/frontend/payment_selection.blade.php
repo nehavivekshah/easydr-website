@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('public/assets/frontend/css/dashboard-modern.css') }}">
     <div class="row m-0" style="background: #f8f9fa;">
         <div class="col-md-2 p-0 user-sidebar-wrapper">
-            @include('frontend.user_sidebar')
+            @include('frontend.inc.user_sidebar')
         </div>
         <div class="col-md-10 p-0">
             <div class="dashboard-content-wrapper p-4">
