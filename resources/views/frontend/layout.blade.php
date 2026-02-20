@@ -55,7 +55,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="{{ asset('public/assets/frontend/js/app.js') }}"></script>
-
+    @include('frontend.inc.auth_modal')
     @stack('scripts')
 </body>
 

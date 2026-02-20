@@ -102,9 +102,9 @@
                                 </ul>
                             </div>
                         @else
-                            <a href="/login" class="top-btn">Login / Signup <!--<i class="fas fa-user"></i>--></a>
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#authModal"
+                                class="top-btn">Login / Signup</a>
                         @endif
-
                     </div>
                     <div class="col-12">
                         <div class="mobile-menu"></div>
