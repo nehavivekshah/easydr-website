@@ -5,14 +5,16 @@
     <main class="dashboard-container">
         <section class="pt-100 pb-40" style="background: #f8fafc;">
             <div class="container">
-                <div class="row m-0" style="background: #f8f9fa;">
+                <div class="row">
+                    <!-- Sidebar -->
                     <div class="col-lg-3 mb-4">
                         @include('frontend.inc.user_sidebar')
                     </div>
+                    <!-- Content Area -->
                     <div class="col-lg-9">
                         <div class="dashboard_content">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="card border-0 shadow-sm rounded-4">
                                         <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
                                             <h4 class="fw-bold text-dark mb-1">Select Payment Method</h4>
