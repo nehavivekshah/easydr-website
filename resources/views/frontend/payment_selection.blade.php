@@ -26,7 +26,8 @@
 
                                             <div
                                                 class="alert alert-info border-0 bg-light-primary text-primary d-flex align-items-center mb-4 rounded-3">
-                                                <i class="fas fa-coins me-3 fs-4"></i>
+                                                <i class="fas fa-coins me-3 fs-4"
+                                                    style="font-size: 50px; color: #f7b915; filter: drop-shadow(2px 4px 6px #c7bea624); margin-right: 20px;"></i>
                                                 <div>
                                                     <p class="mb-0 fw-semibold">Amount to Pay</p>
                                                     <h3 class="mb-0 fw-bold">${{ number_format($amount, 2) }}</h3>
