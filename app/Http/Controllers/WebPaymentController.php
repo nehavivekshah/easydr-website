@@ -78,10 +78,16 @@ class WebPaymentController extends Controller
 
     private function payPalPayment($config, $amount)
     {
+        if (empty($config->api_key) || empty($config->api_secret)) {
+            return redirect('/my-account')->with('error', 'PayPal is not configured properly. Missing API credentials.');
+        }
+
         $provider = new PayPalClient;
 
+        $mode = strtolower($config->environment) === 'production' ? 'live' : 'sandbox';
+
         $payPalConfig = [
-            'mode' => $config->environment, // 'sandbox' or 'live'
+            'mode' => $mode, // 'sandbox' or 'live'
             'sandbox' => [
                 'client_id' => $config->api_key,
                 'client_secret' => $config->api_secret,
@@ -99,8 +105,12 @@ class WebPaymentController extends Controller
             'validate_ssl' => true,
         ];
 
-        $provider->setApiCredentials($payPalConfig);
-        $provider->getAccessToken();
+        try {
+            $provider->setApiCredentials($payPalConfig);
+            $provider->getAccessToken();
+        } catch (\Exception $e) {
+            return redirect('/my-account')->with('error', 'PayPal Configuration Error: ' . $e->getMessage());
+        }
 
         $response = $provider->createOrder([
             "intent" => "CAPTURE",
@@ -170,8 +180,14 @@ class WebPaymentController extends Controller
             return redirect('/my-account')->with('error', 'PayPal configuration not found.');
         }
 
+        if (empty($config->api_key) || empty($config->api_secret)) {
+            return redirect('/my-account')->with('error', 'PayPal is not configured properly. Missing API credentials.');
+        }
+
+        $mode = strtolower($config->environment) === 'production' ? 'live' : 'sandbox';
+
         $payPalConfig = [
-            'mode' => $config->environment,
+            'mode' => $mode,
             'sandbox' => [
                 'client_id' => $config->api_key,
                 'client_secret' => $config->api_secret,
@@ -189,9 +205,13 @@ class WebPaymentController extends Controller
             'validate_ssl' => true,
         ];
 
-        $provider = new PayPalClient;
-        $provider->setApiCredentials($payPalConfig);
-        $provider->getAccessToken();
+        try {
+            $provider = new PayPalClient;
+            $provider->setApiCredentials($payPalConfig);
+            $provider->getAccessToken();
+        } catch (\Exception $e) {
+            return redirect('/my-account')->with('error', 'PayPal Callback Error: ' . $e->getMessage());
+        }
         $response = $provider->capturePaymentOrder($request['token']);
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
