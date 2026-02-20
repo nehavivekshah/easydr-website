@@ -6,10 +6,10 @@
         <section class="pt-100 pb-40" style="background: #f8fafc;">
             <div class="container">
                 <div class="row m-0" style="background: #f8f9fa;">
-                    <div class="col-md-2 p-0 user-sidebar-wrapper">
+                    <div class="col-lg-3 mb-4">
                         @include('frontend.inc.user_sidebar')
                     </div>
-                    <div class="col-md-10 p-0">
+                    <div class="col-lg-9">
                         <div class="dashboard-content-wrapper p-4">
                             <div class="container py-5">
                                 <div class="row justify-content-center">
@@ -58,7 +58,8 @@
                                                                         style="width: 40px; text-align: center;"></i>
                                                                     <div class="text-start">
                                                                         <h6 class="mb-0 fw-bold">
-                                                                            {{ ucfirst($gateway->gateway_name) }}</h6>
+                                                                            {{ ucfirst($gateway->gateway_name) }}
+                                                                        </h6>
                                                                         <small class="text-muted">Secure Payment</small>
                                                                     </div>
                                                                 @endif
