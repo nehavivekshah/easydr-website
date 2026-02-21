@@ -30,6 +30,7 @@
                                             <label for="mobile">Mobile Number</label>
                                             <input type="tel" class="form-control" id="mobile" name="mobile" required
                                                 pattern="[0-9]{10}" maxlength="10"
+                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                                 title="Please enter a valid 10-digit mobile number"
                                                 placeholder="Enter 10-digit mobile number">
                                         </div>

@@ -20,7 +20,8 @@
                                     <div class="form-group">
                                         <label for="otp_code">Verification Code*</label>
                                         <input type="text" class="form-control" id="otp_code" name="otp_code" required
-                                            placeholder="Enter 6-digit code">
+                                            placeholder="Enter 6-digit code" maxlength="6"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                     </div>
                                     <button type="submit" class="btn auth-btn btn-block mb-3">
                                         Verify

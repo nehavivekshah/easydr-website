@@ -376,7 +376,7 @@ class FrontendController extends Controller
                     return response()->json([
                         'success' => true,
                         'message' => 'OTP verified successfully! You can create a new password.',
-                        'redirect_url' => '/create-new-password'
+                        'action' => 'create_password'
                     ]);
                 }
 
@@ -462,9 +462,20 @@ class FrontendController extends Controller
     public function createNewPasswordPost(Request $request)
     {
         // Validate the incoming request data
-        $request->validate([
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'password' => 'required|min:8|confirmed',
         ]);
+
+        if ($validator->fails()) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            return back()->withErrors($validator)->withInput();
+        }
 
         // Retrieve the user ID from the session
         $userSession = session('userSession');
@@ -473,6 +484,9 @@ class FrontendController extends Controller
         $user = User::find($userSession['uid']);
 
         if (!$user) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'User not found. Please try again.'], 404);
+            }
             return back()->with('error', 'User not found. Please try again.');
         }
 
@@ -483,13 +497,21 @@ class FrontendController extends Controller
         // Clear the session data
         session()->forget('userSession');
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Password updated successfully! You can now log in.',
+                'action' => 'login'
+            ]);
+        }
+
         return redirect('/login')->with('success', 'Password updated successfully! You can now log in.');
     }
     public function logout()
     {
         Auth::logout();
 
-        return redirect('/login')->with('success', 'Successfully Logout.');
+        return redirect('/')->with('success', 'Successfully Logout.');
     }
 
     /*Website My Account Controllers*/
