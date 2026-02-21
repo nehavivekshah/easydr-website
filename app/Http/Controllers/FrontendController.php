@@ -792,7 +792,6 @@ class FrontendController extends Controller
                 'doctors.specialist',
                 'usermetas.city',
                 'usermetas.state',
-                'doctors.description',
                 DB::raw('COUNT(appointments.id) as total_appointments'),
                 DB::raw('MAX(appointments.date) as last_visit')
             )
@@ -806,8 +805,7 @@ class FrontendController extends Controller
                 'users.photo',
                 'doctors.specialist',
                 'usermetas.city',
-                'usermetas.state',
-                'doctors.description'
+                'usermetas.state'
             )
             ->orderBy('last_visit', 'desc')
             ->get();
