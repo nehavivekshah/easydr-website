@@ -532,6 +532,10 @@ class DoctorController extends ApiController
     {
         // Retrieve the user record
         $user = User::find($doctorId);
+        $request->validate([
+            'mobile' => 'nullable|numeric|digits:10',
+            'alternative_mobile' => 'nullable|numeric|digits:10'
+        ]);
 
         $name = explode(' ', $request->name);
 

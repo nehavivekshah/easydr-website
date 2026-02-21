@@ -28,8 +28,10 @@
                                     <div class="row">
                                         <div class="col-md-6 form-group">
                                             <label for="mobile">Mobile Number</label>
-                                            <input type="text" class="form-control" id="mobile" name="mobile" required
-                                                placeholder="Enter mobile number">
+                                            <input type="tel" class="form-control" id="mobile" name="mobile" required
+                                                pattern="[0-9]{10}" maxlength="10"
+                                                title="Please enter a valid 10-digit mobile number"
+                                                placeholder="Enter 10-digit mobile number">
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label for="email">Email address</label>

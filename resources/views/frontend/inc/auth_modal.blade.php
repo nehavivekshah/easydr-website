@@ -4,7 +4,7 @@
         <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
             <div class="modal-header border-0 pb-0 position-relative" style="background-color: #f8f9fa;">
                 <button type="button" class="btn text-muted position-absolute"
-                    style="top: 10px; right: 10px; z-index: 10; font-size: 1.2rem; background: transparent; border: none; outline: none; box-shadow: none;"
+                    style="top: 10px; right: 15px; z-index: 10; font-size: 1.2rem; background: transparent; border: none; outline: none; box-shadow: none; padding: 0px;"
                     data-bs-dismiss="modal" aria-label="Close">
                     <i class="fas fa-times"></i>
                 </button>
@@ -67,8 +67,8 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="modalRegMobile">Mobile Number*</label>
-                                <input type="text" class="form-control" id="modalRegMobile" name="mobile" required
-                                    placeholder="Mobile number">
+                                <input type="tel" class="form-control" id="modalRegMobile" name="mobile" required
+                                    pattern="[0-9]{10}" maxlength="10" title="Please enter a valid 10-digit mobile number" placeholder="10-digit number">
                             </div>
                             <div class="col-md-6">
                                 <label for="modalRegEmail">Email address*</label>

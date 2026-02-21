@@ -52,7 +52,7 @@ class WebPharmacyController extends Controller
             'PharmacyType' => 'required|string|max:255',
             'PrimaryContactName' => 'required|string|max:255',
             'Designation' => 'required|string|max:255',
-            'MobileNumber' => 'required|string|max:50',
+            'MobileNumber' => 'required|numeric|digits:10',
             'EmailAddress' => 'required|email|max:255',
             'Address' => 'required|string|max:255',
             'City' => 'required|string|max:255',

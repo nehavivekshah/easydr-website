@@ -425,10 +425,30 @@ class WebUserController extends Controller
     }
     function manageUserPost(Request $request)
     {
+        $validationRules = [];
+
         if ($request->filled('adhar')) {
-            $request->validate([
-                'adhar' => 'numeric|digits:12',
-            ]);
+            $validationRules['adhar'] = 'numeric|digits:12';
+        }
+
+        if ($request->filled('mob')) {
+            $validationRules['mob'] = 'numeric|digits:10';
+        }
+
+        if ($request->filled('altr_mob')) {
+            $validationRules['altr_mob'] = 'numeric|digits:10';
+        }
+
+        if ($request->filled('mob2')) {
+            $validationRules['mob2'] = 'numeric|digits:10';
+        }
+
+        if ($request->filled('new_doc_mobile')) {
+            $validationRules['new_doc_mobile'] = 'numeric|digits:10';
+        }
+
+        if (!empty($validationRules)) {
+            $request->validate($validationRules);
         }
 
         // Check if the user exists or if it's a new entry

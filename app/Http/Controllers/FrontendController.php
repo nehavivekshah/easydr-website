@@ -241,6 +241,10 @@ class FrontendController extends Controller
     }
     public function signupPost(Request $request)
     {
+        $request->validate([
+            'mobile' => 'required|numeric|digits:10',
+            // Add other validations if necessary, but focusing on mobile right now.
+        ]);
 
         $emailPrefix = explode('@', $request->email)[0];
         $mobilePrefix = substr($request->mobile, 0, 3);
