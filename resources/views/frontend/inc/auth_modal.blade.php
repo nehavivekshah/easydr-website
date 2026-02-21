@@ -171,12 +171,13 @@
                         <div class="form-group mb-3">
                             <label for="modalNewPassword">New Password*</label>
                             <input type="password" class="form-control" id="modalNewPassword" name="password" required
-                                placeholder="Enter new password">
+                                placeholder="Enter new password" style="padding: 10px; min-height: 45px;">
                         </div>
                         <div class="form-group mb-4">
                             <label for="modalNewPasswordConfirm">Confirm Password*</label>
                             <input type="password" class="form-control" id="modalNewPasswordConfirm"
-                                name="password_confirmation" required placeholder="Confirm new password">
+                                name="password_confirmation" required placeholder="Confirm new password"
+                                style="padding: 10px; min-height: 45px;">
                         </div>
                         <div id="modal-create-password-error" class="text-danger small mb-3 text-center d-none"></div>
                         <button type="submit" class="btn btn-primary w-100 mb-3"
