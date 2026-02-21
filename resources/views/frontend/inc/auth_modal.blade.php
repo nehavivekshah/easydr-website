@@ -68,7 +68,8 @@
                             <div class="col-md-6">
                                 <label for="modalRegMobile">Mobile Number*</label>
                                 <input type="tel" class="form-control" id="modalRegMobile" name="mobile" required
-                                    pattern="[0-9]{10}" maxlength="10" title="Please enter a valid 10-digit mobile number" placeholder="10-digit number">
+                                    pattern="[0-9]{10}" maxlength="10"
+                                    title="Please enter a valid 10-digit mobile number" placeholder="10-digit number">
                             </div>
                             <div class="col-md-6">
                                 <label for="modalRegEmail">Email address*</label>
@@ -96,7 +97,9 @@
                         <div id="modal-password-error" class="text-danger small mb-3 d-none">Passwords do not match.
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+                        <button type="submit" class="btn btn-primary w-100 mb-3" id="modalRegSubmitBtn">Register
+                            <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true" id="modalRegSpinner"></span>
+                        </button>
                         <div class="text-center mt-3">
                             <span class="text-muted">Already have an account? </span>
                             <a href="javascript:void(0)" class="auth-footer-link text-decoration-none fw-bold"
@@ -117,11 +120,40 @@
                             <input type="email" class="form-control" id="modalForgotEmail" name="email" required
                                 placeholder="Enter your registered email*">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 mb-3">Submit</button>
+                        <button type="submit" class="btn btn-primary w-100 mb-3" id="modalForgotSubmitBtn">Submit
+                            <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true" id="modalForgotSpinner"></span>
+                        </button>
                         <div class="text-center mt-3">
                             <a href="javascript:void(0)" class="auth-footer-link text-decoration-none fw-bold"
                                 onclick="switchAuthView('login')"><i class="fas fa-arrow-left me-1"></i> Back to
                                 Login</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- OTP View -->
+                <div id="authOtpView" class="d-none">
+                    <h4 class="text-center mb-1 fw-bold" style="color: #1E0B9B;">OTP Verification</h4>
+                    <p class="text-center text-muted small mb-4">
+                        We've sent a 6-digit verification code to your email.
+                        Please enter the code below to continue.
+                    </p>
+                    <form method="POST" action="/verify-otp" id="modalOtpForm">
+                        @csrf
+                        <div class="form-group mb-4">
+                            <label for="modalOtpCode">Verification Code*</label>
+                            <input type="text" class="form-control text-center" id="modalOtpCode" name="otp_code"
+                                required placeholder="------" maxlength="6"
+                                style="letter-spacing: 4px; font-size: 1.2rem;">
+                        </div>
+                        <div id="modal-otp-error" class="text-danger small mb-3 text-center d-none"></div>
+                        <button type="submit" class="btn btn-primary w-100 mb-3" id="modalOtpSubmitBtn">Verify Code
+                            <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"
+                                id="modalOtpSpinner"></span>
+                        </button>
+                        <div class="text-center mt-3">
+                            <a href="/resend-otp" class="auth-footer-link text-decoration-none small text-muted">Didn't
+                                receive a code? Resend</a>
                         </div>
                     </form>
                 </div>
@@ -137,6 +169,7 @@
         document.getElementById('authLoginView').classList.add('d-none');
         document.getElementById('authRegisterView').classList.add('d-none');
         document.getElementById('authForgotPasswordView').classList.add('d-none');
+        document.getElementById('authOtpView').classList.add('d-none');
 
         // Show requested view
         if (view === 'login') {
@@ -145,6 +178,8 @@
             document.getElementById('authRegisterView').classList.remove('d-none');
         } else if (view === 'forgotPassword') {
             document.getElementById('authForgotPasswordView').classList.remove('d-none');
+        } else if (view === 'otp') {
+            document.getElementById('authOtpView').classList.remove('d-none');
         }
     }
 
@@ -173,8 +208,89 @@
                 document.getElementById('modalLoginForm').reset();
                 document.getElementById('modalRegisterForm').reset();
                 document.getElementById('modalForgotForm').reset();
+                document.getElementById('modalOtpForm').reset();
                 document.getElementById("modal-password-error").classList.add("d-none");
+                document.getElementById("modal-otp-error").classList.add("d-none");
             });
         }
+    });
+
+    // AJAX Form Setup
+    function handleAjaxFormSubmit(formId, url, targetView, successMsg, btnId, spinnerId) {
+        const form = document.getElementById(formId);
+        if (!form) return;
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            // For register form, check passwords first
+            if (formId === 'modalRegisterForm' && !validateModalPasswords()) {
+                return;
+            }
+
+            const btn = document.getElementById(btnId);
+            const spinner = document.getElementById(spinnerId);
+            const originalBtnText = btn.innerText;
+
+            // UI Loading state
+            btn.disabled = true;
+            spinner.classList.remove('d-none');
+
+            const formData = new FormData(form);
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === true || data.success === true) {
+                    if (targetView === 'redirect') {
+                         window.location.href = data.redirect_url || '/login';
+                    } else {
+                         // Form specific handling
+                         if (formId === 'modalOtpForm') {
+                             window.location.href = data.redirect_url;
+                         } else {
+                             alert(successMsg || data.message || 'Success! Check your email for the OTP.');
+                             switchAuthView(targetView);
+                         }
+                    }
+                } else {
+                    // Handle Validation errors or normal errors
+                    let errorMsg = data.message || 'An error occurred. Please try again.';
+                    if (data.errors) {
+                        errorMsg = Object.values(data.errors).flat().join('\n');
+                    }
+                    if (formId === 'modalOtpForm') {
+                        const errDiv = document.getElementById("modal-otp-error");
+                        errDiv.innerText = errorMsg;
+                        errDiv.classList.remove('d-none');
+                    } else {
+                        alert(errorMsg);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An unexpected error occurred. Please try again later.');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                spinner.classList.add('d-none');
+            });
+        });
+    }
+
+    // Initialize AJAX handlers
+    document.addEventListener('DOMContentLoaded', function () {
+        handleAjaxFormSubmit('modalRegisterForm', '/signup', 'otp', 'Registration successful! Please enter the OTP sent to your email.', 'modalRegSubmitBtn', 'modalRegSpinner');
+        handleAjaxFormSubmit('modalForgotForm', '/forgot-password', 'otp', 'Password reset instructions sent. Please enter the OTP.', 'modalForgotSubmitBtn', 'modalForgotSpinner');
+        handleAjaxFormSubmit('modalOtpForm', '/verify-otp', 'redirect', '', 'modalOtpSubmitBtn', 'modalOtpSpinner');
     });
 </script>

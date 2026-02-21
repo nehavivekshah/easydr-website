@@ -296,12 +296,25 @@ class FrontendController extends Controller
 
             // Optionally store OTP in session or database if needed for later verification
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Successfully registered! Please check your email for verification.'
+                ]);
+            }
+
             return redirect('/otp')->with('success', 'Successfully registered! Please check your email for verification.');
 
         } catch (\Illuminate\Database\QueryException $e) {
             $errorCode = $e->errorInfo[1] ?? null;
             if ($errorCode == 1062) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['success' => false, 'message' => 'Duplicate Entry (Email or Mobile already registered).'], 422);
+                }
                 return back()->with('error', 'Duplicate Entry.');
+            }
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Oops, something went wrong.'], 500);
             }
             return back()->with('error', 'Oops, something went wrong.');
         }
@@ -322,6 +335,9 @@ class FrontendController extends Controller
 
         // If no session data exists, prompt user to re-register or request a new OTP
         if (!$otpSession) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'No OTP session found. Please request a new code or register again.'], 400);
+            }
             return back()->with('error', 'No OTP session found. Please request a new code or register again.');
         }
 
@@ -335,6 +351,9 @@ class FrontendController extends Controller
             $user = User::find($uid);
 
             if (!$user) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['success' => false, 'message' => 'User not found. Please register again.'], 404);
+                }
                 return back()->with('error', 'User not found. Please register again.');
             }
 
@@ -353,9 +372,25 @@ class FrontendController extends Controller
                     ]
                 ]);
 
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'OTP verified successfully! You can create a new password.',
+                        'redirect_url' => '/create-new-password'
+                    ]);
+                }
+
                 return redirect('/create-new-password')
                     ->with('success', 'OTP verified successfully! You can create a new password.');
             } else {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'OTP verified successfully! You can now access the dashboard.',
+                        'redirect_url' => '/login'
+                    ]);
+                }
+
                 return redirect('/login')
                     ->with('success', 'OTP verified successfully! You can now access the dashboard.');
             }
@@ -363,6 +398,9 @@ class FrontendController extends Controller
         }
 
         // If the OTP doesn't match, return an error
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => false, 'message' => 'Invalid or incorrect OTP code. Please try again.'], 400);
+        }
         return back()->with('error', 'Invalid or incorrect OTP code. Please try again.');
     }
     public function forgotPassword()
@@ -393,6 +431,9 @@ class FrontendController extends Controller
         } catch (\Exception $e) {
             // If email sending fails, delete the created user
             //$user->delete();
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Failed to send verification email. Please try again.'], 500);
+            }
             return back()->with('error', 'Failed to send verification email');
         }
 
@@ -404,6 +445,13 @@ class FrontendController extends Controller
                 'redir' => 'redirPassword'
             ]
         ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Password reset OTP sent to your registered email id.'
+            ]);
+        }
 
         return redirect('/otp')->with('success', 'Reset password sent your registed email id.');
     }
