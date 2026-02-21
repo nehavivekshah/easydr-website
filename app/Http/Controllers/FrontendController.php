@@ -781,7 +781,6 @@ class FrontendController extends Controller
             ->leftJoin('doctors', 'appointments.did', '=', 'doctors.uid')
             ->leftJoin('users', 'doctors.uid', '=', 'users.id')
             ->leftJoin('usermetas', 'users.id', '=', 'usermetas.uid')
-            ->leftJoin('specialists', 'doctors.specialist_id', '=', 'specialists.id')
             ->select(
                 'users.id as user_id',
                 'doctors.id as doctor_table_id',
@@ -790,7 +789,7 @@ class FrontendController extends Controller
                 'users.email',
                 'users.mobile',
                 'users.photo',
-                'specialists.specialist',
+                'doctors.specialist',
                 'usermetas.city',
                 'usermetas.state',
                 'doctors.description',
@@ -805,7 +804,7 @@ class FrontendController extends Controller
                 'users.email',
                 'users.mobile',
                 'users.photo',
-                'specialists.specialist',
+                'doctors.specialist',
                 'usermetas.city',
                 'usermetas.state',
                 'doctors.description'
