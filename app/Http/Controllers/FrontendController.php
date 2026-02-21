@@ -790,10 +790,15 @@ class FrontendController extends Controller
                 'users.mobile',
                 'users.photo',
                 'doctors.specialist',
+                'doctors.experience',
+                'doctors.education',
+                'doctors.fees',
+                'doctors.about',
                 'usermetas.city',
                 'usermetas.state',
                 DB::raw('COUNT(appointments.id) as total_appointments'),
-                DB::raw('MAX(appointments.date) as last_visit')
+                DB::raw('MAX(appointments.date) as last_visit'),
+                DB::raw('(SELECT COALESCE(AVG(rating), 0) FROM doctor_reviews WHERE doctor_reviews.doctor_id = doctors.id) AS avg_rating')
             )
             ->groupBy(
                 'users.id',
@@ -804,6 +809,10 @@ class FrontendController extends Controller
                 'users.mobile',
                 'users.photo',
                 'doctors.specialist',
+                'doctors.experience',
+                'doctors.education',
+                'doctors.fees',
+                'doctors.about',
                 'usermetas.city',
                 'usermetas.state'
             )

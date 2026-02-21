@@ -145,17 +145,34 @@
                                                         <div class="doctor-info w-100">
                                                             <div class="d-flex justify-content-between align-items-start">
                                                                 <h5 class="mb-1">Dr. {{ $doctor->first_name }} {{ $doctor->last_name }}</h5>
+                                                                <div class="text-warning small pt-1">
+                                                                    <i class="fas fa-star"></i> {{ number_format($doctor->avg_rating, 1) }}
+                                                                </div>
                                                             </div>
                                                             <div class="specialty-badge">
-                                                                {{ $doctor->specialist ?? 'General' }}
+                                                                {{ $doctor->specialist ?? 'General' }} 
+                                                                @if($doctor->education)
+                                                                    <span class="text-muted fw-normal"> | {{ $doctor->education }}</span>
+                                                                @endif
                                                             </div>
                                                             <div class="doctor-meta">
                                                                 <span><i class="fas fa-map-marker-alt"></i> 
                                                                     {{ implode(', ', array_filter([$doctor->city, $doctor->state])) ?: 'Location not specified' }}
                                                                 </span>
+                                                                @if($doctor->mobile)
+                                                                <span class="mt-1"><i class="fas fa-phone-alt"></i> 
+                                                                    <a href="tel:{{ $doctor->mobile }}" class="text-decoration-none text-secondary">{{ $doctor->mobile }}</a>
+                                                                </span>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    @if($doctor->about)
+                                                    <div class="mb-3 text-muted small" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                                                        "{{ strip_tags($doctor->about) }}"
+                                                    </div>
+                                                    @endif
 
                                                     <div class="doctor-stats">
                                                         <div class="stat-item">
@@ -163,8 +180,16 @@
                                                             <span class="stat-label">Total Sessions</span>
                                                         </div>
                                                         <div class="stat-item">
-                                                            <span class="stat-value">{{ $doctor->last_visit ? \Carbon\Carbon::parse($doctor->last_visit)->format('M d, Y') : 'N/A' }}</span>
+                                                            <span class="stat-value">{{ $doctor->last_visit ? \Carbon\Carbon::parse($doctor->last_visit)->format('M d, y') : 'N/A' }}</span>
                                                             <span class="stat-label">Last Session</span>
+                                                        </div>
+                                                        <div class="stat-item">
+                                                            <span class="stat-value">{{ $doctor->experience ? $doctor->experience . ' Yrs' : 'N/A' }}</span>
+                                                            <span class="stat-label">Experience</span>
+                                                        </div>
+                                                        <div class="stat-item">
+                                                            <span class="stat-value">{{ $doctor->fees ? '₹' . $doctor->fees : 'Free' }}</span>
+                                                            <span class="stat-label">Consult Fee</span>
                                                         </div>
                                                     </div>
                                                 </div>
