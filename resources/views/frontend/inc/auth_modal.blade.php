@@ -1,15 +1,21 @@
 <!-- Auth Modal -->
 <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-dialog-centered border-0">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header border-0 pb-0 position-relative" style="background-color: #f8f9fa;">
+                <button type="button" class="btn-close position-absolute" style="top: 15px; right: 15px; z-index: 10;"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="w-100 text-center pt-3 pb-2">
+                    <img src="{{ asset('public/assets/frontend/img/logo/logo.jpeg') }}" alt="EasyDoctor Logo"
+                        style="height: 50px; object-fit: contain; max-width: 200px;" class="mb-2">
+                </div>
             </div>
-            <div class="modal-body pt-0 px-4 pb-4">
+            <div class="modal-body pt-4 px-4 pb-4">
 
                 <!-- Login View -->
                 <div id="authLoginView">
-                    <h4 class="text-center mb-4" id="authModalLabel">Login</h4>
+                    <h4 class="text-center mb-1 fw-bold" id="authModalLabel" style="color: #1E0B9B;">Welcome Back</h4>
+                    <p class="text-center text-muted small mb-4">Please enter your credentials to login.</p>
                     <form method="POST" action="/login" id="modalLoginForm">
                         @csrf
                         <div class="form-group mb-3">
@@ -21,7 +27,7 @@
                             <label for="modalLoginPassword">Password*</label>
                             <input type="password" class="form-control" id="modalLoginPassword" name="password" required
                                 placeholder="Password*">
-                            <div class="text-end mt-1">
+                            <div class="text-right mt-1">
                                 <a href="javascript:void(0)" class="auth-footer-link text-sm text-decoration-none"
                                     onclick="switchAuthView('forgotPassword')">Forgot Password?</a>
                             </div>
@@ -37,7 +43,9 @@
 
                 <!-- Register View -->
                 <div id="authRegisterView" class="d-none">
-                    <h4 class="text-center mb-4">Sign Up</h4>
+                    <h4 class="text-center mb-1 fw-bold" style="color: #1E0B9B;">Create Account</h4>
+                    <p class="text-center text-muted small mb-4">Join us to book appointments and manage health records.
+                    </p>
                     <form method="POST" action="/signup" id="modalRegisterForm"
                         onsubmit="return validateModalPasswords()">
                         @csrf
@@ -96,7 +104,7 @@
 
                 <!-- Forgot Password View -->
                 <div id="authForgotPasswordView" class="d-none">
-                    <h4 class="text-center mb-4">Forgot Password</h4>
+                    <h4 class="text-center mb-1 fw-bold" style="color: #1E0B9B;">Reset Password</h4>
                     <p class="text-center text-muted small mb-4">Enter your registered email below to receive password
                         reset instructions.</p>
                     <form method="POST" action="/forgot-password" id="modalForgotForm">
