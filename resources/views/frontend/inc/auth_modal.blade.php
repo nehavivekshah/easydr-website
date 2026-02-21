@@ -304,7 +304,7 @@
                 .then(data => {
                     if (data.status === true || data.success === true) {
                         if (data.action) {
-                            alert(successMsg || data.message);
+                            if (window.showGlobalToast) window.showGlobalToast('success', successMsg || data.message);
                             switchAuthView(data.action);
                         } else if (targetView === 'redirect') {
                             window.location.href = data.redirect_url || '/login';
@@ -313,7 +313,7 @@
                             if (formId === 'modalOtpForm') {
                                 window.location.href = data.redirect_url;
                             } else {
-                                alert(successMsg || data.message || 'Success! Check your email for the OTP.');
+                                if (window.showGlobalToast) window.showGlobalToast('success', successMsg || data.message || 'Success! Check your email for the OTP.');
                                 switchAuthView(targetView);
                             }
                         }
@@ -332,13 +332,13 @@
                             errDiv.innerText = errorMsg;
                             errDiv.classList.remove('d-none');
                         } else {
-                            alert(errorMsg);
+                            if (window.showGlobalToast) window.showGlobalToast('error', errorMsg);
                         }
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An unexpected error occurred. Please try again later.');
+                    if (window.showGlobalToast) window.showGlobalToast('error', 'An unexpected error occurred. Please try again later.');
                 })
                 .finally(() => {
                     btn.disabled = false;
