@@ -3,8 +3,11 @@
     <div class="modal-dialog modal-dialog-centered border-0">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
             <div class="modal-header border-0 pb-0 position-relative" style="background-color: #f8f9fa;">
-                <button type="button" class="btn-close position-absolute" style="top: 15px; right: 15px; z-index: 10;"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn text-muted position-absolute"
+                    style="top: 10px; right: 10px; z-index: 10; font-size: 1.2rem; background: transparent; border: none; outline: none; box-shadow: none;"
+                    data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
                 <div class="w-100 text-center pt-3 pb-2">
                     <img src="{{ asset('public/assets/frontend/img/logo/logo.jpeg') }}" alt="EasyDoctor Logo"
                         style="height: 50px; object-fit: contain; max-width: 200px;" class="mb-2">
