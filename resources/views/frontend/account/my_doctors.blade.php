@@ -194,9 +194,14 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <a href="/doctor/{{ $doctor->doctor_table_id }}/{{ Str::slug($doctor->first_name . '-' . $doctor->last_name) }}" class="btn-view-details mt-3">
-                                                    View Doctor Profile
-                                                </a>
+                                                <div class="d-flex gap-2 mt-3">
+                                                    <a href="/doctor/{{ $doctor->doctor_table_id }}/{{ Str::slug($doctor->first_name . '-' . $doctor->last_name) }}?book=true" class="btn btn-primary flex-fill fw-bold" style="border-radius: 12px; padding: 10px;">
+                                                        <i class="fas fa-calendar-plus me-1"></i> Book Again
+                                                    </a>
+                                                    <a href="/doctor/{{ $doctor->doctor_table_id }}/{{ Str::slug($doctor->first_name . '-' . $doctor->last_name) }}" class="btn-view-details flex-fill" style="padding: 10px; width: auto; background: #eef2f6; color: #0d6efd;">
+                                                        View Profile
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach

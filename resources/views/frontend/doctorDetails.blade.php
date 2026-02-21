@@ -118,7 +118,7 @@
                                         {{-- About Section --}}
                                         <div class="mb-5">
                                             <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                                                                                                {{ $doctor->last_name ?? '' }}</h5> -->
+                                                                                                                                    {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -571,6 +571,12 @@
                 console.warn('Appointment date, time select, doctor ID input, or help text element not found. Dynamic time slot loading disabled.');
             }
 
-        });
+            @if(request()->query('book') == 'true')
+                // Auto-open the appointment modal if the user clicked "Book Again"
+                var appointmentModal = new bootstrap.Modal(document.getElementById('appointmentModal'));
+                appointmentModal.show();
+            @endif
+
+            });
     </script>
 @endpush
