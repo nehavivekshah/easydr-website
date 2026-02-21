@@ -96,7 +96,7 @@
                                             <li><a href="/my-account"><i class="fas fa-user pe-1"></i> My Account</a></li>
                                             <li><a href="/reset-posswprd"><i class="fas fa-key pe-1"></i> Reset Password</a>
                                             </li>
-                                            <li><a href="/logout"><i class="fas fa-sign-out-alt pe-2"></i>Logout</a></li>
+                                            <li><a href="/logout"><i class="fas fa-sign-out-alt pe-2"></i> Logout</a></li>
                                         </ul>
                                     </li>
                                 </ul>

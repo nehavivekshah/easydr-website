@@ -762,6 +762,60 @@ class FrontendController extends Controller
         return view('frontend.account.my_patients', compact('patients', 'specialists', 'doctors'));
     }
 
+    public function myDoctors()
+    {
+        $user = Auth::user();
+        if (!$user || $user->role != 5)
+            return redirect('/login');
+
+        // Verify patient profile
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        if (!$patient) {
+            return redirect('/my-account')->with('error', 'Patient profile not found.');
+        }
+
+        // Get unique doctors this patient has booked with, aggregating total visits and last visit date
+        $doctors = DB::table('appointments')
+            ->where('appointments.pid', $patient->id)
+            ->whereIn('appointments.status', [1, 3]) // Confirmed or Completed
+            ->leftJoin('doctors', 'appointments.did', '=', 'doctors.uid')
+            ->leftJoin('users', 'doctors.uid', '=', 'users.id')
+            ->leftJoin('usermetas', 'users.id', '=', 'usermetas.uid')
+            ->leftJoin('specialists', 'doctors.specialist_id', '=', 'specialists.id')
+            ->select(
+                'users.id as user_id',
+                'doctors.id as doctor_table_id',
+                'users.first_name',
+                'users.last_name',
+                'users.email',
+                'users.mobile',
+                'users.photo',
+                'specialists.specialist',
+                'usermetas.city',
+                'usermetas.state',
+                'doctors.description',
+                DB::raw('COUNT(appointments.id) as total_appointments'),
+                DB::raw('MAX(appointments.date) as last_visit')
+            )
+            ->groupBy(
+                'users.id',
+                'doctors.id',
+                'users.first_name',
+                'users.last_name',
+                'users.email',
+                'users.mobile',
+                'users.photo',
+                'specialists.specialist',
+                'usermetas.city',
+                'usermetas.state',
+                'doctors.description'
+            )
+            ->orderBy('last_visit', 'desc')
+            ->get();
+
+        return view('frontend.account.my_doctors', compact('doctors'));
+    }
+
     public function getPatientDetails($id)
     {
         $doctor_id = Auth::id();
@@ -1062,19 +1116,6 @@ class FrontendController extends Controller
     }
 
     /* Patient Methods */
-    public function myDoctors()
-    {
-        $user = Auth::user();
-        // Get doctors visited by this patient
-        $doctors = \App\Models\Appointments::leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
-            ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
-            ->select('doc.*', 'doctors.specialist')
-            ->where('appointments.pid', $user->id)
-            ->distinct('appointments.did')
-            ->get();
-
-        return view('frontend.account.my_doctors', compact('doctors'));
-    }
 
     public function medicalReports()
     {
