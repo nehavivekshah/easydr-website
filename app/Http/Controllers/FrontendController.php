@@ -376,7 +376,7 @@ class FrontendController extends Controller
                     return response()->json([
                         'success' => true,
                         'message' => 'OTP verified successfully! You can create a new password.',
-                        'action' => 'create_password'
+                        'action' => 'createPassword'
                     ]);
                 }
 
