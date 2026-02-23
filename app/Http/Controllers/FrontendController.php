@@ -1444,7 +1444,20 @@ class FrontendController extends Controller
                 ->get();
         }
 
-        return view('frontend/messages', compact('contacts'));
+        // Calculate unread counts per contact for the authenticated user
+        $unreadCounts = [];
+        $unreadQuery = DB::table('chats')
+            ->select('pid', DB::raw('count(*) as total'))
+            ->where('did', $user->id)
+            ->where('status', 0)
+            ->groupBy('pid')
+            ->get();
+
+        foreach ($unreadQuery as $item) {
+            $unreadCounts[$item->pid] = $item->total;
+        }
+
+        return view('frontend/messages', compact('contacts', 'unreadCounts'));
     }
 
     public function getChatContacts()
@@ -1544,6 +1557,12 @@ class FrontendController extends Controller
 
         // Chat is always enabled
         $canChat = true;
+
+        // Mark unread messages as read for this user
+        Chats::where('did', $user->id)
+            ->where('pid', $recipient_id) // The sender is the other person
+            ->where('status', 0)
+            ->update(['status' => 1]);
 
         // Fetch messages
         $messages = Chats::where(function ($query) use ($user, $recipient_id) {

@@ -41,10 +41,18 @@
                                                     <span class="status-indicator online"></span>
                                                 </div>
                                                 <div class="overflow-hidden flex-grow-1">
-                                                    <h6 class="text-truncate font-weight-bold contact-name"
-                                                        style="font-size: 0.95rem; color: #333;">
-                                                        {{ $contact->first_name }} {{ $contact->last_name }}
-                                                    </h6>
+                                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                                        <h6 class="text-truncate font-weight-bold contact-name m-0"
+                                                            style="font-size: 0.95rem; color: #333;">
+                                                            {{ $contact->first_name }} {{ $contact->last_name }}
+                                                        </h6>
+                                                        @if(isset($unreadCounts) && isset($unreadCounts[$contact->id]) && $unreadCounts[$contact->id] > 0)
+                                                            <span class="badge badge-danger rounded-pill shadow-sm"
+                                                                style="font-size: 0.75rem;">
+                                                                {{ $unreadCounts[$contact->id] }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
                                                     <p class="mb-0 text-muted small text-truncate">Click to open chat</p>
                                                 </div>
                                             </div>
@@ -99,24 +107,24 @@
 
                                         <!-- Appointment Alert Banner -->
                                         <!-- <div id="appointment-alert"
-                                                    class="d-none alert alert-info m-3 shadow-sm border-0 d-flex align-items-center justify-content-between"
-                                                    style="border-radius: 12px; background: #e3f2fd; color: #0d47a1; z-index: 10;">
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="fas fa-clock me-3" style="font-size: 1.2rem;"></i>
-                                                        <div class="me-4">
-                                                            <span class="font-weight-bold d-block">Session Finished?</span>
-                                                            <small>The scheduled time for this appointment has elapsed.</small>
+                                                        class="d-none alert alert-info m-3 shadow-sm border-0 d-flex align-items-center justify-content-between"
+                                                        style="border-radius: 12px; background: #e3f2fd; color: #0d47a1; z-index: 10;">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="fas fa-clock me-3" style="font-size: 1.2rem;"></i>
+                                                            <div class="me-4">
+                                                                <span class="font-weight-bold d-block">Session Finished?</span>
+                                                                <small>The scheduled time for this appointment has elapsed.</small>
+                                                            </div>
+                                                            <div class="status-indicators d-flex flex-column small border-start ps-3"
+                                                                style="border-color: #bbdefb !important;">
+                                                                <span class="doctor-status mb-1"></span>
+                                                                <span class="patient-status"></span>
+                                                            </div>
                                                         </div>
-                                                        <div class="status-indicators d-flex flex-column small border-start ps-3"
-                                                            style="border-color: #bbdefb !important;">
-                                                            <span class="doctor-status mb-1"></span>
-                                                            <span class="patient-status"></span>
-                                                        </div>
-                                                    </div>
-                                                    <button onclick="completeAppointmentNow()"
-                                                        class="btn btn-sm btn-primary rounded-pill px-3 py-1 font-weight-bold shadow-sm">Complete
-                                                        Now</button>
-                                                </div> -->
+                                                        <button onclick="completeAppointmentNow()"
+                                                            class="btn btn-sm btn-primary rounded-pill px-3 py-1 font-weight-bold shadow-sm">Complete
+                                                            Now</button>
+                                                    </div> -->
 
                                         <!-- Messages Area -->
                                         <div id="messages-display" class="p-4 flex-grow-1"

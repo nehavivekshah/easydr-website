@@ -1,3 +1,11 @@
+@php
+    $totalUnreadCount = 0;
+    if (Auth::check()) {
+        $totalUnreadCount = \App\Models\Chats::where('did', Auth::id())
+            ->where('status', 0)
+            ->count();
+    }
+@endphp
 @if(Auth::check())
     <div class="user_profile shadow-sm mb-4">
         <div class="user_profile_img">
@@ -38,7 +46,11 @@
             <li><a class="{{ Request::is('billing*') ? 'active' : '' }}" href="/billing"><i class="fas fa-history mr-2"></i>
                     Transaction History</a></li>
             <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages"><i class="fas fa-envelope mr-2"></i>
-                    Messages</a></li>
+                    Messages
+                    @if($totalUnreadCount > 0)
+                        <span class="badge badge-danger rounded-pill ml-2">{{ $totalUnreadCount }}</span>
+                    @endif
+                </a></li>
             <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password"><i
                         class="fas fa-key mr-2"></i> Change Password</a></li>
         @elseif(Auth::user()->role == 4)
@@ -55,7 +67,11 @@
             <li><a class="{{ Request::is('doctor-billing*') ? 'active' : '' }}" href="/doctor-billing"><i
                         class="fas fa-wallet mr-2"></i> Billing & Payments</a></li>
             <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages"><i
-                        class="fas fa-comment-medical mr-2"></i> Messages</a></li>
+                        class="fas fa-comment-medical mr-2"></i> Messages
+                    @if($totalUnreadCount > 0)
+                        <span class="badge badge-danger rounded-pill ml-2">{{ $totalUnreadCount }}</span>
+                    @endif
+                </a></li>
             <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password"><i
                         class="fas fa-unlock-alt mr-2"></i> Change Password</a></li>
         @endif
