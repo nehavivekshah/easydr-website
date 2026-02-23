@@ -1197,7 +1197,30 @@ class FrontendController extends Controller
 
     public function patientPrescriptions()
     {
-        return view('frontend.account.patient_prescriptions');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        // Fetch prescriptions for this patient
+        // Assuming Prescriptions table has patient_id, doctor_id, and we need to join users for doctor details
+        $prescriptions = \App\Models\Prescriptions::where('patient_id', $user->id)
+            ->leftJoin('users as doc', 'prescriptions.doctor_id', '=', 'doc.id')
+            ->select(
+                'prescriptions.*',
+                'doc.first_name as doctor_first_name',
+                'doc.last_name as doctor_last_name',
+                'doc.photo as doctor_photo'
+            )
+            ->orderBy('prescriptions.created_at', 'desc')
+            ->paginate(10);
+
+        // Fetch medicines for each prescription
+        foreach ($prescriptions as $prescription) {
+            $prescription->medicines = \App\Models\Prescription_medinices::where('prescribe_id', $prescription->id)->get();
+        }
+
+        return view('frontend.account.patient_prescriptions', compact('prescriptions'));
     }
 
     public function billing()
