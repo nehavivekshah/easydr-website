@@ -697,6 +697,22 @@
             }
         }
 
+        // Auto-open chat if recipient is specified in URL
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipientId = urlParams.get('recipient');
+            
+            if (recipientId) {
+                const contactElement = $(`#contact-${recipientId}`);
+                if (contactElement.length) {
+                    // Slight delay to ensure UI is ready (optional, but sometimes helps with rendering)
+                    setTimeout(() => {
+                        contactElement.click();
+                    }, 100);
+                }
+            }
+        });
+
         // Clean up interval on page leave
         window.onbeforeunload = function () {
             if (pollingInterval) clearInterval(pollingInterval);
