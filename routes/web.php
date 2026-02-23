@@ -41,6 +41,7 @@ Route::post('/complete-appointment/{id}', [FrontendController::class, 'completeA
 Route::post('/mark-appointment-paid/{id}', [FrontendController::class, 'markAppointmentPaid'])->name('markAppointmentPaid');
 Route::get('/manage-appointment', [FrontendController::class, 'manageAppointment']);
 Route::get('/video-consultation/{id}', [WebAppointmentController::class, 'startVideoCall'])->middleware('auth')->name('video.consultation');
+Route::get('/api/check-video-status/{id}', [WebAppointmentController::class, 'checkVideoStatus'])->middleware('auth');
 
 // Doctor Routes
 Route::get('/my-patients', [FrontendController::class, 'myPatients']);

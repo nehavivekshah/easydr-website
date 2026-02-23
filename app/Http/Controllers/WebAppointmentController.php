@@ -389,7 +389,29 @@ class WebAppointmentController extends Controller
             }
         }
 
-        return view('frontend.video_room', compact('appointment'));
+        // Fetch active video gateway config (e.g., Jitsi Meet config)
+        $videoConfig = Video_call_gateway_configs::where('is_active', 1)->first();
+
+        // If it's the doctor, mark the video as started
+        if ($userRole == 4) {
+            $appointment->is_video_started = 1;
+            $appointment->save();
+        }
+
+        return view('frontend.video_room', compact('appointment', 'videoConfig', 'userRole'));
+    }
+
+    public function checkVideoStatus($id)
+    {
+        $appointment = Appointments::find($id);
+        if (!$appointment) {
+            return response()->json(['success' => false, 'message' => 'Appointment not found.']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'is_video_started' => (bool) $appointment->is_video_started
+        ]);
     }
 
 }
