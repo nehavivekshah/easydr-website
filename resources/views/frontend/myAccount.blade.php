@@ -68,7 +68,7 @@
 
         .stat-card-modern .trending {
             font-size: 12px;
-            margin-top: 12px;
+            margin-top: 0px;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -166,7 +166,7 @@
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px">
+                                                    style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
                                                     Total
                                                     Appointments</p>
                                                 <div class="trending text-primary w-100" style="font-size: 11px;"><i
@@ -190,7 +190,7 @@
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px;">
+                                                    style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
                                                     Completed
                                                     Sessions</p>
                                                 <div class="trending text-success w-100" style="font-size: 11px;"><i
@@ -213,12 +213,13 @@
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px;">
+                                                    style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
                                                     Total Spent</p>
                                                 <div class="trending text-purple w-100" style="font-size: 11px;"><i
                                                         class="fas fa-receipt"></i> From
                                                     {{ number_format($appointmentsCount ?? 0) }}
-                                                    appointments</div>
+                                                    appointments
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -238,7 +239,7 @@
                                                 <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                                 <div style="min-width: 0;">
                                                     <p class="mb-2 text-truncate"
-                                                        style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px;">
+                                                        style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
                                                         Unread
                                                         Messages</p>
                                                     <div class="trending text-warning w-100" style="font-size: 11px;"><i
@@ -263,9 +264,9 @@
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Total
+                                                    style="font-size: 12px; font-weight: 600; color: #475569!important;">Total
                                                     Consultations</p>
-                                                <div class="trending text-primary w-100" style="font-size: 13.5px;"><i
+                                                <div class="trending text-primary w-100" style="font-size: 11px;"><i
                                                         class="fas fa-users"></i>
                                                     {{ number_format($todayAppointmentsCount ?? 0) }} for Today
                                                 </div>
@@ -286,9 +287,10 @@
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Unique Patients
+                                                    style="font-size: 12px; font-weight: 600; color: #475569!important;">Unique
+                                                    Patients
                                                 </p>
-                                                <div class="trending text-success w-100" style="font-size: 13.5px;"><i
+                                                <div class="trending text-success w-100" style="font-size: 11px;"><i
                                                         class="fas fa-heart"></i> Growing Community</div>
                                             </div>
                                         </div>
@@ -306,9 +308,10 @@
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Wallet Balance
+                                                    style="font-size: 12px; font-weight: 600; color: #475569!important;">Wallet
+                                                    Balance
                                                 </p>
-                                                <div class="trending text-purple w-100" style="font-size: 13.5px;"><i
+                                                <div class="trending text-purple w-100" style="font-size: 11px;"><i
                                                         class="fas fa-chart-line"></i> Revenue:
                                                     ${{ number_format($totalRevenue ?? 0, 2) }}</div>
                                             </div>
@@ -330,9 +333,10 @@
                                                 <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                                 <div style="min-width: 0;">
                                                     <p class="mb-2 text-truncate"
-                                                        style="font-size: 16px; font-weight: 600; color: #475569;">Unread
+                                                        style="font-size: 12px; font-weight: 600; color: #475569!important;">
+                                                        Unread
                                                         Messages</p>
-                                                    <div class="trending text-warning w-100" style="font-size: 13.5px;"><i
+                                                    <div class="trending text-warning w-100" style="font-size: 11px;"><i
                                                             class="fas fa-comment-dots"></i> Click to view</div>
                                                 </div>
                                             </div>
@@ -552,7 +556,7 @@
                         }
                     });
                 @endif
-                                        });
+                                                                                                        });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {
