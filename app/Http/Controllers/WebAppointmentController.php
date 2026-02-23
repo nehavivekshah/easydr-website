@@ -18,6 +18,7 @@ use App\Models\Patients;
 use App\Models\Appointments;
 use App\Models\Wallets;
 use App\Models\Doctor_availables;
+use App\Models\Video_call_gateway_configs;
 
 use Carbon\Carbon;
 
