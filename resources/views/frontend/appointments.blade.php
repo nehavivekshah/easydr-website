@@ -125,10 +125,11 @@
                                                             data-start="{{ $apptDateTime->timestamp * 1000 }}"
                                                             data-end="{{ $slotEndTime->timestamp * 1000 }}">
                                                             <div class="dt-item text-danger font-weight-bold"
-                                                                style="font-size: 1.05rem;"></div>
+                                                                style=" color: #6c757d; font-size: 15px; "></div>
                                                         </div>
                                                     @else
-                                                        <div class="dt-item text-light font-weight-bold" style="font-size: 1.05rem;">
+                                                        <div class="dt-item text-light font-weight-bold"
+                                                            style=" color: #6c757d; font-size: 15px; ">
                                                             Ended</div>
                                                     @endif
                                                 </div>
