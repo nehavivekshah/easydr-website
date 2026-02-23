@@ -99,11 +99,11 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             transition: all 0.3s ease;
         }
-        
+
         .calendar-modern:hover {
             box-shadow: 0 12px 24px rgba(26, 75, 140, 0.06);
         }
-        
+
         /* Apply similar modern styling to the right column card */
         .card-modern {
             background: #fff;
@@ -121,7 +121,7 @@
         .hover-bg-light:hover {
             background-color: #f8fafc !important;
         }
-        
+
         .transition-all {
             transition: all 0.2s ease;
         }
@@ -160,15 +160,18 @@
                                                         class="fas fa-calendar-check"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ number_format($appointmentsCount ?? 0) }}</h3>
+                                                    {{ number_format($appointmentsCount ?? 0) }}
+                                                </h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Total
+                                                    style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px">
+                                                    Total
                                                     Appointments</p>
-                                                <div class="trending text-primary w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-clock"></i> {{ number_format($todayAppointmentsCount ?? 0) }} for Today
+                                                <div class="trending text-primary w-100" style="font-size: 11px;"><i
+                                                        class="fas fa-clock"></i>
+                                                    {{ number_format($todayAppointmentsCount ?? 0) }} for Today
                                                 </div>
                                             </div>
                                         </div>
@@ -181,15 +184,18 @@
                                                         class="fas fa-check-double"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ number_format($completedAppointmentsCount ?? 0) }}</h3>
+                                                    {{ number_format($completedAppointmentsCount ?? 0) }}
+                                                </h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Completed
+                                                    style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px;">
+                                                    Completed
                                                     Sessions</p>
-                                                <div class="trending text-success w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-history"></i> {{ number_format($todayCompletedCount ?? 0) }} Finished
+                                                <div class="trending text-success w-100" style="font-size: 11px;"><i
+                                                        class="fas fa-history"></i>
+                                                    {{ number_format($todayCompletedCount ?? 0) }} Finished
                                                     Today</div>
                                             </div>
                                         </div>
@@ -207,9 +213,11 @@
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
-                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Total Spent</p>
-                                                <div class="trending text-purple w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-receipt"></i> From {{ number_format($appointmentsCount ?? 0) }}
+                                                    style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px;">
+                                                    Total Spent</p>
+                                                <div class="trending text-purple w-100" style="font-size: 11px;"><i
+                                                        class="fas fa-receipt"></i> From
+                                                    {{ number_format($appointmentsCount ?? 0) }}
                                                     appointments</div>
                                             </div>
                                         </div>
@@ -220,17 +228,20 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                                     <div class="icon-box icon-yellow mb-0"
                                                         style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;">
-                                                        <i class="fas fa-envelope"></i></div>
+                                                        <i class="fas fa-envelope"></i>
+                                                    </div>
                                                     <h3 class="mb-0 text-truncate"
                                                         style="font-size: 36px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
-                                                        {{ $totalUnreadCount ?? 0 }}</h3>
+                                                        {{ $totalUnreadCount ?? 0 }}
+                                                    </h3>
                                                 </div>
                                                 <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                                 <div style="min-width: 0;">
                                                     <p class="mb-2 text-truncate"
-                                                        style="font-size: 16px; font-weight: 600; color: #475569;">Unread
+                                                        style="font-size: 14px; font-weight: 600; color: #475569; margin-bottom: 0px;">
+                                                        Unread
                                                         Messages</p>
-                                                    <div class="trending text-warning w-100" style="font-size: 13.5px;"><i
+                                                    <div class="trending text-warning w-100" style="font-size: 11px;"><i
                                                             class="fas fa-comment-dots"></i> Click to view</div>
                                                 </div>
                                             </div>
@@ -246,7 +257,8 @@
                                                         class="fas fa-user-md"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ number_format($appointmentsCount ?? 0) }}</h3>
+                                                    {{ number_format($appointmentsCount ?? 0) }}
+                                                </h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
@@ -254,7 +266,8 @@
                                                     style="font-size: 16px; font-weight: 600; color: #475569;">Total
                                                     Consultations</p>
                                                 <div class="trending text-primary w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-users"></i> {{ number_format($todayAppointmentsCount ?? 0) }} for Today
+                                                        class="fas fa-users"></i>
+                                                    {{ number_format($todayAppointmentsCount ?? 0) }} for Today
                                                 </div>
                                             </div>
                                         </div>
@@ -267,7 +280,8 @@
                                                         class="fas fa-user-friends"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ number_format($patientsCount ?? 0) }}</h3>
+                                                    {{ number_format($patientsCount ?? 0) }}
+                                                </h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
@@ -295,7 +309,8 @@
                                                     style="font-size: 16px; font-weight: 600; color: #475569;">Wallet Balance
                                                 </p>
                                                 <div class="trending text-purple w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-chart-line"></i> Revenue: ${{ number_format($totalRevenue ?? 0, 2) }}</div>
+                                                        class="fas fa-chart-line"></i> Revenue:
+                                                    ${{ number_format($totalRevenue ?? 0, 2) }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -305,10 +320,12 @@
                                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                                     <div class="icon-box icon-yellow mb-0"
                                                         style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;">
-                                                        <i class="fas fa-envelope"></i></div>
+                                                        <i class="fas fa-envelope"></i>
+                                                    </div>
                                                     <h3 class="mb-0 text-truncate"
                                                         style="font-size: 36px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
-                                                        {{ $totalUnreadCount ?? 0 }}</h3>
+                                                        {{ $totalUnreadCount ?? 0 }}
+                                                    </h3>
                                                 </div>
                                                 <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                                 <div style="min-width: 0;">
@@ -535,7 +552,7 @@
                         }
                     });
                 @endif
-                                });
+                                        });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {
