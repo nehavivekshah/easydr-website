@@ -1237,6 +1237,9 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        $pid = $patient ? $patient->id : 0;
+
         // PATIENT BILLING (Using Appointments as Billing Records)
         // Appointments store 'fees' and 'payment_status'
         $billings = DB::table('appointments')
@@ -1249,7 +1252,11 @@ class FrontendController extends Controller
                 'doc.photo as doctor_photo',
                 'doctors.specialist'
             )
-            ->where('appointments.pid', $user->id)
+            ->where(function ($q) use ($user, $pid) {
+                $q->where('appointments.pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('appointments.pid', $pid);
+            })
             ->where('appointments.status', '!=', '2') // Exclude cancelled if preferred, or include all
             ->orderBy('appointments.date', 'desc')
             ->paginate(10); // Pagination
