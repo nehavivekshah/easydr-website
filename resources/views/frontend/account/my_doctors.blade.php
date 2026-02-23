@@ -519,13 +519,13 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="mt-4 pt-2 d-flex gap-3">
+                        <div class="mt-4 pt-2 d-flex gap-3">
                             <a href="#" id="btn-book" class="btn btn-primary flex-fill py-3 rounded-4 shadow-sm fw-bold">
                                 <i class="fas fa-calendar-plus me-2"></i> Book Appointment
                             </a>
                             <a href="#" id="btn-profile" class="btn btn-outline-primary flex-fill py-3 rounded-4 shadow-sm fw-bold">
                                 <i class="fas fa-user-md me-2"></i> Full Profile
-                            </a> -->
+                            </a>
                         </div>
                     </div>
 
