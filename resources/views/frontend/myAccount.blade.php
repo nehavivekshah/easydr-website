@@ -154,7 +154,7 @@
                                     <!-- Patient Stats -->
                                     <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern p-4">
-                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="icon-box icon-blue mb-0"
                                                     style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-calendar-check"></i></div>
@@ -163,7 +163,7 @@
                                                     {{ number_format($appointmentsCount ?? 0) }}
                                                 </h3>
                                             </div>
-                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
                                                     style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
@@ -178,7 +178,7 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern p-4">
-                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="icon-box icon-green mb-0"
                                                     style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-check-double"></i></div>
@@ -187,7 +187,7 @@
                                                     {{ number_format($completedAppointmentsCount ?? 0) }}
                                                 </h3>
                                             </div>
-                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
                                                     style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
@@ -202,7 +202,7 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern p-4">
-                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="icon-box icon-purple mb-0"
                                                     style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-credit-card"></i></div>
@@ -210,7 +210,7 @@
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     ${{ number_format($billingAmount ?? 0, 2) }}</h3>
                                             </div>
-                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
                                                     style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
@@ -226,7 +226,7 @@
                                     <div class="col-md-3 mb-4">
                                         <a href="/messages" class="text-decoration-none">
                                             <div class="stat-card-modern p-4" style="cursor: pointer;">
-                                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <div class="icon-box icon-yellow mb-0"
                                                         style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;">
                                                         <i class="fas fa-envelope"></i>
@@ -236,7 +236,7 @@
                                                         {{ $totalUnreadCount ?? 0 }}
                                                     </h3>
                                                 </div>
-                                                <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                                <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                                 <div style="min-width: 0;">
                                                     <p class="mb-2 text-truncate"
                                                         style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 0px!important;">
@@ -252,7 +252,7 @@
                                     <!-- Doctor Stats -->
                                     <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern p-4">
-                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="icon-box icon-blue mb-0"
                                                     style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-user-md"></i></div>
@@ -261,7 +261,7 @@
                                                     {{ number_format($appointmentsCount ?? 0) }}
                                                 </h3>
                                             </div>
-                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
                                                     style="font-size: 12px; font-weight: 600; color: #475569!important;">Total
@@ -275,7 +275,7 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern p-4">
-                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="icon-box icon-green mb-0"
                                                     style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-user-friends"></i></div>
@@ -284,7 +284,7 @@
                                                     {{ number_format($patientsCount ?? 0) }}
                                                 </h3>
                                             </div>
-                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
                                                     style="font-size: 12px; font-weight: 600; color: #475569!important;">Unique
@@ -297,7 +297,7 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern p-4">
-                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="icon-box icon-purple mb-0"
                                                     style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-wallet"></i></div>
@@ -305,7 +305,7 @@
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     ${{ number_format($walletAmount ?? 0, 2) }}</h3>
                                             </div>
-                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
                                                     style="font-size: 12px; font-weight: 600; color: #475569!important;">Wallet
@@ -320,7 +320,7 @@
                                     <div class="col-md-3 mb-4">
                                         <a href="/messages" class="text-decoration-none">
                                             <div class="stat-card-modern p-4" style="cursor: pointer;">
-                                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <div class="icon-box icon-yellow mb-0"
                                                         style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;">
                                                         <i class="fas fa-envelope"></i>
@@ -330,7 +330,7 @@
                                                         {{ $totalUnreadCount ?? 0 }}
                                                     </h3>
                                                 </div>
-                                                <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                                <!-- <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;"> -->
                                                 <div style="min-width: 0;">
                                                     <p class="mb-2 text-truncate"
                                                         style="font-size: 12px; font-weight: 600; color: #475569!important;">
@@ -556,7 +556,7 @@
                         }
                     });
                 @endif
-                                                                                                                                });
+                                                                                                                                                                        });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {
