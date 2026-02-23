@@ -67,7 +67,7 @@
                                     </div>
 
                                     <!-- Chat Box (Initially Hidden via d-none, JS shows it) -->
-                                    <div id="chat-box" class="d-none flex-column h-100 w-100"
+                                    <div id="chat-box" class="d-none flex-column flex-grow-1 w-100"
                                         style="max-height: 100%; position: relative; z-index: 1;">
                                         <!-- Chat Header -->
                                         <div class="chat-header p-3 border-bottom bg-white d-flex align-items-center shadow-sm"
@@ -119,13 +119,13 @@
                                         </div>
 
                                         <!-- Messages Area -->
-                                        <div id="messages-display" class="p-4"
-                                            style="display: flex; flex-direction: column; flex: 1 1 auto; overflow-y: auto; scrollbar-width: thin;">
+                                        <div id="messages-display" class="p-4 flex-grow-1"
+                                            style="display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: thin;">
                                             <!-- Messages will appear here -->
                                         </div>
 
                                         <!-- Chat Footer -->
-                                        <div class="chat-footer p-3 bg-white border-top" style="flex: 0 0 auto;">
+                                        <div class="chat-footer mt-auto p-3 bg-white border-top" style="flex: 0 0 auto;">
                                             <form id="chat-form" onsubmit="event.preventDefault(); sendMessage();"
                                                 enctype="multipart/form-data">
                                                 <input type="file" id="chat-file" class="d-none"
