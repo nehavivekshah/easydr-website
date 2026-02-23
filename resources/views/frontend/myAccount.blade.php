@@ -125,225 +125,276 @@
                                 @if(Auth::user()->role == 5)
                                     <!-- Patient Stats -->
                                     <div class="col-md-3 mb-4">
-                                        <div class="stat-card-modern p-3">
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <div class="icon-box icon-blue mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-calendar-check"></i></div>
-                                                        <div style="min-width: 0;">
-                                                            <h3 class="mb-1 text-truncate">{{ $appointmentsCount ?? 0 }}</h3>
-                                                            <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Total Appointments</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="trending text-primary pt-2 border-top w-100"><i class="fas fa-clock"></i>
-                                                        {{ $todayAppointmentsCount ?? 0 }} for Today</div>
+                                        <div class="stat-card-modern p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="icon-box icon-blue mb-0"
+                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                        class="fas fa-calendar-check"></i></div>
+                                                <h3 class="mb-0 text-truncate"
+                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    {{ $appointmentsCount ?? 0 }}</h3>
+                                            </div>
+                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <div style="min-width: 0;">
+                                                <p class="mb-2 text-truncate"
+                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Total
+                                                    Appointments</p>
+                                                <div class="trending text-primary w-100" style="font-size: 13.5px;"><i
+                                                        class="fas fa-clock"></i> {{ $todayAppointmentsCount ?? 0 }} for Today
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 mb-4">
-                                                <div class="stat-card-modern p-3">
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <div class="icon-box icon-green mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-check-double"></i></div>
-                                                        <div style="min-width: 0;">
-                                                            <h3 class="mb-1 text-truncate">{{ $completedAppointmentsCount ?? 0 }}</h3>
-                                                            <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Completed Sessions</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="trending text-success pt-2 border-top w-100"><i class="fas fa-history"></i>
-                                                        {{ $todayCompletedCount ?? 0 }} Finished Today</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <div class="stat-card-modern p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="icon-box icon-green mb-0"
+                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                        class="fas fa-check-double"></i></div>
+                                                <h3 class="mb-0 text-truncate"
+                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    {{ $completedAppointmentsCount ?? 0 }}</h3>
+                                            </div>
+                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <div style="min-width: 0;">
+                                                <p class="mb-2 text-truncate"
+                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Completed
+                                                    Sessions</p>
+                                                <div class="trending text-success w-100" style="font-size: 13.5px;"><i
+                                                        class="fas fa-history"></i> {{ $todayCompletedCount ?? 0 }} Finished
+                                                    Today</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <div class="stat-card-modern p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="icon-box icon-purple mb-0"
+                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                        class="fas fa-credit-card"></i></div>
+                                                <h3 class="mb-0 text-truncate"
+                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    ${{ $billingAmount ?? 0 }}</h3>
+                                            </div>
+                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <div style="min-width: 0;">
+                                                <p class="mb-2 text-truncate"
+                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Total Spent</p>
+                                                <div class="trending text-purple w-100" style="font-size: 13.5px;"><i
+                                                        class="fas fa-receipt"></i> From {{ $appointmentsCount ?? 0 }}
+                                                    appointments</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <a href="/messages" class="text-decoration-none">
+                                            <div class="stat-card-modern p-4" style="cursor: pointer;">
+                                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                                    <div class="icon-box icon-yellow mb-0"
+                                                        style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;">
+                                                        <i class="fas fa-envelope"></i></div>
+                                                    <h3 class="mb-0 text-truncate"
+                                                        style="font-size: 36px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                        {{ $totalUnreadCount ?? 0 }}</h3>
+                                                </div>
+                                                <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                                <div style="min-width: 0;">
+                                                    <p class="mb-2 text-truncate"
+                                                        style="font-size: 16px; font-weight: 600; color: #475569;">Unread
+                                                        Messages</p>
+                                                    <div class="trending text-warning w-100" style="font-size: 13.5px;"><i
+                                                            class="fas fa-comment-dots"></i> Click to view</div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 mb-4">
-                                                <div class="stat-card-modern p-3">
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <div class="icon-box icon-purple mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-credit-card"></i></div>
-                                                        <div style="min-width: 0;">
-                                                            <h3 class="mb-1 text-truncate">${{ $billingAmount ?? 0 }}</h3>
-                                                            <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Total Spent</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="trending text-purple pt-2 border-top w-100"><i class="fas fa-receipt"></i> From
-                                                        {{ $appointmentsCount ?? 0 }} appointments
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 mb-4">
-                                                <a href="/messages" class="text-decoration-none">
-                                                    <div class="stat-card-modern p-3" style="cursor: pointer;">
-                                                        <div class="d-flex align-items-center mb-3">
-                                                            <div class="icon-box icon-yellow mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-envelope"></i></div>
-                                                            <div style="min-width: 0;">
-                                                                <h3 class="mb-1 text-truncate"
-                                                                    style="color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
-                                                                    {{ $totalUnreadCount ?? 0 }}
-                                                                </h3>
-                                                                <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Unread Messages</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="trending text-warning pt-2 border-top w-100"><i class="fas fa-comment-dots"></i> Click to
-                                                            view</div>
-                                                    </div>
-                                                </a>
-                                            </div>
+                                        </a>
+                                    </div>
                                 @else
-                                        <!-- Doctor Stats -->
-                                        <div class="col-md-3 mb-4">
-                                            <div class="stat-card-modern p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="icon-box icon-blue mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-user-md"></i></div>
-                                                    <div style="min-width: 0;">
-                                                        <h3 class="mb-1 text-truncate">{{ $appointmentsCount ?? 0 }}</h3>
-                                                        <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Total Consultations</p>
-                                                    </div>
-                                                </div>
-                                                <div class="trending text-primary pt-2 border-top w-100"><i class="fas fa-users"></i>
-                                                    {{ $todayAppointmentsCount ?? 0 }} for Today</div>
+                                    <!-- Doctor Stats -->
+                                    <div class="col-md-3 mb-4">
+                                        <div class="stat-card-modern p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="icon-box icon-blue mb-0"
+                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                        class="fas fa-user-md"></i></div>
+                                                <h3 class="mb-0 text-truncate"
+                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    {{ $appointmentsCount ?? 0 }}</h3>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3 mb-4">
-                                            <div class="stat-card-modern p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="icon-box icon-green mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-user-friends"></i></div>
-                                                    <div style="min-width: 0;">
-                                                        <h3 class="mb-1 text-truncate">{{ $patientsCount ?? 0 }}</h3>
-                                                        <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Unique Patients</p>
-                                                    </div>
-                                                </div>
-                                                <div class="trending text-success pt-2 border-top w-100"><i class="fas fa-heart"></i> Growing Community
+                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <div style="min-width: 0;">
+                                                <p class="mb-2 text-truncate"
+                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Total
+                                                    Consultations</p>
+                                                <div class="trending text-primary w-100" style="font-size: 13.5px;"><i
+                                                        class="fas fa-users"></i> {{ $todayAppointmentsCount ?? 0 }} for Today
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 mb-4">
-                                            <div class="stat-card-modern p-3">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="icon-box icon-purple mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-wallet"></i></div>
-                                                    <div style="min-width: 0;">
-                                                        <h3 class="mb-1 text-truncate">${{ $walletAmount ?? 0 }}</h3>
-                                                        <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Wallet Balance</p>
-                                                    </div>
-                                                </div>
-                                                <div class="trending text-purple pt-2 border-top w-100"><i class="fas fa-chart-line"></i> Revenue:
-                                                    ${{ $totalRevenue ?? 0 }}</div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <div class="stat-card-modern p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="icon-box icon-green mb-0"
+                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                        class="fas fa-user-friends"></i></div>
+                                                <h3 class="mb-0 text-truncate"
+                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    {{ $patientsCount ?? 0 }}</h3>
+                                            </div>
+                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <div style="min-width: 0;">
+                                                <p class="mb-2 text-truncate"
+                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Unique Patients
+                                                </p>
+                                                <div class="trending text-success w-100" style="font-size: 13.5px;"><i
+                                                        class="fas fa-heart"></i> Growing Community</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 mb-4">
-                                            <a href="/messages" class="text-decoration-none">
-                                                <div class="stat-card-modern p-3" style="cursor: pointer;">
-                                                    <div class="d-flex align-items-center mb-3">
-                                                        <div class="icon-box icon-yellow mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-envelope"></i></div>
-                                                        <div style="min-width: 0;">
-                                                            <h3 class="mb-1 text-truncate"
-                                                                style="color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
-                                                                {{ $totalUnreadCount ?? 0 }}
-                                                            </h3>
-                                                            <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Unread Messages</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="trending text-warning pt-2 border-top w-100"><i class="fas fa-comment-dots"></i> Click to
-                                                        view</div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <div class="stat-card-modern p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <div class="icon-box icon-purple mb-0"
+                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                        class="fas fa-wallet"></i></div>
+                                                <h3 class="mb-0 text-truncate"
+                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    ${{ $walletAmount ?? 0 }}</h3>
+                                            </div>
+                                            <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                            <div style="min-width: 0;">
+                                                <p class="mb-2 text-truncate"
+                                                    style="font-size: 16px; font-weight: 600; color: #475569;">Wallet Balance
+                                                </p>
+                                                <div class="trending text-purple w-100" style="font-size: 13.5px;"><i
+                                                        class="fas fa-chart-line"></i> Revenue: ${{ $totalRevenue ?? 0 }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <a href="/messages" class="text-decoration-none">
+                                            <div class="stat-card-modern p-4" style="cursor: pointer;">
+                                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                                    <div class="icon-box icon-yellow mb-0"
+                                                        style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;">
+                                                        <i class="fas fa-envelope"></i></div>
+                                                    <h3 class="mb-0 text-truncate"
+                                                        style="font-size: 36px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                        {{ $totalUnreadCount ?? 0 }}</h3>
                                                 </div>
-                                            </a>
+                                                <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
+                                                <div style="min-width: 0;">
+                                                    <p class="mb-2 text-truncate"
+                                                        style="font-size: 16px; font-weight: 600; color: #475569;">Unread
+                                                        Messages</p>
+                                                    <div class="trending text-warning w-100" style="font-size: 13.5px;"><i
+                                                            class="fas fa-comment-dots"></i> Click to view</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="row">
+                                <!-- Left Column: Calendar & Content -->
+                                <div class="col-lg-7">
+                                    <div class="calendar-modern">
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <h5 class="mb-0 font-weight-bold" style="color: #1a4b8c;">Schedule</h5>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-xs btn-outline-primary rounded-circle" id="prevMonth"
+                                                    style="width: 32px; height: 32px; padding: 0;"><i
+                                                        class="fas fa-chevron-left"></i></button>
+                                                <span id="monthYear" class="mx-2 small font-weight-bold"
+                                                    style="min-width: 100px; text-align: center; border: 1px solid #eef5ff; border-radius: 20px; padding: 4px 12px; background: #eef5ff; color: #1a4b8c;"></span>
+                                                <button class="btn btn-xs btn-outline-primary rounded-circle" id="nextMonth"
+                                                    style="width: 32px; height: 32px; padding: 0;"><i
+                                                        class="fas fa-chevron-right"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="d-flex justify-content-between text-muted small mb-3 text-center font-weight-bold">
+                                            @foreach(['S', 'M', 'T', 'W', 'T', 'F', 'S'] as $day)
+                                                <div style="width: 14%">{{ $day }}</div>
+                                            @endforeach
+                                        </div>
+                                        <div class="calendar-grid d-flex flex-wrap" id="calendarGrid"></div>
+                                    </div>
+
+                                    @if(Auth::user()->role == 4)
+                                        <!-- Revenue Chart for Doctors -->
+                                        <div class="card-modern p-4 my-4">
+                                            <h5 class="section-header-modern small mb-3">Revenue Analytics ({{ date('Y') }})
+                                            </h5>
+                                            <canvas id="revenueChart" style="width:100%; height:200px;"></canvas>
                                         </div>
                                     @endif
                                 </div>
 
-                                <div class="row">
-                                    <!-- Left Column: Calendar & Content -->
-                                    <div class="col-lg-7">
-                                        <div class="calendar-modern">
-                                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                                <h5 class="mb-0 font-weight-bold" style="color: #1a4b8c;">Schedule</h5>
-                                                <div class="d-flex gap-2">
-                                                    <button class="btn btn-xs btn-outline-primary rounded-circle" id="prevMonth"
-                                                        style="width: 32px; height: 32px; padding: 0;"><i
-                                                            class="fas fa-chevron-left"></i></button>
-                                                    <span id="monthYear" class="mx-2 small font-weight-bold"
-                                                        style="min-width: 100px; text-align: center; border: 1px solid #eef5ff; border-radius: 20px; padding: 4px 12px; background: #eef5ff; color: #1a4b8c;"></span>
-                                                    <button class="btn btn-xs btn-outline-primary rounded-circle" id="nextMonth"
-                                                        style="width: 32px; height: 32px; padding: 0;"><i
-                                                            class="fas fa-chevron-right"></i></button>
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                class="d-flex justify-content-between text-muted small mb-3 text-center font-weight-bold">
-                                                @foreach(['S', 'M', 'T', 'W', 'T', 'F', 'S'] as $day)
-                                                    <div style="width: 14%">{{ $day }}</div>
-                                                @endforeach
-                                            </div>
-                                            <div class="calendar-grid d-flex flex-wrap" id="calendarGrid"></div>
+                                <!-- Right Column: Recent Activity -->
+                                <div class="col-lg-5">
+                                    <div class="card-modern overflow-hidden d-flex flex-column" style="height: 96.5%;">
+                                        <div class="p-4 border-bottom bg-light">
+                                            <h5 class="mb-0 font-weight-bold" style="color: #1a4b8c;"><i
+                                                    class="fas fa-history me-2"></i> Recent Sessions</h5>
                                         </div>
-
-                                        @if(Auth::user()->role == 4)
-                                            <!-- Revenue Chart for Doctors -->
-                                            <div class="card-modern p-4 my-4">
-                                                <h5 class="section-header-modern small mb-3">Revenue Analytics ({{ date('Y') }})
-                                                </h5>
-                                                <canvas id="revenueChart" style="width:100%; height:200px;"></canvas>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <!-- Right Column: Recent Activity -->
-                                    <div class="col-lg-5">
-                                        <div class="card-modern overflow-hidden d-flex flex-column" style="height: 96.5%;">
-                                            <div class="p-4 border-bottom bg-light">
-                                                <h5 class="mb-0 font-weight-bold" style="color: #1a4b8c;"><i
-                                                        class="fas fa-history me-2"></i> Recent Sessions</h5>
-                                            </div>
-                                            <div class="flex-grow-1 overflow-auto p-0" style="max-height: 531px;">
-                                                @forelse($recentAppointments as $appt)
-                                                    <div class="p-3 border-bottom hover-bg-light transition-all">
-                                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                                            <div>
-                                                                <h6 class="mb-1 font-weight-bold small">
-                                                                    @if(Auth::user()->role == 4)
-                                                                        {{ $appt->patient_first_name }} {{ $appt->patient_last_name }}
-                                                                    @else
-                                                                        Dr. {{ $appt->doctor_first_name }} {{ $appt->doctor_last_name }}
-                                                                    @endif
-                                                                </h6>
-                                                                <span class="text-muted" style="font-size: 11px;"><i
-                                                                        class="far fa-clock me-1"></i> {{ $appt->date }} at
-                                                                    {{ $appt->time }}</span>
-
-                                                                @php
-                                                                    $apptDateTime = \Carbon\Carbon::parse($appt->date . ' ' . $appt->time);
-                                                                    $slotEndTime = (clone $apptDateTime)->addMinutes(30);
-                                                                    $isUpcomingToday = $apptDateTime->isToday() && $apptDateTime->isFuture();
-                                                                @endphp
-
-                                                                @if($isUpcomingToday && ($appt->status == 0 || $appt->status == 1))
-                                                                    <div class="timer-countdown mt-1"
-                                                                        style="transform: scale(0.85); transform-origin: left;"
-                                                                        data-start="{{ $apptDateTime->timestamp * 1000 }}"
-                                                                        data-end="{{ $slotEndTime->timestamp * 1000 }}">
-                                                                        <div class="dt-item text-danger"></div>
-                                                                    </div>
+                                        <div class="flex-grow-1 overflow-auto p-0" style="max-height: 531px;">
+                                            @forelse($recentAppointments as $appt)
+                                                <div class="p-3 border-bottom hover-bg-light transition-all">
+                                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                                        <div>
+                                                            <h6 class="mb-1 font-weight-bold small">
+                                                                @if(Auth::user()->role == 4)
+                                                                    {{ $appt->patient_first_name }} {{ $appt->patient_last_name }}
+                                                                @else
+                                                                    Dr. {{ $appt->doctor_first_name }} {{ $appt->doctor_last_name }}
                                                                 @endif
-                                                            </div>
-                                                            <span
-                                                                class="badge {{ $appt->status == 3 ? 'badge-soft-success' : ($appt->status == 1 ? 'badge-soft-primary' : 'badge-soft-warning') }} badge-pill-modern">
-                                                                {{ $appt->status == 3 ? 'Completed' : ($appt->status == 1 ? 'Confirmed' : 'Pending') }}
-                                                            </span>
+                                                            </h6>
+                                                            <span class="text-muted" style="font-size: 11px;"><i
+                                                                    class="far fa-clock me-1"></i> {{ $appt->date }} at
+                                                                {{ $appt->time }}</span>
+
+                                                            @php
+                                                                $apptDateTime = \Carbon\Carbon::parse($appt->date . ' ' . $appt->time);
+                                                                $slotEndTime = (clone $apptDateTime)->addMinutes(30);
+                                                                $isUpcomingToday = $apptDateTime->isToday() && $apptDateTime->isFuture();
+                                                            @endphp
+
+                                                            @if($isUpcomingToday && ($appt->status == 0 || $appt->status == 1))
+                                                                <div class="timer-countdown mt-1"
+                                                                    style="transform: scale(0.85); transform-origin: left;"
+                                                                    data-start="{{ $apptDateTime->timestamp * 1000 }}"
+                                                                    data-end="{{ $slotEndTime->timestamp * 1000 }}">
+                                                                    <div class="dt-item text-danger"></div>
+                                                                </div>
+                                                            @endif
                                                         </div>
-                                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                                            <span class="font-weight-bold text-primary">${{ $appt->fees }}</span>
-                                                            <a href="/messages?recipient={{ Auth::user()->role == 4 ? $appt->pid : $appt->did }}"
-                                                                class="btn btn-xs btn-outline-primary rounded-pill py-0 px-2"
-                                                                style="font-size: 12px;    padding: 8px 28px !important;">Chat</a>
-                                                        </div>
+                                                        <span
+                                                            class="badge {{ $appt->status == 3 ? 'badge-soft-success' : ($appt->status == 1 ? 'badge-soft-primary' : 'badge-soft-warning') }} badge-pill-modern">
+                                                            {{ $appt->status == 3 ? 'Completed' : ($appt->status == 1 ? 'Confirmed' : 'Pending') }}
+                                                        </span>
                                                     </div>
-                                                @empty
-                                                    <div class="p-5 text-center text-muted">
-                                                        <i class="fas fa-calendar-times mb-2 opacity-50"
-                                                            style="font-size: 2rem;"></i>
-                                                        <p class="small mb-0">No recent activity found.</p>
+                                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                                        <span class="font-weight-bold text-primary">${{ $appt->fees }}</span>
+                                                        <a href="/messages?recipient={{ Auth::user()->role == 4 ? $appt->pid : $appt->did }}"
+                                                            class="btn btn-xs btn-outline-primary rounded-pill py-0 px-2"
+                                                            style="font-size: 12px;    padding: 8px 28px !important;">Chat</a>
                                                     </div>
-                                                @endforelse
-                                            </div>
-                                            <div class="p-3 bg-light text-center">
-                                                <a href="/appointments"
-                                                    class="text-primary small font-weight-bold text-decoration-none">View All
-                                                    Appointments <i class="fas fa-arrow-right ms-1"></i></a>
-                                            </div>
+                                                </div>
+                                            @empty
+                                                <div class="p-5 text-center text-muted">
+                                                    <i class="fas fa-calendar-times mb-2 opacity-50"
+                                                        style="font-size: 2rem;"></i>
+                                                    <p class="small mb-0">No recent activity found.</p>
+                                                </div>
+                                            @endforelse
+                                        </div>
+                                        <div class="p-3 bg-light text-center">
+                                            <a href="/appointments"
+                                                class="text-primary small font-weight-bold text-decoration-none">View All
+                                                Appointments <i class="fas fa-arrow-right ms-1"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -351,146 +402,147 @@
                         </div>
                     </div>
                 </div>
-            </section>
-        </main>
+            </div>
+        </section>
+    </main>
 
-        @push('scripts')
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    // --- Calendar Logic ---
-                    const calendarGrid = document.getElementById('calendarGrid');
-                    const monthYearLabel = document.getElementById('monthYear');
-                    let currentDate = new Date();
-                    const appointmentDates = @json($appointmentDates ?? []);
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // --- Calendar Logic ---
+                const calendarGrid = document.getElementById('calendarGrid');
+                const monthYearLabel = document.getElementById('monthYear');
+                let currentDate = new Date();
+                const appointmentDates = @json($appointmentDates ?? []);
 
-                    function renderCalendar(date) {
-                        const year = date.getFullYear();
-                        const month = date.getMonth();
-                        const firstDay = new Date(year, month, 1);
-                        const lastDay = new Date(year, month + 1, 0);
-                        const startDayIndex = firstDay.getDay();
-                        const totalDays = lastDay.getDate();
+                function renderCalendar(date) {
+                    const year = date.getFullYear();
+                    const month = date.getMonth();
+                    const firstDay = new Date(year, month, 1);
+                    const lastDay = new Date(year, month + 1, 0);
+                    const startDayIndex = firstDay.getDay();
+                    const totalDays = lastDay.getDate();
 
-                        monthYearLabel.innerText = date.toLocaleDateString('default', { month: 'short', year: 'numeric' });
-                        calendarGrid.innerHTML = '';
+                    monthYearLabel.innerText = date.toLocaleDateString('default', { month: 'short', year: 'numeric' });
+                    calendarGrid.innerHTML = '';
 
-                        for (let i = 0; i < startDayIndex; i++) {
-                            const emptyDiv = document.createElement('div');
-                            emptyDiv.style.width = '38px';
-                            emptyDiv.style.height = '38px';
-                            calendarGrid.appendChild(emptyDiv);
-                        }
-
-                        for (let i = 1; i <= totalDays; i++) {
-                            const dayDiv = document.createElement('div');
-                            dayDiv.style.width = '38px';
-                            dayDiv.style.height = '38px';
-                            dayDiv.classList.add('d-flex', 'align-items-center', 'justify-content-center', 'rounded-circle', 'mb-2', 'small', 'cursor-pointer', 'transition-all');
-
-                            const checkDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                            dayDiv.innerText = i;
-                            dayDiv.style.fontWeight = '600';
-
-                            if (appointmentDates.includes(checkDate)) {
-                                dayDiv.style.background = '#1a4b8c';
-                                dayDiv.style.color = '#fff';
-                                dayDiv.style.boxShadow = '0 4px 8px rgba(26, 75, 140, 0.3)';
-                                dayDiv.title = 'Session Scheduled';
-                            } else {
-                                dayDiv.style.color = '#4a5764';
-                                dayDiv.onmouseover = () => dayDiv.style.background = '#f1f5f9';
-                                dayDiv.onmouseout = () => dayDiv.style.background = 'transparent';
-                            }
-
-                            // Today highlighting
-                            const todayStr = new Date().toISOString().split('T')[0];
-                            if (checkDate === todayStr && !appointmentDates.includes(checkDate)) {
-                                dayDiv.style.border = '2px solid #1a4b8c';
-                                dayDiv.style.color = '#1a4b8c';
-                            }
-
-                            calendarGrid.appendChild(dayDiv);
-                        }
+                    for (let i = 0; i < startDayIndex; i++) {
+                        const emptyDiv = document.createElement('div');
+                        emptyDiv.style.width = '38px';
+                        emptyDiv.style.height = '38px';
+                        calendarGrid.appendChild(emptyDiv);
                     }
 
-                    renderCalendar(currentDate);
+                    for (let i = 1; i <= totalDays; i++) {
+                        const dayDiv = document.createElement('div');
+                        dayDiv.style.width = '38px';
+                        dayDiv.style.height = '38px';
+                        dayDiv.classList.add('d-flex', 'align-items-center', 'justify-content-center', 'rounded-circle', 'mb-2', 'small', 'cursor-pointer', 'transition-all');
 
-                    document.getElementById('prevMonth').addEventListener('click', () => {
-                        currentDate.setMonth(currentDate.getMonth() - 1);
-                        renderCalendar(currentDate);
-                    });
+                        const checkDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                        dayDiv.innerText = i;
+                        dayDiv.style.fontWeight = '600';
 
-                    document.getElementById('nextMonth').addEventListener('click', () => {
-                        currentDate.setMonth(currentDate.getMonth() + 1);
-                        renderCalendar(currentDate);
-                    });
-
-                    @if(Auth::user()->role == 4)
-                        // --- Revenue Chart Logic for Doctors ---
-                        const ctx = document.getElementById('revenueChart').getContext('2d');
-                        const monthlyRevenue = @json($monthlyRevenue ?? []);
-
-                        new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                                datasets: [{
-                                    label: 'Revenue ($)',
-                                    data: monthlyRevenue,
-                                    backgroundColor: 'rgba(26, 75, 140, 0.1)',
-                                    borderColor: '#1a4b8c',
-                                    borderWidth: 2,
-                                    borderRadius: 6,
-                                    hoverBackgroundColor: '#1a4b8c'
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: { legend: { display: false } },
-                                scales: {
-                                    y: { beginAtZero: true, grid: { display: false }, ticks: { font: { size: 10 } } },
-                                    x: { grid: { display: false }, ticks: { font: { size: 10 } } }
-                                }
-                            }
-                        });
-                    @endif
-                        });
-
-                function updateCountdowns() {
-                    document.querySelectorAll('.timer-countdown').forEach(el => {
-                        const start = parseInt(el.dataset.start);
-                        const end = parseInt(el.dataset.end);
-                        const now = new Date().getTime();
-                        const display = el.querySelector('.dt-item');
-
-                        if (!display) return;
-
-                        if (now < start) {
-                            const diff = start - now;
-                            const h = Math.floor(diff / 3600000);
-                            const m = Math.floor((diff % 3600000) / 60000);
-                            const s = Math.floor((diff % 60000) / 1000);
-
-                            let timeStr = "";
-                            if (h > 0) timeStr += h + "h ";
-                            timeStr += m + "m " + s + "s";
-
-                            display.innerText = "Starts in " + timeStr;
-                            el.classList.remove('ongoing', 'ended');
-                        } else if (now >= start && now <= end) {
-                            display.innerText = "Session Ongoing";
-                            el.classList.add('ongoing');
-                            el.classList.remove('ended');
+                        if (appointmentDates.includes(checkDate)) {
+                            dayDiv.style.background = '#1a4b8c';
+                            dayDiv.style.color = '#fff';
+                            dayDiv.style.boxShadow = '0 4px 8px rgba(26, 75, 140, 0.3)';
+                            dayDiv.title = 'Session Scheduled';
                         } else {
-                            display.innerText = "Session Ended";
-                            el.classList.add('ended');
-                            el.classList.remove('ongoing');
+                            dayDiv.style.color = '#4a5764';
+                            dayDiv.onmouseover = () => dayDiv.style.background = '#f1f5f9';
+                            dayDiv.onmouseout = () => dayDiv.style.background = 'transparent';
+                        }
+
+                        // Today highlighting
+                        const todayStr = new Date().toISOString().split('T')[0];
+                        if (checkDate === todayStr && !appointmentDates.includes(checkDate)) {
+                            dayDiv.style.border = '2px solid #1a4b8c';
+                            dayDiv.style.color = '#1a4b8c';
+                        }
+
+                        calendarGrid.appendChild(dayDiv);
+                    }
+                }
+
+                renderCalendar(currentDate);
+
+                document.getElementById('prevMonth').addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    renderCalendar(currentDate);
+                });
+
+                document.getElementById('nextMonth').addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    renderCalendar(currentDate);
+                });
+
+                @if(Auth::user()->role == 4)
+                    // --- Revenue Chart Logic for Doctors ---
+                    const ctx = document.getElementById('revenueChart').getContext('2d');
+                    const monthlyRevenue = @json($monthlyRevenue ?? []);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                            datasets: [{
+                                label: 'Revenue ($)',
+                                data: monthlyRevenue,
+                                backgroundColor: 'rgba(26, 75, 140, 0.1)',
+                                borderColor: '#1a4b8c',
+                                borderWidth: 2,
+                                borderRadius: 6,
+                                hoverBackgroundColor: '#1a4b8c'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { beginAtZero: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+                                x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                            }
                         }
                     });
-                }
-                setInterval(updateCountdowns, 1000);
-                updateCountdowns();
-            </script>
-        @endpush
+                @endif
+                                });
+
+            function updateCountdowns() {
+                document.querySelectorAll('.timer-countdown').forEach(el => {
+                    const start = parseInt(el.dataset.start);
+                    const end = parseInt(el.dataset.end);
+                    const now = new Date().getTime();
+                    const display = el.querySelector('.dt-item');
+
+                    if (!display) return;
+
+                    if (now < start) {
+                        const diff = start - now;
+                        const h = Math.floor(diff / 3600000);
+                        const m = Math.floor((diff % 3600000) / 60000);
+                        const s = Math.floor((diff % 60000) / 1000);
+
+                        let timeStr = "";
+                        if (h > 0) timeStr += h + "h ";
+                        timeStr += m + "m " + s + "s";
+
+                        display.innerText = "Starts in " + timeStr;
+                        el.classList.remove('ongoing', 'ended');
+                    } else if (now >= start && now <= end) {
+                        display.innerText = "Session Ongoing";
+                        el.classList.add('ongoing');
+                        el.classList.remove('ended');
+                    } else {
+                        display.innerText = "Session Ended";
+                        el.classList.add('ended');
+                        el.classList.remove('ongoing');
+                    }
+                });
+            }
+            setInterval(updateCountdowns, 1000);
+            updateCountdowns();
+        </script>
+    @endpush
 @endsection
