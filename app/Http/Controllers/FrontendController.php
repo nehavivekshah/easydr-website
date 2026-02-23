@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\SendMail;
 use App\Models\Branches;
 use App\Models\User;
@@ -1262,6 +1263,50 @@ class FrontendController extends Controller
             ->paginate(10); // Pagination
 
         return view('frontend.account.billing', compact('billings'));
+    }
+
+    public function downloadReceipt($id)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        $pid = $patient ? $patient->id : 0;
+
+        // Fetch the specific appointment record for the receipt
+        $bill = DB::table('appointments')
+            ->leftJoin('users as doc', 'appointments.did', '=', 'doc.id')
+            ->leftJoin('doctors', 'doc.id', '=', 'doctors.uid')
+            ->select(
+                'appointments.*',
+                'doc.first_name as doctor_first_name',
+                'doc.last_name as doctor_last_name',
+                'doctors.specialist'
+            )
+            ->where('appointments.id', $id)
+            ->where(function ($q) use ($user, $pid) {
+                $q->where('appointments.pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('appointments.pid', $pid);
+            })
+            ->where('appointments.payment_status', 'paid')
+            ->first();
+
+        if (!$bill) {
+            abort(404, 'Receipt not found or not paid.');
+        }
+
+        // Ensure font directory exists for dompdf cache
+        $fontPath = storage_path('fonts');
+        if (!file_exists($fontPath)) {
+            mkdir($fontPath, 0755, true);
+        }
+
+        $pdf = Pdf::loadView('frontend.account.receipt_pdf', compact('bill', 'user', 'patient'));
+
+        return $pdf->download("receipt_appointment_{$id}.pdf");
     }
 
     public function changePassword()

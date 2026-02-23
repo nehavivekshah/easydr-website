@@ -76,9 +76,9 @@
                                                                     <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 fw-bold text-uppercase d-flex align-items-center" style="font-size: 0.75rem;">
                                                                         <i class="fas fa-check me-1"></i> Paid
                                                                     </span>
-                                                                    <button class="btn btn-sm btn-light rounded-pill px-3 py-2 border shadow-sm" disabled title="Receipt unavailable">
-                                                                        <i class="fas fa-download text-muted"></i>
-                                                                    </button>
+                                                                    <a href="{{ route('downloadReceipt', $bill->id) }}" class="btn btn-sm btn-light rounded-pill px-3 py-2 border shadow-sm text-dark hover-primary" title="Download Receipt">
+                                                                        <i class="fas fa-download text-primary"></i> Receipt
+                                                                    </a>
                                                                 @else
                                                                     <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3 py-2 fw-bold text-uppercase d-flex align-items-center" style="font-size: 0.75rem;">
                                                                         <i class="fas fa-hourglass-half me-1"></i> Pending

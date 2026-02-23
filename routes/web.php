@@ -61,6 +61,7 @@ Route::get('/my-doctors', [FrontendController::class, 'myDoctors']);
 Route::get('/medical-reports', [FrontendController::class, 'medicalReports']);
 Route::get('/patient-prescriptions', [FrontendController::class, 'patientPrescriptions']);
 Route::get('/billing', [FrontendController::class, 'billing']);
+Route::get('/download-receipt/{id}', [FrontendController::class, 'downloadReceipt'])->name('downloadReceipt');
 
 // Common Routes
 Route::get('/change-password', [FrontendController::class, 'changePassword']);
