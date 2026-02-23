@@ -849,6 +849,47 @@ class FrontendController extends Controller
         ]);
     }
 
+    public function getDoctorDetails($id)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        $pid = $patient ? $patient->id : 0;
+
+        // Appointment History for this patient/doctor
+        $appointments = \App\Models\Appointments::where('did', $id)
+            ->where(function ($q) use ($user, $pid) {
+                $q->where('pid', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('pid', $pid);
+            })
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
+            ->get();
+
+        // Prescriptions for this patient/doctor
+        $prescriptions = \App\Models\Prescriptions::where('doctor_id', $id)
+            ->where(function ($q) use ($user, $pid) {
+                $q->where('patient_id', $user->id);
+                if ($pid > 0)
+                    $q->orWhere('patient_id', $pid);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($prescriptions as $prescription) {
+            $prescription->medicines = \App\Models\Prescription_medinices::where('prescribe_id', $prescription->id)->get();
+        }
+
+        return response()->json([
+            'appointments' => $appointments,
+            'prescriptions' => $prescriptions
+        ]);
+    }
+
     public function getPrescriptionMeta()
     {
         return response()->json([

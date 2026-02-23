@@ -44,6 +44,7 @@ Route::get('/manage-appointment', [FrontendController::class, 'manageAppointment
 // Doctor Routes
 Route::get('/my-patients', [FrontendController::class, 'myPatients']);
 Route::get('/get-patient-details/{id}', [FrontendController::class, 'getPatientDetails'])->name('getPatientDetails');
+Route::get('/get-doctor-details/{id}', [FrontendController::class, 'getDoctorDetails'])->name('getDoctorDetails');
 Route::get('/manage-slots', [FrontendController::class, 'manageSlots']);
 Route::post('/manage-slots/save', [FrontendController::class, 'saveSlot'])->name('saveSlot');
 Route::get('/doctor-prescriptions', [FrontendController::class, 'doctorPrescriptions']);

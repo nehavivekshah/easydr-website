@@ -114,6 +114,220 @@
             display: inline-block;
             margin-bottom: 8px;
         }
+        /* Modal Enhancements */
+        .modal-content {
+            border-radius: 24px;
+            border: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding: 15px 30px;
+            position: relative;
+        }
+
+        .modal-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .modal-profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            object-fit: cover;
+            border: 4px solid #f1f1f1;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-profile-info h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .modal-profile-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .p-badge {
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .p-badge-gender {
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+
+        .p-badge-blood {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .p-badge-age {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .nav-tabs-custom {
+            background: #f9f9f9 !important;
+            padding: 0 30px;
+            border-bottom: 1px solid #e2e8f0;
+            gap: 32px;
+        }
+
+        .nav-tabs-custom .nav-link {
+            border: none;
+            padding: 20px 0;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 0.9rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs-custom .nav-link:hover {
+            color: #0d6efd;
+        }
+
+        .nav-tabs-custom .nav-link.active {
+            color: #0d6efd;
+            background: none;
+        }
+
+        .nav-tabs-custom .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #0d6efd;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .modal-body {
+            padding: 30px;
+            background: #fff;
+        }
+
+        /* Info Cards in Overview */
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 16px;
+            padding: 16px;
+            height: 100%;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: start;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .info-card:hover {
+            background: #fff;
+            border-color: #3498db;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .icon-blue { background: #e0f2fe; color: #0369a1; }
+        .icon-green { background: #dcfce7; color: #166534; }
+        .icon-purple { background: #f3e8ff; color: #6b21a8; }
+        .icon-orange { background: #ffedd5; color: #9a3412; }
+
+        .info-card-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-card-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e293b;
+            word-break: break-all;
+        }
+
+        /* History List Enhancement */
+        .history-item {
+            padding: 20px;
+            border-radius: 16px;
+            background: #fff;
+            border: 1px solid #f1f5f9;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideInUp 0.4s ease-out forwards;
+        }
+
+        .history-item:hover {
+            transform: translateX(8px);
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .history-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .history-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .history-content h6 {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+
+        .history-date {
+            font-size: 0.85rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 
     <main>
@@ -198,9 +412,9 @@
                                                     <a href="/doctor/{{ $doctor->doctor_table_id }}/{{ Str::slug($doctor->first_name . '-' . $doctor->last_name) }}?book=true" class="btn btn-primary flex-fill fw-bold" style="border-radius: 12px; padding: 10px;">
                                                         <i class="fas fa-calendar-plus me-1"></i> Book Again
                                                     </a>
-                                                    <a href="/doctor/{{ $doctor->doctor_table_id }}/{{ Str::slug($doctor->first_name . '-' . $doctor->last_name) }}" class="btn-view-details flex-fill" style="padding: 10px; width: auto; background: #eef2f6; color: #0d6efd;">
-                                                        View Profile
-                                                    </a>
+                                                    <button onclick="openDoctorDetails({{ $doctor->user_id }}, 'Dr. {{ addslashes($doctor->first_name . " " . $doctor->last_name) }}', {{ $doctor->doctor_table_id }})" class="btn-view-details flex-fill" style="padding: 10px; width: auto; background: #eef2f6; color: #0d6efd;">
+                                                        View Details
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -222,4 +436,287 @@
             </div>
         </section>
     </main>
+    <!-- Doctor Details Modal -->
+    <div class="modal fade" id="doctorDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-profile-header">
+                        <img id="modalDoctorImg" src="" class="modal-profile-img" alt="Doctor">
+                        <div class="modal-profile-info">
+                            <h3 id="modalDoctorName">-</h3>
+                            <div class="modal-profile-badges">
+                                <span id="hdr-specialty" class="p-badge p-badge-gender">-</span>
+                                <span id="hdr-experience" class="p-badge p-badge-age">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-4" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#tab-overview">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-history" onclick="loadDoctorHistory()">Appt History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-prescriptions" onclick="loadDoctorPrescriptions()">Prescriptions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-payments" onclick="loadDoctorPayments()">Payments</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content overflow-auto" style="max-height: 60vh;">
+                    <!-- Overview -->
+                    <div class="tab-pane fade show active modal-body" id="tab-overview">
+                        <div class="row g-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-blue"><i class="fas fa-phone-alt"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Mobile Number</div>
+                                        <div id="ov-mobile" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-purple"><i class="fas fa-envelope"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Email Address</div>
+                                        <div id="ov-email" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-green"><i class="fas fa-graduation-cap"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Education</div>
+                                        <div id="ov-education" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-orange"><i class="fas fa-rupee-sign"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Consultation Fee</div>
+                                        <div id="ov-fees" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-blue"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Location</div>
+                                        <div id="ov-location" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-2 d-flex gap-3">
+                            <a href="#" id="btn-book" class="btn btn-primary flex-fill py-3 rounded-4 shadow-sm fw-bold">
+                                <i class="fas fa-calendar-plus me-2"></i> Book Appointment
+                            </a>
+                            <a href="#" id="btn-profile" class="btn btn-outline-primary flex-fill py-3 rounded-4 shadow-sm fw-bold">
+                                <i class="fas fa-user-md me-2"></i> Full Profile
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Appt History -->
+                    <div class="tab-pane fade modal-body" id="tab-history">
+                        <div id="history-list">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prescriptions -->
+                    <div class="tab-pane fade modal-body" id="tab-prescriptions">
+                        <div id="prescriptions-list">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payments -->
+                    <div class="tab-pane fade modal-body" id="tab-payments">
+                        <div id="payments-list">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        let currentDoctorId = null;
+        let currentDoctorTableId = null;
+        let currentDoctorName = '';
+        let doctorData = @json($doctors);
+
+        function openDoctorDetails(userId, name, doctorTableId) {
+            currentDoctorId = userId;
+            currentDoctorTableId = doctorTableId;
+            currentDoctorName = name;
+            
+            const doctor = doctorData.find(d => d.user_id == userId);
+
+            const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D8ABC&color=fff`;
+            const photo = doctor.photo ? `{{ asset('public/assets/images/profiles') }}/${doctor.photo}` : avatar;
+
+            document.getElementById('modalDoctorImg').src = photo;
+            document.getElementById('modalDoctorName').innerText = name;
+
+            document.getElementById('hdr-specialty').innerText = doctor.specialist || 'General';
+            document.getElementById('hdr-experience').innerText = doctor.experience ? `${doctor.experience} Yrs Exp` : 'N/A Exp';
+
+            document.getElementById('ov-mobile').innerText = doctor.mobile || 'Not provided';
+            document.getElementById('ov-email').innerText = doctor.email || 'Not provided';
+            document.getElementById('ov-education').innerText = doctor.education || 'Not provided';
+            document.getElementById('ov-fees').innerText = doctor.fees ? `₹${doctor.fees}` : 'Free';
+            
+            const location = [doctor.city, doctor.state].filter(Boolean).join(', ');
+            document.getElementById('ov-location').innerText = location || 'Not specified';
+
+            const slug = name.replace('Dr. ', '').trim().toLowerCase().replace(/ /g, '-');
+            document.getElementById('btn-profile').href = `/doctor/${doctorTableId}/${slug}`;
+            document.getElementById('btn-book').href = `/doctor/${doctorTableId}/${slug}?book=true`;
+
+            // Reset tabs to first tab (Overview)
+            const tabEl = document.querySelector('a[href="#tab-overview"]');
+            const tab = new bootstrap.Tab(tabEl);
+            tab.show();
+
+            const modalEl = document.getElementById('doctorDetailsModal');
+            let modal = bootstrap.Modal.getInstance(modalEl);
+            if (!modal) {
+                modal = new bootstrap.Modal(modalEl);
+            }
+            modal.show();
+        }
+
+        async function fetchHistory() {
+            const response = await fetch(`/get-doctor-details/${currentDoctorId}`);
+            return await response.json();
+        }
+
+        async function loadDoctorHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+            const data = await fetchHistory();
+            if (data.appointments.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-4">No appointment history found.</p>';
+                return;
+            }
+
+            list.innerHTML = data.appointments.map((a, idx) => `
+                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                    <div class="history-info">
+                        <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
+                        <div class="history-content">
+                            <div class="text-primary fw-bold small mb-1">${currentDoctorName}</div>
+                            <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                            <div class="history-date">
+                                <i class="far fa-calendar-check"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                            </div>
+                        </div>
+                    </div>
+                    <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : (a.status == '2' ? 'bg-danger' : 'bg-info')}">
+                        ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        async function loadDoctorPrescriptions() {
+            const list = document.getElementById('prescriptions-list');
+            list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+            const data = await fetchHistory();
+            if (data.prescriptions.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-4">No prescriptions found.</p>';
+                return;
+            }
+
+            list.innerHTML = data.prescriptions.map((p, idx) => `
+                <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideIn 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
+                    <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-uppercase fw-bold text-muted small letter-spacing-1">Prescription #${p.id}</span>
+                            <div class="text-dark fw-bold small">
+                                <i class="far fa-calendar-alt me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            </div>
+                        </div>
+                        <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                            <i class="fas fa-download me-1"></i> PDF
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            ${(p.medicines || []).map(m => `
+                                <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="medicine-icon me-3 bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                            <i class="fas fa-pills"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-dark">${m.medicine_name}</div>
+                                            <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function loadDoctorPayments() {
+            const list = document.getElementById('payments-list');
+            list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+            const data = await fetchHistory();
+            const paid = data.appointments.filter(a => a.payment_status === 'paid' || a.payment_status === 'health_card');
+
+            if (paid.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-4">No payment records found.</p>';
+                return;
+            }
+
+            list.innerHTML = paid.map((a, idx) => `
+                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                    <div class="history-info">
+                        <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
+                        <div class="history-content">
+                            <div class="text-primary fw-bold small mb-1">${currentDoctorName}</div>
+                            <h6>Amount: ₹${a.fees || '0'}</h6>
+                            <div class="history-date">
+                                <i class="fas fa-wallet"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            </div>
+                        </div>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
+                        ${a.payment_status.replace('_', ' ').toUpperCase()}
+                    </span>
+                </div>
+            `).join('');
+        }
+    </script>
+@endpush
