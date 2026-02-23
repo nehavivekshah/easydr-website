@@ -231,6 +231,10 @@ class FrontendController extends Controller
             session(['companies' => $company]);
             session(['roles' => $roles]);
 
+            if ($user->role == '6') {
+                return redirect('/admin/pharmacy')->with('success', 'Successfully Logged In to Pharmacy Panel.');
+            }
+
             return redirect('/')->with('success', 'Successfully Login.');
         }
 

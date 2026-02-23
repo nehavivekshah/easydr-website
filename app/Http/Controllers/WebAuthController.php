@@ -100,6 +100,10 @@ class WebAuthController extends Controller
             session(['companies' => $company]);
             session(['roles' => $roles]);
 
+            if ($user->role == '6') {
+                return redirect('/admin/pharmacy')->with('success', 'Successfully Logged In to Pharmacy Panel.');
+            }
+
             return redirect('/admin')->with('success', 'Successfully Login.');
         }
 
