@@ -1246,6 +1246,7 @@ class FrontendController extends Controller
                 'appointments.*',
                 'doc.first_name as doctor_first_name',
                 'doc.last_name as doctor_last_name',
+                'doc.photo as doctor_photo',
                 'doctors.specialist'
             )
             ->where('appointments.pid', $user->id)
