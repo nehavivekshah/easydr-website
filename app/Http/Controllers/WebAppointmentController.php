@@ -362,4 +362,33 @@ class WebAppointmentController extends Controller
         return redirect('/admin/upcoming-appointments')->with('success', $msg);
     }
 
+    public function startVideoCall($id)
+    {
+        $appointment = Appointments::find($id);
+
+        if (!$appointment) {
+            return back()->with('error', 'Appointment not found.');
+        }
+
+        $userId = Auth::id();
+        $userRole = Auth::user()->role;
+
+        // Check if user is either the assigned patient or assigned doctor
+        // In the Patients and Doctors tables, id vs uid matching can be slightly loose depending on implementation.
+        // We ensure Auth::id() matches what's stored in pid or did.
+        if ($userRole == 5 && $appointment->pid != $userId) {
+            return back()->with('error', 'Unauthorized to join this call.');
+        }
+
+        if ($userRole == 4 && $appointment->did != $userId) {
+            // Some doctor associations use uid instead of id, so we check both to be safe
+            $doctorProfile = Doctors::where('uid', $userId)->first();
+            if (!$doctorProfile || ($appointment->did != $userId && $appointment->did != $doctorProfile->id && $appointment->did != $doctorProfile->uid)) {
+                return back()->with('error', 'Unauthorized to join this call.');
+            }
+        }
+
+        return view('frontend.video_room', compact('appointment'));
+    }
+
 }

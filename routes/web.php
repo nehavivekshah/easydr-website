@@ -40,6 +40,7 @@ Route::post('/confirm-appointment/{id}', [FrontendController::class, 'confirmApp
 Route::post('/complete-appointment/{id}', [FrontendController::class, 'completeAppointment'])->name('completeAppointment');
 Route::post('/mark-appointment-paid/{id}', [FrontendController::class, 'markAppointmentPaid'])->name('markAppointmentPaid');
 Route::get('/manage-appointment', [FrontendController::class, 'manageAppointment']);
+Route::get('/video-consultation/{id}', [WebAppointmentController::class, 'startVideoCall'])->middleware('auth')->name('video.consultation');
 
 // Doctor Routes
 Route::get('/my-patients', [FrontendController::class, 'myPatients']);

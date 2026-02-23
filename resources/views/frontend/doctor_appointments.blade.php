@@ -476,11 +476,8 @@
                                                     @endif
 
                                                     {{-- 3. Video --}}
-                                                    @if(!empty($appointment->meeting_link) && $canCallVideo)
-                                                         @php
-                                                            $meetingUrl = $appointment->meeting_provider == 'whatsapp' ? 'https://wa.me/' . $appointment->meeting_link : $appointment->meeting_link;
-                                                        @endphp
-                                                        <a href="{{ $meetingUrl }}" target="_blank" class="btn-pastel btn-pastel-video" title="Video Call">
+                                                    @if($canCallVideo)
+                                                        <a href="{{ route('video.consultation', $appointment->id) }}" class="btn-pastel btn-pastel-video" title="Video Call">
                                                             <i class="fas fa-video"></i>
                                                         </a>
                                                     @else
