@@ -174,7 +174,20 @@
                                                     @else
                                                         {{-- Show Video Button logic if Paid/Expired --}}
                                                         @if($isSessionActive && !$isExpired)
-                                                            <a href="{{ route('video.consultation', $appointment->id) }}"
+                                                            @php
+                                                                $isExternal = in_array($appointment->meeting_provider, ['google_meet', 'microsoft_teams', 'whatsapp']) && !empty($appointment->meeting_link);
+
+                                                                if ($isExternal) {
+                                                                    // Ensure URL has protocol
+                                                                    $rawLink = $appointment->meeting_link;
+                                                                    $videoLink = (strpos($rawLink, 'http://') === 0 || strpos($rawLink, 'https://') === 0) ? $rawLink : 'https://' . $rawLink;
+                                                                    $videoTarget = '_blank';
+                                                                } else {
+                                                                    $videoLink = route('video.consultation', $appointment->id);
+                                                                    $videoTarget = '_self';
+                                                                }
+                                                            @endphp
+                                                            <a href="{{ $videoLink }}" target="{{ $videoTarget }}"
                                                                 class="action-btn btn-video pulsate-active" title="Join Video Call"
                                                                 style="background: #17a2b8; color: #fff;">
                                                                 <i class="fas fa-video"></i>

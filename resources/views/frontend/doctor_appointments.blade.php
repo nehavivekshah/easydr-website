@@ -477,7 +477,20 @@
 
                                                     {{-- 3. Video --}}
                                                     @if($canCallVideo)
-                                                        <a href="{{ route('video.consultation', $appointment->id) }}" class="btn-pastel btn-pastel-video" title="Video Call">
+                                                        @php
+                                                            $isExternal = in_array($appointment->meeting_provider, ['google_meet', 'microsoft_teams', 'whatsapp']) && !empty($appointment->meeting_link);
+                                                            
+                                                            if ($isExternal) {
+                                                                // Ensure URL has protocol
+                                                                $rawLink = $appointment->meeting_link;
+                                                                $videoLink = (strpos($rawLink, 'http://') === 0 || strpos($rawLink, 'https://') === 0) ? $rawLink : 'https://' . $rawLink;
+                                                                $videoTarget = '_blank';
+                                                            } else {
+                                                                $videoLink = route('video.consultation', $appointment->id);
+                                                                $videoTarget = '_self';
+                                                            }
+                                                        @endphp
+                                                        <a href="{{ $videoLink }}" target="{{ $videoTarget }}" class="btn-pastel btn-pastel-video" title="Video Call">
                                                             <i class="fas fa-video"></i>
                                                         </a>
                                                     @else

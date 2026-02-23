@@ -130,7 +130,9 @@
                                         <span class="input-group-text"><i class='bx bx-video'></i></span>
                                         <select class="form-control" id="meeting_provider" name="meeting_provider">
                                             <option value="in_person" @if(($appointments->meeting_provider ?? '') == 'in_person') selected @endif>In-Person Visit</option>
+                                            <option value="integrated" @if(($appointments->meeting_provider ?? '') == 'integrated') selected @endif>Integrated Video Room</option>
                                             <option value="google_meet" @if(($appointments->meeting_provider ?? '') == 'google_meet') selected @endif>Google Meet</option>
+                                            <option value="microsoft_teams" @if(($appointments->meeting_provider ?? '') == 'microsoft_teams') selected @endif>Microsoft Teams</option>
                                             <option value="whatsapp" @if(($appointments->meeting_provider ?? '') == 'whatsapp') selected @endif>WhatsApp Video</option>
                                         </select>
                                     </div>
@@ -284,7 +286,7 @@
                         }, 1000);
                     }
                 @endif
-        });
+                });
         </script>
     @endpush
 @endsection
