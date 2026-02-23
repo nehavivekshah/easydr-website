@@ -409,10 +409,10 @@
                                                 </div>
                                                 
                                                 <div class="d-flex gap-2 mt-3">
-                                                    <a href="/doctor/{{ $doctor->doctor_table_id }}/{{ Str::slug($doctor->first_name . '-' . $doctor->last_name) }}?book=true" class="btn btn-primary flex-fill fw-bold" style="border-radius: 12px; padding: 10px;">
+                                                    <a href="/doctor/{{ $doctor->doctor_table_id }}/{{ Str::slug($doctor->first_name . '-' . $doctor->last_name) }}?book=true" class="btn btn-primary flex-fill fw-bold" style="border-radius: 12px; padding: 10px;border-radius: 12px; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 10px;">
                                                         <i class="fas fa-calendar-plus me-1"></i> Book Again
                                                     </a>
-                                                    <button onclick="openDoctorDetails({{ $doctor->user_id }}, 'Dr. {{ addslashes($doctor->first_name . " " . $doctor->last_name) }}', {{ $doctor->doctor_table_id }})" class="btn-view-details flex-fill" style="padding: 10px; width: auto; background: #eef2f6; color: #0d6efd;">
+                                                    <button onclick="openDoctorDetails({{ $doctor->user_id }})" class="btn-view-details flex-fill" style="padding: 10px; width: auto; background: #eef2f6; color: #0d6efd;">
                                                         View Details
                                                     </button>
                                                 </div>
@@ -568,12 +568,16 @@
         let currentDoctorName = '';
         let doctorData = @json($doctors);
 
-        function openDoctorDetails(userId, name, doctorTableId) {
+        function openDoctorDetails(userId) {
+            const doctor = doctorData.find(d => d.user_id == userId);
+            if (!doctor) return;
+
+            const name = 'Dr. ' + doctor.first_name + ' ' + (doctor.last_name || '');
+            const doctorTableId = doctor.doctor_table_id;
+
             currentDoctorId = userId;
             currentDoctorTableId = doctorTableId;
             currentDoctorName = name;
-            
-            const doctor = doctorData.find(d => d.user_id == userId);
 
             const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D8ABC&color=fff`;
             const photo = doctor.photo ? `{{ asset('public/assets/images/profiles') }}/${doctor.photo}` : avatar;
