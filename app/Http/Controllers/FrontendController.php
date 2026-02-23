@@ -1202,9 +1202,16 @@ class FrontendController extends Controller
             return redirect('/login');
         }
 
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        $pid = $patient ? $patient->id : 0;
+
         // Fetch prescriptions for this patient
         // Assuming Prescriptions table has patient_id, doctor_id, and we need to join users for doctor details
-        $prescriptions = \App\Models\Prescriptions::where('patient_id', $user->id)
+        $prescriptions = \App\Models\Prescriptions::where(function ($q) use ($user, $pid) {
+            $q->where('patient_id', $user->id);
+            if ($pid > 0)
+                $q->orWhere('patient_id', $pid);
+        })
             ->leftJoin('users as doc', 'prescriptions.doctor_id', '=', 'doc.id')
             ->select(
                 'prescriptions.*',
