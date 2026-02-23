@@ -125,119 +125,207 @@
                                 @if(Auth::user()->role == 5)
                                     <!-- Patient Stats -->
                                     <div class="col-md-3 mb-4">
-                                        <div class="stat-card-modern p-3">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="icon-box icon-blue mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-calendar-check"></i></div>
-                                                <div style="min-width: 0;">
-                                                    <h3 class="mb-1 text-truncate">{{ $appointmentsCount ?? 0 }}</h3>
-                                                    <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Total Appointments</p>
+                                        <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between">
+                                            <div>
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h3 class="mb-0 font-weight-bold"
+                                                        style="font-size: 2.2rem; color: #1e293b; line-height: 1;">
+                                                        {{ $appointmentsCount ?? 0 }}</h3>
+                                                    <div class="icon-box icon-blue mb-0"
+                                                        style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                        <i class="fas fa-calendar-check"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">Total
+                                                    Appointments</p>
+                                            </div>
+                                            <div class="mt-auto pt-4">
+                                                <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                <div class="trending text-primary font-weight-bold d-flex align-items-center"
+                                                    style="font-size: 0.95rem; gap: 8px;">
+                                                    <i class="fas fa-clock"></i> <span>{{ $todayAppointmentsCount ?? 0 }} for
+                                                        Today</span>
                                                 </div>
                                             </div>
-                                            <div class="trending text-primary pt-2 border-top w-100"><i class="fas fa-clock"></i>
-                                                {{ $todayAppointmentsCount ?? 0 }} for Today</div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <div class="stat-card-modern p-3">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="icon-box icon-green mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-check-double"></i></div>
-                                                <div style="min-width: 0;">
-                                                    <h3 class="mb-1 text-truncate">{{ $completedAppointmentsCount ?? 0 }}</h3>
-                                                    <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Completed Sessions</p>
+                                        <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between">
+                                            <div>
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h3 class="mb-0 font-weight-bold"
+                                                        style="font-size: 2.2rem; color: #1e293b; line-height: 1;">
+                                                        {{ $completedAppointmentsCount ?? 0 }}</h3>
+                                                    <div class="icon-box icon-green mb-0"
+                                                        style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                        <i class="fas fa-check-double"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">
+                                                    Completed Sessions</p>
+                                            </div>
+                                            <div class="mt-auto pt-4">
+                                                <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                <div class="trending text-success font-weight-bold d-flex align-items-center"
+                                                    style="font-size: 0.95rem; gap: 8px;">
+                                                    <i class="fas fa-history"></i> <span>{{ $todayCompletedCount ?? 0 }}
+                                                        Finished Today</span>
                                                 </div>
                                             </div>
-                                            <div class="trending text-success pt-2 border-top w-100"><i class="fas fa-history"></i>
-                                                {{ $todayCompletedCount ?? 0 }} Finished Today</div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <div class="stat-card-modern p-3">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="icon-box icon-purple mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-credit-card"></i></div>
-                                                <div style="min-width: 0;">
-                                                    <h3 class="mb-1 text-truncate">${{ $billingAmount ?? 0 }}</h3>
-                                                    <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Total Spent</p>
+                                        <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between">
+                                            <div>
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h3 class="mb-0 font-weight-bold"
+                                                        style="font-size: 2.2rem; color: #1e293b; line-height: 1;">
+                                                        ${{ $billingAmount ?? 0 }}</h3>
+                                                    <div class="icon-box icon-purple mb-0"
+                                                        style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                        <i class="fas fa-credit-card"></i>
+                                                    </div>
                                                 </div>
+                                                <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">Total
+                                                    Spent</p>
                                             </div>
-                                            <div class="trending text-purple pt-2 border-top w-100"><i class="fas fa-receipt"></i> From
-                                                {{ $appointmentsCount ?? 0 }} appointments
+                                            <div class="mt-auto pt-4">
+                                                <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                <div class="trending text-purple font-weight-bold d-flex align-items-center"
+                                                    style="font-size: 0.95rem; gap: 8px;">
+                                                    <i class="fas fa-receipt"></i> <span>From {{ $appointmentsCount ?? 0 }}
+                                                        appointments</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <a href="/messages" class="text-decoration-none">
-                                            <div class="stat-card-modern p-3" style="cursor: pointer;">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="icon-box icon-yellow mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-envelope"></i></div>
-                                                    <div style="min-width: 0;">
-                                                        <h3 class="mb-1 text-truncate"
-                                                            style="color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
-                                                            {{ $totalUnreadCount ?? 0 }}
-                                                        </h3>
-                                                        <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Unread Messages</p>
+                                            <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between"
+                                                style="cursor: pointer;">
+                                                <div>
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="mb-0 font-weight-bold"
+                                                            style="font-size: 2.2rem; line-height: 1; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1e293b' }} !important;">
+                                                            {{ $totalUnreadCount ?? 0 }}</h3>
+                                                        <div class="icon-box icon-yellow mb-0"
+                                                            style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                            <i class="fas fa-envelope"></i>
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">
+                                                        Unread Messages</p>
+                                                </div>
+                                                <div class="mt-auto pt-4">
+                                                    <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                    <div class="trending text-warning font-weight-bold d-flex align-items-center"
+                                                        style="font-size: 0.95rem; gap: 8px;">
+                                                        <i class="fas fa-comment-dots"></i> <span>Click to view</span>
                                                     </div>
                                                 </div>
-                                                <div class="trending text-warning pt-2 border-top w-100"><i class="fas fa-comment-dots"></i> Click to
-                                                    view</div>
                                             </div>
                                         </a>
                                     </div>
                                 @else
                                     <!-- Doctor Stats -->
                                     <div class="col-md-3 mb-4">
-                                        <div class="stat-card-modern p-3">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="icon-box icon-blue mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-user-md"></i></div>
-                                                <div style="min-width: 0;">
-                                                    <h3 class="mb-1 text-truncate">{{ $appointmentsCount ?? 0 }}</h3>
-                                                    <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Total Consultations</p>
+                                        <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between">
+                                            <div>
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h3 class="mb-0 font-weight-bold"
+                                                        style="font-size: 2.2rem; color: #1e293b; line-height: 1;">
+                                                        {{ $appointmentsCount ?? 0 }}</h3>
+                                                    <div class="icon-box icon-blue mb-0"
+                                                        style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                        <i class="fas fa-user-md"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">Total
+                                                    Consultations</p>
+                                            </div>
+                                            <div class="mt-auto pt-4">
+                                                <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                <div class="trending text-primary font-weight-bold d-flex align-items-center"
+                                                    style="font-size: 0.95rem; gap: 8px;">
+                                                    <i class="fas fa-users"></i> <span>{{ $todayAppointmentsCount ?? 0 }} for
+                                                        Today</span>
                                                 </div>
                                             </div>
-                                            <div class="trending text-primary pt-2 border-top w-100"><i class="fas fa-users"></i>
-                                                {{ $todayAppointmentsCount ?? 0 }} for Today</div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <div class="stat-card-modern p-3">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="icon-box icon-green mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-user-friends"></i></div>
-                                                <div style="min-width: 0;">
-                                                    <h3 class="mb-1 text-truncate">{{ $patientsCount ?? 0 }}</h3>
-                                                    <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Unique Patients</p>
+                                        <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between">
+                                            <div>
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h3 class="mb-0 font-weight-bold"
+                                                        style="font-size: 2.2rem; color: #1e293b; line-height: 1;">
+                                                        {{ $patientsCount ?? 0 }}</h3>
+                                                    <div class="icon-box icon-green mb-0"
+                                                        style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                        <i class="fas fa-user-friends"></i>
+                                                    </div>
                                                 </div>
+                                                <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">Unique
+                                                    Patients</p>
                                             </div>
-                                            <div class="trending text-success pt-2 border-top w-100"><i class="fas fa-heart"></i> Growing Community
+                                            <div class="mt-auto pt-4">
+                                                <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                <div class="trending text-success font-weight-bold d-flex align-items-center"
+                                                    style="font-size: 0.95rem; gap: 8px;">
+                                                    <i class="fas fa-heart"></i> <span>Growing Community</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <div class="stat-card-modern p-3">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <div class="icon-box icon-purple mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-wallet"></i></div>
-                                                <div style="min-width: 0;">
-                                                    <h3 class="mb-1 text-truncate">${{ $walletAmount ?? 0 }}</h3>
-                                                    <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Wallet Balance</p>
+                                        <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between">
+                                            <div>
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h3 class="mb-0 font-weight-bold"
+                                                        style="font-size: 2.2rem; color: #1e293b; line-height: 1;">
+                                                        ${{ $walletAmount ?? 0 }}</h3>
+                                                    <div class="icon-box icon-purple mb-0"
+                                                        style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                        <i class="fas fa-wallet"></i>
+                                                    </div>
+                                                </div>
+                                                <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">Wallet
+                                                    Balance</p>
+                                            </div>
+                                            <div class="mt-auto pt-4">
+                                                <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                <div class="trending text-purple font-weight-bold d-flex align-items-center"
+                                                    style="font-size: 0.95rem; gap: 8px;">
+                                                    <i class="fas fa-chart-line"></i> <span>Revenue:
+                                                        ${{ $totalRevenue ?? 0 }}</span>
                                                 </div>
                                             </div>
-                                            <div class="trending text-purple pt-2 border-top w-100"><i class="fas fa-chart-line"></i> Revenue:
-                                                ${{ $totalRevenue ?? 0 }}</div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <a href="/messages" class="text-decoration-none">
-                                            <div class="stat-card-modern p-3" style="cursor: pointer;">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="icon-box icon-yellow mb-0 me-3" style="width: 48px; height: 48px; flex-shrink: 0;"><i class="fas fa-envelope"></i></div>
-                                                    <div style="min-width: 0;">
-                                                        <h3 class="mb-1 text-truncate"
-                                                            style="color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
-                                                            {{ $totalUnreadCount ?? 0 }}
-                                                        </h3>
-                                                        <p class="text-muted mb-0 text-truncate" style="font-size: 13px;">Unread Messages</p>
+                                            <div class="stat-card-modern p-4 d-flex flex-column h-100 justify-content-between"
+                                                style="cursor: pointer;">
+                                                <div>
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="mb-0 font-weight-bold"
+                                                            style="font-size: 2.2rem; line-height: 1; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1e293b' }} !important;">
+                                                            {{ $totalUnreadCount ?? 0 }}</h3>
+                                                        <div class="icon-box icon-yellow mb-0"
+                                                            style="width: 54px; height: 54px; border-radius: 14px; font-size: 1.4rem;">
+                                                            <i class="fas fa-envelope"></i>
+                                                        </div>
+                                                    </div>
+                                                    <p class="text-muted mb-0 font-weight-bold" style="font-size: 1.05rem;">
+                                                        Unread Messages</p>
+                                                </div>
+                                                <div class="mt-auto pt-4">
+                                                    <hr style="border-color: #e2e8f0; border-width: 2px; margin: 0 0 12px 0;">
+                                                    <div class="trending text-warning font-weight-bold d-flex align-items-center"
+                                                        style="font-size: 0.95rem; gap: 8px;">
+                                                        <i class="fas fa-comment-dots"></i> <span>Click to view</span>
                                                     </div>
                                                 </div>
-                                                <div class="trending text-warning pt-2 border-top w-100"><i class="fas fa-comment-dots"></i> Click to
-                                                    view</div>
                                             </div>
                                         </a>
                                     </div>
@@ -455,7 +543,7 @@
                         }
                     });
                 @endif
-                    });
+                            });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {
