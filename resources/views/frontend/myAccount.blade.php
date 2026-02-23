@@ -156,7 +156,7 @@
                                         <div class="stat-card-modern p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div class="icon-box icon-blue mb-0"
-                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                    style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-calendar-check"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
@@ -180,7 +180,7 @@
                                         <div class="stat-card-modern p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div class="icon-box icon-green mb-0"
-                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                    style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-check-double"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
@@ -204,7 +204,7 @@
                                         <div class="stat-card-modern p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div class="icon-box icon-purple mb-0"
-                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                    style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-credit-card"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
@@ -228,7 +228,7 @@
                                             <div class="stat-card-modern p-4" style="cursor: pointer;">
                                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                                     <div class="icon-box icon-yellow mb-0"
-                                                        style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;">
+                                                        style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;">
                                                         <i class="fas fa-envelope"></i>
                                                     </div>
                                                     <h3 class="mb-0 text-truncate"
@@ -254,7 +254,7 @@
                                         <div class="stat-card-modern p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div class="icon-box icon-blue mb-0"
-                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                    style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-user-md"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
@@ -277,7 +277,7 @@
                                         <div class="stat-card-modern p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div class="icon-box icon-green mb-0"
-                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                    style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-user-friends"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
@@ -299,7 +299,7 @@
                                         <div class="stat-card-modern p-4">
                                             <div class="d-flex justify-content-between align-items-center mb-4">
                                                 <div class="icon-box icon-purple mb-0"
-                                                    style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
+                                                    style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-wallet"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
@@ -322,7 +322,7 @@
                                             <div class="stat-card-modern p-4" style="cursor: pointer;">
                                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                                     <div class="icon-box icon-yellow mb-0"
-                                                        style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;">
+                                                        style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;">
                                                         <i class="fas fa-envelope"></i>
                                                     </div>
                                                     <h3 class="mb-0 text-truncate"
@@ -556,7 +556,7 @@
                         }
                     });
                 @endif
-                                                                                                                        });
+                                                                                                                                });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {
