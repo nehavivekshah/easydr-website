@@ -114,7 +114,8 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="section-header-modern mb-0">Overview</h4>
                                 @if(Auth::user()->role == 4)
-                                    <a href="/manage-slots" class="btn btn-pill-modern btn-primary text-white" style="min-height: 38px; display: flex; gap: 8px; align-items: center;"><i
+                                    <a href="/manage-slots" class="btn btn-pill-modern btn-primary text-white"
+                                        style="min-height: 38px; display: flex; gap: 8px; align-items: center;"><i
                                             class="fas fa-clock pe-1"></i> Availability</a>
                                 @endif
                             </div>
@@ -123,7 +124,7 @@
                             <div class="row mb-4">
                                 @if(Auth::user()->role == 5)
                                     <!-- Patient Stats -->
-                                    <div class="col-md-4 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern">
                                             <div class="icon-box icon-blue"><i class="fas fa-calendar-check"></i></div>
                                             <h3>{{ $appointmentsCount ?? 0 }}</h3>
@@ -132,7 +133,7 @@
                                                 {{ $todayAppointmentsCount ?? 0 }} for Today</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern">
                                             <div class="icon-box icon-green"><i class="fas fa-check-double"></i></div>
                                             <h3>{{ $completedAppointmentsCount ?? 0 }}</h3>
@@ -141,18 +142,33 @@
                                                 {{ $todayCompletedCount ?? 0 }} Finished Today</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern">
                                             <div class="icon-box icon-purple"><i class="fas fa-credit-card"></i></div>
-                                            <h3>{{ $billingAmount ?? 0 }}</h3>
+                                            <h3>${{ $billingAmount ?? 0 }}</h3>
                                             <p>Total Spent</p>
                                             <div class="trending text-purple"><i class="fas fa-receipt"></i> From
-                                                {{ $appointmentsCount ?? 0 }} appointments</div>
+                                                {{ $appointmentsCount ?? 0 }} appointments
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <a href="/messages" class="text-decoration-none">
+                                            <div class="stat-card-modern" style="cursor: pointer;">
+                                                <div class="icon-box icon-yellow"><i class="fas fa-envelope"></i></div>
+                                                <h3
+                                                    style="color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                    {{ $totalUnreadCount ?? 0 }}
+                                                </h3>
+                                                <p>Unread Messages</p>
+                                                <div class="trending text-warning"><i class="fas fa-comment-dots"></i> Click to
+                                                    view</div>
+                                            </div>
+                                        </a>
                                     </div>
                                 @else
                                     <!-- Doctor Stats -->
-                                    <div class="col-md-4 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern">
                                             <div class="icon-box icon-blue"><i class="fas fa-user-md"></i></div>
                                             <h3>{{ $appointmentsCount ?? 0 }}</h3>
@@ -161,7 +177,7 @@
                                                 {{ $todayAppointmentsCount ?? 0 }} for Today</div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern">
                                             <div class="icon-box icon-green"><i class="fas fa-user-friends"></i></div>
                                             <h3>{{ $patientsCount ?? 0 }}</h3>
@@ -170,14 +186,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <div class="stat-card-modern">
                                             <div class="icon-box icon-purple"><i class="fas fa-wallet"></i></div>
-                                            <h3>{{ $walletAmount ?? 0 }}</h3>
+                                            <h3>${{ $walletAmount ?? 0 }}</h3>
                                             <p>Wallet Balance</p>
                                             <div class="trending text-purple"><i class="fas fa-chart-line"></i> Revenue:
-                                                {{ $totalRevenue ?? 0 }}</div>
+                                                ${{ $totalRevenue ?? 0 }}</div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <a href="/messages" class="text-decoration-none">
+                                            <div class="stat-card-modern" style="cursor: pointer;">
+                                                <div class="icon-box icon-yellow"><i class="fas fa-envelope"></i></div>
+                                                <h3
+                                                    style="color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                    {{ $totalUnreadCount ?? 0 }}
+                                                </h3>
+                                                <p>Unread Messages</p>
+                                                <div class="trending text-warning"><i class="fas fa-comment-dots"></i> Click to
+                                                    view</div>
+                                            </div>
+                                        </a>
                                     </div>
                                 @endif
                             </div>
@@ -241,7 +271,7 @@
                                                             <span class="text-muted" style="font-size: 11px;"><i
                                                                     class="far fa-clock me-1"></i> {{ $appt->date }} at
                                                                 {{ $appt->time }}</span>
-                                                            
+
                                                             @php
                                                                 $apptDateTime = \Carbon\Carbon::parse($appt->date . ' ' . $appt->time);
                                                                 $slotEndTime = (clone $apptDateTime)->addMinutes(30);
@@ -249,8 +279,9 @@
                                                             @endphp
 
                                                             @if($isUpcomingToday && ($appt->status == 0 || $appt->status == 1))
-                                                                <div class="timer-countdown mt-1" style="transform: scale(0.85); transform-origin: left;"
-                                                                    data-start="{{ $apptDateTime->timestamp * 1000 }}" 
+                                                                <div class="timer-countdown mt-1"
+                                                                    style="transform: scale(0.85); transform-origin: left;"
+                                                                    data-start="{{ $apptDateTime->timestamp * 1000 }}"
                                                                     data-end="{{ $slotEndTime->timestamp * 1000 }}">
                                                                     <div class="dt-item text-danger"></div>
                                                                 </div>
@@ -262,8 +293,7 @@
                                                         </span>
                                                     </div>
                                                     <div class="d-flex justify-content-between align-items-center mt-2">
-                                                        <span
-                                                            class="font-weight-bold text-primary">${{ $appt->fees }}</span>
+                                                        <span class="font-weight-bold text-primary">${{ $appt->fees }}</span>
                                                         <a href="/messages?recipient={{ Auth::user()->role == 4 ? $appt->pid : $appt->did }}"
                                                             class="btn btn-xs btn-outline-primary rounded-pill py-0 px-2"
                                                             style="font-size: 12px;    padding: 8px 28px !important;">Chat</a>
@@ -393,7 +423,7 @@
                         }
                     });
                 @endif
-            });
+                    });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {
@@ -409,11 +439,11 @@
                         const h = Math.floor(diff / 3600000);
                         const m = Math.floor((diff % 3600000) / 60000);
                         const s = Math.floor((diff % 60000) / 1000);
-                        
+
                         let timeStr = "";
                         if (h > 0) timeStr += h + "h ";
                         timeStr += m + "m " + s + "s";
-                        
+
                         display.innerText = "Starts in " + timeStr;
                         el.classList.remove('ongoing', 'ended');
                     } else if (now >= start && now <= end) {

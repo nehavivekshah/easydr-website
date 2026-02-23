@@ -592,6 +592,11 @@ class FrontendController extends Controller
                 $monthlyRevenue[] = $revenueRaw[$m] ?? 0;
             }
 
+            // Calculate Unread Messages for Doctor
+            $totalUnreadCount = \App\Models\Chats::where('did', $user->id)
+                ->where('status', 0)
+                ->count();
+
             return view('frontend/myAccount', compact(
                 'appointmentsCount',
                 'todayAppointmentsCount',
@@ -603,7 +608,8 @@ class FrontendController extends Controller
                 'doctorAvailability',
                 'userAddress',
                 'appointmentDates',
-                'monthlyRevenue'
+                'monthlyRevenue',
+                'totalUnreadCount'
             ));
 
         } elseif ($user->role == 5) {
@@ -692,6 +698,11 @@ class FrontendController extends Controller
                 ->pluck('date')
                 ->toArray();
 
+            // Calculate Unread Messages for Patient
+            $totalUnreadCount = \App\Models\Chats::where('did', $user->id)
+                ->where('status', 0)
+                ->count();
+
             return view('frontend/myAccount', compact(
                 'appointmentsCount',
                 'todayAppointmentsCount',
@@ -705,7 +716,8 @@ class FrontendController extends Controller
                 'patient',
                 'userAddress',
                 'recentAppointments',
-                'appointmentDates'
+                'appointmentDates',
+                'totalUnreadCount'
             ));
         }
     }
