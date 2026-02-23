@@ -1,8 +1,9 @@
 @extends('frontend.layout')
 
 @section('content')
-    <main>
-        <section class="pt-100 pb-40" style="background: #f4f7f6;">
+    <link rel="stylesheet" href="{{ asset('public/assets/frontend/css/dashboard-modern.css') }}">
+    <main class="dashboard-container">
+        <section class="pt-100 pb-40">
             <div class="container">
                 <div class="row">
                     <!-- Sidebar -->
@@ -106,7 +107,8 @@
                                                     <span class="font-weight-bold d-block">Session Finished?</span>
                                                     <small>The scheduled time for this appointment has elapsed.</small>
                                                 </div>
-                                                <div class="status-indicators d-flex flex-column small border-start ps-3" style="border-color: #bbdefb !important;">
+                                                <div class="status-indicators d-flex flex-column small border-start ps-3"
+                                                    style="border-color: #bbdefb !important;">
                                                     <span class="doctor-status mb-1"></span>
                                                     <span class="patient-status"></span>
                                                 </div>
