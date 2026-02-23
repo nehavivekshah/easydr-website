@@ -94,8 +94,36 @@
             background: #fff;
             min-height: 350px;
             border-radius: 16px;
-            padding: 20px;
+            padding: 24px;
             border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-modern:hover {
+            box-shadow: 0 12px 24px rgba(26, 75, 140, 0.06);
+        }
+        
+        /* Apply similar modern styling to the right column card */
+        .card-modern {
+            background: #fff;
+            border-radius: 16px !important;
+            border: 1px solid #f0f0f0 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card-modern:hover {
+            box-shadow: 0 12px 24px rgba(26, 75, 140, 0.06) !important;
+        }
+
+        .hover-bg-light:hover {
+            background-color: #f8fafc !important;
+        }
+        
+        .transition-all {
+            transition: all 0.2s ease;
         }
     </style>
 
@@ -132,7 +160,7 @@
                                                         class="fas fa-calendar-check"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ $appointmentsCount ?? 0 }}</h3>
+                                                    {{ number_format($appointmentsCount ?? 0) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
@@ -140,7 +168,7 @@
                                                     style="font-size: 16px; font-weight: 600; color: #475569;">Total
                                                     Appointments</p>
                                                 <div class="trending text-primary w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-clock"></i> {{ $todayAppointmentsCount ?? 0 }} for Today
+                                                        class="fas fa-clock"></i> {{ number_format($todayAppointmentsCount ?? 0) }} for Today
                                                 </div>
                                             </div>
                                         </div>
@@ -153,7 +181,7 @@
                                                         class="fas fa-check-double"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ $completedAppointmentsCount ?? 0 }}</h3>
+                                                    {{ number_format($completedAppointmentsCount ?? 0) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
@@ -161,7 +189,7 @@
                                                     style="font-size: 16px; font-weight: 600; color: #475569;">Completed
                                                     Sessions</p>
                                                 <div class="trending text-success w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-history"></i> {{ $todayCompletedCount ?? 0 }} Finished
+                                                        class="fas fa-history"></i> {{ number_format($todayCompletedCount ?? 0) }} Finished
                                                     Today</div>
                                             </div>
                                         </div>
@@ -174,14 +202,14 @@
                                                         class="fas fa-credit-card"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    ${{ $billingAmount ?? 0 }}</h3>
+                                                    ${{ number_format($billingAmount ?? 0, 2) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
                                                 <p class="mb-2 text-truncate"
                                                     style="font-size: 16px; font-weight: 600; color: #475569;">Total Spent</p>
                                                 <div class="trending text-purple w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-receipt"></i> From {{ $appointmentsCount ?? 0 }}
+                                                        class="fas fa-receipt"></i> From {{ number_format($appointmentsCount ?? 0) }}
                                                     appointments</div>
                                             </div>
                                         </div>
@@ -218,7 +246,7 @@
                                                         class="fas fa-user-md"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ $appointmentsCount ?? 0 }}</h3>
+                                                    {{ number_format($appointmentsCount ?? 0) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
@@ -226,7 +254,7 @@
                                                     style="font-size: 16px; font-weight: 600; color: #475569;">Total
                                                     Consultations</p>
                                                 <div class="trending text-primary w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-users"></i> {{ $todayAppointmentsCount ?? 0 }} for Today
+                                                        class="fas fa-users"></i> {{ number_format($todayAppointmentsCount ?? 0) }} for Today
                                                 </div>
                                             </div>
                                         </div>
@@ -239,7 +267,7 @@
                                                         class="fas fa-user-friends"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    {{ $patientsCount ?? 0 }}</h3>
+                                                    {{ number_format($patientsCount ?? 0) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
@@ -259,7 +287,7 @@
                                                         class="fas fa-wallet"></i></div>
                                                 <h3 class="mb-0 text-truncate"
                                                     style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
-                                                    ${{ $walletAmount ?? 0 }}</h3>
+                                                    ${{ number_format($walletAmount ?? 0, 2) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
                                             <div style="min-width: 0;">
@@ -267,7 +295,7 @@
                                                     style="font-size: 16px; font-weight: 600; color: #475569;">Wallet Balance
                                                 </p>
                                                 <div class="trending text-purple w-100" style="font-size: 13.5px;"><i
-                                                        class="fas fa-chart-line"></i> Revenue: ${{ $totalRevenue ?? 0 }}</div>
+                                                        class="fas fa-chart-line"></i> Revenue: ${{ number_format($totalRevenue ?? 0, 2) }}</div>
                                             </div>
                                         </div>
                                     </div>
