@@ -1398,3 +1398,7 @@ input#contact-search {
     border-radius: .5rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
+.gap-3 {
+    gap: 15px;
+}

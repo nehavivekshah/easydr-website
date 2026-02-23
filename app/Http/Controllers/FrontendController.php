@@ -1166,7 +1166,33 @@ class FrontendController extends Controller
 
     public function medicalReports()
     {
-        return view('frontend.account.medical_reports');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        if (!$patient) {
+            return redirect('/my-account')->with('error', 'Patient details not found.');
+        }
+
+        // Fetch reports (messages with files) sent to this patient
+        // Assuming Chats table has sender_id (doctor), recipient_id (patient/user), and file
+        // Let's verify the exact schema used in UserController - it uses 'pid' for patient id.
+        $reports = DB::table('chats')
+            ->where('chats.pid', $patient->id)
+            ->whereNotNull('chats.file')
+            ->leftJoin('users as doc', 'chats.sender_id', '=', 'doc.id')
+            ->select(
+                'chats.*',
+                'doc.first_name as doctor_first_name',
+                'doc.last_name as doctor_last_name',
+                'doc.photo as doctor_photo'
+            )
+            ->orderBy('chats.created_at', 'desc')
+            ->paginate(12);
+
+        return view('frontend.account.medical_reports', compact('reports'));
     }
 
     public function patientPrescriptions()
