@@ -159,7 +159,7 @@
                                                     style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-calendar-check"></i></div>
                                                 <h3 class="mb-0 text-truncate"
-                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     {{ number_format($appointmentsCount ?? 0) }}
                                                 </h3>
                                             </div>
@@ -183,7 +183,7 @@
                                                     style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-check-double"></i></div>
                                                 <h3 class="mb-0 text-truncate"
-                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     {{ number_format($completedAppointmentsCount ?? 0) }}
                                                 </h3>
                                             </div>
@@ -207,7 +207,7 @@
                                                     style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-credit-card"></i></div>
                                                 <h3 class="mb-0 text-truncate"
-                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     ${{ number_format($billingAmount ?? 0, 2) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
@@ -232,7 +232,7 @@
                                                         <i class="fas fa-envelope"></i>
                                                     </div>
                                                     <h3 class="mb-0 text-truncate"
-                                                        style="font-size: 36px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                        style="font-size: 20px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
                                                         {{ $totalUnreadCount ?? 0 }}
                                                     </h3>
                                                 </div>
@@ -257,7 +257,7 @@
                                                     style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-user-md"></i></div>
                                                 <h3 class="mb-0 text-truncate"
-                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     {{ number_format($appointmentsCount ?? 0) }}
                                                 </h3>
                                             </div>
@@ -280,7 +280,7 @@
                                                     style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-user-friends"></i></div>
                                                 <h3 class="mb-0 text-truncate"
-                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     {{ number_format($patientsCount ?? 0) }}
                                                 </h3>
                                             </div>
@@ -302,7 +302,7 @@
                                                     style="width: 60px; height: 60px; font-size: 24px; border-radius: 16px;"><i
                                                         class="fas fa-wallet"></i></div>
                                                 <h3 class="mb-0 text-truncate"
-                                                    style="font-size: 36px; font-weight: 800; color: #1a4b8c !important;">
+                                                    style="font-size: 20px; font-weight: 800; color: #1a4b8c !important;">
                                                     ${{ number_format($walletAmount ?? 0, 2) }}</h3>
                                             </div>
                                             <hr style="margin: 0 0 16px 0; border-color: #e2e8f0;">
@@ -326,7 +326,7 @@
                                                         <i class="fas fa-envelope"></i>
                                                     </div>
                                                     <h3 class="mb-0 text-truncate"
-                                                        style="font-size: 36px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                        style="font-size: 20px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
                                                         {{ $totalUnreadCount ?? 0 }}
                                                     </h3>
                                                 </div>
@@ -556,7 +556,7 @@
                         }
                     });
                 @endif
-                                                                                                        });
+                                                                                                                        });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {
