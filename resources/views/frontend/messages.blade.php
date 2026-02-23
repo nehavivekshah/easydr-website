@@ -99,24 +99,24 @@
 
                                         <!-- Appointment Alert Banner -->
                                         <!-- <div id="appointment-alert"
-                                            class="d-none alert alert-info m-3 shadow-sm border-0 d-flex align-items-center justify-content-between"
-                                            style="border-radius: 12px; background: #e3f2fd; color: #0d47a1; z-index: 10;">
-                                            <div class="d-flex align-items-center">
-                                                <i class="fas fa-clock me-3" style="font-size: 1.2rem;"></i>
-                                                <div class="me-4">
-                                                    <span class="font-weight-bold d-block">Session Finished?</span>
-                                                    <small>The scheduled time for this appointment has elapsed.</small>
-                                                </div>
-                                                <div class="status-indicators d-flex flex-column small border-start ps-3"
-                                                    style="border-color: #bbdefb !important;">
-                                                    <span class="doctor-status mb-1"></span>
-                                                    <span class="patient-status"></span>
-                                                </div>
-                                            </div>
-                                            <button onclick="completeAppointmentNow()"
-                                                class="btn btn-sm btn-primary rounded-pill px-3 py-1 font-weight-bold shadow-sm">Complete
-                                                Now</button>
-                                        </div> -->
+                                                    class="d-none alert alert-info m-3 shadow-sm border-0 d-flex align-items-center justify-content-between"
+                                                    style="border-radius: 12px; background: #e3f2fd; color: #0d47a1; z-index: 10;">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-clock me-3" style="font-size: 1.2rem;"></i>
+                                                        <div class="me-4">
+                                                            <span class="font-weight-bold d-block">Session Finished?</span>
+                                                            <small>The scheduled time for this appointment has elapsed.</small>
+                                                        </div>
+                                                        <div class="status-indicators d-flex flex-column small border-start ps-3"
+                                                            style="border-color: #bbdefb !important;">
+                                                            <span class="doctor-status mb-1"></span>
+                                                            <span class="patient-status"></span>
+                                                        </div>
+                                                    </div>
+                                                    <button onclick="completeAppointmentNow()"
+                                                        class="btn btn-sm btn-primary rounded-pill px-3 py-1 font-weight-bold shadow-sm">Complete
+                                                        Now</button>
+                                                </div> -->
 
                                         <!-- Messages Area -->
                                         <div id="messages-display" class="p-4 flex-grow-1"
@@ -307,6 +307,10 @@
         #chat-input:focus {
             box-shadow: none !important;
             outline: none !important;
+        }
+
+        div#messages-display {
+            min-height: 480px;
         }
     </style>
 
@@ -698,10 +702,10 @@
         }
 
         // Auto-open chat if recipient is specified in URL
-        $(document).ready(function() {
+        $(document).ready(function () {
             const urlParams = new URLSearchParams(window.location.search);
             const recipientId = urlParams.get('recipient');
-            
+
             if (recipientId) {
                 const contactElement = $(`#contact-${recipientId}`);
                 if (contactElement.length) {
