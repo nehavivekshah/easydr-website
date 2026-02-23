@@ -98,7 +98,7 @@
                                         </div>
 
                                         <!-- Appointment Alert Banner -->
-                                        <div id="appointment-alert"
+                                        <!-- <div id="appointment-alert"
                                             class="d-none alert alert-info m-3 shadow-sm border-0 d-flex align-items-center justify-content-between"
                                             style="border-radius: 12px; background: #e3f2fd; color: #0d47a1; z-index: 10;">
                                             <div class="d-flex align-items-center">
@@ -116,7 +116,7 @@
                                             <button onclick="completeAppointmentNow()"
                                                 class="btn btn-sm btn-primary rounded-pill px-3 py-1 font-weight-bold shadow-sm">Complete
                                                 Now</button>
-                                        </div>
+                                        </div> -->
 
                                         <!-- Messages Area -->
                                         <div id="messages-display" class="p-4 flex-grow-1"
