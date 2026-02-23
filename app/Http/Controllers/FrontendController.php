@@ -1541,7 +1541,9 @@ class FrontendController extends Controller
 
         // Check for active appointment to determine if chat is allowed
         $activeAppt = $this->getActiveAppointment($user->id, $recipient_id);
-        $canChat = !is_null($activeAppt);
+
+        // Chat is always enabled
+        $canChat = true;
 
         // Fetch messages
         $messages = Chats::where(function ($query) use ($user, $recipient_id) {
@@ -1587,12 +1589,8 @@ class FrontendController extends Controller
             return response()->json(['error' => 'Message or file is required.'], 422);
         }
 
-        // Strict Check: active appointment required
+        // Optional Check: try to find an active appointment to link to the message
         $activeAppt = $this->getActiveAppointment($user->id, $request->recipient_id);
-
-        if (!$activeAppt) {
-            return response()->json(['success' => false, 'error' => 'Chat is disabled. No active appointment slot found for now.'], 403);
-        }
 
         $filename = null;
         if ($request->hasFile('file')) {
@@ -1605,7 +1603,7 @@ class FrontendController extends Controller
             'pid' => $user->id, // Sender 
             'did' => $request->recipient_id, // Receiver
             'sender_id' => $user->id,
-            'aid' => $activeAppt->id,
+            'aid' => $activeAppt ? $activeAppt->id : null,
             'msg' => $request->message,
             'file' => $filename,
             'status' => 0
