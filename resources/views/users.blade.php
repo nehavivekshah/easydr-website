@@ -196,95 +196,148 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <div class="row align-items-center mb-4 pb-3 border-bottom">
-                        <div class="col-auto">
-                            <img id="modalPatientPhoto" src="" alt="Profile Photo" class="rounded-circle shadow-sm"
-                                style="width: 80px; height: 80px; object-fit: cover; border: 3px solid white;">
+                <div class="modal-body p-4 bg-light">
+                    <!-- Header Block in Modal Body -->
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom border-light">
+                        <div class="me-3">
+                            <img id="modalPatientPhoto" src="" alt="Profile Photo" class="rounded shadow-sm bg-white p-1"
+                                style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #dee2e6;">
                         </div>
-                        <div class="col">
-                            <h4 id="modalPatientName" class="mb-1 fw-bold text-primary"></h4>
-                            <p id="modalPatientLocation" class="text-muted mb-0 small"><i
-                                    class="bx bx-map shadow-sm rounded-circle p-1 me-1 bg-white"></i> <span></span></p>
+                        <div>
+                            <h3 id="modalPatientName" class="mb-2 fw-bold text-dark" style="letter-spacing: -0.5px;"></h3>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-primary bg-opacity-10 text-primary py-2 px-3 rounded text-uppercase"
+                                    id="modalPatientGender"><i class="bx bx-male-female me-1"></i>--</span>
+                                <span class="badge bg-danger bg-opacity-10 text-danger py-2 px-3 rounded text-uppercase"
+                                    id="modalPatientBloodGroup"><i class="bx bx-droplet me-1"></i>--</span>
+                                <span class="badge bg-success bg-opacity-10 text-success py-2 px-3 rounded text-uppercase"
+                                    id="modalPatientAge"><i class="bx bx-calendar me-1"></i>-- YEARS OLD</span>
+                            </div>
                         </div>
-                        <div class="col-auto text-end">
+                        <div class="ms-auto text-end align-self-start">
                             <span id="modalPatientStatus" class="badge rounded-pill px-3 py-2 fs-6 shadow-sm"></span>
                         </div>
                     </div>
 
-                    <div class="row g-4">
-                        <!-- Contact Information -->
+                    <div class="row g-3">
+                        <!-- Mobile Number -->
                         <div class="col-md-6">
-                            <h6 class="fw-bold text-secondary text-uppercase mb-3"
-                                style="font-size: 0.85rem; letter-spacing: 0.5px;">Contact Information</h6>
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-2 d-flex align-items-start"><i
-                                        class="bx bx-envelope text-primary mt-1 me-2"></i> <strong
-                                        class="me-2">Email:</strong> <span id="modalPatientEmail"
-                                        class="text-break text-muted"></span></li>
-                                <li class="mb-2 d-flex align-items-start"><i class="bx bx-phone text-primary mt-1 me-2"></i>
-                                    <strong class="me-2">Mobile:</strong> <span id="modalPatientMobile"
-                                        class="text-muted"></span>
-                                </li>
-                                <li class="mb-2 d-flex align-items-start"><i
-                                        class="bx bx-phone-call text-primary mt-1 me-2"></i> <strong class="me-2">Alt
-                                        Mobile:</strong> <span id="modalPatientAltMobile" class="text-muted"></span></li>
-                                <li class="mb-0 d-flex align-items-start"><i class="bx bx-home text-primary mt-1 me-2"></i>
-                                    <strong class="me-2 text-nowrap">Address:</strong> <span id="modalPatientAddress"
-                                        class="text-muted"></span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Health & Physical Information -->
-                        <div class="col-md-6">
-                            <h6 class="fw-bold text-secondary text-uppercase mb-3"
-                                style="font-size: 0.85rem; letter-spacing: 0.5px;">Health & Physical</h6>
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-2 d-flex align-items-center"><i class="bx bx-calendar text-primary me-2"></i>
-                                    <strong class="me-2">DOB:</strong> <span id="modalPatientDob" class="text-muted"></span>
-                                </li>
-                                <li class="mb-2 d-flex align-items-center"><i
-                                        class="bx bx-male-female text-primary me-2"></i> <strong
-                                        class="me-2">Gender:</strong> <span id="modalPatientGender"
-                                        class="text-muted"></span></li>
-                                <li class="mb-2 d-flex align-items-center"><i class="bx bx-droplet text-danger me-2"></i>
-                                    <strong class="me-2">Blood Group:</strong> <span id="modalPatientBloodGroup"
-                                        class="fw-bold text-dark"></span>
-                                </li>
-                                <li class="mb-2 d-flex align-items-center"><i class="bx bx-ruler text-primary me-2"></i>
-                                    <strong class="me-2">Height:</strong> <span id="modalPatientHeight"
-                                        class="text-muted"></span>
-                                </li>
-                                <li class="mb-0 d-flex align-items-center"><i
-                                        class="bx bx-bar-chart-alt-2 text-primary me-2"></i> <strong
-                                        class="me-2">Weight:</strong> <span id="modalPatientWeight"
-                                        class="text-muted"></span></li>
-                            </ul>
-                        </div>
-
-                        <!-- ID & Documentation -->
-                        <div class="col-12 mt-4 pt-3 border-top">
-                            <h6 class="fw-bold text-secondary text-uppercase mb-3"
-                                style="font-size: 0.85rem; letter-spacing: 0.5px;">Identification & Cards</h6>
-                            <div class="row bg-light rounded-4 p-3 border">
-                                <div class="col-md-4 mb-3 mb-md-0 border-end border-md-0">
-                                    <small class="text-muted d-block mb-1">Aadhar Card</small>
-                                    <strong id="modalPatientAadhar" class="text-dark"></strong>
-                                </div>
-                                <div class="col-md-4 mb-3 mb-md-0 border-end border-md-0">
-                                    <small class="text-muted d-block mb-1">Health Card No.</small>
-                                    <strong id="modalPatientHealthCard" class="text-primary"></strong>
-                                </div>
-                                <div class="col-md-4">
-                                    <small class="text-muted d-block mb-1">Verification Status</small>
-                                    <span id="modalPatientVerifyStatus"></span>
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body p-3 d-flex align-items-center gap-3">
+                                    <div class="bg-primary bg-opacity-10 text-primary rounded pt-1 d-flex justify-content-center align-items-center"
+                                        style="width: 45px; height: 45px;">
+                                        <i class="bx bx-phone fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Mobile Number</small>
+                                        <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientMobile"></h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Email Address -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body p-3 d-flex align-items-center gap-3">
+                                    <div class="bg-info bg-opacity-10 text-info rounded pt-1 d-flex justify-content-center align-items-center"
+                                        style="width: 45px; height: 45px;">
+                                        <i class="bx bx-envelope fs-4"></i>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Email Address</small>
+                                        <h6 class="mb-0 fw-bold text-dark text-truncate fs-6" id="modalPatientEmail"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body p-3 d-flex align-items-center gap-3">
+                                    <div class="bg-success bg-opacity-10 text-success rounded pt-1 d-flex justify-content-center align-items-center"
+                                        style="width: 45px; height: 45px;">
+                                        <i class="bx bxs-cake fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Date of Birth</small>
+                                        <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientDob"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location / City -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100">
+                                <div class="card-body p-3 d-flex align-items-center gap-3">
+                                    <div class="bg-warning bg-opacity-10 text-warning rounded pt-1 d-flex justify-content-center align-items-center"
+                                        style="width: 45px; height: 45px;">
+                                        <i class="bx bxs-map fs-4"></i>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Location / City</small>
+                                        <h6 class="mb-0 fw-bold text-dark text-truncate fs-6" id="modalPatientLocation">
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Full Address -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-4">
+                                <div class="card-body p-3 d-flex align-items-center gap-3">
+                                    <div class="bg-primary bg-opacity-10 text-primary rounded pt-1 d-flex justify-content-center align-items-center"
+                                        style="width: 45px; height: 45px;">
+                                        <i class="bx bx-home fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Full Address</small>
+                                        <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientAddress"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Identification & Card -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-4 mt-2">
+                                <div class="card-header bg-white border-bottom p-3">
+                                    <h6 class="mb-0 fw-bold text-dark fs-6"><i
+                                            class="bx bx-id-card text-primary me-2"></i>Identification Details</h6>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Aadhar Card</small>
+                                            <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientAadhar"></h6>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Health Card</small>
+                                            <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientHealthCard"></h6>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small class="text-muted fw-bold mb-1 d-block text-uppercase"
+                                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Verification</small>
+                                            <div id="modalPatientVerifyStatus"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="modal-footer border-0 pb-4 pe-4">
+                <div class="modal-footer border-top-0 pt-0 pb-4 pe-4 bg-light rounded-bottom-4">
                     <button type="button" class="btn btn-light rounded-pill shadow-sm px-4"
                         data-bs-dismiss="modal">Close</button>
                     <a href="#" id="modalEditButton" class="btn btn-default rounded-pill shadow-sm px-4"><i
@@ -311,7 +364,24 @@
                 if (user.city) locationStr.push(user.city);
                 if (user.state) locationStr.push(user.state);
                 if (user.country) locationStr.push(user.country);
-                $('#modalPatientLocation span').text(locationStr.join(', ') || 'Location Not Provided');
+                $('#modalPatientLocation').text(locationStr.join(', ') || 'Location Not Provided');
+
+                // Header Badges
+                var genderMap = { '1': 'MALE', '2': 'FEMALE', '3': 'OTHER' };
+                $('#modalPatientGender').html('<i class="bx bx-male-female me-1"></i>' + (genderMap[user.gender] || '--'));
+
+                $('#modalPatientBloodGroup').html('<i class="bx bx-droplet me-1"></i>' + (user.blood_group || '--'));
+
+                // Age Calculation
+                var ageText = '-- YEARS OLD';
+                if (user.dob) {
+                    var dob = new Date(user.dob);
+                    var diff_ms = Date.now() - dob.getTime();
+                    var age_dt = new Date(diff_ms);
+                    var age = Math.abs(age_dt.getUTCFullYear() - 1970);
+                    ageText = age + ' YEARS OLD';
+                }
+                $('#modalPatientAge').html('<i class="bx bx-calendar me-1"></i>' + ageText);
 
                 // Status Badge
                 var statusBadge = $('#modalPatientStatus');
@@ -329,15 +399,6 @@
 
                 // Health Info
                 $('#modalPatientDob').text(user.dob || '--');
-
-                var genderMap = { '1': 'Male', '2': 'Female', '3': 'Other' };
-                $('#modalPatientGender').text(genderMap[user.gender] || '--');
-
-                $('#modalPatientBloodGroup').text(user.blood_group || '--');
-                var heightVal = user.height ? user.height + ' Inch' : '--';
-                $('#modalPatientHeight').text(heightVal);
-                var weightVal = user.weight ? user.weight + ' Kg' : '--';
-                $('#modalPatientWeight').text(weightVal);
 
                 // IDs
                 $('#modalPatientAadhar').text(user.adhar || '--');
