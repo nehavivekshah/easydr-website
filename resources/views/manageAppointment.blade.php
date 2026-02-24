@@ -3,7 +3,7 @@
 
 @section('content')
     <section class="task__section">
-        <div class="d-flex align-items-center mb-4 text-dark" style="font-size: 1.5rem; font-weight: 700;">
+        <div class="d-flex align-items-center mb-3 text-dark" style="font-size: 1.5rem; font-weight: 700;">
             <a href="/admin/upcoming-appointments" class="btn btn-default btn-sm back-btn me-3">
                 <i class="bx bx-arrow-back mb-0"></i>
             </a>
@@ -295,8 +295,8 @@
                     }
                 @endif
 
-                        // Auto-generate video meeting links based on consultation mode
-                        const $meetingProvider = $('#meeting_provider');
+                                // Auto-generate video meeting links based on consultation mode
+                                const $meetingProvider = $('#meeting_provider');
                 const $meetingLink = $('#meeting_link');
 
                 function updateMeetingLink() {

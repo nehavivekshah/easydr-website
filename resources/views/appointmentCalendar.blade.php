@@ -15,12 +15,12 @@
         });
     @endphp
     <section class="task__section">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="mb-0 text-dark fw-bold" style="font-size: 1.5rem;">Appointment Calendar</h2>
 
             @if(in_array('permission_add', $roleArray) || in_array('All', $roleArray))
                 <div>
-                    <a href="/admin/manage-appointment" class="btn btn-default rounded-pill shadow-sm px-4">
+                    <a href="/admin/manage-appointment" class="btn btn-default btn-sm">
                         <i class="bx bx-plus me-1 border-0 bg-transparent text-white p-0"></i> <span>Add New</span>
                     </a>
                 </div>
@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card border-0 shadow-sm rounded-4 w-100">
-                        <div class="card-body p-4">
+                        <div class="card-body p-2">
                             <div id="calendar"></div>
                         </div>
                     </div>
@@ -41,42 +41,42 @@
 
     <!-- Modal for Appointment Creation/Editing -->
     <!--<div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="appointmentModalLabel">Schedule Appointment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="appointmentForm" action="/admin/manage-appointment" method="post">
-                        @csrf
-                        <div class="form-group">
-                            <label for="appointmentTitle">Event Name</label>
-                            <input type="text" class="form-control" id="appointmentTitle" name="title" placeholder="Enter appointment title">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="appointmentModalLabel">Schedule Appointment</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="appointmentForm" action="/admin/manage-appointment" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="appointmentTitle">Event Name</label>
+                                        <input type="text" class="form-control" id="appointmentTitle" name="title" placeholder="Enter appointment title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="appointmentDate">Date</label>
+                                        <input type="date" class="form-control" id="appointmentDate" name="date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="appointmentTime">Time</label>
+                                        <input type="time" class="form-control" id="appointmentTime" name="time">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="description" name="description" placeholder="Enter appointment details"></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="appointmentDate">Date</label>
-                            <input type="date" class="form-control" id="appointmentDate" name="date">
-                        </div>
-                        <div class="form-group">
-                            <label for="appointmentTime">Time</label>
-                            <input type="time" class="form-control" id="appointmentTime" name="time">
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description" name="description" placeholder="Enter appointment details"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>-->
+                    </div>
+                </div>-->
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
