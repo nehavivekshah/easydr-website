@@ -886,3 +886,7 @@
 .header-icon i {
     font-size: 20px;
 }
+
+.text-right {
+    text-align: right;
+}

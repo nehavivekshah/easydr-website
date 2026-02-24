@@ -12,8 +12,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="/admin/manage-appointment" method="post" class="row g-3 px-2"
-                        enctype="multipart/form-data">
+                    <form action="/admin/manage-appointment" method="post" class="row g-3" enctype="multipart/form-data">
                         @csrf
                         <div class="card border-0 shadow-sm rounded-4 w-100">
                             <div class="card-body px-2 py-2">
@@ -158,10 +157,10 @@
                                 </div>
 
                                 <!-- Submit Buttons -->
-                                <div class="form-group text-center my-0 pt-2">
-                                    <button type="reset" class="btn btn-light border px-5 rounded-pill ms-2">Reset</button>
+                                <div class="form-group text-right my-0 pt-2">
                                     <button type="submit" class="btn btn-default px-5 rounded-pill shadow-sm">Book
                                         Appointment</button>
+                                    <button type="reset" class="btn btn-light border px-5 rounded-pill ms-2">Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -295,7 +294,7 @@
                         }, 1000);
                     }
                 @endif
-                                                                                                                });
+                                                                                                                        });
         </script>
     @endpush
 @endsection
