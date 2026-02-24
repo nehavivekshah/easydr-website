@@ -25,14 +25,14 @@
 
                 <!-- Appointments Submenu -->
                 <div id="appointments" class="collapse 
-                                @if(
-                                    in_array(Request::segment(2), [
-                                        'upcoming-appointments',
-                                        'appointment-history',
-                                        'appointment-calendar',
-                                        'manage-appointment'
-                                    ])
-                                ) show @endif" data-bs-parent="#accordion">
+                                    @if(
+                                        in_array(Request::segment(2), [
+                                            'upcoming-appointments',
+                                            'appointment-history',
+                                            'appointment-calendar',
+                                            'manage-appointment'
+                                        ])
+                                    ) show @endif" data-bs-parent="#accordion">
 
                     <ul class="sb_submenu">
 
@@ -85,17 +85,17 @@
 
                 <!-- Patient Management Submenu -->
                 <div id="patientManagement" class="collapse 
-                                @if(
-                                    in_array(Request::segment(2), [
-                                        'patient-directory',
-                                        'patient-history',
-                                        'medical-records',
-                                        'patient-health-card',
-                                        'patient-appointment-history',
-                                        'patient-reports',
-                                        'patient-statistics'
-                                    ]) || Request::segment(3) == 'patient-directory'
-                                ) show @endif" data-bs-parent="#accordion">
+                                    @if(
+                                        in_array(Request::segment(2), [
+                                            'patient-directory',
+                                            'patient-history',
+                                            'medical-records',
+                                            'patient-health-card',
+                                            'patient-appointment-history',
+                                            'patient-reports',
+                                            'patient-statistics'
+                                        ]) || Request::segment(3) == 'patient-directory'
+                                    ) show @endif" data-bs-parent="#accordion">
 
                     <ul class="sb_submenu">
 
@@ -157,18 +157,18 @@
 
                 <!-- Doctor Management Submenu -->
                 <div id="doctorManagement" class="collapse 
-                                @if(
-                                    in_array(Request::segment(2), [
-                                        'doctor-availability',
-                                        'doctor-reviews',
-                                        'assigned-doctors',
-                                        'manage-slot',
-                                        'doctor-appointment-history',
-                                        'appointment-reports',
-                                        'revenue-reports',
-                                        'patient-statistics'
-                                    ]) || Request::segment(3) == 'doctor-directory'
-                                ) show @endif" data-bs-parent="#accordion">
+                                    @if(
+                                        in_array(Request::segment(2), [
+                                            'doctor-availability',
+                                            'doctor-reviews',
+                                            'assigned-doctors',
+                                            'manage-slot',
+                                            'doctor-appointment-history',
+                                            'appointment-reports',
+                                            'revenue-reports',
+                                            'patient-statistics'
+                                        ]) || Request::segment(3) == 'doctor-directory'
+                                    ) show @endif" data-bs-parent="#accordion">
 
                     <ul class="sb_submenu">
                         <!-- Core Doctor Functions -->
@@ -246,22 +246,22 @@
                     <span class="tooltip">Pharmacy Master</span>
                 </a>
                 <div id="pharmacyMaster" class="collapse 
-                                    @if(
-                                        (Request::segment(2) == 'pharmacy') ||
-                                        (Request::segment(2) == 'manage-pharmacy') ||
-                                        (Request::segment(2) == 'store-locations') ||
-                                        (Request::segment(2) == 'manage-store') ||
-                                        (Request::segment(2) == 'medicine-listings') ||
-                                        (Request::segment(2) == 'manage-medicine') ||
-                                        (Request::segment(2) == 'medicine-type') ||
-                                        (Request::segment(2) == 'manage-medicine-type') ||
-                                        (Request::segment(2) == 'inventory') ||
-                                        (Request::segment(2) == 'suppliers') ||
-                                        (Request::segment(2) == 'orders') ||
-                                        (Request::segment(2) == 'manage-order') ||
-                                        (Request::segment(2) == 'billing') ||
-                                        (Request::segment(2) == 'reports')
-                                    ) show @endif" data-bs-parent="#accordion">
+                                        @if(
+                                            (Request::segment(2) == 'pharmacy') ||
+                                            (Request::segment(2) == 'manage-pharmacy') ||
+                                            (Request::segment(2) == 'store-locations') ||
+                                            (Request::segment(2) == 'manage-store') ||
+                                            (Request::segment(2) == 'medicine-listings') ||
+                                            (Request::segment(2) == 'manage-medicine') ||
+                                            (Request::segment(2) == 'medicine-type') ||
+                                            (Request::segment(2) == 'manage-medicine-type') ||
+                                            (Request::segment(2) == 'inventory') ||
+                                            (Request::segment(2) == 'suppliers') ||
+                                            (Request::segment(2) == 'orders') ||
+                                            (Request::segment(2) == 'manage-order') ||
+                                            (Request::segment(2) == 'billing') ||
+                                            (Request::segment(2) == 'reports')
+                                        ) show @endif" data-bs-parent="#accordion">
 
                     <ul class="sb_submenu">
                         <!-- Pharmacy Management -->
@@ -337,14 +337,14 @@
 
                 <!-- User Management Submenu -->
                 <div id="userManagement" class="collapse 
-                                @if(
-                                    in_array(Request::segment(3), [
-                                        'users',
-                                        'admin-accounts',
-                                        'staff-accounts',
-                                        'pharmacy-accounts'
-                                    ])
-                                ) show @endif" data-bs-parent="#accordion">
+                                    @if(
+                                        in_array(Request::segment(3), [
+                                            'users',
+                                            'admin-accounts',
+                                            'staff-accounts',
+                                            'pharmacy-accounts'
+                                        ])
+                                    ) show @endif" data-bs-parent="#accordion">
 
                     <ul class="sb_submenu">
 
@@ -502,15 +502,5 @@
                 </div>
             </li>
         @endif
-        <li class="profile">
-            <div class="profile_details">
-                <img src="{{ asset('public/assets/images/profiles/' . (Auth::user()->photo ?? "")) }}"
-                    alt="profile image">
-                <div class="profile_content">
-                    <div class="name">{{ Auth::user()->first_name . ' ' . Auth::user()->last_name ?? '' }}</div>
-                    <div class="designation">{{ $roles->title ?? '' }}</div>
-                </div>
-            </div>
-        </li>
     </ul>
 </div>
