@@ -443,8 +443,8 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-4" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-4"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
@@ -465,9 +465,9 @@
                     </li>
                 </ul>
 
-                <div class="tab-content overflow-auto" style="max-height: 60vh;">
+                <div class="tab-content overflow-auto w-100" style="max-height: 60vh;">
                     <!-- Overview -->
-                    <div class="tab-pane fade show active modal-body" id="tab-overview">
+                    <div class="tab-pane fade show active modal-body w-100" id="tab-overview">
                         <div class="row g-4">
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
@@ -518,7 +518,7 @@
                     </div>
 
                     <!-- Prescriptions -->
-                    <div class="tab-pane fade modal-body" id="tab-prescriptions">
+                    <div class="tab-pane fade modal-body w-100" id="tab-prescriptions">
                         <div id="prescriptions-list">
                             <div class="text-center py-4">
                                 <div class="spinner-border text-primary" role="status"></div>
@@ -527,7 +527,7 @@
                     </div>
 
                     <!-- Appointment History -->
-                    <div class="tab-pane fade modal-body" id="tab-history">
+                    <div class="tab-pane fade modal-body w-100" id="tab-history">
                         <div id="history-list">
                             <div class="text-center py-4">
                                 <div class="spinner-border text-primary" role="status"></div>
@@ -536,7 +536,7 @@
                     </div>
 
                     <!-- Payments -->
-                    <div class="tab-pane fade modal-body" id="tab-payments">
+                    <div class="tab-pane fade modal-body w-100" id="tab-payments">
                         <div id="payments-list">
                             <div class="text-center py-4">
                                 <div class="spinner-border text-primary" role="status"></div>
@@ -551,174 +551,174 @@
 
 @push('scripts')
     <script>
-            let currentAdminPatientUid = null;
-            let currentPatientName = '';
+        let currentAdminPatientUid = null;
+        let currentPatientName = '';
 
-            $(document).ready(function () {
-                $('.view-patient-btn').on('click', function () {
-                    var user = $(this).data('user');
-                    currentAdminPatientUid = user.id; // from users table
+        $(document).ready(function () {
+            $('.view-patient-btn').on('click', function () {
+                var user = $(this).data('user');
+                currentAdminPatientUid = user.id; // from users table
 
-                    var firstName = user.first_name || '';
-                    var lastName = user.last_name || '';
-                    currentPatientName = (firstName + ' ' + lastName).trim() || 'Unknown';
+                var firstName = user.first_name || '';
+                var lastName = user.last_name || '';
+                currentPatientName = (firstName + ' ' + lastName).trim() || 'Unknown';
 
-                    // Name and Photo
-                    $('#modalPatientName').text(currentPatientName);
-                    var photoPath = user.photo ? '/public/assets/images/profiles/' + user.photo : `https://ui-avatars.com/api/?name=${encodeURIComponent(currentPatientName)}&background=0D8ABC&color=fff`;
-                    $('#modalPatientImg').attr('src', photoPath);
+                // Name and Photo
+                $('#modalPatientName').text(currentPatientName);
+                var photoPath = user.photo ? '/public/assets/images/profiles/' + user.photo : `https://ui-avatars.com/api/?name=${encodeURIComponent(currentPatientName)}&background=0D8ABC&color=fff`;
+                $('#modalPatientImg').attr('src', photoPath);
 
-                    // Header Badges
-                    var genderMap = { '1': 'Male', '2': 'Female', '3': 'Others' };
-                    $('#hdr-gender').text(genderMap[user.gender] || '--');
-                    $('#hdr-blood').text(user.blood_group || '--');
+                // Header Badges
+                var genderMap = { '1': 'Male', '2': 'Female', '3': 'Others' };
+                $('#hdr-gender').text(genderMap[user.gender] || '--');
+                $('#hdr-blood').text(user.blood_group || '--');
 
-                    // Age Calculation
-                    var ageText = '-- YEARS OLD';
-                    if (user.dob) {
-                        var dob = new Date(user.dob);
-                        var diff_ms = Date.now() - dob.getTime();
-                        var age_dt = new Date(diff_ms);
-                        var age = Math.abs(age_dt.getUTCFullYear() - 1970);
-                        ageText = age + ' Years Old';
-                    }
-                    $('#hdr-age').text(ageText);
+                // Age Calculation
+                var ageText = '-- YEARS OLD';
+                if (user.dob) {
+                    var dob = new Date(user.dob);
+                    var diff_ms = Date.now() - dob.getTime();
+                    var age_dt = new Date(diff_ms);
+                    var age = Math.abs(age_dt.getUTCFullYear() - 1970);
+                    ageText = age + ' Years Old';
+                }
+                $('#hdr-age').text(ageText);
 
-                    // Overview Tab Info Cards
-                    $('#ov-mobile').text(user.mobile || '--');
-                    $('#ov-email').text(user.email || '--');
-                    $('#ov-dob').text(user.dob ? new Date(user.dob).toLocaleDateString() : '--');
+                // Overview Tab Info Cards
+                $('#ov-mobile').text(user.mobile || '--');
+                $('#ov-email').text(user.email || '--');
+                $('#ov-dob').text(user.dob ? new Date(user.dob).toLocaleDateString() : '--');
 
-                    var locationStr = [];
-                    if (user.city) locationStr.push(user.city);
-                    if (user.country) locationStr.push(user.country);
-                    $('#ov-city').text(locationStr.join(' - ') || '--');
+                var locationStr = [];
+                if (user.city) locationStr.push(user.city);
+                if (user.country) locationStr.push(user.country);
+                $('#ov-city').text(locationStr.join(' - ') || '--');
 
-                    var addressArr = [user.address, user.city, user.state, user.country, user.pincode].filter(Boolean);
-                    $('#ov-address').text(addressArr.join(', ') || '--');
+                var addressArr = [user.address, user.city, user.state, user.country, user.pincode].filter(Boolean);
+                $('#ov-address').text(addressArr.join(', ') || '--');
 
-                    // Reset tabs to Overview
-                    const tabEl = document.querySelector('a[href="#tab-overview"]');
-                    const tab = new bootstrap.Tab(tabEl);
-                    tab.show();
+                // Reset tabs to Overview
+                const tabEl = document.querySelector('a[href="#tab-overview"]');
+                const tab = new bootstrap.Tab(tabEl);
+                tab.show();
 
-                    // Show Modal
-                    var modalEl = document.getElementById('patientDetailsModal');
-                    var modal = bootstrap.Modal.getInstance(modalEl);
-                    if (!modal) modal = new bootstrap.Modal(modalEl);
-                    modal.show();
-                });
+                // Show Modal
+                var modalEl = document.getElementById('patientDetailsModal');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                if (!modal) modal = new bootstrap.Modal(modalEl);
+                modal.show();
             });
+        });
 
-            async function fetchHistory() {
-                if (!currentAdminPatientUid) return { appointments: [], prescriptions: [] };
-                const response = await fetch(`/admin/get-patient-details/${currentAdminPatientUid}`);
-                return await response.json();
+        async function fetchHistory() {
+            if (!currentAdminPatientUid) return { appointments: [], prescriptions: [] };
+            const response = await fetch(`/admin/get-patient-details/${currentAdminPatientUid}`);
+            return await response.json();
+        }
+
+        async function loadPatientPrescriptions() {
+            const list = document.getElementById('prescriptions-list');
+            list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+            const data = await fetchHistory();
+            if (!data.prescriptions || data.prescriptions.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-4">No prescriptions found globally.</p>';
+                return;
             }
 
-            async function loadPatientPrescriptions() {
-                const list = document.getElementById('prescriptions-list');
-                list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
-
-                const data = await fetchHistory();
-                if (!data.prescriptions || data.prescriptions.length === 0) {
-                    list.innerHTML = '<p class="text-center text-muted py-4">No prescriptions found globally.</p>';
-                    return;
-                }
-
-                list.innerHTML = data.prescriptions.map((p, idx) => `
-                    <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
-                        <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
-                                <div class="text-dark fw-bold small">
-                                    <i class="bx bx-calendar me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                </div>
-                            </div>
-                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
-                                <i class="bx bx-download me-1"></i> PDF
-                            </a>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="list-group list-group-flush">
-                                ${(p.medicines || []).map(m => `
-                                    <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                <i class="bx bx-capsule"></i>
-                                            </div>
-                                            <div>
-                                                <div class="fw-bold text-dark">${m.medicine_name}</div>
-                                                <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
-                                            </div>
+            list.innerHTML = data.prescriptions.map((p, idx) => `
+                            <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
+                                <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
+                                        <div class="text-dark fw-bold small">
+                                            <i class="bx bx-calendar me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                                         </div>
                                     </div>
-                                `).join('')}
-                                ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            async function loadPatientHistory() {
-                const list = document.getElementById('history-list');
-                list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
-
-                const data = await fetchHistory();
-                if (!data.appointments || data.appointments.length === 0) {
-                    list.innerHTML = '<p class="text-center text-muted py-4">No appointment history found.</p>';
-                    return;
-                }
-
-                list.innerHTML = data.appointments.map((a, idx) => `
-                    <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                        <div class="history-info">
-                            <div class="history-icon icon-blue"><i class="bx bx-plus-medical"></i></div>
-                            <div class="history-content">
-                                <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
-                                <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
-                                <div class="history-date">
-                                    <i class="bx bx-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                    <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="bx bx-download me-1"></i> PDF
+                                    </a>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush">
+                                        ${(p.medicines || []).map(m => `
+                                            <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                        <i class="bx bx-capsule"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bold text-dark">${m.medicine_name}</div>
+                                                        <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                        ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
-                            ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
-                        </span>
-                    </div>
-                `).join('');
+                        `).join('');
+        }
+
+        async function loadPatientHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+            const data = await fetchHistory();
+            if (!data.appointments || data.appointments.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-4">No appointment history found.</p>';
+                return;
             }
 
-            async function loadPatientPayments() {
-                const list = document.getElementById('payments-list');
-                list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
-
-                const data = await fetchHistory();
-                const paid = (data.appointments || []).filter(a => a.payment_status === 'paid' || a.payment_status === 'health_card');
-
-                if (paid.length === 0) {
-                    list.innerHTML = '<p class="text-center text-muted py-4">No payment records found.</p>';
-                    return;
-                }
-
-                list.innerHTML = paid.map((a, idx) => `
-                    <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                        <div class="history-info">
-                            <div class="history-icon icon-green"><i class="bx bx-receipt"></i></div>
-                            <div class="history-content">
-                                <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
-                                <h6>Amount: $${a.fees || '0'}</h6>
-                                <div class="history-date">
-                                    <i class="bx bx-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+            list.innerHTML = data.appointments.map((a, idx) => `
+                            <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                <div class="history-info">
+                                    <div class="history-icon icon-blue"><i class="bx bx-plus-medical"></i></div>
+                                    <div class="history-content">
+                                        <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
+                                        <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                        <div class="history-date">
+                                            <i class="bx bx-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                        </div>
+                                    </div>
                                 </div>
+                                <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
+                                    ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                                </span>
                             </div>
-                        </div>
-                        <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 text-uppercase border-opacity-25">
-                            ${a.payment_status.replace('_', ' ')}
-                        </span>
-                    </div>
-                `).join('');
+                        `).join('');
+        }
+
+        async function loadPatientPayments() {
+            const list = document.getElementById('payments-list');
+            list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+            const data = await fetchHistory();
+            const paid = (data.appointments || []).filter(a => a.payment_status === 'paid' || a.payment_status === 'health_card');
+
+            if (paid.length === 0) {
+                list.innerHTML = '<p class="text-center text-muted py-4">No payment records found.</p>';
+                return;
             }
-        </script>
+
+            list.innerHTML = paid.map((a, idx) => `
+                            <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                <div class="history-info">
+                                    <div class="history-icon icon-green"><i class="bx bx-receipt"></i></div>
+                                    <div class="history-content">
+                                        <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
+                                        <h6>Amount: $${a.fees || '0'}</h6>
+                                        <div class="history-date">
+                                            <i class="bx bx-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 text-uppercase border-opacity-25">
+                                    ${a.payment_status.replace('_', ' ')}
+                                </span>
+                            </div>
+                        `).join('');
+        }
+    </script>
 @endpush
