@@ -778,7 +778,6 @@
             if (!modal) modal = new bootstrap.Modal(modalEl);
             modal.show();
         });
-                    });
 
         async function fetchHistory() {
             if (!currentAdminPatientUid) return { appointments: [], prescriptions: [] };
