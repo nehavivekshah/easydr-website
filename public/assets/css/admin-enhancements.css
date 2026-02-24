@@ -5,16 +5,18 @@
 
 /* ==================== Active Menu States ==================== */
 .sidebar li.active {
-    background-color: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(90deg, rgba(7, 204, 236, 0.15) 0%, transparent 100%);
+    border-left: 3px solid var(--color-second);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 
 .sidebar li.active>a {
-    color: #fff;
+    color: var(--color-second);
     font-weight: 600;
 }
 
 .sidebar li.active>a i {
-    color: #fff;
+    color: var(--color-second);
 }
 
 /* Fix sidebar submenu padding as requested */

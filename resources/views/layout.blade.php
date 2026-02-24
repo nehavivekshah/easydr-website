@@ -37,7 +37,7 @@
 
 </head>
 
-<body class="bg-light">
+<body class="easy-doctor-backend">
     @if(Request::segment(2) != 'login' && Request::segment(2) != 'register' && Request::segment(2) != 'forgot-password')
         <nav class="navbar navbar-white bg-white shadow-sm border-bootm-1 fixed-top">
             <div class="container-fluid">

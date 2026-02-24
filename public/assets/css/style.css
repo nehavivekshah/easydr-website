@@ -1,25 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --color-default: #006666;
-    --color-second: #019191;
+    /* Brand Colors */
+    --color-default: #1E0B9B;
+    /* Deep Blue from Frontend */
+    --color-second: #07CCEC;
+    /* Cyan from Frontend */
     --color-white: #ffffff;
-    --color-body: #f4f6f9;
+    --color-body: #f5f8fa;
+    /* Soft light background */
     --color-light: #eff0ef;
     --color-lightgray: #E6E9EB;
-    --color-black: #1e293b;
+    --color-black: #191D3B;
+    /* Darker heading color from Frontend */
     --color-text-muted: #64748b;
     --color-border: #e2e8f0;
 
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    /* Premium Gradients */
+    --gradient-primary: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
+    --gradient-primary-reverse: linear-gradient(90deg, #07CCEC 0%, #1E0B9B 100%);
 
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
+    /* Refined Shadows */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-btn: 0 4px 14px 0 rgba(30, 11, 155, 0.39);
+    --shadow-btn-hover: 0 6px 20px rgba(30, 11, 155, 0.23);
 
-    --font-primary: 'Inter', sans-serif;
-    --font-heading: 'Poppins', sans-serif;
+    /* Rounded Borders */
+    --radius-md: 10px;
+    --radius-lg: 12px;
+    --radius-pill: 50px;
+
+    /* Fonts */
+    --font-primary: 'poppins', sans-serif;
+    --font-heading: 'poppins', sans-serif;
 }
 
 * {
@@ -112,7 +127,7 @@ a {
     /* Slightly wider closed state */
     padding: 60px 0 0 0;
     z-index: 100;
-    background-color: var(--color-default);
+    background-color: var(--color-black);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: fixed;
     top: 0;
@@ -482,9 +497,9 @@ label {
 
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--color-default);
+    border-color: var(--color-second);
     background-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(0, 102, 102, 0.08);
+    box-shadow: 0 0 0 4px rgba(7, 204, 236, 0.15);
     outline: none;
     transform: translateY(-1px);
 }
@@ -516,7 +531,7 @@ textarea.form-control::-webkit-resizer {
 
 /* Select Dropdown */
 .form-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23006666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23191D3B' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 12px;
@@ -525,7 +540,7 @@ textarea.form-control::-webkit-resizer {
 }
 
 .form-select:focus {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23006666' d='M6 3L1 8h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2307CCEC' d='M6 3L1 8h10z'/%3E%3C/svg%3E");
 }
 
 /* Input Groups */
@@ -547,7 +562,7 @@ textarea.form-control::-webkit-resizer {
     color: var(--color-default);
     text-align: center;
     white-space: nowrap;
-    background: linear-gradient(135deg, #f0f9f9 0%, #e6f4f4 100%);
+    background: linear-gradient(135deg, #f5f8fa 0%, #e9eaf8 100%);
     border: 2px solid var(--color-border);
     border-right: none;
     border-radius: var(--radius-md) 0 0 var(--radius-md);
@@ -565,14 +580,14 @@ textarea.form-control::-webkit-resizer {
 }
 
 .input-group:focus-within .input-group-text {
-    background: linear-gradient(135deg, var(--color-default) 0%, var(--color-second) 100%);
+    background: var(--gradient-primary);
     color: white;
-    border-color: var(--color-default);
+    border-color: var(--color-second);
 }
 
 .input-group:focus-within .form-control,
 .input-group:focus-within .form-select {
-    border-color: var(--color-default);
+    border-color: var(--color-second);
 }
 
 /* Validation States */
@@ -662,8 +677,8 @@ textarea.form-control::-webkit-resizer {
 }
 
 .form-check-input:focus {
-    border-color: var(--color-default);
-    box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
+    border-color: var(--color-second);
+    box-shadow: 0 0 0 3px rgba(7, 204, 236, 0.2);
     outline: none;
 }
 
@@ -683,7 +698,7 @@ textarea.form-control::-webkit-resizer {
 .form-control[type="file"]::file-selector-button {
     padding: 0.5rem 1rem;
     margin-right: 1rem;
-    background: linear-gradient(135deg, var(--color-default) 0%, var(--color-second) 100%);
+    background: var(--gradient-primary);
     color: white;
     border: none;
     border-radius: var(--radius-md);
@@ -694,7 +709,7 @@ textarea.form-control::-webkit-resizer {
 
 .form-control[type="file"]::file-selector-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 102, 102, 0.2);
+    box-shadow: var(--shadow-btn-hover);
 }
 
 /* Disabled State */
@@ -739,31 +754,36 @@ label:has(+ .form-select[required])::after {
 
 /* Buttons */
 .btn {
-    border-radius: var(--radius-md);
-    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+    padding: 0.65rem 1.5rem;
     font-weight: 500;
     transition: all 0.2s;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
+    letter-spacing: 0.3px;
 }
 
 .btn-primary,
 .btn-default {
-    background-color: var(--color-default);
-    border-color: var(--color-default);
+    background: var(--gradient-primary);
+    border: none;
     color: white;
+    box-shadow: var(--shadow-btn);
 }
 
 .btn-primary:hover,
 .btn-default:hover {
-    background-color: var(--color-second);
-    border-color: var(--color-second);
+    background: var(--gradient-primary-reverse);
+    border: none;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-btn-hover);
 }
 
 .btn-group .btn {
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-pill);
 }
 
 /* Modals */
