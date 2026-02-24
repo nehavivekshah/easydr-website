@@ -158,6 +158,113 @@ a {
     transform: translateY(-2px);
 }
 
+/* Global Search Bar */
+.global-search {
+    width: 350px;
+    background: #f8fafc;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    padding: 2px 15px;
+    transition: all 0.3s ease;
+}
+
+.global-search:focus-within {
+    background: #ffffff;
+    border-color: var(--color-second);
+    box-shadow: 0 0 0 4px rgba(7, 204, 236, 0.15);
+}
+
+.global-search .search-icon {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+}
+
+.global-search .search-input {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding: 8px 10px;
+}
+
+.global-search .search-input:focus {
+    box-shadow: none;
+    background: transparent;
+    color: var(--color-black);
+}
+
+/* Profile Dropdown Widget */
+.profile-dropdown .dropdown-toggle::after {
+    display: none;
+    /* Hide default caret */
+}
+
+.profile-dropdown .avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(29, 19, 159, 0.2);
+}
+
+.profile-dropdown .profile-name {
+    color: var(--color-black);
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.profile-dropdown .profile-role {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.profile-menu {
+    border-radius: 12px;
+    padding: 10px 0;
+    width: 220px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08) !important;
+}
+
+.profile-menu .dropdown-item {
+    padding: 10px 20px;
+    font-weight: 500;
+    color: var(--color-black);
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.profile-menu .dropdown-item i {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    transition: all 0.2s ease;
+}
+
+.profile-menu .dropdown-item:hover {
+    background: rgba(7, 204, 236, 0.08);
+    /* Soft cyan hover */
+    color: var(--color-default);
+}
+
+.profile-menu .dropdown-item:hover i {
+    color: var(--color-second);
+    /* Cyan icon on hover */
+}
+
+.profile-menu .dropdown-item.text-danger:hover {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545 !important;
+}
+
+.profile-menu .dropdown-item.text-danger:hover i {
+    color: #dc3545;
+}
+
 /* Sidebar */
 .sidebar {
     min-height: 100vh;

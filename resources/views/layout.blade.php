@@ -48,6 +48,12 @@
                         <i class="bx bx-menu" id="btn"></i>
                     @endif
                     <a class="navbar-brand" href="/admin">{{ $company->name ?? '' }}</a>
+
+                    <!-- Global Search Bar -->
+                    <div class="global-search d-none d-md-flex align-items-center ms-4">
+                        <i class="bx bx-search search-icon"></i>
+                        <input type="text" class="form-control search-input" placeholder="Search Patients, Appointments...">
+                    </div>
                 </div>
                 <ul class="header-icon d-flex align-items-center">
                     <!-- Notification Icon -->
@@ -71,19 +77,30 @@
                             </div>
                         </ul>
                     </li>
-                    <!-- Settings Icon -->
-                    <li>
-                        <a href="/admin/my-profile/user/{{ Auth::User()->id ?? '' }}" class="budge-warning"
-                            aria-label="My Account" data-bs-toggle="tooltip" data-bs-placement="bottom" title="My Account">
-                            <i class="bx bx-user"></i>
+                    <!-- Profile Dropdown -->
+                    <li class="profile-dropdown dropdown ms-3">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                            id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle">
+                                {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
+                            </div>
+                            <div class="profile-info d-none d-md-block ms-2 text-start">
+                                <span class="d-block fw-bold profile-name">{{ Auth::user()->name ?? 'Admin' }}</span>
+                                <span
+                                    class="d-block text-muted profile-role small">{{ Auth::user()->roles->role ?? 'Administrator' }}</span>
+                            </div>
                         </a>
-                    </li>
-                    <!-- Sign-out Icon -->
-                    <li class="signout">
-                        <a href="/admin/logout" class="budge-warning" aria-label="Sign Out" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="Sign Out">
-                            <i class="bx bx-log-out"></i>
-                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 profile-menu"
+                            aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="/admin/my-profile/user/{{ Auth::User()->id ?? '' }}"><i
+                                        class="bx bx-user me-2"></i> My Profile</a></li>
+                            <!--<li><a class="dropdown-item" href="/admin/settings"><i class="bx bx-cog me-2"></i> Settings</a></li>-->
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="/admin/logout"><i class="bx bx-log-out me-2"></i>
+                                    Sign Out</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
