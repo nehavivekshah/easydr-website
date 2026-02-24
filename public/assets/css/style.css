@@ -673,7 +673,7 @@ table.dataTable {
 }
 
 table.dataTable thead th {
-    background: var(--gradient-primary);
+    background: var(--color-default-light);
     /* Use deep blue gradient */
     color: white;
     font-weight: 600;
@@ -688,12 +688,12 @@ table.dataTable thead th {
 
 table.dataTable thead th:first-child {
     border-top-left-radius: var(--radius-md);
-    border-bottom-left-radius: var(--radius-md);
+    /* border-bottom-left-radius: var(--radius-md);*/
 }
 
 table.dataTable thead th:last-child {
     border-top-right-radius: var(--radius-md);
-    border-bottom-right-radius: var(--radius-md);
+    /* border-bottom-right-radius: var(--radius-md);*/
 }
 
 table.dataTable tbody td {
@@ -1115,4 +1115,8 @@ label:has(+ .form-select[required])::after {
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-lg);
     border: 1px solid #475569;
+}
+
+div.dataTables_wrapper div.dataTables_length select {
+    min-width: 70px;
 }
