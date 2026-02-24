@@ -16,10 +16,10 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="card border-0 shadow-sm rounded-4 w-100">
-                            <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                            <div class="card-header bg-white border-0 pt-0 pb-0 px-0">
                                 <h5 class="mb-0 fw-bold text-dark">Appointment Details</h5>
                             </div>
-                            <div class="card-body p-4">
+                            <div class="card-body p-0">
                                 <div class="row">
                                     <!-- Patient Selection -->
                                     <div class="form-group col-md-6">
@@ -298,7 +298,7 @@
                         }, 1000);
                     }
                 @endif
-                        });
+                                });
         </script>
     @endpush
 @endsection
