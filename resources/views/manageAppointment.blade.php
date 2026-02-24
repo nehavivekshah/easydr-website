@@ -294,7 +294,43 @@
                         }, 1000);
                     }
                 @endif
-                                                                                                                        });
+
+                        // Auto-generate video meeting links based on consultation mode
+                        const $meetingProvider = $('#meeting_provider');
+                const $meetingLink = $('#meeting_link');
+
+                function updateMeetingLink() {
+                    const provider = $meetingProvider.val();
+
+                    $meetingLink.prop('readonly', false);
+
+                    if (provider === 'google_meet') {
+                        const chars = 'abcdefghijklmnopqrstuvwxyz';
+                        const randomString = (length) => Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+                        $meetingLink.val(`https://meet.google.com/${randomString(3)}-${randomString(4)}-${randomString(3)}`);
+                    } else if (provider === 'microsoft_teams') {
+                        const randomId = Math.random().toString(36).substring(2, 15);
+                        $meetingLink.val(`https://teams.microsoft.com/l/meetup-join/19%3ameeting_${randomId}%40thread.v2/0`);
+                    } else if (provider === 'integrated') {
+                        $meetingLink.val('Auto-generated securely via EasyDoctor');
+                        $meetingLink.prop('readonly', true);
+                    } else {
+                        if ($meetingLink.val() === 'Auto-generated securely via EasyDoctor' ||
+                            $meetingLink.val().includes('meet.google.com') ||
+                            $meetingLink.val().includes('teams.microsoft.com')) {
+                            $meetingLink.val('');
+                        }
+                    }
+                }
+
+                $meetingProvider.on('change', updateMeetingLink);
+
+                // Lock field on initial load if integrated is pre-selected
+                if ($meetingProvider.val() === 'integrated') {
+                    $meetingLink.val('Auto-generated securely via EasyDoctor');
+                    $meetingLink.prop('readonly', true);
+                }
+            });
         </script>
     @endpush
 @endsection

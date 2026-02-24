@@ -327,7 +327,13 @@ class WebAppointmentController extends Controller
         $bookAppointment->medical_file = $patients->medical_file ?? null;
         $bookAppointment->payment_mode = $request->payment_mode ?? 'offline'; // Default if null
         $bookAppointment->meeting_provider = $request->meeting_provider;
-        $bookAppointment->meeting_link = $request->meeting_link;
+
+        // Handle Auto-generated placeholders gracefully by nulling them out for the native engine
+        if ($request->meeting_link === 'Auto-generated securely via EasyDoctor') {
+            $bookAppointment->meeting_link = null;
+        } else {
+            $bookAppointment->meeting_link = $request->meeting_link;
+        }
         $bookAppointment->fees = $docs->fees ?? 0; // Set fees from doctor profile
 
         // FIXED: Only check payment_status if $getAppointment exists
