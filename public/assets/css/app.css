@@ -1,3 +1,44 @@
+:root {
+    /* Brand Colors */
+    --color-default: #183eb0;
+    /* Deep Blue from Frontend */
+    --color-second: #07CCEC;
+    /* Cyan from Frontend */
+    --color-white: #ffffff;
+    --color-body: #f7f7f7;
+    /* Soft light background */
+    --color-light: #eff0ef;
+    --color-lightgray: #E6E9EB;
+    --color-black: #191D3B;
+    /* Darker heading color from Frontend */
+    --color-text-muted: #64748b;
+    --color-border: #e2e8f0;
+
+    /* Premium Gradients */
+    --gradient-primary: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
+    --gradient-primary-reverse: linear-gradient(90deg, #07CCEC 0%, #1E0B9B 100%);
+
+    /* Refined Shadows */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-btn: 0 4px 14px 0 rgba(30, 11, 155, 0.39);
+    --shadow-btn-hover: 0 6px 20px rgba(30, 11, 155, 0.23);
+
+    /* Rounded Borders */
+    --radius-md: 10px;
+    --radius-lg: 12px;
+    --radius-pill: 50px;
+
+    /* Fonts */
+    --font-primary: 'poppins', sans-serif;
+    --font-heading: 'poppins', sans-serif;
+}
+
+body {
+    background-color: var(--color-body);
+}
+
 .h-90 {
     height: 100vh;
 }
