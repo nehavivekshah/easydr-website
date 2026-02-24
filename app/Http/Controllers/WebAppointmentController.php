@@ -168,10 +168,27 @@ class WebAppointmentController extends Controller
             ->orderBy('from_date', 'ASC') // Order by date in ascending order
             ->get();
 
+        // Pre-fetch all active appointments for this doctor from today onwards
+        $activeAppointments = Appointments::where('did', $doctorId)
+            ->whereDate('date', '>=', Carbon::now()->toDateString())
+            ->whereIn('status', ['0', '1']) // 0: Pending, 1: Confirmed
+            ->get();
+
+        // Create a lookup map for booked slots: "YYYY-MM-DD HH:MM" => true
+        $bookedMap = [];
+        foreach ($activeAppointments as $appt) {
+            $dateStr = Carbon::parse($appt->date)->format('Y-m-d');
+            $timeStr = Carbon::parse($appt->time)->format('H:i');
+            $bookedMap["{$dateStr} {$timeStr}"] = true;
+        }
+
         $slots = [];
         $now = Carbon::now(); // Current date and time
 
         foreach ($availabilities as $availability) {
+            // Parse available days string (e.g., "Monday,Tuesday,Friday")
+            $availableDaysArray = array_map('trim', explode(',', $availability->available_days ?? ''));
+
             // Set the starting date for the loop
             $currentDate = Carbon::parse($availability->from_date);
 
@@ -185,27 +202,38 @@ class WebAppointmentController extends Controller
 
             // Loop through each date, including the end date
             while ($currentDate->lessThanOrEqualTo($endDate)) {
-                // Generate time slots for the current date
-                $startTime = Carbon::createFromTimeString($availability->start_time);
-                $endTime = Carbon::createFromTimeString($availability->end_time);
+                // Determine if the current day of the week is in the doctor's available days
+                $dayOfWeek = $currentDate->format('l'); // Returns full day name (e.g., "Monday")
+                if (in_array($dayOfWeek, $availableDaysArray)) {
 
-                // Set the date for time comparison
-                $startTime->setDate($currentDate->year, $currentDate->month, $currentDate->day);
-                $endTime->setDate($currentDate->year, $currentDate->month, $currentDate->day);
+                    // Generate time slots for the current date
+                    $startTime = Carbon::createFromTimeString($availability->start_time);
+                    $endTime = Carbon::createFromTimeString($availability->end_time);
 
-                while ($startTime->lessThan($endTime)) {
-                    // Only add slot if it's in the future (for today) or if it's a future date
-                    $isToday = $currentDate->isSameDay($now);
-                    $isFutureTime = $startTime->greaterThan($now);
+                    // Set the date for time comparison
+                    $startTime->setDate($currentDate->year, $currentDate->month, $currentDate->day);
+                    $endTime->setDate($currentDate->year, $currentDate->month, $currentDate->day);
 
-                    if (!$isToday || $isFutureTime) {
-                        $slots[] = [
-                            'date' => $currentDate->format('Y-m-d'),
-                            'time' => $startTime->format('h:i A'),
-                        ];
+                    while ($startTime->lessThan($endTime)) {
+                        // Only add slot if it's in the future (for today) or if it's a future date
+                        $isToday = $currentDate->isSameDay($now);
+                        $isFutureTime = $startTime->greaterThan($now);
+
+                        if (!$isToday || $isFutureTime) {
+                            $slotDateStr = $currentDate->format('Y-m-d');
+                            $slotTimeStr = $startTime->format('H:i');
+
+                            // Check if this specific slot is already booked
+                            if (!isset($bookedMap["{$slotDateStr} {$slotTimeStr}"])) {
+                                $slots[] = [
+                                    'date' => $slotDateStr,
+                                    'time' => $startTime->format('h:i A'), // Return 12hr format for frontend UI
+                                ];
+                            }
+                        }
+
+                        $startTime->addMinutes($availability->duration);
                     }
-
-                    $startTime->addMinutes($availability->duration);
                 }
 
                 // Move to the next date
