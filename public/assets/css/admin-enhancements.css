@@ -3,20 +3,24 @@
    Additional styling for EasyDoctor Admin Panel
    ============================================ */
 
-/* ==================== Active Menu States ==================== */
+/* ==================== Active Menu States (Next-Gen Floating Pill) ==================== */
 .sidebar li.active {
-    background: linear-gradient(90deg, rgba(7, 204, 236, 0.15) 0%, transparent 100%);
-    border-left: 3px solid var(--color-second);
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: var(--color-second);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(7, 204, 236, 0.4);
+    border-left: none;
+    /* Remove legacy border */
 }
 
 .sidebar li.active>a {
-    color: var(--color-second);
-    font-weight: 600;
+    color: #191D3B;
+    /* High-contrast navy text */
+    font-weight: 700;
 }
 
 .sidebar li.active>a i {
-    color: var(--color-second);
+    color: #191D3B;
+    /* High-contrast navy icon */
 }
 
 /* Interactive Hover States for Sidebar Icons */

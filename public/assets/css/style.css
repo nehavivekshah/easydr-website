@@ -156,7 +156,8 @@ a {
 
 .sidebar li {
     list-style: none;
-    margin: 4px 0;
+    margin: 4px 12px;
+    /* Inset margins for floating pill effect */
     border-radius: var(--radius-md);
     transition: background 0.2s;
 }
@@ -203,14 +204,16 @@ a {
 }
 
 .sidebar ul.sb_submenu {
-    padding: 5px 0 5px 48px !important;
+    padding: 5px 0 5px 36px !important;
+    /* Adjusted left padding to align with inset list items */
     position: relative;
 }
 
 .sidebar ul.sb_submenu::before {
     content: '';
     position: absolute;
-    left: 27px;
+    left: 15px;
+    /* Moved left to align accurately */
     top: 5px;
     bottom: 5px;
     width: 2px;
