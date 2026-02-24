@@ -76,19 +76,39 @@ a {
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-border);
     height: 60px;
-}
-
-.navbar-brand {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--color-default) !important;
+    padding: 10px 0;
+    /* Add top/bottom padding for breathing room */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
+    /* Soft, expansive shadow */
+    border-bottom: none !important;
+    /* Remove flat border */
 }
 
 .left-side-header {
     display: flex;
     align-items: center;
     gap: 15px;
+    /* Increase gap slightly */
+    padding-left: 20px;
+}
+
+.left-side-header i {
+    font-size: 1.8rem;
+    color: var(--color-black);
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.left-side-header i:hover {
+    color: var(--color-default);
+    transform: scale(1.1);
+}
+
+.left-side-header .navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--color-black);
+    letter-spacing: -0.01em;
 }
 
 #btn {
@@ -104,6 +124,14 @@ a {
     background-color: rgba(0, 102, 102, 0.1);
 }
 
+.header-icon {
+    list-style: none;
+    margin: 0;
+    padding-right: 20px;
+    gap: 8px;
+    /* Space out the icons */
+}
+
 .header-icon li {
     list-style: none;
     display: inline-block;
@@ -111,13 +139,23 @@ a {
 }
 
 .header-icon li a {
-    color: var(--color-text-muted);
-    font-size: 1.25rem;
-    position: relative;
+    color: var(--color-black);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: transparent;
+    transition: all 0.3s ease;
 }
 
 .header-icon li a:hover {
+    background: rgba(29, 19, 159, 0.05);
+    /* Soft blue/grey rounded wrapper on hover */
     color: var(--color-default);
+    transform: translateY(-2px);
 }
 
 /* Sidebar */
@@ -372,10 +410,13 @@ a {
 .overview-box {
     background: white;
     padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 16px;
+    /* Premium larger radius */
+    border: none;
+    /* Borderless */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    /* Persistent soft shadow */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -383,21 +424,49 @@ a {
     text-align: center;
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
 .overview-box:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--color-second);
+    transform: translateY(-4px) scale(1.01);
+    /* Lift up slightly */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+    /* Deepen the shadow significantly */
+}
+
+/* Optional: Add a subtle decorative top bar on the cards */
+.overview-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overview-box:hover::before {
+    opacity: 1;
+    /* Glows on hover */
 }
 
 .overview-box i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
     color: var(--color-default);
-    background: rgba(0, 102, 102, 0.1);
-    padding: 15px;
-    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(29, 19, 159, 0.1) 0%, rgba(7, 204, 236, 0.15) 100%);
+    /* Subtle Cyan/Blue gradient alpha */
+    padding: 16px;
+    border-radius: 12px;
+    /* Matching inner radius */
+    transition: transform 0.3s ease;
+}
+
+.overview-box:hover i {
+    transform: scale(1.1);
+    /* Slight pop effect */
 }
 
 .overview-count {
@@ -419,13 +488,30 @@ a {
     inset: 0;
 }
 
-/* DataTables Styling */
-.table-responsive {
+/* DataTables & Data Cards Styling */
+.table-responsive,
+.card {
     background: white;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
+    border-radius: 16px;
+    /* Smooth rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    /* Soft borderless shadow */
     padding: 1.5rem;
-    border: 1px solid var(--color-border);
+    border: none;
+    /* Remove harsh lines */
+}
+
+.card .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--color-border);
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    color: var(--color-black);
+}
+
+.card .card-body {
+    padding: 1.5rem;
 }
 
 table.dataTable {
@@ -436,7 +522,8 @@ table.dataTable {
 }
 
 table.dataTable thead th {
-    background-color: var(--color-default);
+    background: var(--gradient-primary);
+    /* Use deep blue gradient */
     color: white;
     font-weight: 600;
     padding: 12px 15px;
@@ -444,6 +531,8 @@ table.dataTable thead th {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    border: none;
+    /* Strip internal borders */
 }
 
 table.dataTable thead th:first-child {
@@ -507,7 +596,8 @@ label {
 .form-control,
 .form-select {
     border-radius: var(--radius-md);
-    border: 2px solid var(--color-border);
+    border: 1px solid #e2e8f0;
+    /* Softer resting border */
     padding: 0.65rem 1rem;
     font-size: 0.95rem;
     background-color: #fafbfc;
@@ -798,16 +888,17 @@ label:has(+ .form-select[required])::after {
     background: var(--gradient-primary);
     border: none;
     color: white;
-    box-shadow: var(--shadow-btn);
+    box-shadow: 0 4px 15px rgba(29, 19, 159, 0.25);
+    /* Rich elegant shadow */
 }
 
 .btn-primary:hover,
 .btn-default:hover {
-    background: var(--gradient-primary-reverse);
-    border: none;
+    background: var(--gradient-hover);
     color: white;
     transform: translateY(-2px);
-    box-shadow: var(--shadow-btn-hover);
+    box-shadow: 0 8px 20px rgba(29, 19, 159, 0.4);
+    /* Stronger pulse on hover */
 }
 
 .btn-group .btn {
