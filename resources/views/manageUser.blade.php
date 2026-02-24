@@ -104,7 +104,7 @@
             <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card border-0 shadow-sm rounded-4 w-100">
-                        <div class="card-body p-0">
+                        <div class="card-body">
 
                     <!-- Step Progress Bar -->
                     <div class="step-indicator">
@@ -114,7 +114,7 @@
                     </div>
 
                     <form id="multiStepForm" action="{{ $isProfile ? '/admin/my-profile' : '/admin/manage-user' }}"
-                        method="post" enctype="multipart/form-data" class="row">
+                        method="post" enctype="multipart/form-data" class="row px-2">
                         @csrf
                         <input type="hidden" name="pagetype" value="{{ $type ?? '' }}">
                         <input type="hidden" name="id" value="{{ $id ?? '' }}">
