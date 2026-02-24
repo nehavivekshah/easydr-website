@@ -104,7 +104,7 @@
             <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card border-0 shadow-sm rounded-4 w-100">
-                        <div class="card-body p-4">
+                        <div class="card-body p-0">
 
                     <!-- Step Progress Bar -->
                     <div class="step-indicator">
