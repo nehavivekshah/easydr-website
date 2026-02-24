@@ -132,13 +132,13 @@ a {
     /* Space out the icons */
 }
 
-.header-icon li {
+.header-icon>li {
     list-style: none;
     display: inline-block;
     margin-left: 15px;
 }
 
-.header-icon li a {
+.header-icon>li>a.budge-warning {
     color: var(--color-black);
     font-size: 1.5rem;
     display: flex;
@@ -151,7 +151,7 @@ a {
     transition: all 0.3s ease;
 }
 
-.header-icon li a:hover {
+.header-icon>li>a.budge-warning:hover {
     background: rgba(29, 19, 159, 0.05);
     /* Soft blue/grey rounded wrapper on hover */
     color: var(--color-default);
@@ -230,12 +230,20 @@ a {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08) !important;
 }
 
+.header-icon .profile-menu li {
+    display: block;
+    margin: 0;
+}
+
 .profile-menu .dropdown-item {
     padding: 10px 20px;
     font-weight: 500;
     color: var(--color-black);
     display: flex;
     align-items: center;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
     transition: all 0.2s ease;
 }
 
