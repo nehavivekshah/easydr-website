@@ -42,11 +42,12 @@
 }
 
 .btn-default {
-    background: linear-gradient(135deg, #1d139f 0%, #150dae 100%);
+    background: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
+    /* Frontend gradient */
     border: none;
     color: #fff;
-    border-radius: 12px !important;
-    /* Overriding old 25px */
+    border-radius: 30px !important;
+    /* Frontend pill shape */
     padding: 12px 24px;
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(29, 19, 159, 0.25);
@@ -54,7 +55,8 @@
 }
 
 .btn-default:hover {
-    background: linear-gradient(135deg, #150dae 0%, #0f0797 100%);
+    background: linear-gradient(90deg, #07CCEC 0%, #1E0B9B 100%);
+    /* Reversed on hover like frontend */
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(29, 19, 159, 0.4);
