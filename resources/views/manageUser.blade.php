@@ -87,20 +87,24 @@
 
 @section('content')
     <section class="task__section">
-        <div class="text mb-0">
+        <div class="d-flex align-items-center gap-3 mb-4">
             @if(!$isProfile)
-                <a href="/admin/users/{{$type ?? ''}}" class="btn btn-default btn-sm back-btn"><i
-                        class="bx bx-arrow-back"></i></a>
-                @if(!empty($id)) Edit {{ucfirst($pagename[0] ?? 'User')}} @else Add New {{ucfirst($pagename[0] ?? 'User')}}
-                @endif
+                <a href="/admin/users/{{$type ?? ''}}" class="btn btn-light rounded-circle shadow-sm d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;">
+                    <i class="bx bx-arrow-back fs-5"></i>
+                </a>
+                <h2 class="mb-0 text-dark fw-bold" style="font-size: 1.5rem;">
+                    @if(!empty($id)) Edit {{ucfirst($pagename[0] ?? 'User')}} @else Add New {{ucfirst($pagename[0] ?? 'User')}} @endif
+                </h2>
             @else
-                Profile Settings
+                <h2 class="mb-0 text-dark fw-bold" style="font-size: 1.5rem;">Profile Settings</h2>
             @endif
         </div>
 
-        <div class="container-fluid">
-            <div class="row g-3 px-2">
-                <div class="col-md-12 bg-white rounded border shadow-sm p-4">
+        <div class="container-fluid p-0">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <div class="card border-0 shadow-sm rounded-4 w-100">
+                        <div class="card-body p-4">
 
                     <!-- Step Progress Bar -->
                     <div class="step-indicator">
@@ -163,9 +167,10 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="text-end mt-3">
-                                <button type="button" class="btn btn-default px-5 next-step">Next <i
-                                        class='bx bx-right-arrow-alt'></i></button>
+                            <div class="text-end mt-4">
+                                <button type="button" class="btn btn-default rounded-pill shadow-sm px-5 py-2 next-step">
+                                    Next <i class='bx bx-right-arrow-alt ms-1'></i>
+                                </button>
                             </div>
                         </div>
 
@@ -317,11 +322,13 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="d-flex justify-content-between mt-3">
-                                <button type="button" class="btn btn-light border prev-step"><i
-                                        class='bx bx-left-arrow-alt'></i> Previous</button>
-                                <button type="button" class="btn btn-default px-5 next-step">Next <i
-                                        class='bx bx-right-arrow-alt'></i></button>
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-light rounded-pill shadow-sm px-4 py-2 prev-step">
+                                    <i class='bx bx-left-arrow-alt me-1'></i> Previous
+                                </button>
+                                <button type="button" class="btn btn-default rounded-pill shadow-sm px-5 py-2 next-step">
+                                    Next <i class='bx bx-right-arrow-alt ms-1'></i>
+                                </button>
                             </div>
                         </div>
 
@@ -409,17 +416,20 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="d-flex justify-content-between mt-4">
-                                <button type="button" class="btn btn-light border prev-step"><i
-                                        class='bx bx-left-arrow-alt'></i> Previous</button>
+                            <div class="d-flex justify-content-between mt-5">
+                                <button type="button" class="btn btn-light rounded-pill shadow-sm px-4 py-2 prev-step">
+                                    <i class='bx bx-left-arrow-alt me-1'></i> Previous
+                                </button>
                                 <div>
-                                    <button type="submit" class="btn btn-default px-4">Submit</button>
-                                    <button type="reset" class="btn btn-light border px-4">Reset</button>
+                                    <button type="submit" class="btn btn-default rounded-pill shadow-sm px-5 py-2 me-2">Submit</button>
+                                    <button type="reset" class="btn btn-light rounded-pill shadow-sm px-4 py-2">Reset</button>
                                 </div>
                             </div>
                         </div>
 
                     </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
