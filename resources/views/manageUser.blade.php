@@ -89,7 +89,7 @@
     <section class="task__section">
         <div class="d-flex align-items-center gap-3 mb-4">
             @if(!$isProfile)
-                <a href="/admin/users/{{$type ?? ''}}" class="btn btn-light rounded-circle shadow-sm d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;">
+                <a href="/admin/users/{{$type ?? ''}}" class="btn btn-default rounded-circle shadow-sm d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;">
                     <i class="bx bx-arrow-back fs-5"></i>
                 </a>
                 <h2 class="mb-0 text-dark fw-bold" style="font-size: 1.5rem;">

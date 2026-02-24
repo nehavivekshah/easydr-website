@@ -1036,10 +1036,10 @@ label:has(+ .form-select[required])::after {
 
 .btn-primary,
 .btn-default {
-    background: var(--gradient-primary);
+    background: var(--gradient-primary-reverse);
     border: none;
     color: white;
-    box-shadow: 0 4px 15px rgba(29, 19, 159, 0.25);
+    /* box-shadow: 0 4px 15px rgba(29, 19, 159, 0.25); */
     /* Rich elegant shadow */
 }
 
