@@ -23,12 +23,14 @@
 }
 
 /* Interactive Hover States for Sidebar Icons */
-.sidebar li.active:not(.profile):hover>a i {
+.sidebar li.active:not(.profile):hover>a i,
+.sb_submenu li.active:not(.profile):hover>a i {
     transform: translateX(4px) scale(1.1);
     color: var(--color-black);
 }
 
-.sidebar li.active:not(.profile):hover>a .link_name {
+.sidebar li.active:not(.profile):hover>a .link_name,
+.sb_submenu li.active:not(.profile):hover>a .link_name {
     color: var(--color-black);
 }
 
