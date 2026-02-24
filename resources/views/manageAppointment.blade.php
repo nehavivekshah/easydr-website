@@ -16,7 +16,7 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="card border-0 shadow-sm rounded-4 w-100">
-                            <div class="card-body px-3 py-0">
+                            <div class="card-body px-2 py-2">
                                 <div class="row">
                                     <!-- Patient Selection -->
                                     <div class="form-group col-md-6">
@@ -295,7 +295,7 @@
                         }, 1000);
                     }
                 @endif
-                                                                        });
+                                                                                });
         </script>
     @endpush
 @endsection
