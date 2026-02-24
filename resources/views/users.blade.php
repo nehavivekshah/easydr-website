@@ -15,6 +15,247 @@
         $roleArray = explode(',', ($roles->permissions ?? ''));
 
     @endphp
+
+    @push('styles')
+        <style>
+            /* Modal Enhancements */
+            .modal-content {
+                border-radius: 24px;
+                border: none;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+            }
+
+            .modal-header {
+                border-bottom: none;
+                padding: 15px 30px;
+                position: relative;
+            }
+
+            .modal-profile-header {
+                display: flex;
+                align-items: center;
+                gap: 24px;
+                width: 100%;
+            }
+
+            .modal-profile-img {
+                width: 100px;
+                height: 100px;
+                border-radius: 24px;
+                object-fit: cover;
+                border: 4px solid #f1f1f1;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .modal-profile-info h3 {
+                font-size: 1.5rem;
+                font-weight: 800;
+                color: #1e293b;
+                margin-bottom: 8px;
+            }
+
+            .modal-profile-badges {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .p-badge {
+                padding: 4px 12px;
+                border-radius: 8px;
+                font-size: 0.75rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .p-badge-gender {
+                background: #e3f2fd;
+                color: #0d47a1;
+            }
+
+            .p-badge-blood {
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            .p-badge-age {
+                background: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            .nav-tabs-custom {
+                background: #f9f9f9 !important;
+                padding: 0 30px;
+                border-bottom: 1px solid #e2e8f0;
+                gap: 32px;
+            }
+
+            .nav-tabs-custom .nav-link {
+                border: none;
+                padding: 20px 0;
+                color: #64748b;
+                font-weight: 700;
+                font-size: 0.9rem;
+                position: relative;
+                transition: all 0.3s;
+            }
+
+            .nav-tabs-custom .nav-link:hover {
+                color: #0d6efd;
+            }
+
+            .nav-tabs-custom .nav-link.active {
+                color: #0d6efd;
+                background: none;
+            }
+
+            .nav-tabs-custom .nav-link.active::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background: #0d6efd;
+                border-radius: 3px 3px 0 0;
+            }
+
+            .modal-body {
+                padding: 30px;
+                background: #fff;
+            }
+
+            /* Info Cards in Overview */
+            .info-card {
+                background: #f8fafc;
+                border: 1px solid #f1f5f9;
+                border-radius: 16px;
+                padding: 16px;
+                height: 100%;
+                transition: all 0.2s;
+                display: flex;
+                justify-content: start;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .info-card:hover {
+                background: #fff;
+                border-color: #3498db;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+
+            .info-card-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+            }
+
+            .icon-blue {
+                background: #e0f2fe;
+                color: #0369a1;
+            }
+
+            .icon-green {
+                background: #dcfce7;
+                color: #166534;
+            }
+
+            .icon-purple {
+                background: #f3e8ff;
+                color: #6b21a8;
+            }
+
+            .icon-orange {
+                background: #ffedd5;
+                color: #9a3412;
+            }
+
+            .info-card-label {
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: #64748b;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+
+            .info-card-value {
+                font-size: 0.95rem;
+                font-weight: 600;
+                color: #1e293b;
+                word-break: break-all;
+            }
+
+            /* History List Enhancement */
+            .history-item {
+                padding: 20px;
+                border-radius: 16px;
+                background: #fff;
+                border: 1px solid #f1f5f9;
+                margin-bottom: 16px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                animation: slideInUp 0.4s ease-out forwards;
+            }
+
+            .history-item:hover {
+                transform: translateX(8px);
+                border-color: #cbd5e1;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            }
+
+            .history-info {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .history-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.25rem;
+            }
+
+            .history-content h6 {
+                font-weight: 700;
+                color: #1e293b;
+                margin-bottom: 4px;
+                font-size: 1rem;
+            }
+
+            .history-date {
+                font-size: 0.85rem;
+                color: #64748b;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+    @endpush
     <section class="task__section">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
@@ -186,162 +427,122 @@
         </div>
     </section>
 
-    <!-- Patient Profile View Modal -->
-    <div class="modal fade" id="viewPatientModal" tabindex="-1" aria-labelledby="viewPatientModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 shadow rounded-4">
-                <div class="modal-header bg-light border-0 rounded-top-4">
-                    <h5 class="modal-title fw-bold text-dark" id="viewPatientModalLabel">
-                        <i class="bx bx-user-circle text-primary me-2"></i>Patient Profile
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4 bg-light">
-                    <!-- Header Block in Modal Body -->
-                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom border-light">
-                        <div class="me-3">
-                            <img id="modalPatientPhoto" src="" alt="Profile Photo" class="rounded shadow-sm bg-white p-1"
-                                style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #dee2e6;">
-                        </div>
-                        <div>
-                            <h3 id="modalPatientName" class="mb-2 fw-bold text-dark" style="letter-spacing: -0.5px;"></h3>
-                            <div class="d-flex flex-wrap gap-2">
-                                <span class="badge bg-primary bg-opacity-10 text-primary py-2 px-3 rounded text-uppercase"
-                                    id="modalPatientGender"><i class="bx bx-male-female me-1"></i>--</span>
-                                <span class="badge bg-danger bg-opacity-10 text-danger py-2 px-3 rounded text-uppercase"
-                                    id="modalPatientBloodGroup"><i class="bx bx-droplet me-1"></i>--</span>
-                                <span class="badge bg-success bg-opacity-10 text-success py-2 px-3 rounded text-uppercase"
-                                    id="modalPatientAge"><i class="bx bx-calendar me-1"></i>-- YEARS OLD</span>
+    <!-- Patient Details Modal -->
+    <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-profile-header">
+                        <img id="modalPatientImg" src="" class="modal-profile-img" alt="Patient">
+                        <div class="modal-profile-info">
+                            <h3 id="modalPatientName">-</h3>
+                            <div class="modal-profile-badges">
+                                <span id="hdr-gender" class="p-badge p-badge-gender">-</span>
+                                <span id="hdr-blood" class="p-badge p-badge-blood">-</span>
+                                <span id="hdr-age" class="p-badge p-badge-age">-</span>
                             </div>
                         </div>
-                        <div class="ms-auto text-end align-self-start">
-                            <span id="modalPatientStatus" class="badge rounded-pill px-3 py-2 fs-6 shadow-sm"></span>
+                    </div>
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-4" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#tab-overview">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-prescriptions"
+                            onclick="loadPatientPrescriptions()">Prescriptions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-history" onclick="loadPatientHistory()">Appt
+                            History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#tab-payments"
+                            onclick="loadPatientPayments()">Payments</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content overflow-auto" style="max-height: 60vh;">
+                    <!-- Overview -->
+                    <div class="tab-pane fade show active modal-body" id="tab-overview">
+                        <div class="row g-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-blue"><i class="fas fa-phone-alt"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Mobile Number</div>
+                                        <div id="ov-mobile" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-purple"><i class="fas fa-envelope"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Email Address</div>
+                                        <div id="ov-email" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-green"><i class="fas fa-birthday-cake"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Date of Birth</div>
+                                        <div id="ov-dob" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-orange"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Location / City</div>
+                                        <div id="ov-city" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="info-card">
+                                    <div class="info-card-icon icon-blue"><i class="fas fa-home"></i></div>
+                                    <div>
+                                        <div class="info-card-label">Full Address</div>
+                                        <div id="ov-address" class="info-card-value">-</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row g-3">
-                        <!-- Mobile Number -->
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm rounded-4 h-100">
-                                <div class="card-body p-3 d-flex align-items-center gap-3">
-                                    <div class="bg-primary bg-opacity-10 text-primary rounded pt-1 d-flex justify-content-center align-items-center"
-                                        style="width: 45px; height: 45px;">
-                                        <i class="bx bx-phone fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Mobile Number</small>
-                                        <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientMobile"></h6>
-                                    </div>
-                                </div>
+                    <!-- Prescriptions -->
+                    <div class="tab-pane fade modal-body" id="tab-prescriptions">
+                        <div id="prescriptions-list">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
                             </div>
                         </div>
-
-                        <!-- Email Address -->
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm rounded-4 h-100">
-                                <div class="card-body p-3 d-flex align-items-center gap-3">
-                                    <div class="bg-info bg-opacity-10 text-info rounded pt-1 d-flex justify-content-center align-items-center"
-                                        style="width: 45px; height: 45px;">
-                                        <i class="bx bx-envelope fs-4"></i>
-                                    </div>
-                                    <div class="overflow-hidden">
-                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Email Address</small>
-                                        <h6 class="mb-0 fw-bold text-dark text-truncate fs-6" id="modalPatientEmail"></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Date of Birth -->
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm rounded-4 h-100">
-                                <div class="card-body p-3 d-flex align-items-center gap-3">
-                                    <div class="bg-success bg-opacity-10 text-success rounded pt-1 d-flex justify-content-center align-items-center"
-                                        style="width: 45px; height: 45px;">
-                                        <i class="bx bxs-cake fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Date of Birth</small>
-                                        <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientDob"></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Location / City -->
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm rounded-4 h-100">
-                                <div class="card-body p-3 d-flex align-items-center gap-3">
-                                    <div class="bg-warning bg-opacity-10 text-warning rounded pt-1 d-flex justify-content-center align-items-center"
-                                        style="width: 45px; height: 45px;">
-                                        <i class="bx bxs-map fs-4"></i>
-                                    </div>
-                                    <div class="overflow-hidden">
-                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Location / City</small>
-                                        <h6 class="mb-0 fw-bold text-dark text-truncate fs-6" id="modalPatientLocation">
-                                        </h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Full Address -->
-                        <div class="col-12">
-                            <div class="card border-0 shadow-sm rounded-4">
-                                <div class="card-body p-3 d-flex align-items-center gap-3">
-                                    <div class="bg-primary bg-opacity-10 text-primary rounded pt-1 d-flex justify-content-center align-items-center"
-                                        style="width: 45px; height: 45px;">
-                                        <i class="bx bx-home fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Full Address</small>
-                                        <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientAddress"></h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Identification & Card -->
-                        <div class="col-12">
-                            <div class="card border-0 shadow-sm rounded-4 mt-2">
-                                <div class="card-header bg-white border-bottom p-3">
-                                    <h6 class="mb-0 fw-bold text-dark fs-6"><i
-                                            class="bx bx-id-card text-primary me-2"></i>Identification Details</h6>
-                                </div>
-                                <div class="card-body p-3">
-                                    <div class="row g-3">
-                                        <div class="col-md-4">
-                                            <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Aadhar Card</small>
-                                            <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientAadhar"></h6>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Health Card</small>
-                                            <h6 class="mb-0 fw-bold text-dark fs-6" id="modalPatientHealthCard"></h6>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <small class="text-muted fw-bold mb-1 d-block text-uppercase"
-                                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Verification</small>
-                                            <div id="modalPatientVerifyStatus"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-                </div>
-                <div class="modal-footer border-top-0 pt-0 pb-4 pe-4 bg-light rounded-bottom-4">
-                    <button type="button" class="btn btn-light rounded-pill shadow-sm px-4"
-                        data-bs-dismiss="modal">Close</button>
-                    <a href="#" id="modalEditButton" class="btn btn-default rounded-pill shadow-sm px-4"><i
-                            class="bx bx-edit me-1"></i> Edit User</a>
+
+                    <!-- Appointment History -->
+                    <div class="tab-pane fade modal-body" id="tab-history">
+                        <div id="history-list">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payments -->
+                    <div class="tab-pane fade modal-body" id="tab-payments">
+                        <div id="payments-list">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -350,90 +551,174 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
-            $('.view-patient-btn').on('click', function () {
-                var user = $(this).data('user');
+            let currentAdminPatientUid = null;
+            let currentPatientName = '';
 
-                // Name and Photo
-                $('#modalPatientName').text((user.first_name || '') + ' ' + (user.last_name || ''));
-                var photoPath = user.photo ? '/public/assets/images/profiles/' + user.photo : '/public/assets/images/profiles/default.png'; // Fallback mapping
-                $('#modalPatientPhoto').attr('src', photoPath);
+            $(document).ready(function () {
+                $('.view-patient-btn').on('click', function () {
+                    var user = $(this).data('user');
+                    currentAdminPatientUid = user.id; // from users table
 
-                // Location
-                var locationStr = [];
-                if (user.city) locationStr.push(user.city);
-                if (user.state) locationStr.push(user.state);
-                if (user.country) locationStr.push(user.country);
-                $('#modalPatientLocation').text(locationStr.join(', ') || 'Location Not Provided');
+                    var firstName = user.first_name || '';
+                    var lastName = user.last_name || '';
+                    currentPatientName = (firstName + ' ' + lastName).trim() || 'Unknown';
 
-                // Header Badges
-                var genderMap = { '1': 'MALE', '2': 'FEMALE', '3': 'OTHER' };
-                $('#modalPatientGender').html('<i class="bx bx-male-female me-1"></i>' + (genderMap[user.gender] || '--'));
+                    // Name and Photo
+                    $('#modalPatientName').text(currentPatientName);
+                    var photoPath = user.photo ? '/public/assets/images/profiles/' + user.photo : `https://ui-avatars.com/api/?name=${encodeURIComponent(currentPatientName)}&background=0D8ABC&color=fff`;
+                    $('#modalPatientImg').attr('src', photoPath);
 
-                $('#modalPatientBloodGroup').html('<i class="bx bx-droplet me-1"></i>' + (user.blood_group || '--'));
+                    // Header Badges
+                    var genderMap = { '1': 'Male', '2': 'Female', '3': 'Others' };
+                    $('#hdr-gender').text(genderMap[user.gender] || '--');
+                    $('#hdr-blood').text(user.blood_group || '--');
 
-                // Age Calculation
-                var ageText = '-- YEARS OLD';
-                if (user.dob) {
-                    var dob = new Date(user.dob);
-                    var diff_ms = Date.now() - dob.getTime();
-                    var age_dt = new Date(diff_ms);
-                    var age = Math.abs(age_dt.getUTCFullYear() - 1970);
-                    ageText = age + ' YEARS OLD';
-                }
-                $('#modalPatientAge').html('<i class="bx bx-calendar me-1"></i>' + ageText);
-
-                // Status Badge
-                var statusBadge = $('#modalPatientStatus');
-                if (user.status == '1') {
-                    statusBadge.text('Active').removeClass('bg-danger').addClass('bg-success');
-                } else {
-                    statusBadge.text('Deactive').removeClass('bg-success').addClass('bg-danger');
-                }
-
-                // Contact Info
-                $('#modalPatientEmail').text(user.email || '--');
-                $('#modalPatientMobile').text(user.mobile || '--');
-                $('#modalPatientAltMobile').text(user.altr_mobile || '--');
-                $('#modalPatientAddress').text(user.address || '--');
-
-                // Health Info
-                $('#modalPatientDob').text(user.dob || '--');
-
-                // IDs
-                $('#modalPatientAadhar').text(user.adhar || '--');
-                $('#modalPatientHealthCard').text(user.health_card || 'Not Issued');
-
-                // Health Card Verification Status
-                var isVerified = false;
-                var isExpired = false;
-
-                if (user.hc_verified_at && user.hc_expairy_date) {
-                    var expiryDate = new Date(user.hc_expairy_date);
-                    if (expiryDate > new Date()) {
-                        isVerified = true;
-                    } else {
-                        isExpired = true;
+                    // Age Calculation
+                    var ageText = '-- YEARS OLD';
+                    if (user.dob) {
+                        var dob = new Date(user.dob);
+                        var diff_ms = Date.now() - dob.getTime();
+                        var age_dt = new Date(diff_ms);
+                        var age = Math.abs(age_dt.getUTCFullYear() - 1970);
+                        ageText = age + ' Years Old';
                     }
-                }
+                    $('#hdr-age').text(ageText);
 
-                var verifyBadgeHtml = '';
-                if (isVerified) {
-                    verifyBadgeHtml = '<span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-2"><i class="bx bx-check-shield me-1"></i>Verified</span>';
-                } else if (isExpired) {
-                    verifyBadgeHtml = '<span class="badge bg-danger bg-opacity-10 text-danger border border-danger rounded-pill px-2"><i class="bx bx-error me-1"></i>Expired</span>';
-                } else {
-                    verifyBadgeHtml = '<span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary rounded-pill px-2"><i class="bx bx-time me-1"></i>Not Verified</span>';
-                }
-                $('#modalPatientVerifyStatus').html(verifyBadgeHtml);
+                    // Overview Tab Info Cards
+                    $('#ov-mobile').text(user.mobile || '--');
+                    $('#ov-email').text(user.email || '--');
+                    $('#ov-dob').text(user.dob ? new Date(user.dob).toLocaleDateString() : '--');
 
-                // Set Edit Action Link dynamically based on global $type if exists, else generic fallback mapping
-                var editType = "{{ $type ?? 'patient-directory' }}";
-                $('#modalEditButton').attr('href', '/admin/manage-user/' + editType + '/' + user.id);
+                    var locationStr = [];
+                    if (user.city) locationStr.push(user.city);
+                    if (user.country) locationStr.push(user.country);
+                    $('#ov-city').text(locationStr.join(' - ') || '--');
 
-                // Show Modal
-                $('#viewPatientModal').modal('show');
+                    var addressArr = [user.address, user.city, user.state, user.country, user.pincode].filter(Boolean);
+                    $('#ov-address').text(addressArr.join(', ') || '--');
+
+                    // Reset tabs to Overview
+                    const tabEl = document.querySelector('a[href="#tab-overview"]');
+                    const tab = new bootstrap.Tab(tabEl);
+                    tab.show();
+
+                    // Show Modal
+                    var modalEl = document.getElementById('patientDetailsModal');
+                    var modal = bootstrap.Modal.getInstance(modalEl);
+                    if (!modal) modal = new bootstrap.Modal(modalEl);
+                    modal.show();
+                });
             });
-        });
-    </script>
+
+            async function fetchHistory() {
+                if (!currentAdminPatientUid) return { appointments: [], prescriptions: [] };
+                const response = await fetch(`/admin/get-patient-details/${currentAdminPatientUid}`);
+                return await response.json();
+            }
+
+            async function loadPatientPrescriptions() {
+                const list = document.getElementById('prescriptions-list');
+                list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+                const data = await fetchHistory();
+                if (!data.prescriptions || data.prescriptions.length === 0) {
+                    list.innerHTML = '<p class="text-center text-muted py-4">No prescriptions found globally.</p>';
+                    return;
+                }
+
+                list.innerHTML = data.prescriptions.map((p, idx) => `
+                    <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
+                        <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
+                                <div class="text-dark fw-bold small">
+                                    <i class="far fa-calendar-alt me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                </div>
+                            </div>
+                            <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                <i class="fas fa-download me-1"></i> PDF
+                            </a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                ${(p.medicines || []).map(m => `
+                                    <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-pills"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-dark">${m.medicine_name}</div>
+                                                <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            async function loadPatientHistory() {
+                const list = document.getElementById('history-list');
+                list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+                const data = await fetchHistory();
+                if (!data.appointments || data.appointments.length === 0) {
+                    list.innerHTML = '<p class="text-center text-muted py-4">No appointment history found.</p>';
+                    return;
+                }
+
+                list.innerHTML = data.appointments.map((a, idx) => `
+                    <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                        <div class="history-info">
+                            <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
+                            <div class="history-content">
+                                <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
+                                <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                <div class="history-date">
+                                    <i class="far fa-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                </div>
+                            </div>
+                        </div>
+                        <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
+                            ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                        </span>
+                    </div>
+                `).join('');
+            }
+
+            async function loadPatientPayments() {
+                const list = document.getElementById('payments-list');
+                list.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+                const data = await fetchHistory();
+                const paid = (data.appointments || []).filter(a => a.payment_status === 'paid' || a.payment_status === 'health_card');
+
+                if (paid.length === 0) {
+                    list.innerHTML = '<p class="text-center text-muted py-4">No payment records found.</p>';
+                    return;
+                }
+
+                list.innerHTML = paid.map((a, idx) => `
+                    <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                        <div class="history-info">
+                            <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
+                            <div class="history-content">
+                                <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
+                                <h6>Amount: $${a.fees || '0'}</h6>
+                                <div class="history-date">
+                                    <i class="fas fa-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                </div>
+                            </div>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3 py-1 text-uppercase border-opacity-25">
+                            ${a.payment_status.replace('_', ' ')}
+                        </span>
+                    </div>
+                `).join('');
+            }
+        </script>
 @endpush

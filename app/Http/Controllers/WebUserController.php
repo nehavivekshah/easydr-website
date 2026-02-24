@@ -815,4 +815,45 @@ class WebUserController extends Controller
         }
         return back()->with('error', 'User not found.');
     }
+
+    public function getAdminPatientDetails($uid)
+    {
+        // Require admin or staff authentication (assuming middleware handles basic entry, just ensure user exists)
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+
+        // The UID passed from the modal is the `users.id` table, not `patients.id`.
+        $patient = \App\Models\Patients::where('uid', $uid)->first();
+
+        if (!$patient) {
+            return response()->json([
+                'appointments' => [],
+                'prescriptions' => []
+            ]);
+        }
+
+        $pid = $patient->id;
+
+        // Fetch ALL Appointment History for this patient
+        $appointments = \App\Models\Appointments::where('pid', $pid)
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
+            ->get();
+
+        // Fetch ALL Prescriptions for this patient globally
+        $prescriptions = \App\Models\Prescriptions::where('patient_id', $pid)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($prescriptions as $prescription) {
+            $prescription->medicines = \App\Models\Prescription_medinices::where('prescribe_id', $prescription->id)->get();
+        }
+
+        return response()->json([
+            'appointments' => $appointments,
+            'prescriptions' => $prescriptions
+        ]);
+    }
 }

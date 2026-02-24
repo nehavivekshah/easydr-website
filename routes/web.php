@@ -292,10 +292,13 @@ Route::group(['middleware' => 'auth'], function () {
     /* Analytical Reports */
     Route::get('/admin/patient-reports', [WebReportController::class, 'patientReports']);
     Route::get('/admin/patient-statistics', [WebReportController::class, 'patientStatistics']);
-    Route::get('/admin/appointment-reports', [WebReportController::class, 'appointmentReports']);
-    Route::get('/admin/revenue-reports', [WebReportController::class, 'revenueReports']);
+    Route::get('/admin/appointment-reports-status', [WebAnalyticsController::class, 'appointmentReportsStatus']);
+    Route::get('/admin/appointment-reports-specialty', [WebAnalyticsController::class, 'appointmentReportsSpecialty']);
 
-    Route::get('/admin/revenue-reports', [WebReportController::class, 'revenueReports']);
+    // Admin Patient Actions
+    Route::get('/admin/get-patient-details/{uid}', [WebUserController::class, 'getAdminPatientDetails'])->name('admin.getPatientDetails');
+
+    Route::get('/admin/general-settings', [WebSettingController::class, 'generalSettings']);
 
     /* Notifications */
     Route::get('/admin/notifications/fetch', [App\Http\Controllers\WebNotificationController::class, 'fetchNotifications']);
