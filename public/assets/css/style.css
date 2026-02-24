@@ -394,6 +394,12 @@ a {
 .sidebar ul.sb_submenu li a {
     padding: 10px 0;
     font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar ul.sb_submenu li.active a {
+    padding: 10px 0;
+    font-size: 0.85rem;
     color: var(--color-default-light);
 }
 
