@@ -38,6 +38,7 @@
                     @if(
                             in_array('users_add', $roleArray) || in_array('patients_add', $roleArray) || in_array('doctors_add', $roleArray)
                             || in_array('admin_accounts_add', $roleArray) || in_array('staff_accounts_add', $roleArray) || in_array('All', $roleArray)
+                            || $pagename[0] == 'pharmacy'
                         )
                         <div class="btn-group">
                             <a href="/admin/manage-user/{{$type}}" class="btn btn-default btn-sm">

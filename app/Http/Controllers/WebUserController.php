@@ -102,7 +102,30 @@ class WebUserController extends Controller
                 ->where('users.branch', '=', (Auth::user()->branch ?? ''))
                 ->where('users.role', '!=', '4')
                 ->where('users.role', '!=', '5')
+                ->where('users.role', '!=', '6') // Exclude Pharmacy Role from Standard Staff Accounts
                 ->where('roles.features', '!=', 'All')
+                ->orderBy('users.created_at', 'DESC')->get();
+
+        } elseif ($type == 'pharmacy-accounts') {
+
+            $users = User::leftjoin('branches', 'users.branch', '=', 'branches.id')
+                ->leftjoin('roles', 'users.role', '=', 'roles.id')
+                ->leftjoin('usermetas', 'users.id', '=', 'usermetas.uid')
+                ->select(
+                    'branches.name as company',
+                    'usermetas.designation',
+                    'usermetas.adhar',
+                    'usermetas.address',
+                    'usermetas.city',
+                    'usermetas.state',
+                    'usermetas.country',
+                    'usermetas.pincode',
+                    'roles.title',
+                    'roles.subtitle',
+                    'users.*'
+                )
+                ->where('users.branch', '=', (Auth::user()->branch ?? ''))
+                ->where('users.role', '=', '6') // Only Pharmacy Role
                 ->orderBy('users.created_at', 'DESC')->get();
 
         } elseif ($type == 'doctor-directory') {
@@ -335,11 +358,17 @@ class WebUserController extends Controller
             $roles = Roles::where('branch', '=', (Auth::user()->branch ?? ''))
                 ->where('features', '=', 'All')->get();
 
+        } elseif ($type == 'pharmacy-accounts') {
+
+            $roles = Roles::where('branch', '=', (Auth::user()->branch ?? ''))
+                ->where('id', '=', '6')->get();
+
         } else {
 
             $roles = Roles::where('branch', '=', (Auth::user()->branch ?? ''))
                 ->where('id', '!=', '4')
                 ->where('id', '!=', '5')
+                ->where('id', '!=', '6')
                 ->where('features', '!=', 'All')->get();
 
         }
@@ -407,11 +436,17 @@ class WebUserController extends Controller
             $roles = Roles::where('branch', '=', (Auth::user()->branch ?? ''))
                 ->where('features', '=', 'All')->get();
 
+        } elseif ($type == 'pharmacy-accounts') {
+
+            $roles = Roles::where('branch', '=', (Auth::user()->branch ?? ''))
+                ->where('id', '=', '6')->get();
+
         } else {
 
             $roles = Roles::where('branch', '=', (Auth::user()->branch ?? ''))
                 ->where('id', '!=', '4')
                 ->where('id', '!=', '5')
+                ->where('id', '!=', '6')
                 ->where('features', '!=', 'All')->get();
 
         }
