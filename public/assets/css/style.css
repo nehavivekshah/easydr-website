@@ -3,6 +3,7 @@
 :root {
     /* Brand Colors */
     --color-default: #183eb0;
+    --color-default-light: #192a7d;
     /* Deep Blue from Frontend */
     --color-second: #07CCEC;
     /* Cyan from Frontend */
@@ -12,7 +13,7 @@
     /* Soft light background */
     --color-light: #eff0ef;
     --color-lightgray: #E6E9EB;
-    --color-black: #191D3B;
+    --color-black: #0b0c13;
     /* Darker heading color from Frontend */
     --color-text-muted: #64748b;
     --color-border: #e2e8f0;
@@ -296,7 +297,7 @@ a {
     /* Slightly wider closed state */
     padding: 60px 0 0 0;
     z-index: 100;
-    background-color: var(--color-black);
+    background-color: var(--color-default-light);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: fixed;
     top: 0;
