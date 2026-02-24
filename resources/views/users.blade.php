@@ -392,9 +392,9 @@
                                             <td class="text-center">
                                                 @if($type == 'patient-directory')
                                                     <button
-                                                        class="btn btn-primary btn-sm view-patient-btn rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center"
+                                                        class="btn-info btn-sm"
                                                         data-user="{{ json_encode($user) }}" title="View Profile">
-                                                        <i class="bx bx-show me-1"></i> View
+                                                        <i class="bx bx-show me-1"></i>
                                                     </button>
                                                 @endif
 
