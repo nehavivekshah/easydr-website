@@ -6,7 +6,7 @@
         <div class="dashboard-hero mb-4">
             <div class="hero-content" style="font-size: 25px;">
                 <h2>Welcome back, {{ Auth::user()->first_name ?? 'Admin' }}! 👋</h2>
-                <p class="text-dark-50 mb-0">Here's what's happening today, {{ \Carbon\Carbon::now()->format('F j, Y') }}.
+                <p class="text-white-50 mb-0">Here's what's happening today, {{ \Carbon\Carbon::now()->format('F j, Y') }}.
                 </p>
             </div>
         </div>
