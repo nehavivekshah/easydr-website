@@ -1064,7 +1064,7 @@ label:has(+ .form-select[required])::after {
 }
 
 .modal-header {
-    background-color: var(--color-default);
+    /* background-color: var(--color-default); */
     color: white;
     border-top-left-radius: var(--radius-lg);
     border-top-right-radius: var(--radius-lg);
