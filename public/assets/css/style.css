@@ -6,6 +6,7 @@
     /* Deep Blue from Frontend */
     --color-second: #07CCEC;
     /* Cyan from Frontend */
+    --color-cyan-light: #ddf5fb;
     --color-white: #ffffff;
     --color-body: #f7f7f7;
     /* Soft light background */
@@ -117,14 +118,14 @@ a {
 #btn {
     font-size: 1.5rem;
     cursor: pointer;
-    color: var(--color-default);
+    color: var(--color-black);
     padding: 5px;
     border-radius: 5px;
     transition: background 0.2s;
 }
 
 #btn:hover {
-    background-color: rgba(0, 102, 102, 0.1);
+    background-color: var(--color-cyan-light);
 }
 
 .header-icon {
@@ -519,22 +520,36 @@ a {
     width: calc(100% - 260px);
 }
 
-.task__section .text {
-    font-size: 1.5rem;
+.dashboard-hero {
+    background: linear-gradient(135deg, rgba(30, 11, 155, 0.9) 0%, rgba(7, 204, 236, 0.9) 100%), url('/public/assets/frontend/img/slider/slider_img01.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 24px;
+    padding: 35px 40px;
+    box-shadow: 0 10px 30px rgba(30, 11, 155, 0.15);
+    color: white;
+    margin-bottom: 25px;
+}
+
+.dashboard-hero h2 {
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--color-black);
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.dashboard-hero p {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Dashboard Widgets */
 .dashboard-overview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .overview-box {

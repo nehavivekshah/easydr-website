@@ -3,10 +3,11 @@
 
 @section('content')
     <section class="task__section">
-        <div class="text">
-            Welcome {{Auth::User()->first_name}}
-            <div class="bradcrum">
-                Dashboard
+        <div class="dashboard-hero mb-4">
+            <div class="hero-content">
+                <h2>Welcome back, {{ Auth::user()->first_name ?? 'Admin' }}! 👋</h2>
+                <p class="text-white-50 mb-0">Here's what's happening today, {{ \Carbon\Carbon::now()->format('F j, Y') }}.
+                </p>
             </div>
         </div>
         <div class="container-fluid p-0">
@@ -78,12 +79,14 @@
                 </div>
             </div>
 
-            <div class="row my-2">
-                <div class="col-md-6">
+            <div class="row my-4">
+                <div class="col-md-6 mb-4 mb-md-0">
                     <!-- Appointment Chart -->
-                    <div class="card mb-4">
-                        <div class="card-header">Appointment Chart</div>
-                        <div class="card-body">
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                            <h5 class="mb-0 fw-bold text-dark">Appointment Overview</h5>
+                        </div>
+                        <div class="card-body p-4">
                             @if(count($appointmentChartData) > 0)
                                 <canvas id="appointmentChart"></canvas>
                             @else
@@ -95,9 +98,11 @@
 
                 <div class="col-md-6">
                     <!-- Patient Chart -->
-                    <div class="card mb-4">
-                        <div class="card-header">Patient Chart</div>
-                        <div class="card-body pb-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                            <h5 class="mb-0 fw-bold text-dark">Patient Demographics</h5>
+                        </div>
+                        <div class="card-body p-4">
                             <canvas id="patientChart"></canvas>
                         </div>
                     </div>
