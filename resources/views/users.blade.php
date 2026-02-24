@@ -51,7 +51,7 @@
             .modal-profile-info h3 {
                 font-size: 1.5rem;
                 font-weight: 800;
-                color: #1e293b;
+                color: #ffffff;
                 margin-bottom: 8px;
             }
 
@@ -189,7 +189,7 @@
                 font-size: 0.95rem;
                 font-weight: 600;
                 color: #1e293b;
-                word-break: break-all;
+                word-break: break-word;
             }
 
             /* History List Enhancement */
@@ -443,7 +443,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn-close position-absolute top-0 end-0 m-4" data-bs-dismiss="modal"
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-4" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
 
@@ -471,7 +471,7 @@
                         <div class="row g-4">
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
-                                    <div class="info-card-icon icon-blue"><i class="fas fa-phone-alt"></i></div>
+                                    <div class="info-card-icon icon-blue"><i class="bx bx-phone"></i></div>
                                     <div>
                                         <div class="info-card-label">Mobile Number</div>
                                         <div id="ov-mobile" class="info-card-value">-</div>
@@ -480,7 +480,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
-                                    <div class="info-card-icon icon-purple"><i class="fas fa-envelope"></i></div>
+                                    <div class="info-card-icon icon-purple"><i class="bx bx-envelope"></i></div>
                                     <div>
                                         <div class="info-card-label">Email Address</div>
                                         <div id="ov-email" class="info-card-value">-</div>
@@ -489,7 +489,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
-                                    <div class="info-card-icon icon-green"><i class="fas fa-birthday-cake"></i></div>
+                                    <div class="info-card-icon icon-green"><i class="bx bxs-cake"></i></div>
                                     <div>
                                         <div class="info-card-label">Date of Birth</div>
                                         <div id="ov-dob" class="info-card-value">-</div>
@@ -498,7 +498,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="info-card">
-                                    <div class="info-card-icon icon-orange"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div class="info-card-icon icon-orange"><i class="bx bxs-map"></i></div>
                                     <div>
                                         <div class="info-card-label">Location / City</div>
                                         <div id="ov-city" class="info-card-value">-</div>
@@ -507,7 +507,7 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <div class="info-card">
-                                    <div class="info-card-icon icon-blue"><i class="fas fa-home"></i></div>
+                                    <div class="info-card-icon icon-blue"><i class="bx bx-home"></i></div>
                                     <div>
                                         <div class="info-card-label">Full Address</div>
                                         <div id="ov-address" class="info-card-value">-</div>
@@ -632,11 +632,11 @@
                             <div>
                                 <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
                                 <div class="text-dark fw-bold small">
-                                    <i class="far fa-calendar-alt me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                    <i class="bx bx-calendar me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                                 </div>
                             </div>
                             <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
-                                <i class="fas fa-download me-1"></i> PDF
+                                <i class="bx bx-download me-1"></i> PDF
                             </a>
                         </div>
                         <div class="card-body p-0">
@@ -645,7 +645,7 @@
                                     <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                <i class="fas fa-pills"></i>
+                                                <i class="bx bx-capsule"></i>
                                             </div>
                                             <div>
                                                 <div class="fw-bold text-dark">${m.medicine_name}</div>
@@ -674,12 +674,12 @@
                 list.innerHTML = data.appointments.map((a, idx) => `
                     <div class="history-item" style="animation-delay: ${idx * 0.1}s">
                         <div class="history-info">
-                            <div class="history-icon icon-blue"><i class="fas fa-stethoscope"></i></div>
+                            <div class="history-icon icon-blue"><i class="bx bx-plus-medical"></i></div>
                             <div class="history-content">
                                 <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
                                 <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
                                 <div class="history-date">
-                                    <i class="far fa-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                    <i class="bx bx-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
                                 </div>
                             </div>
                         </div>
@@ -705,12 +705,12 @@
                 list.innerHTML = paid.map((a, idx) => `
                     <div class="history-item" style="animation-delay: ${idx * 0.1}s">
                         <div class="history-info">
-                            <div class="history-icon icon-green"><i class="fas fa-receipt"></i></div>
+                            <div class="history-icon icon-green"><i class="bx bx-receipt"></i></div>
                             <div class="history-content">
                                 <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
                                 <h6>Amount: $${a.fees || '0'}</h6>
                                 <div class="history-date">
-                                    <i class="fas fa-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                    <i class="bx bx-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                                 </div>
                             </div>
                         </div>
