@@ -297,6 +297,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Admin Patient Actions
     Route::get('/admin/get-patient-details/{uid}', [WebUserController::class, 'getAdminPatientDetails'])->name('admin.getPatientDetails');
+    Route::get('/admin/get-doctor-details/{uid}', [WebUserController::class, 'getAdminDoctorDetails'])->name('admin.getDoctorDetails');
 
     Route::get('/admin/general-settings', [WebSettingController::class, 'generalSettings']);
 

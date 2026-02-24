@@ -154,6 +154,7 @@ class WebUserController extends Controller
                     'patients.marital_status',
                     'doctors.specialist',
                     'doctors.fees',
+                    'doctors.experience',
                     'doctors.wallet',
                     'doctors.license',
                     'doctors.education',
@@ -229,6 +230,8 @@ class WebUserController extends Controller
                     'patients.health_card_file',
                     'patients.marital_status',
                     'doctors.specialist',
+                    'doctors.fees',
+                    'doctors.experience',
                     'doctors.license',
                     'doctors.education',
                     'doctors.about',
@@ -849,6 +852,48 @@ class WebUserController extends Controller
 
         foreach ($prescriptions as $prescription) {
             $prescription->medicines = \App\Models\Prescription_medinices::where('prescribe_id', $prescription->id)->get();
+        }
+
+        return response()->json([
+            'appointments' => $appointments,
+            'prescriptions' => $prescriptions
+        ]);
+    }
+
+    public function getAdminDoctorDetails($uid)
+    {
+        // Require admin or staff authentication
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+
+        // The UID passed from the modal is the `users.id` table, not `doctors.id`.
+        $doctor = \App\Models\Doctors::where('uid', $uid)->first();
+
+        if (!$doctor) {
+            return response()->json([
+                'appointments' => [],
+                'prescriptions' => []
+            ]);
+        }
+
+        $did = $doctor->id;
+
+        // Fetch ALL Appointment History for this doctor globally
+        $appointments = \App\Models\Appointments::where('did', $did)
+            ->orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
+            ->get();
+
+        // Fetch ALL Prescriptions published by this doctor globally
+        $prescriptions = \App\Models\Prescriptions::where('doctor_id', $did)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($prescriptions as $prescription) {
+            // Decode the JSON medicines field so Javascript receives an array
+            $prescription->medicines = json_decode($prescription->medicines, true) ?: [];
         }
 
         return response()->json([
