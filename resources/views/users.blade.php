@@ -149,6 +149,14 @@
                                             class="font-weight-bold badge bg-success">Active</span>@else<span
                                                     class="font-weight-bold badge bg-danger">Deactive</span>@endif</td>
                                             <td class="text-center">
+                                                @if($type == 'patient-directory')
+                                                    <button
+                                                        class="btn btn-primary btn-sm view-patient-btn rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center"
+                                                        data-user="{{ json_encode($user) }}" title="View Profile">
+                                                        <i class="bx bx-show me-1"></i> View
+                                                    </button>
+                                                @endif
+
                                                 @if(
                                                         in_array('users_edit', $roleArray) || in_array('patients_edit', $roleArray) || in_array('doctors_edit', $roleArray)
                                                         || in_array('admin_accounts_edit', $roleArray) || in_array('staff_accounts_edit', $roleArray) || in_array('All', $roleArray)
@@ -177,4 +185,194 @@
             </div>
         </div>
     </section>
+
+    <!-- Patient Profile View Modal -->
+    <div class="modal fade" id="viewPatientModal" tabindex="-1" aria-labelledby="viewPatientModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header bg-light border-0 rounded-top-4">
+                    <h5 class="modal-title fw-bold text-dark" id="viewPatientModalLabel">
+                        <i class="bx bx-user-circle text-primary me-2"></i>Patient Profile
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row align-items-center mb-4 pb-3 border-bottom">
+                        <div class="col-auto">
+                            <img id="modalPatientPhoto" src="" alt="Profile Photo" class="rounded-circle shadow-sm"
+                                style="width: 80px; height: 80px; object-fit: cover; border: 3px solid white;">
+                        </div>
+                        <div class="col">
+                            <h4 id="modalPatientName" class="mb-1 fw-bold text-primary"></h4>
+                            <p id="modalPatientLocation" class="text-muted mb-0 small"><i
+                                    class="bx bx-map shadow-sm rounded-circle p-1 me-1 bg-white"></i> <span></span></p>
+                        </div>
+                        <div class="col-auto text-end">
+                            <span id="modalPatientStatus" class="badge rounded-pill px-3 py-2 fs-6 shadow-sm"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <!-- Contact Information -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-secondary text-uppercase mb-3"
+                                style="font-size: 0.85rem; letter-spacing: 0.5px;">Contact Information</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2 d-flex align-items-start"><i
+                                        class="bx bx-envelope text-primary mt-1 me-2"></i> <strong
+                                        class="me-2">Email:</strong> <span id="modalPatientEmail"
+                                        class="text-break text-muted"></span></li>
+                                <li class="mb-2 d-flex align-items-start"><i class="bx bx-phone text-primary mt-1 me-2"></i>
+                                    <strong class="me-2">Mobile:</strong> <span id="modalPatientMobile"
+                                        class="text-muted"></span>
+                                </li>
+                                <li class="mb-2 d-flex align-items-start"><i
+                                        class="bx bx-phone-call text-primary mt-1 me-2"></i> <strong class="me-2">Alt
+                                        Mobile:</strong> <span id="modalPatientAltMobile" class="text-muted"></span></li>
+                                <li class="mb-0 d-flex align-items-start"><i class="bx bx-home text-primary mt-1 me-2"></i>
+                                    <strong class="me-2 text-nowrap">Address:</strong> <span id="modalPatientAddress"
+                                        class="text-muted"></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Health & Physical Information -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-secondary text-uppercase mb-3"
+                                style="font-size: 0.85rem; letter-spacing: 0.5px;">Health & Physical</h6>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2 d-flex align-items-center"><i class="bx bx-calendar text-primary me-2"></i>
+                                    <strong class="me-2">DOB:</strong> <span id="modalPatientDob" class="text-muted"></span>
+                                </li>
+                                <li class="mb-2 d-flex align-items-center"><i
+                                        class="bx bx-male-female text-primary me-2"></i> <strong
+                                        class="me-2">Gender:</strong> <span id="modalPatientGender"
+                                        class="text-muted"></span></li>
+                                <li class="mb-2 d-flex align-items-center"><i class="bx bx-droplet text-danger me-2"></i>
+                                    <strong class="me-2">Blood Group:</strong> <span id="modalPatientBloodGroup"
+                                        class="fw-bold text-dark"></span>
+                                </li>
+                                <li class="mb-2 d-flex align-items-center"><i class="bx bx-ruler text-primary me-2"></i>
+                                    <strong class="me-2">Height:</strong> <span id="modalPatientHeight"
+                                        class="text-muted"></span>
+                                </li>
+                                <li class="mb-0 d-flex align-items-center"><i
+                                        class="bx bx-bar-chart-alt-2 text-primary me-2"></i> <strong
+                                        class="me-2">Weight:</strong> <span id="modalPatientWeight"
+                                        class="text-muted"></span></li>
+                            </ul>
+                        </div>
+
+                        <!-- ID & Documentation -->
+                        <div class="col-12 mt-4 pt-3 border-top">
+                            <h6 class="fw-bold text-secondary text-uppercase mb-3"
+                                style="font-size: 0.85rem; letter-spacing: 0.5px;">Identification & Cards</h6>
+                            <div class="row bg-light rounded-4 p-3 border">
+                                <div class="col-md-4 mb-3 mb-md-0 border-end border-md-0">
+                                    <small class="text-muted d-block mb-1">Aadhar Card</small>
+                                    <strong id="modalPatientAadhar" class="text-dark"></strong>
+                                </div>
+                                <div class="col-md-4 mb-3 mb-md-0 border-end border-md-0">
+                                    <small class="text-muted d-block mb-1">Health Card No.</small>
+                                    <strong id="modalPatientHealthCard" class="text-primary"></strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <small class="text-muted d-block mb-1">Verification Status</small>
+                                    <span id="modalPatientVerifyStatus"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pb-4 pe-4">
+                    <button type="button" class="btn btn-light rounded-pill shadow-sm px-4"
+                        data-bs-dismiss="modal">Close</button>
+                    <a href="#" id="modalEditButton" class="btn btn-default rounded-pill shadow-sm px-4"><i
+                            class="bx bx-edit me-1"></i> Edit User</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.view-patient-btn').on('click', function () {
+                var user = $(this).data('user');
+
+                // Name and Photo
+                $('#modalPatientName').text((user.first_name || '') + ' ' + (user.last_name || ''));
+                var photoPath = user.photo ? '/public/assets/images/profiles/' + user.photo : '/public/assets/images/profiles/default.png'; // Fallback mapping
+                $('#modalPatientPhoto').attr('src', photoPath);
+
+                // Location
+                var locationStr = [];
+                if (user.city) locationStr.push(user.city);
+                if (user.state) locationStr.push(user.state);
+                if (user.country) locationStr.push(user.country);
+                $('#modalPatientLocation span').text(locationStr.join(', ') || 'Location Not Provided');
+
+                // Status Badge
+                var statusBadge = $('#modalPatientStatus');
+                if (user.status == '1') {
+                    statusBadge.text('Active').removeClass('bg-danger').addClass('bg-success');
+                } else {
+                    statusBadge.text('Deactive').removeClass('bg-success').addClass('bg-danger');
+                }
+
+                // Contact Info
+                $('#modalPatientEmail').text(user.email || '--');
+                $('#modalPatientMobile').text(user.mobile || '--');
+                $('#modalPatientAltMobile').text(user.altr_mobile || '--');
+                $('#modalPatientAddress').text(user.address || '--');
+
+                // Health Info
+                $('#modalPatientDob').text(user.dob || '--');
+
+                var genderMap = { '1': 'Male', '2': 'Female', '3': 'Other' };
+                $('#modalPatientGender').text(genderMap[user.gender] || '--');
+
+                $('#modalPatientBloodGroup').text(user.blood_group || '--');
+                var heightVal = user.height ? user.height + ' Inch' : '--';
+                $('#modalPatientHeight').text(heightVal);
+                var weightVal = user.weight ? user.weight + ' Kg' : '--';
+                $('#modalPatientWeight').text(weightVal);
+
+                // IDs
+                $('#modalPatientAadhar').text(user.adhar || '--');
+                $('#modalPatientHealthCard').text(user.health_card || 'Not Issued');
+
+                // Health Card Verification Status
+                var isVerified = false;
+                var isExpired = false;
+
+                if (user.hc_verified_at && user.hc_expairy_date) {
+                    var expiryDate = new Date(user.hc_expairy_date);
+                    if (expiryDate > new Date()) {
+                        isVerified = true;
+                    } else {
+                        isExpired = true;
+                    }
+                }
+
+                var verifyBadgeHtml = '';
+                if (isVerified) {
+                    verifyBadgeHtml = '<span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-2"><i class="bx bx-check-shield me-1"></i>Verified</span>';
+                } else if (isExpired) {
+                    verifyBadgeHtml = '<span class="badge bg-danger bg-opacity-10 text-danger border border-danger rounded-pill px-2"><i class="bx bx-error me-1"></i>Expired</span>';
+                } else {
+                    verifyBadgeHtml = '<span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary rounded-pill px-2"><i class="bx bx-time me-1"></i>Not Verified</span>';
+                }
+                $('#modalPatientVerifyStatus').html(verifyBadgeHtml);
+
+                // Set Edit Action Link dynamically based on global $type if exists, else generic fallback mapping
+                var editType = "{{ $type ?? 'patient-directory' }}";
+                $('#modalEditButton').attr('href', '/admin/manage-user/' + editType + '/' + user.id);
+
+                // Show Modal
+                $('#viewPatientModal').modal('show');
+            });
+        });
+    </script>
+@endpush
