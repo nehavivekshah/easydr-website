@@ -127,7 +127,7 @@ a {
     /* Slightly wider closed state */
     padding: 60px 0 0 0;
     z-index: 100;
-    background-color: var(--color-black);
+    background-color: var(--color-default);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: fixed;
     top: 0;
@@ -170,23 +170,25 @@ a {
     align-items: center;
     text-decoration: none;
     color: rgba(255, 255, 255, 0.9);
-    padding: 10px 12px;
+    padding: 12px 14px;
     border-radius: var(--radius-md);
     white-space: nowrap;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .sidebar li a i {
     font-size: 1.4rem;
     min-width: 35px;
     text-align: center;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .sidebar li a .link_name {
     font-size: 0.95rem;
     font-weight: 500;
     opacity: .8;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar.open li a .link_name {
@@ -202,17 +204,30 @@ a {
 
 .sidebar ul.sb_submenu {
     padding: 5px 0 5px 48px !important;
+    position: relative;
+}
+
+.sidebar ul.sb_submenu::before {
+    content: '';
+    position: absolute;
+    left: 27px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
 }
 
 .sidebar ul.sb_submenu li a {
-    padding: 8px 0;
+    padding: 10px 0;
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.7);
 }
 
 .sidebar ul.sb_submenu li a:hover {
-    color: #fff;
+    color: var(--color-second);
     background: transparent;
+    padding-left: 5px;
 }
 
 .sidebar ul.sb_submenu li a i {
@@ -269,7 +284,9 @@ a {
     width: 70px;
     height: 70px;
     padding: 10px 14px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background: linear-gradient(180deg, rgba(25, 29, 59, 0.85) 0%, rgba(25, 29, 59, 1) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
     transition: all 0.4s ease;
     border-radius: 0;
 }
@@ -281,14 +298,19 @@ a {
 .sidebar .profile_details {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .sidebar li img {
-    height: 40px;
-    width: 40px;
+    height: 42px;
+    width: 42px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: border-color 0.3s ease;
+}
+
+.sidebar li.profile:hover img {
+    border-color: var(--color-second);
 }
 
 .sidebar .profile .name,
@@ -299,12 +321,15 @@ a {
 
 .sidebar .profile .name {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
 }
 
 .sidebar .profile .designation {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    color: var(--color-second);
+    font-weight: 500;
+    margin-top: -2px;
 }
 
 /* Content Area */

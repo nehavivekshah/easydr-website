@@ -19,6 +19,16 @@
     color: var(--color-second);
 }
 
+/* Interactive Hover States for Sidebar Icons */
+.sidebar li:not(.profile):hover>a i {
+    transform: translateX(4px) scale(1.1);
+    color: var(--color-second);
+}
+
+.sidebar li:not(.profile):hover>a .link_name {
+    color: #fff;
+}
+
 /* Fix sidebar submenu padding as requested */
 .sidebar ul.sb_submenu {
     padding: 5px 5px 5px 10px !important;
