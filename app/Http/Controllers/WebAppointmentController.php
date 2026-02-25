@@ -254,7 +254,9 @@ class WebAppointmentController extends Controller
         $doctors = User::leftJoin('doctors', 'users.id', '=', 'doctors.uid')
             ->select('users.*', 'doctors.*', 'doctors.id as doctor_id')->where('role', '=', '4')->where('status', '=', '1')->get();
 
-        return view('manageAppointment', ['appointments' => $appointments, 'doctors' => $doctors, 'patients' => $patients]);
+        $hasActiveGateways = \App\Models\PaymentGatewayConfig::where('is_active', true)->exists();
+
+        return view('manageAppointment', ['appointments' => $appointments, 'doctors' => $doctors, 'patients' => $patients, 'hasActiveGateways' => $hasActiveGateways]);
     }
 
     public function cancelAppointmentPost($appointmentId)

@@ -103,7 +103,9 @@
                                         <div class="input-group">
                                             <span class="input-group-text"><i class='bx bx-wallet'></i></span>
                                             <select class="form-control" id="payment_mode" name="payment_mode" required>
-                                                <option value="Online Payment" @if(($appointments->payment_mode ?? '') == 'Online Payment') selected @endif>Online Payment</option>
+                                                @if($hasActiveGateways ?? true)
+                                                    <option value="Online Payment" @if(($appointments->payment_mode ?? '') == 'Online Payment') selected @endif>Online Payment</option>
+                                                @endif
                                                 <option value="Cash Payment" @if(($appointments->payment_mode ?? '') == 'Cash Payment') selected @endif>Cash Payment</option>
                                                 <option value="Health Card" @if(($appointments->payment_mode ?? '') == 'Health Card') selected @endif>Health Card</option>
                                             </select>
@@ -295,8 +297,8 @@
                     }
                 @endif
 
-                                // Auto-generate video meeting links based on consultation mode
-                                const $meetingProvider = $('#meeting_provider');
+                                        // Auto-generate video meeting links based on consultation mode
+                                        const $meetingProvider = $('#meeting_provider');
                 const $meetingLink = $('#meeting_link');
 
                 function updateMeetingLink() {
