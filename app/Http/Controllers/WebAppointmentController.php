@@ -248,8 +248,11 @@ class WebAppointmentController extends Controller
     {
 
         $appointments = Appointments::where('id', '=', ($request->id ?? ''))->first();
-        $patients = User::where('role', '=', '5')->where('status', '=', '1')->get();
-        $doctors = User::where('role', '=', '4')->where('status', '=', '1')->get();
+        $patients = User::leftJoin('patients', 'users.id', '=', 'patients.uid')
+            ->select('users.*', 'patients.*', 'patients.id as patient_id')->where('role', '=', '5')->where('status', '=', '1')->get();
+
+        $doctors = User::leftJoin('doctors', 'users.id', '=', 'doctors.uid')
+            ->select('users.*', 'doctors.*', 'doctors.id as doctor_id')->where('role', '=', '4')->where('status', '=', '1')->get();
 
         return view('manageAppointment', ['appointments' => $appointments, 'doctors' => $doctors, 'patients' => $patients]);
     }

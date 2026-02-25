@@ -834,7 +834,9 @@ class FrontendController extends Controller
                 'usermetas.state'
             )
             ->orderBy('last_visit', 'desc')
-            ->get();
+            ->get()
+            ->unique('user_id')
+            ->values();
 
         return view('frontend.account.my_doctors', compact('doctors'));
     }
