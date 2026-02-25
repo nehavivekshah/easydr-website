@@ -165,12 +165,18 @@
                                                     @endif
 
                                                     {{-- Video OR Pay Button --}}
-                                                    @if($appointment->payment_status == 'unpaid' && !$isExpired && $appointment->status != '2')
+                                                    @if($appointment->payment_status == 'unpaid' && !$isExpired && $appointment->status != '2' && ($hasActiveGateways ?? true))
                                                         {{-- Replace Video with Pay Button if Unpaid --}}
                                                         <a href="{{ route('repay', $appointment->id) }}" class="action-btn"
                                                             style="background: #28a745;" title="Pay Now">
                                                             Pay
                                                         </a>
+                                                    @elseif($appointment->payment_status == 'unpaid' && !$isExpired && $appointment->status != '2' && !($hasActiveGateways ?? true))
+                                                        {{-- If unpaid but no active gateways, do not show 'Pay' button --}}
+                                                        <button class="action-btn btn-video" disabled
+                                                            title="Online payment is currently unavailable">
+                                                            <i class="fas fa-video-slash"></i>
+                                                        </button>
                                                     @else
                                                         {{-- Show Video Button logic if Paid/Expired --}}
                                                         @if($isSessionActive && !$isExpired)

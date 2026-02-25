@@ -201,9 +201,13 @@ class FrontendController extends Controller
         // Get reviews separately
         $reviews = Doctor_reviews::where('doctor_id', $doctor->id)->limit(12)->get();
 
+        // Check for active payment gateways
+        $hasActiveGateways = \App\Models\PaymentGatewayConfig::where('is_active', true)->exists();
+
         return view('frontend/doctorDetails', [
             'doctor' => $doctor,
-            'reviews' => $reviews
+            'reviews' => $reviews,
+            'hasActiveGateways' => $hasActiveGateways
         ]);
     }
 
@@ -1940,7 +1944,10 @@ class FrontendController extends Controller
                 ->orderByRaw("CASE WHEN appointments.date < ? THEN appointments.time END DESC", [$dateStr])
                 ->paginate(6);
 
-            return view('frontend/appointments', compact('appointments'));
+            // Check for active payment gateways
+            $hasActiveGateways = \App\Models\PaymentGatewayConfig::where('is_active', true)->exists();
+
+            return view('frontend/appointments', compact('appointments', 'hasActiveGateways'));
 
         } else {
             return redirect('/login');

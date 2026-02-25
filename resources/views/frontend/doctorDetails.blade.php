@@ -118,7 +118,7 @@
                                         {{-- About Section --}}
                                         <div class="mb-5">
                                             <!-- <h5 class="mb-3">About Dr. {{ $doctor->first_name ?? '' }}
-                                                                                                                                    {{ $doctor->last_name ?? '' }}</h5> -->
+                                                                                                                                        {{ $doctor->last_name ?? '' }}</h5> -->
                                             @if(!empty($doctor->about))
                                                 <p>{!! nl2br(e($doctor->about)) !!}</p>
                                             @else
@@ -328,7 +328,9 @@
                                         class="text-danger">*</span></label>
                                 <select class="form-control" id="payment_mode" name="payment_mode" required>
                                     <option value="" selected disabled>-- Select Payment Option --</option>
-                                    <option value="Online Payment">Online Payment</option>
+                                    @if($hasActiveGateways ?? true)
+                                        <option value="Online Payment">Online Payment</option>
+                                    @endif
                                     <option value="Cash Payment">Cash Payment</option>
                                     <option value="Health Card">Health Card</option>
                                 </select>
@@ -577,6 +579,6 @@
                 appointmentModal.show();
             @endif
 
-            });
+                });
     </script>
 @endpush
