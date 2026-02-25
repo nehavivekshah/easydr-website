@@ -4,52 +4,70 @@
 
 @section('content')
     <section class="task__section">
-        <div class="text">
-            Billing
-            <div class="btn-group">
-                <button type="button" class="btn btn-default btn-sm" onclick="openAddModal()">
-                    <i class="bx bx-plus"></i> <span>Process Payment</span>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="mb-0 text-dark fw-bold" style="font-size: 1.5rem;">Billing</h2>
+                <div class="text-muted small mt-1">Home / Pharmacy / Billing</div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-default rounded-pill shadow-sm px-4" onclick="openAddModal()">
+                    <i class="bx bx-plus me-1 border-0 bg-transparent text-white p-0"></i> <span>Process Payment</span>
                 </button>
             </div>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid p-0">
             <div class="row">
-                <div class="col-md-12 table-responsive">
-                    <table id="lists" class="table table-striped table-bordered m-table" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th width="50px">Sr. No.</th>
-                                <th>Store ID</th>
-                                <th>Order ID</th>
-                                <th>Total Amount</th>
-                                <th>Status</th>
-                                <th>Created At</th>
-                                <th width="150px">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($billings as $k => $billing)
-                                <tr>
-                                    <td class="text-center">{{ $k + 1 }}</td>
-                                    <td>{{ $billing->store_id }}</td>
-                                    <td>{{ $billing->order_id }}</td>
-                                    <td>{{ $billing->total_amount }}</td>
-                                    <td>{{ $billing->payment_status }}</td>
-                                    <td>{{ $billing->created_at }}</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-info text-white"
-                                            onclick="editBilling({{ $billing->id }})">
-                                            <i class="bx bx-edit"></i>
-                                        </button>
-                                        <a href="{{ route('billing.delete', $billing->id) }}" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure?')">
-                                            <i class="bx bx-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="col-md-12 pb-3">
+                    <div class="card border-0 shadow-sm rounded-4 w-100">
+                        <div class="card-body p-3 table-responsive">
+                            <table id="lists" class="table table-striped table-bordered m-table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th width="50px" class="text-center">Sr. No.</th>
+                                        <th>Store ID</th>
+                                        <th>Order ID</th>
+                                        <th>Total Amount</th>
+                                        <th class="text-center">Status</th>
+                                        <th>Created At</th>
+                                        <th class="wpx-100 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($billings as $k => $billing)
+                                        <tr>
+                                            <td class="text-center">{{ $k + 1 }}</td>
+                                            <td>{{ $billing->store_id }}</td>
+                                            <td>{{ $billing->order_id }}</td>
+                                            <td>Rs. {{ number_format($billing->total_amount, 2) }}</td>
+                                            <td class="text-center">
+                                                @if($billing->payment_status == 'Paid')
+                                                    <span class="badge bg-success font-weight-bold">Paid</span>
+                                                @elseif($billing->payment_status == 'Failed')
+                                                    <span class="badge bg-danger font-weight-bold">Failed</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark font-weight-bold">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $billing->created_at }}</td>
+                                            <td class="text-center">
+                                                <button
+                                                    class="btn btn-info btn-sm rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center"
+                                                    onclick="editBilling({{ $billing->id }})" title="Edit">
+                                                    <i class="bx bx-edit"></i>
+                                                </button>
+                                                <a href="{{ route('billing.delete', $billing->id) }}"
+                                                    class="btn btn-danger btn-sm rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center"
+                                                    onclick="return confirm('Are you sure? This action cannot be undone.')"
+                                                    title="Delete">
+                                                    <i class="bx bx-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

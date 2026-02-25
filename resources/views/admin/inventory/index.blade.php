@@ -4,47 +4,54 @@
 
 @section('content')
     <section class="task__section">
-        <div class="text">
-            Inventory (Store ID: {{ $store_id ?? 'N/A' }})
-            <div class="btn-group">
-                <button type="button" class="btn btn-default btn-sm" onclick="openAddModal()">
-                    <i class="bx bx-plus"></i> <span>Update Stock</span>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="mb-0 text-dark fw-bold" style="font-size: 1.5rem;">Inventory</h2>
+                <div class="text-muted small mt-1">Home / Pharmacy / Inventory &mdash; Store ID: {{ $store_id ?? 'N/A' }}</div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-default rounded-pill shadow-sm px-4" onclick="openAddModal()">
+                    <i class="bx bx-plus me-1 border-0 bg-transparent text-white p-0"></i> <span>Update Stock</span>
                 </button>
             </div>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid p-0">
             <div class="row">
-                <div class="col-md-12 table-responsive">
-                    <table id="lists" class="table table-striped table-bordered m-table" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th width="50px">Sr. No.</th>
-                                <th>Medicine ID</th>
-                                <th>Quantity</th>
-                                <th>Updated At</th>
-                                <th width="150px">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($inventory as $k => $item)
-                                <tr>
-                                    <td class="text-center">{{ $k + 1 }}</td>
-                                    <td>{{ $item->medicine_id }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>{{ $item->updated_at }}</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm btn-info text-white" onclick="editInventory({{ $item->id }})">
-                                            <i class="bx bx-edit"></i>
-                                        </button>
-                                        <a href="{{ route('inventory.delete', $item->id) }}" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure?')">
-                                            <i class="bx bx-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="col-md-12 pb-3">
+                    <div class="card border-0 shadow-sm rounded-4 w-100">
+                        <div class="card-body p-3 table-responsive">
+                            <table id="lists" class="table table-striped table-bordered m-table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th width="50px" class="text-center">Sr. No.</th>
+                                        <th>Medicine ID</th>
+                                        <th>Quantity</th>
+                                        <th>Updated At</th>
+                                        <th class="wpx-100 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($inventory as $k => $item)
+                                        <tr>
+                                            <td class="text-center">{{ $k + 1 }}</td>
+                                            <td>{{ $item->medicine_id }}</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ $item->updated_at }}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-info btn-sm rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center" onclick="editInventory({{ $item->id }})" title="Edit">
+                                                    <i class="bx bx-edit"></i>
+                                                </button>
+                                                <a href="{{ route('inventory.delete', $item->id) }}" class="btn btn-danger btn-sm rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center"
+                                                    onclick="return confirm('Are you sure? This action cannot be undone.')" title="Delete">
+                                                    <i class="bx bx-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
