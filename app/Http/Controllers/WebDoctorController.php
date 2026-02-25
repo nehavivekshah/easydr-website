@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 
-use Carbon\Carbon; 
+use Carbon\Carbon;
 
 use App\Models\Branches;
 use App\Models\Doctors;
@@ -15,7 +15,8 @@ use App\Models\Appointments;
 
 class WebDoctorController extends Controller
 {
-    function assignedDoctors(){
+    function assignedDoctors()
+    {
         return view('assignedDoctors');
     }
     public function doctorAvailability()
@@ -24,15 +25,16 @@ class WebDoctorController extends Controller
         $daSlots = Doctor_availables::leftJoin('users', 'doctor_availables.doctor_id', '=', 'users.id')
             ->leftJoin('doctors', 'doctor_availables.doctor_id', '=', 'doctors.uid')
             ->select(
-                'users.first_name', 
-                'users.last_name', 
-                'doctors.specialist', 
+                'users.first_name',
+                'users.last_name',
+                'users.photo',
+                'doctors.specialist',
                 'doctor_availables.*'
             )
             ->orderBy('doctor_availables.to_date', 'DESC') // Order by date descending
             ->orderBy('doctor_availables.start_time', 'ASC') // Order by start time ascending
             ->get();
-    
+
         // Return the view with the fetched data
         return view('doctorAvailability', [
             'daSlots' => $daSlots
@@ -46,15 +48,15 @@ class WebDoctorController extends Controller
             $daSlots = Doctor_availables::leftJoin('users', 'doctor_availables.doctor_id', '=', 'users.id')
                 ->leftJoin('doctors', 'doctor_availables.doctor_id', '=', 'doctors.uid')
                 ->select(
-                    'users.first_name', 
-                    'users.last_name', 
-                    'doctors.specialist', 
+                    'users.first_name',
+                    'users.last_name',
+                    'doctors.specialist',
                     'doctor_availables.*'
                 )
                 ->where('doctor_availables.id', '=', $request->id)
                 ->first();
         }
-    
+
         // Retrieve the list of all doctors
         $doctors = Doctors::leftJoin('users', 'doctors.uid', '=', 'users.id')
             ->select(
@@ -63,7 +65,7 @@ class WebDoctorController extends Controller
                 'doctors.*'
             )
             ->get();
-    
+
         // Return the view with the data
         return view('manageSlot', [
             'daSlots' => $daSlots,
@@ -83,10 +85,10 @@ class WebDoctorController extends Controller
             'endTime' => 'required|after:startTime',
             'duration' => 'required|integer|min:1|max:120',
         ]);
-    
+
         // Convert availableDays array to a comma-separated string
         $availableDays = implode(',', $validatedData['daysAvailable']);
-    
+
         if (empty($request->id)) {
             // Create a new record
             $docAvailable = new Doctor_availables();
@@ -98,7 +100,7 @@ class WebDoctorController extends Controller
             $docAvailable->end_time = $validatedData['endTime'];
             $docAvailable->duration = $validatedData['duration'];
             $docAvailable->save();
-    
+
             return redirect('/admin/doctor-availability')
                 ->with('success', 'Successfully Added.');
         } else {
@@ -112,7 +114,7 @@ class WebDoctorController extends Controller
             $docAvailable->end_time = $validatedData['endTime'];
             $docAvailable->duration = $validatedData['duration'];
             $docAvailable->save();
-    
+
             return back()->with('success', 'Successfully Updated.');
         }
     }
