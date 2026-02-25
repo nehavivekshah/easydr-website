@@ -1,189 +1,275 @@
 @extends('layout')
 @section('title','Manage Store - Easy Doctor')
 
+@push('styles')
+<style>
+    /* ---- Wizard Stepper ---- */
+    .wizard-stepper { display:flex; align-items:center; justify-content:center; background:#f8f9fa; border-radius:12px; padding:20px 30px; margin-bottom:28px; gap:0; }
+    .wizard-step { display:flex; flex-direction:column; align-items:center; flex:1; position:relative; cursor:pointer; }
+    .wizard-step:not(:last-child)::after { content:''; position:absolute; top:18px; left:calc(50% + 22px); width:calc(100% - 44px); height:2px; background:#dee2e6; z-index:0; }
+    .wizard-step.active:not(:last-child)::after, .wizard-step.done:not(:last-child)::after { background:#2563eb; }
+    .step-circle { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.9rem; border:2px solid #dee2e6; background:#fff; color:#adb5bd; z-index:1; transition:all .25s; }
+    .wizard-step.active .step-circle { background:#2563eb; border-color:#2563eb; color:#fff; box-shadow:0 4px 12px rgba(37,99,235,.35); }
+    .wizard-step.done .step-circle { background:#2563eb; border-color:#2563eb; color:#fff; }
+    .step-label { font-size:.7rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#adb5bd; margin-top:8px; }
+    .wizard-step.active .step-label, .wizard-step.done .step-label { color:#2563eb; }
+    .wizard-panel { display:none; }
+    .wizard-panel.active { display:block; }
+    .form-section-title { font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#6c757d; margin:8px 0 18px; padding-bottom:8px; border-bottom:1px solid #e9ecef; }
+    .input-group-text { background:#f0f4ff; border-right:none; color:#2563eb; min-width:42px; justify-content:center; }
+    .input-group .form-control, .input-group .form-select { border-left:none; background:#f8f9fb; }
+    .input-group .form-control:focus, .input-group .form-select:focus { border-color:#2563eb; box-shadow:none; background:#fff; }
+    .btn-wizard-next, .btn-wizard-submit { background:linear-gradient(135deg,#1d4ed8,#2563eb); color:#fff; border:none; border-radius:50px; padding:10px 32px; font-weight:600; font-size:.92rem; box-shadow:0 4px 14px rgba(37,99,235,.3); transition:all .2s; }
+    .btn-wizard-next:hover, .btn-wizard-submit:hover { background:linear-gradient(135deg,#1e40af,#1d4ed8); box-shadow:0 6px 20px rgba(37,99,235,.4); transform:translateY(-1px); color:#fff; }
+    .btn-wizard-back { background:#fff; color:#374151; border:1.5px solid #d1d5db; border-radius:50px; padding:10px 28px; font-weight:600; font-size:.92rem; transition:all .2s; }
+    .btn-wizard-back:hover { background:#f3f4f6; border-color:#9ca3af; }
+    .wizard-card { background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 24px rgba(0,0,0,.07); padding:30px 36px; }
+    .wizard-page-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
+    .wizard-back-btn { width:36px; height:36px; background:#2563eb; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; font-size:1rem; flex-shrink:0; transition:background .2s; }
+    .wizard-back-btn:hover { background:#1d4ed8; color:#fff; }
+    .wizard-page-header h5 { margin:0; font-weight:700; font-size:1.15rem; color:#111827; }
+</style>
+@endpush
+
 @section('content')
     @php
         $roles = session('roles');
         $roleArray = explode(',',($roles->permissions ?? ''));
+        $isEdit = !empty($_GET['id']);
     @endphp
+
     <section class="task__section">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-8 offset-md-2 rounded bg-white shadow-sm border my-4 p-0">
-                    <div class="text py-3 px-3 border border-left-0 border-right-0 border-top-0">
-                        <h6 class="m-0">
-                            <a href="/admin/store-locations" class="text-dark" title="Back"><i class="bx bx-arrow-back h6"></i></a>  
-                            <label class="px-3">@if(!empty($_GET['id'])) {{ 'Edit Store' }} @else {{ 'Add New Store' }} @endif</label>
-                        </h6>
+                <div class="col-lg-9 col-md-11 col-sm-12 offset-lg-1 my-4 p-0">
+
+                    <div class="wizard-page-header">
+                        <a href="/admin/store-locations" class="wizard-back-btn" title="Back">
+                            <i class="bx bx-chevron-left"></i>
+                        </a>
+                        <h5>{{ $isEdit ? 'Edit Store' : 'Add New Store' }}</h5>
                     </div>
-                    <form action="{{ route('manageStore') }}" method="POST" class="card-body row py-3 px-3">
-                        @csrf
 
-                        <!-- Hidden Input for ID -->
-                        <input type="hidden" name="LocationID" value="{{ $store->LocationID ?? '' }}" />
+                    <div class="wizard-card">
 
-                        <!-- Store Information Section -->
-                        <div class="form-group col-md-12 mt-2">
-                            <h6 class="font-weight-bold h5 mb-0">Store Information</h6>
-                        </div>
-
-                        <!-- Location Name -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Store Name*</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-store"></i></span>
-                                <input type="text" name="LocationName" class="form-control" placeholder="Enter Store Name" value="{{ $store->LocationName ?? '' }}" required>
+                        {{-- Stepper --}}
+                        <div class="wizard-stepper">
+                            <div class="wizard-step active" data-step="1">
+                                <div class="step-circle">1</div>
+                                <div class="step-label">Store Info</div>
                             </div>
-                        </div>
-                        
-                        <!-- Pharmacy -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Pharmacy*</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-store"></i></span>
-                                <select name="PharmacyID" class="form-control" required>
-                                    <option value="">Select Pharmacy</option>
-                                    @foreach($pharmacyMasters as $pharmacy)
-                                        <option value="{{ $pharmacy->PharmacyID }}" @if(isset($store->PharmacyID) && $store->PharmacyID == $pharmacy->PharmacyID) selected @endif>
-                                            {{ $pharmacy->PharmacyName }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="wizard-step" data-step="2">
+                                <div class="step-circle">2</div>
+                                <div class="step-label">Contact &amp; Hours</div>
                             </div>
                         </div>
 
-                        <!-- Address -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Address*</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-home"></i></span>
-                                <input type="text" name="Address" class="form-control" placeholder="Enter Address" value="{{ $store->Address ?? '' }}" required>
+                        <form action="{{ route('manageStore') }}" method="POST" id="storeWizardForm">
+                            @csrf
+                            <input type="hidden" name="LocationID" value="{{ $store->LocationID ?? '' }}">
+
+                            {{-- ============================
+                                 STEP 1: Store Information & Location
+                                 ============================ --}}
+                            <div class="wizard-panel active" id="step-1">
+                                <div class="form-section-title"><i class="bx bx-store me-2"></i>Store Information</div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Store Name <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-store"></i></span>
+                                            <input type="text" name="LocationName" class="form-control"
+                                                placeholder="Enter Store Name"
+                                                value="{{ $store->LocationName ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Pharmacy <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-clinic"></i></span>
+                                            <select name="PharmacyID" class="form-control" required>
+                                                <option value="">Select Pharmacy</option>
+                                                @foreach($pharmacyMasters as $pharmacy)
+                                                    <option value="{{ $pharmacy->PharmacyID }}"
+                                                        @if(isset($store->PharmacyID) && $store->PharmacyID == $pharmacy->PharmacyID) selected @endif>
+                                                        {{ $pharmacy->PharmacyName }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Address <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-home"></i></span>
+                                            <input type="text" name="Address" class="form-control"
+                                                placeholder="Enter Address"
+                                                value="{{ $store->Address ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">City <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-buildings"></i></span>
+                                            <input type="text" name="City" class="form-control"
+                                                placeholder="Enter City"
+                                                value="{{ $store->City ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">State <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-flag"></i></span>
+                                            <input type="text" name="State" class="form-control"
+                                                placeholder="Enter State"
+                                                value="{{ $store->State ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Zip Code <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                                            <input type="text" name="ZipCode" class="form-control" maxlength="10"
+                                                placeholder="Enter Zip Code"
+                                                value="{{ $store->ZipCode ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Map Link</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bxs-map"></i></span>
+                                            <input type="url" name="MapLink" class="form-control"
+                                                placeholder="Enter Google Maps Link"
+                                                value="{{ $store->MapLink ?? '' }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn-wizard-next" onclick="goToStep(2)">
+                                        Next <i class="bx bx-right-arrow-alt ms-1"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- City -->
-                        <div class="form-group col-md-6">
-                            <label class="small">City*</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-buildings"></i></span>
-                                <input type="text" name="City" class="form-control" placeholder="Enter City" value="{{ $store->City ?? '' }}" required>
+                            {{-- ============================
+                                 STEP 2: Contact & Hours
+                                 ============================ --}}
+                            <div class="wizard-panel" id="step-2">
+                                <div class="form-section-title"><i class="bx bx-phone me-2"></i>Contact Information</div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Manager Name</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-user"></i></span>
+                                            <input type="text" name="ContactName" class="form-control"
+                                                placeholder="Enter Manager Name"
+                                                value="{{ $store->ContactName ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Designation</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
+                                            <input type="text" name="Designation" class="form-control"
+                                                placeholder="Enter Designation"
+                                                value="{{ $store->Designation ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Contact Email</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                            <input type="email" name="ContactEmail" class="form-control"
+                                                placeholder="Enter Contact Email"
+                                                value="{{ $store->ContactEmail ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Phone Number <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-phone"></i></span>
+                                            <input type="text" name="PhoneNumber" class="form-control phone" maxlength="12"
+                                                placeholder="Enter Phone Number"
+                                                value="{{ $store->PhoneNumber ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section-title mt-4"><i class="bx bx-time me-2"></i>Hours &amp; Details</div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Opening Time</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-time"></i></span>
+                                            <input type="time" name="HoursOfOperation[]" class="form-control"
+                                                value="{{ $store->HoursOfOperation[0] ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Closing Time</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-time"></i></span>
+                                            <input type="time" name="HoursOfOperation[]" class="form-control"
+                                                value="{{ $store->HoursOfOperation[1] ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Square Footage</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-ruler"></i></span>
+                                            <input type="text" name="SquareFootage" class="form-control"
+                                                placeholder="Enter Square Footage"
+                                                value="{{ $store->SquareFootage ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold">Accessibility Features</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-accessibility"></i></span>
+                                            <textarea name="AccessibilityFeatures" class="form-control" rows="1"
+                                                placeholder="e.g. Wheelchair ramp, Elevator access">{{ $store->AccessibilityFeatures ?? '' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn-wizard-back" onclick="goToStep(1)">
+                                        <i class="bx bx-left-arrow-alt me-1"></i> Back
+                                    </button>
+                                    <button type="submit" id="submitButton" class="btn-wizard-submit">
+                                        <i class="bx bx-check me-1"></i> {{ $isEdit ? 'Update Store' : 'Save Store' }}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- State -->
-                        <div class="form-group col-md-6">
-                            <label class="small">State*</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-flag"></i></span>
-                                <input type="text" name="State" class="form-control" placeholder="Enter State" value="{{ $store->State ?? '' }}" required>
-                            </div>
-                        </div>
-
-                        <!-- Zip Code -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Zip Code*</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                                <input type="text" name="ZipCode" class="form-control" maxlength="10" placeholder="Enter Zip Code" value="{{ $store->ZipCode ?? '' }}" required>
-                            </div>
-                        </div>
-
-                        <!-- Map LInk -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Map Link</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                                <input type="url" name="MapLink" class="form-control" placeholder="Enter Map Link" value="{{ $store->MapLink ?? '' }}" required>
-                            </div>
-                        </div>
-
-                        <!-- Contact Information Section -->
-                        <div class="form-group col-md-12 mt-3">
-                            <h6 class="font-weight-bold h5 mb-0">Contact Information</h6>
-                        </div>
-
-                        <!-- Contact Name -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Contact Name</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-user"></i></span>
-                                <input type="text" name="ContactName" class="form-control" placeholder="Enter Contact Name" value="{{ $store->ContactName ?? '' }}">
-                            </div>
-                        </div>
-
-                        <!-- Designation -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Designation</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-user"></i></span>
-                                <input type="text" name="Designation" class="form-control" placeholder="Enter Designation" value="{{ $store->Designation ?? '' }}">
-                            </div>
-                        </div>
-
-                        <!-- Contact Email -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Contact Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                <input type="email" name="ContactEmail" class="form-control" placeholder="Enter Contact Email" value="{{ $store->ContactEmail ?? '' }}">
-                            </div>
-                        </div>
-
-                        <!-- Phone Number -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Phone Number*</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-phone"></i></span>
-                                <input type="number" name="PhoneNumber" class="form-control phone" maxlength="12" placeholder="Enter Phone Number" value="{{ $store->PhoneNumber ?? '' }}" required>
-                            </div>
-                        </div>
-
-                        <!-- Additional Information Section -->
-                        <div class="form-group col-md-12 mt-3">
-                            <h6 class="font-weight-bold h5 mb-0">Additional Information</h6>
-                        </div>
-
-                        <!-- Hours of Operation -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Opening Hours Time</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-time"></i></span>
-                                <input type="time" name="HoursOfOperation[]" class="form-control" placeholder="e.g. 9 AM - 8 PM" value="{{ $store->HoursOfOperation[0] ?? '' }}">
-                            </div>
-                        </div>
-
-                        <!-- Hours of Operation -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Closing Hours Time</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-time"></i></span>
-                                <input type="time" name="HoursOfOperation[]" class="form-control" placeholder="e.g. 9 AM - 8 PM" value="{{ $store->HoursOfOperation[1] ?? '' }}">
-                            </div>
-                        </div>
-
-                        <!-- Square Footage -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Square Footage</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bx bx-ruler"></i></span>
-                                <input type="text" name="SquareFootage" class="form-control" placeholder="Enter Square Footage" value="{{ $store->SquareFootage ?? '' }}">
-                            </div>
-                        </div>
-
-                        <!-- Accessibility Features -->
-                        <div class="form-group col-md-6">
-                            <label class="small">Accessibility Features</label>
-                            <textarea name="AccessibilityFeatures" class="form-control" placeholder="Enter Accessibility Features">{{ $store->AccessibilityFeatures ?? '' }}</textarea>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="form-group mt-3 mb-0 text-right">
-                            <button type="submit" id="submitButton" class="btn btn-default border">Submit</button>
-                            <button type="reset" class="btn btn-white border">Reset</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+    function goToStep(stepNum) {
+        const currentPanel = document.querySelector('.wizard-panel.active');
+        if (stepNum > parseInt(currentPanel.id.split('-')[1])) {
+            const required = currentPanel.querySelectorAll('[required]');
+            let valid = true;
+            required.forEach(f => { if (!f.value.trim()) { f.classList.add('is-invalid'); valid = false; } else { f.classList.remove('is-invalid'); } });
+            if (!valid) return;
+        }
+        document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('step-' + stepNum).classList.add('active');
+        document.querySelectorAll('.wizard-step').forEach((s, i) => {
+            s.classList.remove('active','done');
+            if (i + 1 < stepNum) s.classList.add('done');
+            if (i + 1 === stepNum) s.classList.add('active');
+        });
+        document.querySelector('.wizard-card').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+    document.querySelectorAll('[required]').forEach(f => f.addEventListener('input', () => f.classList.remove('is-invalid')));
+</script>
+@endpush
