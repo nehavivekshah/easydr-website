@@ -255,8 +255,9 @@ class WebAppointmentController extends Controller
             ->select('users.*', 'doctors.*', 'doctors.id as doctor_id')->where('role', '=', '4')->where('status', '=', '1')->get();
 
         $hasActiveGateways = \App\Models\PaymentGatewayConfig::where('is_active', true)->exists();
+        $hasActiveVideoGateways = \App\Models\Video_call_gateway_configs::where('is_active', true)->exists();
 
-        return view('manageAppointment', ['appointments' => $appointments, 'doctors' => $doctors, 'patients' => $patients, 'hasActiveGateways' => $hasActiveGateways]);
+        return view('manageAppointment', ['appointments' => $appointments, 'doctors' => $doctors, 'patients' => $patients, 'hasActiveGateways' => $hasActiveGateways, 'hasActiveVideoGateways' => $hasActiveVideoGateways]);
     }
 
     public function cancelAppointmentPost($appointmentId)
