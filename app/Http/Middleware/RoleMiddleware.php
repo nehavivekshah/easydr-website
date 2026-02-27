@@ -48,7 +48,7 @@ class RoleMiddleware
         'admin/staff' => 'users',
         'admin/manage-staff' => 'users',
 
-        'admin/settings' => 'setting',
+        'admin/settings' => 'settings',
         'admin/blood-groups' => 'listing',
         'admin/cities' => 'listing',
         'admin/clinics' => 'listing',
@@ -59,8 +59,8 @@ class RoleMiddleware
         'admin/specialist' => 'listing',
 
         // Role Management specifically locked to Settings/Users
-        'admin/roles' => 'setting',
-        'admin/manage-role' => 'setting',
+        'admin/roles' => 'settings',
+        'admin/manage-role' => 'settings',
     ];
 
     /**

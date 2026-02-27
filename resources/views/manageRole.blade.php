@@ -322,7 +322,7 @@
             'billing' => ['icon' => 'bx-receipt', 'label' => 'Billing & Payments'],
             'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'],
             'users' => ['icon' => 'bx-group', 'label' => 'Users & Staff Management'],
-            'setting' => ['icon' => 'bx-cog', 'label' => 'General Settings'],
+            'settings' => ['icon' => 'bx-cog', 'label' => 'General Settings'],
             'listing' => ['icon' => 'bx-list-ul', 'label' => 'Data Listing (Cities, Categories)'],
         ];
     @endphp
