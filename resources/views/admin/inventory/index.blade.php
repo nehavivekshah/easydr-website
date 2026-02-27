@@ -39,6 +39,63 @@
     .btn-tbl-edit:hover { background:#dbeafe; color:#1d4ed8; }
     .btn-tbl-del  { background:#fff1f2; color:#dc2626; border:1.5px solid #fecaca; border-radius:50px; padding:5px 11px; font-size:.8rem; font-weight:600; display:inline-flex; align-items:center; gap:4px; cursor:pointer; transition:all .18s; }
     .btn-tbl-del:hover  { background:#fee2e2; color:#b91c1c; }
+
+    /* ---- Premium Select2 Overrides ---- */
+    .select2-container--default .select2-selection--single {
+        height: 44px;
+        border: 1.5px solid #d1d5db;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        background-color: #f8fafc;
+        transition: all 0.2s ease;
+    }
+    .select2-container--default .select2-selection--single:focus,
+    .select2-container--default.select2-container--open .select2-selection--single {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        background-color: #fff;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #1e293b;
+        font-size: 0.9rem;
+        padding-left: 14px;
+        font-weight: 500;
+        width: 100%;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 42px;
+        right: 12px;
+    }
+    .select2-dropdown {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        overflow: hidden;
+        z-index: 9999;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.88rem;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+        background-color: #eff6ff;
+        color: #1d4ed8;
+        font-weight: 600;
+    }
+    .select2-container--default .select2-results__option {
+        padding: 10px 14px;
+        font-size: 0.88rem;
+        color: #374151;
+        transition: background-color 0.15s;
+    }
 </style>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
