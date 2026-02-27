@@ -891,3 +891,8 @@
 .text-right {
     text-align: right;
 }
+
+.card-table-wrap {
+    padding: 10px;
+    background: #fff;
+}
