@@ -117,7 +117,7 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 /* Dashboard access routers */
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'role.check']], function () {
 
     Route::get('/admin', [WebHomeController::class, 'home']);
     Route::get('/admin/home', [WebHomeController::class, 'home']);
