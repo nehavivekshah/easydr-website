@@ -148,6 +148,7 @@ Route::group(['middleware' => ['auth', 'role.check']], function () {
     Route::post('/admin/manage-medicine', [WebPharmacyController::class, 'manageMedicinePost'])->name('manageMedicine');
     Route::delete('/admin/medicine/{id}', [WebPharmacyController::class, 'destroyMedicine'])->name('medicine.destroy');
 
+    Route::get('/admin/inventory', [WebPharmacyController::class, 'inventoryRedirect'])->name('inventory.redirect');
     Route::get('/admin/inventory/{store_id}', [WebPharmacyController::class, 'inventory'])->name('inventory.index');
     Route::get('/admin/suppliers', [WebPharmacyController::class, 'suppliers'])->name('suppliers.index');
     Route::get('/admin/orders', [WebPharmacyController::class, 'orders'])->name('orders.index');

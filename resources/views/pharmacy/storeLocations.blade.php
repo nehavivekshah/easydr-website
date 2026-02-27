@@ -368,6 +368,10 @@
                                                 class="btn-tbl-view" title="View Medicines">
                                                 <i class="bx bx-show"></i>
                                             </a>
+                                            <a href="/admin/inventory/{{ $store->LocationID ?? '' }}" class="btn-tbl-map"
+                                                title="Manage Inventory">
+                                                <i class="bx bx-layer"></i>
+                                            </a>
                                             <a href="/admin/manage-store?id={{ $store->LocationID ?? '' }}" class="btn-tbl-edit"
                                                 title="Edit">
                                                 <i class="bx bx-edit-alt"></i>

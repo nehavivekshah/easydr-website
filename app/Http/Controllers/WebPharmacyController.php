@@ -467,6 +467,23 @@ class WebPharmacyController extends Controller
 
     // ========================= Inventory Management =========================
 
+    // Auto-Resolve the first Store for Inventory View
+    public function inventoryRedirect()
+    {
+        $user = Auth::user();
+        if ($user && $user->role == 6) {
+            $store = Store_locations::where('PharmacyID', $user->branch)->first();
+        } else {
+            $store = Store_locations::first();
+        }
+
+        if ($store) {
+            return redirect()->route('inventory.index', ['store_id' => $store->LocationID]);
+        }
+
+        return redirect()->route('storeLocations')->with('error', 'Please create a store first before managing inventory.');
+    }
+
     // List Inventory (Store specific)
     public function inventory($store_id)
     {
@@ -480,8 +497,20 @@ class WebPharmacyController extends Controller
             }
         }
 
-        $inventory = Inventory::where('store_id', $store_id)->get();
-        return view('admin.inventory.index', compact('inventory', 'store_id'));
+        $store = Store_locations::find($store_id);
+        if (!$store) {
+            return back()->with('error', 'Store not found.');
+        }
+
+        $medicines = Medicines::where('pharmacy_id', $store->PharmacyID)->get();
+
+        $inventory = Inventory::select('inventory.*', 'medicines.name as medicine_name', 'medicines.img', 'medicine_types.name as type_name')
+            ->join('medicines', 'inventory.medicine_id', '=', 'medicines.id')
+            ->leftJoin('medicine_types', 'medicines.type_id', '=', 'medicine_types.id')
+            ->where('inventory.store_id', $store_id)
+            ->get();
+
+        return view('admin.inventory.index', compact('inventory', 'store_id', 'store', 'medicines'));
     }
 
     // Edit Inventory

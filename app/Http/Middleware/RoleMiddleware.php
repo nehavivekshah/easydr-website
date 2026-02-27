@@ -29,11 +29,12 @@ class RoleMiddleware
         'admin/store-locations' => 'stores',
         'admin/manage-store' => 'stores',
 
-        'admin/medicine-type' => 'inventory',
-        'admin/manage-medicine-type' => 'inventory',
-        'admin/medicines' => 'inventory',
-        'admin/manage-medicine' => 'inventory',
-        'admin/inventory' => 'inventory',
+        'admin/medicine-type' => 'medicine',
+        'admin/manage-medicine-type' => 'medicine',
+        'admin/medicines' => 'medicine',
+        'admin/manage-medicine' => 'medicine',
+        'admin/medicine' => 'medicine',
+        'admin/inventory' => 'medicine',
 
         'admin/suppliers' => 'suppliers',
         'admin/manage-supplier' => 'suppliers',
