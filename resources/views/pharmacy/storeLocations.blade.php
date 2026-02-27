@@ -379,7 +379,7 @@
                                                 data-store-name="{{ $store->LocationName }}"
                                                 data-store-email="{{ $store->EmailAddress }}"
                                                 data-store-phone="{{ $store->PhoneNumber }}">
-                                                <i class="bx bx-user-plus"></i>
+                                                <i class="bx bx-key"></i>
                                             </a>
                                             <a href="/admin/manage-store?id={{ $store->LocationID ?? '' }}" class="btn-tbl-edit"
                                                 title="Edit">
@@ -438,31 +438,41 @@
                     @csrf
                     <input type="hidden" name="store_id" id="modal_store_id">
                     <div class="modal-body">
-                        <p class="text-muted small mb-4">Create a dedicated login account for <strong id="display_store_name"></strong>. This will allow the store manager to independently access inventory and orders.</p>
-                        
+                        <p class="text-muted small mb-4">Create a dedicated login account for <strong
+                                id="display_store_name"></strong>. This will allow the store manager to independently access
+                            inventory and orders.</p>
+
                         <div class="mb-3">
-                            <label for="name" class="form-label fw-semibold small text-muted">Manager Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="name" id="modal_store_name" required placeholder="John Doe">
+                            <label for="name" class="form-label fw-semibold small text-muted">Manager Name <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="name" id="modal_store_name" required
+                                placeholder="John Doe">
                         </div>
-                        
+
                         <div class="mb-3">
-                            <label for="email" class="form-label fw-semibold small text-muted">Login Email <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" name="email" id="modal_store_email" required placeholder="store@example.com">
+                            <label for="email" class="form-label fw-semibold small text-muted">Login Email <span
+                                    class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="email" id="modal_store_email" required
+                                placeholder="store@example.com">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="mobile" class="form-label fw-semibold small text-muted">Mobile Number</label>
-                            <input type="text" class="form-control" name="mobile" id="modal_store_mobile" placeholder="Leave blank if none">
+                            <input type="text" class="form-control" name="mobile" id="modal_store_mobile"
+                                placeholder="Leave blank if none">
                         </div>
-                        
+
                         <div class="mb-3">
-                            <label for="password" class="form-label fw-semibold small text-muted">Set Password <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" name="password" required minlength="6" placeholder="Minimum 6 characters">
+                            <label for="password" class="form-label fw-semibold small text-muted">Set Password <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" class="form-control" name="password" required minlength="6"
+                                placeholder="Minimum 6 characters">
                         </div>
                     </div>
                     <div class="modal-footer border-top-0 pt-0">
-                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm" style="background:var(--color-primary); border:none;">Create Account</button>
+                        <button type="button" class="btn btn-light rounded-pill px-4"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">Create Account</button>
                     </div>
                 </form>
             </div>
@@ -471,26 +481,26 @@
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var createLoginModal = document.getElementById('createLoginModal');
-        createLoginModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            
-            var storeId = button.getAttribute('data-store-id');
-            var storeName = button.getAttribute('data-store-name');
-            var storeEmail = button.getAttribute('data-store-email');
-            var storePhone = button.getAttribute('data-store-phone');
-            
-            // Populate modal hidden field
-            document.getElementById('modal_store_id').value = storeId;
-            // Update UI text
-            document.getElementById('display_store_name').textContent = storeName;
-            
-            // Optionally prefill fields if data exists
-            document.getElementById('modal_store_email').value = storeEmail ? storeEmail : '';
-            document.getElementById('modal_store_mobile').value = storePhone ? storePhone : '';
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var createLoginModal = document.getElementById('createLoginModal');
+            createLoginModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+
+                var storeId = button.getAttribute('data-store-id');
+                var storeName = button.getAttribute('data-store-name');
+                var storeEmail = button.getAttribute('data-store-email');
+                var storePhone = button.getAttribute('data-store-phone');
+
+                // Populate modal hidden field
+                document.getElementById('modal_store_id').value = storeId;
+                // Update UI text
+                document.getElementById('display_store_name').textContent = storeName;
+
+                // Optionally prefill fields if data exists
+                document.getElementById('modal_store_email').value = storeEmail ? storeEmail : '';
+                document.getElementById('modal_store_mobile').value = storePhone ? storePhone : '';
+            });
         });
-    });
-</script>
+    </script>
 @endpush
