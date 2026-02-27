@@ -319,14 +319,13 @@
             'inventory' => ['icon' => 'bx-package', 'label' => 'Inventory Management'],
             'suppliers' => ['icon' => 'bx-truck', 'label' => 'Suppliers Management'],
             'orders' => ['icon' => 'bx-cart', 'label' => 'Orders Management'],
-            'billing' => ['icon' => 'bx-receipt', 'label' => 'Billing & Payments'],
-            'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'],
             'users' => ['icon' => 'bx-group', 'label' => 'Users & Staff Management'],
             'settings' => ['icon' => 'bx-cog', 'label' => 'General Settings'],
             'listing' => ['icon' => 'bx-list-ul', 'label' => 'Data Listing (Cities, Categories)'],
         ];
     @endphp
-
+    <!-- 'billing' => ['icon' => 'bx-receipt', 'label' => 'Billing & Payments'],
+            'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'], -->
     <section class="task__section">
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-4">
