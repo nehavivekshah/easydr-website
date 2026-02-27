@@ -1,40 +1,188 @@
 @extends('layout')
-@section('title','Manage Country - Easy Doctor')
+@section('title', 'Manage Country - Easy Doctor')
+
+@push('styles')
+    <style>
+        .wizard-card {
+            max-width: 460px;
+            margin: 0 auto;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .08);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wizard-header {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .wizard-header-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .wizard-header-title {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .wizard-header-sub {
+            color: rgba(255, 255, 255, .8);
+            font-size: .78rem;
+            margin: 2px 0 0;
+        }
+
+        .back-btn {
+            width: 34px;
+            height: 34px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: .2s;
+            margin-right: 4px;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, .3);
+            color: #fff;
+        }
+
+        .wizard-body {
+            padding: 28px;
+        }
+
+        .form-label-styled {
+            font-size: .82rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-group-styled .input-group-text {
+            background: #eff6ff;
+            border-right: none;
+            color: #2563eb;
+            min-width: 44px;
+            justify-content: center;
+            border-radius: 10px 0 0 10px !important;
+        }
+
+        .input-group-styled .form-control {
+            border-left: none;
+            background: #f8f9fb;
+            border-radius: 0 10px 10px 0 !important;
+            font-size: .88rem;
+        }
+
+        .input-group-styled .form-control:focus {
+            background: #fff;
+            border-color: #2563eb;
+            box-shadow: none;
+        }
+
+        .wizard-footer {
+            padding: 16px 28px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 28px;
+            font-weight: 700;
+            font-size: .88rem;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, .35);
+            transition: all .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #1e40af, #1d4ed8);
+            transform: translateY(-1px);
+        }
+
+        .btn-reset {
+            background: #f1f5f9;
+            color: #374151;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 10px 22px;
+            font-weight: 600;
+            font-size: .88rem;
+            cursor: pointer;
+        }
+
+        .btn-reset:hover {
+            background: #e2e8f0;
+        }
+    </style>
+@endpush
 
 @section('content')
-    @php
-    
-        $roles = session('roles');
-        $roleArray = explode(',',($roles->permissions ?? ''));
-    
-    @endphp
+    @php $isEdit = !empty($_GET['id']); @endphp
     <section class="task__section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-4 offset-md-4 rounded bg-white shadow-sm border mt-4 p-0">
-                    <div class="text py-3 px-3 border border-left-0 border-right-0 border-top-0">
-                        <h6 class="m-0">
-                            <a href="/admin/countries" class="text-dark" title="Back"><i class="bx bx-arrow-back h6"></i></a>  
-                            <label class="px-3">@if(!empty($_GET['id'])) {{ 'Edit Country' }} @else {{ 'Add New Country' }} @endif</label>
-                        </h6>
-                    </div>
-                    <form action="{{ route('manageCountry') }}" method="POST" class="card-body py-3 px-3">
-                        @csrf
-                        <div class="form-group">
-                            <label class="small">Country Name*</label><br />
-                            <div class="input-group">
-                                <img src="{{ asset('/public/assets/icons/user.svg') }}" class="input-icon" />
-                                <input type="text" name="name" class="form-control" placeholder="Enter Country Name*" value="{{ $countries->name ?? '' }}" required />
+            <div class="row justify-content-center mt-4">
+                <div class="col-12">
+                    <div class="wizard-card">
+                        <div class="wizard-header">
+                            <a href="/admin/countries" class="back-btn" title="Back"><i class="bx bx-arrow-back"></i></a>
+                            <div class="wizard-header-icon"><i class="bx bx-globe"></i></div>
+                            <div>
+                                <p class="wizard-header-title">{{ $isEdit ? 'Edit Country' : 'Add New Country' }}</p>
+                                <p class="wizard-header-sub">
+                                    {{ $isEdit ? 'Update country details' : 'Add a new country to the system' }}</p>
                             </div>
-                            <input type="hidden" name="id" value="{{$_GET['id'] ?? ''}}" />
                         </div>
-                        
-                        <div class="form-group mt-3 mb-0 text-right">
-                            <button type="submit" id="submitButton" class="btn btn-default border">Submit</button>
-                            <button type="reset" class="btn btn-white border">Reset</button>
-                        </div>
-                    </form>
-                <div>
+                        <form action="{{ route('manageCountry') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $_GET['id'] ?? '' }}" />
+                            <div class="wizard-body">
+                                <label class="form-label-styled">Country Name <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-styled">
+                                    <span class="input-group-text"><i class="bx bx-globe"></i></span>
+                                    <input type="text" name="name" class="form-control"
+                                        placeholder="e.g. India, United States, United Kingdom"
+                                        value="{{ $countries->name ?? '' }}" required />
+                                </div>
+                            </div>
+                            <div class="wizard-footer">
+                                <button type="reset" class="btn-reset"><i class="bx bx-reset me-1"></i> Reset</button>
+                                <button type="submit" id="submitButton" class="btn-submit"><i
+                                        class="bx bx-save me-1"></i>{{ $isEdit ? 'Update Country' : 'Save Country' }}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
