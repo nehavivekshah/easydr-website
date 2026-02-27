@@ -316,7 +316,7 @@
             'doctor_slots' => ['icon' => 'bx-time-five', 'label' => 'Doctor Availability Slots'],
             'pharmacy' => ['icon' => 'bx-plus-medical', 'label' => 'Pharmacy Management'],
             'stores' => ['icon' => 'bx-store', 'label' => 'Stores Management'],
-            'inventory' => ['icon' => 'bx-package', 'label' => 'Medicines Management'],
+            'medicine' => ['icon' => 'bx-package', 'label' => 'Medicines Management'],
             'suppliers' => ['icon' => 'bx-store-alt', 'label' => 'Suppliers Management'],
             'orders' => ['icon' => 'bx-cart', 'label' => 'Orders Management'],
             'users' => ['icon' => 'bx-group', 'label' => 'Users & Staff Management'],
@@ -325,7 +325,7 @@
         ];
     @endphp
     <!-- 'billing' => ['icon' => 'bx-receipt', 'label' => 'Billing & Payments'],
-                                        'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'], -->
+        'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'], -->
     <section class="task__section">
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-4">
