@@ -34,7 +34,8 @@ class RoleMiddleware
         'admin/medicines' => 'medicine',
         'admin/manage-medicine' => 'medicine',
         'admin/medicine' => 'medicine',
-        'admin/inventory' => 'medicine',
+
+        'admin/inventory' => 'inventory',
 
         'admin/suppliers' => 'suppliers',
         'admin/manage-supplier' => 'suppliers',
