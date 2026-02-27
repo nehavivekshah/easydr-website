@@ -311,9 +311,9 @@
 
         $modules = [
             'appointments' => ['icon' => 'bx-calendar', 'label' => 'Appointments Management'],
+            'patients' => ['icon' => 'bx-user-heart', 'label' => 'Patients Management'],
             'doctors' => ['icon' => 'bx-user-check', 'label' => 'Doctors Management'],
             'doctor_slots' => ['icon' => 'bx-time-five', 'label' => 'Doctor Availability Slots'],
-            'patients' => ['icon' => 'bx-user-heart', 'label' => 'Patients Management'],
             'pharmacy' => ['icon' => 'bx-plus-medical', 'label' => 'Pharmacy Management'],
             'stores' => ['icon' => 'bx-store', 'label' => 'Stores Management'],
             'inventory' => ['icon' => 'bx-package', 'label' => 'Inventory Management'],
