@@ -11,26 +11,62 @@
 
 @push('styles')
     <style>
+        /* ---- Page header ---- */
+        .page-header-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
         /* ---- Wizard Card ---- */
         .wizard-card {
             background: #fff;
             border-radius: 16px;
             border: 1px solid #e5e7eb;
             box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
-            padding: 30px 36px;
+            overflow: hidden;
         }
 
-        .wizard-page-header {
+        /* ---- Gradient banner header ---- */
+        .wizard-banner {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            padding: 22px 32px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .wizard-banner-icon {
+            width: 46px;
+            height: 46px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .wizard-banner-title {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .wizard-banner-sub {
+            color: rgba(255, 255, 255, .8);
+            font-size: .78rem;
+            margin: 2px 0 0;
         }
 
         .wizard-back-btn {
             width: 36px;
             height: 36px;
-            background: #2563eb;
+            background: rgba(255, 255, 255, .18);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -40,18 +76,17 @@
             font-size: 1rem;
             flex-shrink: 0;
             transition: background .2s;
+            margin-right: 4px;
         }
 
         .wizard-back-btn:hover {
-            background: #1d4ed8;
+            background: rgba(255, 255, 255, .3);
             color: #fff;
         }
 
-        .wizard-page-header h5 {
-            margin: 0;
-            font-weight: 700;
-            font-size: 1.15rem;
-            color: #111827;
+        /* ---- Card body padding ---- */
+        .wizard-card-body {
+            padding: 28px 32px 32px;
         }
 
         .form-section-title {
@@ -253,373 +288,429 @@
 
 @section('content')
     <section class="task__section">
+        <div class="container-fluid">
 
-        {{-- Page Header --}}
-        <div class="wizard-page-header">
-            @if(!$isProfile)
-                <a href="/admin/users/{{ $type ?? '' }}" class="wizard-back-btn" title="Back">
-                    <i class="bx bx-chevron-left"></i>
-                </a>
-                <h5>
-                    @if(!empty($id)) Edit {{ ucfirst($pagename[0] ?? 'User') }}
-                    @else Add New {{ ucfirst($pagename[0] ?? 'User') }}
-                    @endif
-                </h5>
-            @else
-                <h5>Profile Settings</h5>
-            @endif
-        </div>
+            {{-- Page Header --}}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">
+                        @if($isProfile) Profile Settings
+                        @elseif(!empty($id)) Edit {{ ucfirst($pagename[0] ?? 'User') }}
+                        @else Add New {{ ucfirst($pagename[0] ?? 'User') }}
+                        @endif
+                    </h4>
+                    <nav aria-label="breadcrumb" class="mt-1">
+                        <ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard"
+                                    class="text-decoration-none text-muted">Dashboard</a></li>
+                            @if(!$isProfile)
+                                <li class="breadcrumb-item"><a href="/admin/users/{{ $type ?? '' }}"
+                                        class="text-decoration-none text-muted">{{ ucwords(str_replace('-', ' ', $type ?? 'Users')) }}</a>
+                                </li>
+                            @endif
+                            <li class="breadcrumb-item active text-muted">
+                                @if($isProfile) Profile Settings
+                                @elseif(!empty($id)) Edit
+                                @else Add New
+                                @endif
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
 
-        <div class="container-fluid p-0">
             <div class="wizard-card">
 
-                {{-- Stepper --}}
-                <div class="wizard-stepper">
-                    <div class="wizard-step active" id="ind-1">
-                        <div class="step-circle">1</div>
-                        <div class="step-label">Account Info</div>
+                {{-- Gradient Banner --}}
+                <div class="wizard-banner">
+                    @if(!$isProfile)
+                        <a href="/admin/users/{{ $type ?? '' }}" class="wizard-back-btn" title="Back">
+                            <i class="bx bx-arrow-back"></i>
+                        </a>
+                    @endif
+                    <div class="wizard-banner-icon">
+                        @if($isProfile) <i class="bx bx-cog"></i>
+                        @elseif($isDoctor) <i class="bx bx-plus-medical"></i>
+                        @elseif($isPatient) <i class="bx bx-user-pin"></i>
+                        @else <i class="bx bx-user-circle"></i>
+                        @endif
                     </div>
-                    <div class="wizard-step" id="ind-2">
-                        <div class="step-circle">2</div>
-                        <div class="step-label">Personal Info</div>
-                    </div>
-                    <div class="wizard-step" id="ind-3">
-                        <div class="step-circle">3</div>
-                        <div class="step-label">Location &amp; Role</div>
+                    <div>
+                        <p class="wizard-banner-title">
+                            @if($isProfile) Profile Settings
+                            @elseif(!empty($id)) Edit {{ ucfirst($pagename[0] ?? 'User') }}
+                            @else Add New {{ ucfirst($pagename[0] ?? 'User') }}
+                            @endif
+                        </p>
+                        <p class="wizard-banner-sub">
+                            @if($isProfile) Update your personal account details
+                            @elseif(!empty($id)) Update the {{ strtolower($pagename[0] ?? 'user') }}'s information across 3
+                                steps
+                            @else Fill in the details across 3 steps to create the account
+                            @endif
+                        </p>
                     </div>
                 </div>
 
-                <form id="multiStepForm" action="{{ $isProfile ? '/admin/my-profile' : '/admin/manage-user' }}"
-                    method="post" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="pagetype" value="{{ $type ?? '' }}">
-                    <input type="hidden" name="id" value="{{ $id ?? '' }}">
-
-                    {{-- ============================
-                    STEP 1: Account Info
-                    ============================ --}}
-                    <div class="form-step form-step-active" id="step-1">
-                        <div class="form-section-title"><i class="bx bx-user-circle me-2"></i>Account Information</div>
-                        <div class="row g-3">
-                            <div class="col-md-4 form-group">
-                                <label>Name <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-user"></i></span>
-                                    <input type="text" class="form-control" name="name"
-                                        value="{{ trim(($users->first_name ?? '') . ' ' . ($users->last_name ?? '')) }}"
-                                        placeholder="Enter Full Name" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label>Email Address <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                    <input type="email" class="form-control" name="email" placeholder="Enter Email Address"
-                                        value="{{ $users->email ?? '' }}" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label>Mobile No. <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-phone"></i></span>
-                                    <input type="text" class="form-control" name="mob" placeholder="Enter Mobile No."
-                                        value="{{ $users->mobile ?? '' }}" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label>Alternative Mobile No.</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-phone-call"></i></span>
-                                    <input type="text" class="form-control" name="mob2"
-                                        placeholder="Enter Alternative Mobile No." value="{{ $users->altr_mobile ?? '' }}">
-                                </div>
-                            </div>
-                            @if(!$isProfile)
-                                <div class="col-md-4 form-group">
-                                    <label>Password</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-lock"></i></span>
-                                        <input type="password" class="form-control" name="password"
-                                            placeholder="Enter Password (leave blank to keep)">
-                                    </div>
-                                </div>
-                            @endif
+                <div class="wizard-card-body">
+                    {{-- Stepper --}}
+                    <div class="wizard-stepper">
+                        <div class="wizard-step active" id="ind-1">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Account Info</div>
                         </div>
-                        <div class="d-flex justify-content-end mt-4">
-                            <button type="button" class="btn-wizard-next next-step">
-                                Next <i class="bx bx-right-arrow-alt ms-1"></i>
-                            </button>
+                        <div class="wizard-step" id="ind-2">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Personal Info</div>
+                        </div>
+                        <div class="wizard-step" id="ind-3">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Location &amp; Role</div>
                         </div>
                     </div>
 
-                    {{-- ============================
-                    STEP 2: Personal Info
-                    ============================ --}}
-                    <div class="form-step" id="step-2">
-                        <div class="form-section-title"><i class="bx bx-id-card me-2"></i>Personal Information</div>
-                        <div class="row g-3">
-                            <div class="col-md-4 form-group">
-                                <label>Profile Photo</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-upload"></i></span>
-                                    @if(!empty($users->photo))
-                                        <img src="/public/assets/images/profiles/{{ $users->photo }}" class="media-icon">
-                                    @endif
-                                    <input type="file" class="form-control" name="profile_photo"
-                                        accept="image/jpg,image/jpeg,image/png">
-                                </div>
-                                <small class="text-muted">Jpg, Jpeg, Png only</small>
-                            </div>
+                    <form id="multiStepForm" action="{{ $isProfile ? '/admin/my-profile' : '/admin/manage-user' }}"
+                        method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="pagetype" value="{{ $type ?? '' }}">
+                        <input type="hidden" name="id" value="{{ $id ?? '' }}">
 
-                            @if($isPatient)
-                                <div class="col-md-4 form-group">
-                                    <label>Date of Birth</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                        <input type="date" class="form-control" name="dob" value="{{ $users->dob ?? '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Gender</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-male-female"></i></span>
-                                        <select class="form-control" name="gender">
-                                            <option value="1" @if(($users->gender ?? '') == '1') selected @endif>Male</option>
-                                            <option value="2" @if(($users->gender ?? '') == '2') selected @endif>Female</option>
-                                            <option value="3" @if(($users->gender ?? '') == '3') selected @endif>Other</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Blood Group</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-droplet"></i></span>
-                                        <input type="text" class="form-control" name="bloodgroup" placeholder="e.g. A+"
-                                            value="{{ $users->blood_group ?? '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Marital Status</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-heart"></i></span>
-                                        <select class="form-control" name="marital_status">
-                                            <option value="1" @if(($users->marital_status ?? '') == '1') selected @endif>Single
-                                            </option>
-                                            <option value="2" @if(($users->marital_status ?? '') == '2') selected @endif>Married
-                                            </option>
-                                            <option value="3" @if(($users->marital_status ?? '') == '3') selected @endif>Divorced
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Height (Inch)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-ruler"></i></span>
-                                        <input type="text" class="form-control" name="height" placeholder="e.g. 68"
-                                            value="{{ $users->height ?? '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Weight (Kg)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-bar-chart-alt-2"></i></span>
-                                        <input type="text" class="form-control" name="weight" placeholder="e.g. 72"
-                                            value="{{ $users->weight ?? '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Health Card No.</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-id-card"></i></span>
-                                        <input type="text" class="form-control" name="health_card"
-                                            placeholder="Enter Health Card No." value="{{ $users->health_card ?? '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Health Card (Image)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-upload"></i></span>
-                                        @if(!empty($users->health_card_file))
-                                            <img src="/public/assets/images/healthCards/{{ $users->health_card_file }}"
-                                                class="media-icon">
-                                        @endif
-                                        <input type="file" class="form-control" name="health_card_file" accept="image/*">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Medical File (Image)</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-upload"></i></span>
-                                        @if(!empty($users->medical_file))
-                                            <img src="/public/assets/images/medicals/{{ $users->medical_file }}" class="media-icon">
-                                        @endif
-                                        <input type="file" class="form-control" name="medical_file" accept="image/*">
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div class="col-md-4 form-group">
-                                <label>Aadhaar Card No.</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-id-card"></i></span>
-                                    <input type="text" class="form-control" name="adhar" placeholder="Enter Aadhaar No."
-                                        value="{{ $users->adhar ?? '' }}" maxlength="12">
-                                </div>
-                            </div>
-
-                            @if($isDoctor)
-                                <div class="col-md-4 form-group">
-                                    <label>Specialization <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-briefcase-alt-2"></i></span>
-                                        <input type="text" class="form-control" name="specialization"
-                                            placeholder="e.g. Cardiologist" value="{{ $users->specialist ?? '' }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Education <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-book"></i></span>
-                                        <input type="text" class="form-control" name="education" placeholder="e.g. MBBS, MD"
-                                            value="{{ $users->education ?? '' }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Medical License No. <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-certification"></i></span>
-                                        <input type="text" class="form-control" name="license" placeholder="Enter License No."
-                                            value="{{ $users->license ?? '' }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 form-group">
-                                    <label>About</label>
-                                    <textarea class="form-control border" name="about"
-                                        placeholder="Short bio or professional summary..." rows="3"
-                                        style="border-radius:.375rem;">{{ $users->about ?? '' }}</textarea>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="d-flex justify-content-between mt-4">
-                            <button type="button" class="btn-wizard-back prev-step">
-                                <i class="bx bx-left-arrow-alt me-1"></i> Back
-                            </button>
-                            <button type="button" class="btn-wizard-next next-step">
-                                Next <i class="bx bx-right-arrow-alt ms-1"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    {{-- ============================
-                    STEP 3: Location & Role
-                    ============================ --}}
-                    <div class="form-step" id="step-3">
-                        <div class="form-section-title"><i class="bx bx-map-alt me-2"></i>Location Details</div>
-                        <div class="row g-3">
-                            <div class="col-md-4 form-group">
-                                <label>Designation</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
-                                    <input type="text" class="form-control" name="designation"
-                                        placeholder="e.g. Senior Consultant" value="{{ $users->designation ?? '' }}">
-                                </div>
-                            </div>
-                            <div class="col-md-8 form-group">
-                                <label>Address</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-home"></i></span>
-                                    <input type="text" class="form-control" name="address" placeholder="Enter Full Address"
-                                        value="{{ $users->address ?? '' }}">
-                                </div>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label>City</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-buildings"></i></span>
-                                    <input type="text" class="form-control" name="city" placeholder="Enter City"
-                                        value="{{ $users->city ?? '' }}">
-                                </div>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label>State</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-map"></i></span>
-                                    <input type="text" class="form-control" name="state" placeholder="Enter State"
-                                        value="{{ $users->state ?? '' }}">
-                                </div>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label>Country</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-globe"></i></span>
-                                    <input type="text" class="form-control" name="country" placeholder="Enter Country"
-                                        value="{{ $users->country ?? '' }}">
-                                </div>
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <label>Pincode</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                                    <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode"
-                                        value="{{ $users->pincode ?? '' }}">
-                                </div>
-                            </div>
-                        </div>
-
-                        @if(!$isProfile)
-                            <div class="form-section-title mt-4"><i class="bx bx-shield-alt-2 me-2"></i>Role &amp; Status</div>
+                        {{-- ============================
+                        STEP 1: Account Info
+                        ============================ --}}
+                        <div class="form-step form-step-active" id="step-1">
+                            <div class="form-section-title"><i class="bx bx-user-circle me-2"></i>Account Information</div>
                             <div class="row g-3">
-                                @if($isPatient || $isDoctor)
-                                    <input type="hidden" name="role" value="{{ $roles[0]->id ?? '' }}">
-                                @else
+                                <div class="col-md-4 form-group">
+                                    <label>Name <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-user"></i></span>
+                                        <input type="text" class="form-control" name="name"
+                                            value="{{ trim(($users->first_name ?? '') . ' ' . ($users->last_name ?? '')) }}"
+                                            placeholder="Enter Full Name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Email Address <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                        <input type="email" class="form-control" name="email"
+                                            placeholder="Enter Email Address" value="{{ $users->email ?? '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Mobile No. <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-phone"></i></span>
+                                        <input type="text" class="form-control" name="mob" placeholder="Enter Mobile No."
+                                            value="{{ $users->mobile ?? '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Alternative Mobile No.</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-phone-call"></i></span>
+                                        <input type="text" class="form-control" name="mob2"
+                                            placeholder="Enter Alternative Mobile No."
+                                            value="{{ $users->altr_mobile ?? '' }}">
+                                    </div>
+                                </div>
+                                @if(!$isProfile)
                                     <div class="col-md-4 form-group">
-                                        <label>Role <span class="text-danger">*</span></label>
+                                        <label>Password</label>
                                         <div class="input-group">
-                                            <span class="input-group-text"><i class="bx bx-shield-quarter"></i></span>
-                                            <select class="form-control" name="role" required>
-                                                @foreach($roles as $role)
-                                                    <option value="{{ $role->id }}" @if(($users->role ?? '') == $role->id) selected
-                                                    @endif>{{ $role->title }}</option>
-                                                @endforeach
-                                            </select>
+                                            <span class="input-group-text"><i class="bx bx-lock"></i></span>
+                                            <input type="password" class="form-control" name="password"
+                                                placeholder="Enter Password (leave blank to keep)">
                                         </div>
                                     </div>
                                 @endif
-                                <div class="col-md-4 form-group">
-                                    <label>Status <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
-                                        <select class="form-control" name="status" required>
-                                            <option value="1" @if(($users->status ?? '') == '1') selected @endif>Active</option>
-                                            <option value="2" @if(($users->status ?? '') == '2') selected @endif>Deactive</option>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
-                        @endif
-
-                        <div class="d-flex justify-content-between mt-4 pt-3" style="border-top:1px solid #e9ecef;">
-                            <button type="button" class="btn-wizard-back prev-step">
-                                <i class="bx bx-left-arrow-alt me-1"></i> Back
-                            </button>
-                            <div class="d-flex gap-2">
-                                <button type="reset" class="btn-wizard-reset">
-                                    <i class="bx bx-reset me-1"></i> Reset
-                                </button>
-                                <button type="submit" class="btn-wizard-submit">
-                                    <i class="bx bx-check me-1"></i>
-                                    @if(!empty($id)) Update {{ ucfirst($pagename[0] ?? 'User') }}
-                                    @else Save {{ ucfirst($pagename[0] ?? 'User') }}
-                                    @endif
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="button" class="btn-wizard-next next-step">
+                                    Next <i class="bx bx-right-arrow-alt ms-1"></i>
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                </form>
+                        {{-- ============================
+                        STEP 2: Personal Info
+                        ============================ --}}
+                        <div class="form-step" id="step-2">
+                            <div class="form-section-title"><i class="bx bx-id-card me-2"></i>Personal Information</div>
+                            <div class="row g-3">
+                                <div class="col-md-4 form-group">
+                                    <label>Profile Photo</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-upload"></i></span>
+                                        @if(!empty($users->photo))
+                                            <img src="/public/assets/images/profiles/{{ $users->photo }}" class="media-icon">
+                                        @endif
+                                        <input type="file" class="form-control" name="profile_photo"
+                                            accept="image/jpg,image/jpeg,image/png">
+                                    </div>
+                                    <small class="text-muted">Jpg, Jpeg, Png only</small>
+                                </div>
+
+                                @if($isPatient)
+                                    <div class="col-md-4 form-group">
+                                        <label>Date of Birth</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                            <input type="date" class="form-control" name="dob" value="{{ $users->dob ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Gender</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-male-female"></i></span>
+                                            <select class="form-control" name="gender">
+                                                <option value="1" @if(($users->gender ?? '') == '1') selected @endif>Male</option>
+                                                <option value="2" @if(($users->gender ?? '') == '2') selected @endif>Female
+                                                </option>
+                                                <option value="3" @if(($users->gender ?? '') == '3') selected @endif>Other
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Blood Group</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-droplet"></i></span>
+                                            <input type="text" class="form-control" name="bloodgroup" placeholder="e.g. A+"
+                                                value="{{ $users->blood_group ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Marital Status</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-heart"></i></span>
+                                            <select class="form-control" name="marital_status">
+                                                <option value="1" @if(($users->marital_status ?? '') == '1') selected @endif>
+                                                    Single
+                                                </option>
+                                                <option value="2" @if(($users->marital_status ?? '') == '2') selected @endif>
+                                                    Married
+                                                </option>
+                                                <option value="3" @if(($users->marital_status ?? '') == '3') selected @endif>
+                                                    Divorced
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Height (Inch)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-ruler"></i></span>
+                                            <input type="text" class="form-control" name="height" placeholder="e.g. 68"
+                                                value="{{ $users->height ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Weight (Kg)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-bar-chart-alt-2"></i></span>
+                                            <input type="text" class="form-control" name="weight" placeholder="e.g. 72"
+                                                value="{{ $users->weight ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Health Card No.</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-id-card"></i></span>
+                                            <input type="text" class="form-control" name="health_card"
+                                                placeholder="Enter Health Card No." value="{{ $users->health_card ?? '' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Health Card (Image)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-upload"></i></span>
+                                            @if(!empty($users->health_card_file))
+                                                <img src="/public/assets/images/healthCards/{{ $users->health_card_file }}"
+                                                    class="media-icon">
+                                            @endif
+                                            <input type="file" class="form-control" name="health_card_file" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Medical File (Image)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-upload"></i></span>
+                                            @if(!empty($users->medical_file))
+                                                <img src="/public/assets/images/medicals/{{ $users->medical_file }}"
+                                                    class="media-icon">
+                                            @endif
+                                            <input type="file" class="form-control" name="medical_file" accept="image/*">
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="col-md-4 form-group">
+                                    <label>Aadhaar Card No.</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-id-card"></i></span>
+                                        <input type="text" class="form-control" name="adhar" placeholder="Enter Aadhaar No."
+                                            value="{{ $users->adhar ?? '' }}" maxlength="12">
+                                    </div>
+                                </div>
+
+                                @if($isDoctor)
+                                    <div class="col-md-4 form-group">
+                                        <label>Specialization <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-briefcase-alt-2"></i></span>
+                                            <input type="text" class="form-control" name="specialization"
+                                                placeholder="e.g. Cardiologist" value="{{ $users->specialist ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Education <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-book"></i></span>
+                                            <input type="text" class="form-control" name="education" placeholder="e.g. MBBS, MD"
+                                                value="{{ $users->education ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Medical License No. <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-certification"></i></span>
+                                            <input type="text" class="form-control" name="license"
+                                                placeholder="Enter License No." value="{{ $users->license ?? '' }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label>About</label>
+                                        <textarea class="form-control border" name="about"
+                                            placeholder="Short bio or professional summary..." rows="3"
+                                            style="border-radius:.375rem;">{{ $users->about ?? '' }}</textarea>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn-wizard-back prev-step">
+                                    <i class="bx bx-left-arrow-alt me-1"></i> Back
+                                </button>
+                                <button type="button" class="btn-wizard-next next-step">
+                                    Next <i class="bx bx-right-arrow-alt ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- ============================
+                        STEP 3: Location & Role
+                        ============================ --}}
+                        <div class="form-step" id="step-3">
+                            <div class="form-section-title"><i class="bx bx-map-alt me-2"></i>Location Details</div>
+                            <div class="row g-3">
+                                <div class="col-md-4 form-group">
+                                    <label>Designation</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
+                                        <input type="text" class="form-control" name="designation"
+                                            placeholder="e.g. Senior Consultant" value="{{ $users->designation ?? '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <label>Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-home"></i></span>
+                                        <input type="text" class="form-control" name="address"
+                                            placeholder="Enter Full Address" value="{{ $users->address ?? '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>City</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-buildings"></i></span>
+                                        <input type="text" class="form-control" name="city" placeholder="Enter City"
+                                            value="{{ $users->city ?? '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>State</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-map"></i></span>
+                                        <input type="text" class="form-control" name="state" placeholder="Enter State"
+                                            value="{{ $users->state ?? '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Country</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-globe"></i></span>
+                                        <input type="text" class="form-control" name="country" placeholder="Enter Country"
+                                            value="{{ $users->country ?? '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Pincode</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                                        <input type="text" class="form-control" name="pincode" placeholder="Enter Pincode"
+                                            value="{{ $users->pincode ?? '' }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if(!$isProfile)
+                                <div class="form-section-title mt-4"><i class="bx bx-shield-alt-2 me-2"></i>Role &amp; Status
+                                </div>
+                                <div class="row g-3">
+                                    @if($isPatient || $isDoctor)
+                                        <input type="hidden" name="role" value="{{ $roles[0]->id ?? '' }}">
+                                    @else
+                                        <div class="col-md-4 form-group">
+                                            <label>Role <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="bx bx-shield-quarter"></i></span>
+                                                <select class="form-control" name="role" required>
+                                                    @foreach($roles as $role)
+                                                        <option value="{{ $role->id }}" @if(($users->role ?? '') == $role->id) selected
+                                                        @endif>{{ $role->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="col-md-4 form-group">
+                                        <label>Status <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
+                                            <select class="form-control" name="status" required>
+                                                <option value="1" @if(($users->status ?? '') == '1') selected @endif>Active
+                                                </option>
+                                                <option value="2" @if(($users->status ?? '') == '2') selected @endif>Deactive
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="d-flex justify-content-between mt-4 pt-3" style="border-top:1px solid #e9ecef;">
+                                <button type="button" class="btn-wizard-back prev-step">
+                                    <i class="bx bx-left-arrow-alt me-1"></i> Back
+                                </button>
+                                <div class="d-flex gap-2">
+                                    <button type="reset" class="btn-wizard-reset">
+                                        <i class="bx bx-reset me-1"></i> Reset
+                                    </button>
+                                    <button type="submit" class="btn-wizard-submit">
+                                        <i class="bx bx-check me-1"></i>
+                                        @if(!empty($id)) Update {{ ucfirst($pagename[0] ?? 'User') }}
+                                        @else Save {{ ucfirst($pagename[0] ?? 'User') }}
+                                        @endif
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>{{-- /.wizard-card-body --}}
             </div>{{-- /.wizard-card --}}
-        </div>
+        </div>{{-- /.container-fluid --}}
     </section>
 @endsection
 
