@@ -107,6 +107,18 @@
                                                             </div>
                                                         </div>
                                                         @endif
+                                                        
+                                                        @if(count($p->medicines) > 0)
+                                                        <div class="list-group-item px-4 py-3 border-0 bg-light text-end">
+                                                            <form action="{{ route('cart.addPrescription') }}" method="POST" class="d-inline-block">
+                                                                @csrf
+                                                                <input type="hidden" name="prescription_id" value="{{ $p->id }}">
+                                                                <button type="submit" class="btn btn-primary rounded-pill fw-bold shadow-sm px-4">
+                                                                    <i class="fas fa-shopping-basket me-2"></i> Buy Available Medicines
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>

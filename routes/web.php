@@ -12,6 +12,9 @@ use App\Http\Controllers\WebDoctorController;
 use App\Http\Controllers\WebPharmacyController;
 use App\Http\Controllers\WebReportController;
 use App\Http\Controllers\WebTagsListingController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\WebAnalyticsController;
+use App\Http\Controllers\WebSettingController;
 
 /* Website Router */
 Route::get('/', [FrontendController::class, 'index']);
@@ -64,6 +67,13 @@ Route::get('/medical-reports', [FrontendController::class, 'medicalReports']);
 Route::get('/patient-prescriptions', [FrontendController::class, 'patientPrescriptions']);
 Route::get('/billing', [FrontendController::class, 'billing']);
 Route::get('/download-receipt/{id}', [FrontendController::class, 'downloadReceipt'])->name('downloadReceipt');
+
+// Cart & Checkout Routes
+Route::post('/cart/add-prescription', [CartController::class, 'addPrescription'])->name('cart.addPrescription');
+Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
+Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+Route::get('/cart/remove/{id}', [CartController::class, 'removeCart'])->name('cart.remove');
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 // Common Routes
 Route::get('/change-password', [FrontendController::class, 'changePassword']);
