@@ -24,7 +24,12 @@ class WebPharmacyController extends Controller
     // List All Pharmacy
     public function pharmacy()
     {
-        $pharmacyMaster = PharmacyMaster::paginate(10);
+        $user = Auth::user();
+        if ($user && $user->role == 6) {
+            $pharmacyMaster = PharmacyMaster::where('PharmacyID', $user->branch)->paginate(10);
+        } else {
+            $pharmacyMaster = PharmacyMaster::paginate(10);
+        }
 
         return view('pharmacy.index', compact('pharmacyMaster'));
     }
@@ -182,7 +187,12 @@ class WebPharmacyController extends Controller
     // List All Stores
     public function stores()
     {
-        $stores = Store_locations::paginate(10);
+        $user = Auth::user();
+        if ($user && $user->role == 6) {
+            $stores = Store_locations::where('PharmacyID', $user->branch)->paginate(10);
+        } else {
+            $stores = Store_locations::paginate(10);
+        }
 
         return view('pharmacy.storeLocations', compact('stores'));
     }
@@ -324,16 +334,26 @@ class WebPharmacyController extends Controller
     // 5. List Medicines by Store
     public function medicines(Request $request)
     {
+        $user = Auth::user();
         $PharmacyID = $request->PharmacyID ?? '';
         $StoreId = $request->storeid ?? '';
 
-        if (!empty($PharmacyID)) {
-            $medicines = Medicines::where('pharmacy_id', $PharmacyID)->paginate(10);
-        } elseif (!empty($StoreId)) {
-            $medicines = Medicines::where('store_id', $StoreId)->paginate(10);
-        } else {
+        // Force isolation for pharmacy users
+        if ($user && $user->role == 6) {
+            $PharmacyID = $user->branch;
             $medicines = Medicines::leftjoin('medicine_types', 'medicines.type_id', '=', 'medicine_types.id')
-                ->select('medicine_types.name as type_name', 'medicines.*')->paginate(10);
+                ->select('medicine_types.name as type_name', 'medicines.*')
+                ->where('medicines.pharmacy_id', $PharmacyID)
+                ->paginate(10);
+        } else {
+            if (!empty($PharmacyID)) {
+                $medicines = Medicines::where('pharmacy_id', $PharmacyID)->paginate(10);
+            } elseif (!empty($StoreId)) {
+                $medicines = Medicines::where('store_id', $StoreId)->paginate(10);
+            } else {
+                $medicines = Medicines::leftjoin('medicine_types', 'medicines.type_id', '=', 'medicine_types.id')
+                    ->select('medicine_types.name as type_name', 'medicines.*')->paginate(10);
+            }
         }
 
         return view('pharmacy.medicines', compact('medicines'));
@@ -436,6 +456,11 @@ class WebPharmacyController extends Controller
 
     public function getLocations($pharmacyId)
     {
+        $user = Auth::user();
+        if ($user && $user->role == 6) {
+            $pharmacyId = $user->branch;
+        }
+
         $locations = Store_locations::where('PharmacyID', $pharmacyId)->get();
         return response()->json($locations);
     }
@@ -445,6 +470,16 @@ class WebPharmacyController extends Controller
     // List Inventory (Store specific)
     public function inventory($store_id)
     {
+        $user = Auth::user();
+
+        // Security check for Pharmacy Role to ensure store belongs to them
+        if ($user && $user->role == 6) {
+            $isOwner = Store_locations::where('LocationID', $store_id)->where('PharmacyID', $user->branch)->exists();
+            if (!$isOwner) {
+                return back()->with('error', 'Unauthorized access to this store inventory.');
+            }
+        }
+
         $inventory = Inventory::where('store_id', $store_id)->get();
         return view('admin.inventory.index', compact('inventory', 'store_id'));
     }
@@ -464,6 +499,14 @@ class WebPharmacyController extends Controller
             'store_id' => 'required|integer',
             'quantity' => 'required|integer',
         ]);
+
+        $user = Auth::user();
+        if ($user && $user->role == 6) {
+            $isOwner = Store_locations::where('LocationID', $request->store_id)->where('PharmacyID', $user->branch)->exists();
+            if (!$isOwner) {
+                return back()->with('error', 'Unauthorized to update this store inventory.');
+            }
+        }
 
         if ($request->id) {
             $inventory = Inventory::find($request->id);
@@ -542,7 +585,19 @@ class WebPharmacyController extends Controller
     // 11. List Orders
     public function orders()
     {
-        $orders = Orders::with('items')->latest()->paginate(10);
+        $user = Auth::user();
+
+        if ($user && $user->role == 6) {
+            $orders = Orders::with('items')
+                ->join('store_locations', 'orders.store_id', '=', 'store_locations.LocationID')
+                ->where('store_locations.PharmacyID', $user->branch)
+                ->select('orders.*') // Ensure we only select from orders table to avoid id conflict
+                ->latest('orders.created_at')
+                ->paginate(10);
+        } else {
+            $orders = Orders::with('items')->latest()->paginate(10);
+        }
+
         return view('admin.orders.index', compact('orders'));
     }
 
