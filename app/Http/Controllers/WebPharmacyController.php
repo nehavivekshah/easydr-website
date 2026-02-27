@@ -170,7 +170,7 @@ class WebPharmacyController extends Controller
         $user->username = explode('@', $request->email)[0] . rand(100, 999);
         $user->mobile = $request->mobile ?? '';
         $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
-        $user->role = 5; // Use 5 to denote a Pharmacy Role based on context
+        $user->role = 6; // Role 6 denotes Pharmacy
         $user->branch = $request->pharmacy_id; // Using branch to store PharmacyID
         $user->status = 1;
 

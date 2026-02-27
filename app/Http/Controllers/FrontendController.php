@@ -620,6 +620,9 @@ class FrontendController extends Controller
                 'totalUnreadCount'
             ));
 
+        } elseif ($user->role == 6) {
+            // PHARMACY DASHBOARD
+            return redirect('/admin/pharmacy');
         } elseif ($user->role == 5) {
             // PATIENT DASHBOARD
             $patient = \App\Models\Patients::where('uid', $user->id)->first();
