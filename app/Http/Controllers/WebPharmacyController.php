@@ -504,10 +504,10 @@ class WebPharmacyController extends Controller
 
         $medicines = Medicines::where('pharmacy_id', $store->PharmacyID)->get();
 
-        $inventory = Inventory::select('inventory.*', 'medicines.name as medicine_name', 'medicines.img', 'medicine_types.name as type_name')
-            ->join('medicines', 'inventory.medicine_id', '=', 'medicines.id')
+        $inventory = Inventory::select('inventories.*', 'medicines.name as medicine_name', 'medicines.img', 'medicine_types.name as type_name')
+            ->join('medicines', 'inventories.medicine_id', '=', 'medicines.id')
             ->leftJoin('medicine_types', 'medicines.type_id', '=', 'medicine_types.id')
-            ->where('inventory.store_id', $store_id)
+            ->where('inventories.store_id', $store_id)
             ->get();
 
         return view('admin.inventory.index', compact('inventory', 'store_id', 'store', 'medicines'));
