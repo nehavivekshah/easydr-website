@@ -166,31 +166,182 @@
 
     @stack('scripts')
 
-    <script>
-        $(document).ready(function () {
-            // Fetch notifications on page load
-            fetchNotifications();
+    {{-- =====================================================
+    Global Export Utility (CSV / PDF for all pages)
+    Works on any table with id="lists" or nearest <table>
+        ===================================================== --}}
+        <script>
+            (function () {
+                /* ---------- helpers ---------- */
 
-            // Refresh every 60 seconds
-            setInterval(fetchNotifications, 60000);
+                /** Sanitise a cell value for CSV */
+                function csvCell(val) {
+                    val = val.replace(/"/g, '""').replace(/\s+/g, ' ').trim();
+                    return '"' + val + '"';
+                }
 
-            function fetchNotifications() {
-                $.ajax({
-                    url: '/admin/notifications/fetch',
-                    method: 'GET',
-                    success: function (response) {
-                        // Update Badge
-                        if (response.unread_count > 0) {
-                            $('#notifBadge').removeClass('d-none');
-                        } else {
-                            $('#notifBadge').addClass('d-none');
+                /** Return visible text of a cell, skipping img / action icons */
+                function cellText(td) {
+                    // Clone so we don't mutate the DOM
+                    var clone = td.cloneNode(true);
+                    // Remove action-button links (edit/delete icons)
+                    clone.querySelectorAll('a[class*="btn-tbl"], button, .badge').forEach(function (el) { el.remove(); });
+                    return clone.innerText || clone.textContent || '';
+                }
+
+                /** Build CSV string from a <table> — uses DT API when available */
+                function buildCSV(table) {
+                    var rows = [];
+                    var ths = table.querySelectorAll('thead tr th');
+
+                    // Determine columns to skip
+                    var skipCols = [];
+                    ths.forEach(function (th, i) {
+                        var h = (th.innerText || th.textContent || '').trim().toLowerCase();
+                        if (h === 'action' || h === '' || h === '#' || h === 'photo' || h === 'sr. no.' || h === 'sr.no.') skipCols.push(i);
+                    });
+
+                    // Header row
+                    var headerCols = [];
+                    ths.forEach(function (th, i) {
+                        if (!skipCols.includes(i)) headerCols.push(csvCell(th.innerText || th.textContent || ''));
+                    });
+                    rows.push(headerCols.join(','));
+
+                    // Use DataTables API for search-filtered rows (all pages)
+                    var tableId = table.id;
+                    var dtActive = (window.$ && $.fn && $.fn.DataTable && tableId && $.fn.DataTable.isDataTable('#' + tableId));
+                    var trElements = [];
+                    if (dtActive) {
+                        $('#' + tableId).DataTable().rows({ search: 'applied' }).nodes().each(function (tr) { trElements.push(tr); });
+                    } else {
+                        table.querySelectorAll('tbody tr').forEach(function (tr) { trElements.push(tr); });
+                    }
+
+                    trElements.forEach(function (tr) {
+                        if (tr.querySelector('td[colspan]')) return;
+                        var tds = tr.querySelectorAll('td');
+                        var cells = [];
+                        tds.forEach(function (td, i) {
+                            if (!skipCols.includes(i)) cells.push(csvCell(cellText(td)));
+                        });
+                        if (cells.length) rows.push(cells.join(','));
+                    });
+                    return rows.join('\n');
+                }
+
+
+                /** Trigger a CSV file download */
+                function downloadCSV(csv, filename) {
+                    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                    var url = URL.createObjectURL(blob);
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename + '.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+
+                /** Open a print-preview window as a simple PDF substitute */
+                function printAsPDF(table, title) {
+                    var ths = table.querySelectorAll('thead tr th');
+                    var skipCols = [];
+                    ths.forEach(function (th, i) {
+                        var h = (th.innerText || th.textContent || '').trim().toLowerCase();
+                        if (h === 'action' || h === '' || h === 'photo') skipCols.push(i);
+                    });
+                    var headerHtml = '<tr>';
+                    ths.forEach(function (th, i) {
+                        if (!skipCols.includes(i)) headerHtml += '<th style="background:#2563eb;color:#fff;padding:8px 12px;text-align:left;">' + (th.innerText || th.textContent || '') + '</th>';
+                    });
+                    headerHtml += '</tr>';
+
+                    var bodyHtml = '';
+                    var trs = table.querySelectorAll('tbody tr');
+                    var odd = true;
+                    trs.forEach(function (tr) {
+                        if (tr.querySelector('td[colspan]') || tr.style.display === 'none') return;
+                        var tds = tr.querySelectorAll('td');
+                        var bg = odd ? '#f8faff' : '#fff'; odd = !odd;
+                        bodyHtml += '<tr style="background:' + bg + '">';
+                        tds.forEach(function (td, i) {
+                            if (!skipCols.includes(i)) bodyHtml += '<td style="padding:7px 12px;border-bottom:1px solid #e5e7eb;">' + cellText(td) + '</td>';
+                        });
+                        bodyHtml += '</tr>';
+                    });
+
+                    var w = window.open('', '_blank');
+                    w.document.write(
+                        '<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + title + '</title>' +
+                        '<style>body{font-family:Arial,sans-serif;font-size:13px;margin:24px}table{width:100%;border-collapse:collapse}h2{color:#1d4ed8}</style>' +
+                        '</head><body><h2>' + title + '</h2><table>' + headerHtml + bodyHtml + '</table></body></html>'
+                    );
+                    w.document.close();
+                    w.focus();
+                    setTimeout(function () { w.print(); }, 400);
+                }
+
+                /* ---------- wire up ---------- */
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn-export');
+                    if (!btn) return;
+
+                    var isPDF = (btn.title || btn.getAttribute('data-export') || '').toLowerCase().includes('pdf');
+                    var table = document.getElementById('lists') || document.querySelector('table');
+                    if (!table) { alert('No table found to export.'); return; }
+
+                    var title = document.title.replace(/\s*[-|].*$/, '').trim() || 'export';
+
+                    // Show brief loading state on button
+                    var origHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Exporting…';
+                    btn.disabled = true;
+
+                    setTimeout(function () {
+                        try {
+                            if (isPDF) {
+                                printAsPDF(table, title);
+                            } else {
+                                downloadCSV(buildCSV(table), title.replace(/\s+/g, '_'));
+                            }
+                        } catch (ex) {
+                            console.error('Export error:', ex);
+                            alert('Export failed. Please try again.');
                         }
+                        btn.innerHTML = origHtml;
+                        btn.disabled = false;
+                    }, 150);
+                });
+            })();
+        </script>
 
-                        // Update List
-                        let html = '';
-                        if (response.notifications.length > 0) {
-                            response.notifications.forEach(function (notif) {
-                                html += `
+        <script>
+            $(document).ready(function () {
+                // Fetch notifications on page load
+                fetchNotifications();
+
+                // Refresh every 60 seconds
+                setInterval(fetchNotifications, 60000);
+
+                function fetchNotifications() {
+                    $.ajax({
+                        url: '/admin/notifications/fetch',
+                        method: 'GET',
+                        success: function (response) {
+                            // Update Badge
+                            if (response.unread_count > 0) {
+                                $('#notifBadge').removeClass('d-none');
+                            } else {
+                                $('#notifBadge').addClass('d-none');
+                            }
+
+                            // Update List
+                            let html = '';
+                            if (response.notifications.length > 0) {
+                                response.notifications.forEach(function (notif) {
+                                    html += `
                                     <li>
                                         <a class="dropdown-item p-3 border-bottom d-flex align-items-start" href="#">
                                             <div class="me-3">
@@ -208,16 +359,16 @@
                                         </a>
                                     </li>
                                 `;
-                            });
-                        } else {
-                            html = '<li class="p-3 text-center text-muted">No new notifications</li>';
+                                });
+                            } else {
+                                html = '<li class="p-3 text-center text-muted">No new notifications</li>';
+                            }
+                            $('#notifList').html(html);
                         }
-                        $('#notifList').html(html);
-                    }
-                });
-            }
-        });
-    </script>
+                    });
+                }
+            });
+        </script>
 
 </body>
 
