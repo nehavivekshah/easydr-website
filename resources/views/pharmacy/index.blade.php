@@ -1,89 +1,324 @@
 @extends('layout')
-@section('title', 'Pharmacy - Easy Doctor')
+@section('title', 'Pharmacy Directory - Easy Doctor')
+
+@push('styles')
+    <style>
+        .page-header-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
+        /* ---- Card Table ---- */
+        .card-table-wrap {
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+            overflow: hidden;
+        }
+
+        .card-table-wrap .table {
+            margin: 0;
+        }
+
+        .card-table-wrap .table thead th {
+            background: #f8f9fb;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: #2563eb;
+            border-bottom: 2px solid #dbeafe;
+            padding: 14px 16px;
+            white-space: nowrap;
+        }
+
+        .card-table-wrap .table tbody td {
+            padding: 13px 16px;
+            vertical-align: middle;
+            font-size: .88rem;
+            color: #374151;
+        }
+
+        .card-table-wrap .table tbody tr:hover {
+            background: #f8f9fb;
+        }
+
+        .card-table-wrap .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ---- Pharmacy name ---- */
+        .pharmacy-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .pharmacy-icon {
+            width: 34px;
+            height: 34px;
+            background: #eff6ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+        }
+
+        .pharmacy-name-text {
+            font-weight: 700;
+            font-size: .9rem;
+            color: #1e293b;
+        }
+
+        /* ---- Contact person ---- */
+        .contact-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 7px;
+            padding: 3px 10px;
+            font-size: .8rem;
+            font-weight: 600;
+            color: #166534;
+        }
+
+        /* ---- Address ---- */
+        .addr-text {
+            font-size: .82rem;
+            color: #64748b;
+            max-width: 200px;
+        }
+
+        /* ---- Buttons ---- */
+        .btn-add {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 9px 22px;
+            font-weight: 600;
+            font-size: .88rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, .3);
+            transition: all .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-add:hover {
+            background: linear-gradient(135deg, #1e40af, #1d4ed8);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, .4);
+            transform: translateY(-1px);
+            color: #fff;
+        }
+
+        .btn-export {
+            background: #fff;
+            color: #374151;
+            border: 1.5px solid #d1d5db;
+            border-radius: 50px;
+            padding: 9px 20px;
+            font-weight: 600;
+            font-size: .88rem;
+            transition: all .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-export:hover {
+            background: #f3f4f6;
+        }
+
+        .btn-tbl-view {
+            background: #f0f9ff;
+            color: #0ea5e9;
+            border: 1.5px solid #bae6fd;
+            border-radius: 50px;
+            padding: 5px 11px;
+            font-size: .8rem;
+            font-weight: 600;
+            transition: all .18s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+        }
+
+        .btn-tbl-view:hover {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .btn-tbl-edit {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1.5px solid #bfdbfe;
+            border-radius: 50px;
+            padding: 5px 11px;
+            font-size: .8rem;
+            font-weight: 600;
+            transition: all .18s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+        }
+
+        .btn-tbl-edit:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .btn-tbl-del {
+            background: #fff1f2;
+            color: #dc2626;
+            border: 1.5px solid #fecaca;
+            border-radius: 50px;
+            padding: 5px 11px;
+            font-size: .8rem;
+            font-weight: 600;
+            transition: all .18s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .btn-tbl-del:hover {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+    </style>
+@endpush
 
 @section('content')
     @php
-
         $roles = session('roles');
         $roleArray = explode(',', ($roles->permissions ?? ''));
-
+        $canAdd = in_array('stores_add', $roleArray) || in_array('All', $roleArray);
     @endphp
+
     <section class="task__section">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-                <h2 class="mb-0 text-dark fw-bold" style="font-size: 1.5rem;">Pharmacy Directory</h2>
-                <div class="text-muted small mt-1">
-                    Home / Pharmacy / Directory
+        <div class="container-fluid">
+
+            {{-- Page Header --}}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">Pharmacy Directory</h4>
+                    <nav aria-label="breadcrumb" class="mt-1">
+                        <ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard"
+                                    class="text-decoration-none text-muted">Dashboard</a></li>
+                            <li class="breadcrumb-item active text-muted">Pharmacy</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    @if($canAdd)
+                        <a href="/admin/manage-pharmacy" class="btn-add">
+                            <i class="bx bx-plus"></i> Add Pharmacy
+                        </a>
+                    @endif
+                    <button class="btn-export" title="Export to CSV">
+                        <i class="bx bx-download"></i> Export
+                    </button>
                 </div>
             </div>
 
-            <div class="d-flex align-items-center gap-2">
-                @if(in_array('stores_add', $roleArray) || in_array('All', $roleArray))
-                    <a href="/admin/manage-pharmacy" class="btn btn-default rounded-pill shadow-sm px-4">
-                        <i class="bx bx-plus me-1 border-0 bg-transparent text-white p-0"></i> <span>Add New</span>
-                    </a>
-                @endif
-                <button class="btn btn-outline-secondary rounded-pill shadow-sm px-4" title="Export to CSV">
-                    <i class="bx bx-download me-1"></i> Export
-                </button>
+            {{-- Table Card --}}
+            <div class="card-table-wrap">
+                <table id="lists" class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width:5%">#</th>
+                            <th style="width:22%">Pharmacy Name</th>
+                            <th style="width:25%">Head Office Address</th>
+                            <th style="width:16%">Contact Person</th>
+                            <th style="width:14%" class="m-none">Email</th>
+                            <th style="width:10%" class="m-none">Phone</th>
+                            <th style="width:8%" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($pharmacyMaster as $pharmacy)
+                            <tr>
+                                <td class="fw-semibold text-muted">{{ $pharmacy->PharmacyID }}</td>
+                                <td>
+                                    <div class="pharmacy-name">
+                                        <div class="pharmacy-icon"><i class="bx bx-capsule"></i></div>
+                                        <span class="pharmacy-name-text">{{ $pharmacy->PharmacyName }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="addr-text">
+                                        <i class="bx bx-map-pin text-muted me-1" style="font-size:.85rem;"></i>
+                                        {{ $pharmacy->Address }}, {{ $pharmacy->City }},
+                                        {{ $pharmacy->State }} - {{ $pharmacy->ZipCode }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="contact-chip">
+                                        <i class="bx bx-user"></i>
+                                        {{ $pharmacy->PrimaryContactName }}
+                                    </span>
+                                </td>
+                                <td class="m-none" style="font-size:.82rem;">{{ $pharmacy->EmailAddress ?? '--' }}</td>
+                                <td class="m-none" style="font-size:.82rem;">{{ $pharmacy->PhoneNumber ?? '--' }}</td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center align-items-center gap-1">
+                                        <a href="/admin/medicine-listings?PharmacyID={{ $pharmacy->PharmacyID ?? '' }}"
+                                            class="btn-tbl-view" title="View Medicines">
+                                            <i class="bx bx-show"></i>
+                                        </a>
+                                        <a href="/admin/manage-pharmacy?id={{ $pharmacy->PharmacyID ?? '' }}"
+                                            class="btn-tbl-edit" title="Edit">
+                                            <i class="bx bx-edit-alt"></i>
+                                        </a>
+                                        <form action="{{ route('pharmacy.destroy', $pharmacy->PharmacyID) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure? This action cannot be undone.')"
+                                            class="d-inline m-0 p-0">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-tbl-del" title="Delete">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center py-5 text-muted">
+                                    <i class="bx bx-capsule" style="font-size:2.5rem;color:#bfdbfe;"></i>
+                                    <p class="mt-2 mb-0 fw-semibold">No pharmacies found.</p>
+                                    @if($canAdd)
+                                        <a href="/admin/manage-pharmacy" class="btn-add mt-3 d-inline-flex mx-auto">
+                                            <i class="bx bx-plus"></i> Add First Pharmacy
+                                        </a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-        </div>
 
-        <div class="container-fluid p-0">
-            <div class="row">
-                <div class="col-md-12 pb-3">
-                    <div class="card border-0 shadow-sm rounded-4 w-100">
-                        <div class="card-body p-3 table-responsive">
-                            <table id="lists" class="table table-striped table-bordered m-table" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th width="50px" class="text-center">ID</th>
-                                        <th>Pharmacy Name</th>
-                                        <th>Head office Address</th>
-                                        <th>Contact Person</th>
-                                        <th class="m-none">Email Id</th>
-                                        <th class="m-none">Phone No.</th>
-                                        <th class="wpx-100 text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($pharmacyMaster as $pharmacy)
-                                        <tr>
-                                            <td class="text-center">{{ $pharmacy->PharmacyID }}</td>
-                                            <td class="font-weight-bold">{{ $pharmacy->PharmacyName }}</td>
-                                            <td>{{ $pharmacy->Address }}, {{ $pharmacy->City }}, {{ $pharmacy->State }} -
-                                                {{ $pharmacy->ZipCode }}</td>
-                                            <td>{{ $pharmacy->PrimaryContactName }}</td>
-                                            <td class="m-none">{{ $pharmacy->EmailAddress ?? '--' }}</td>
-                                            <td class="m-none">{{ $pharmacy->PhoneNumber ?? '--' }}</td>
-                                            <td class="text-center">
-                                                <a href="/admin/medicine-listings?PharmacyID={{ $pharmacy->PharmacyID ?? '' }}"
-                                                    class="btn btn-primary btn-sm rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center" title="View Medicines">
-                                                    <i class="bx bx-show me-1"></i></a>
-                                                <a href="/admin/manage-pharmacy?id={{ $pharmacy->PharmacyID ?? '' }}"
-                                                    class="btn btn-info btn-sm rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center" title="Edit">
-                                                    <i class="bx bx-edit me-1"></i></a>
-                                                <form action="{{ route('pharmacy.destroy', $pharmacy->PharmacyID) }}" method="POST"
-                                                    onsubmit="return confirm('Are you sure you want to delete this pharmacy? This action cannot be undone.');"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center" title="Delete">
-                                                        <i class="bx bx-trash me-1"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 text-center mt-3">
+            {{-- Pagination --}}
+            @if($pharmacyMaster->hasPages())
+                <div class="d-flex justify-content-center mt-4">
                     {{ $pharmacyMaster->links('pagination::bootstrap-4') }}
                 </div>
-            </div>
+            @endif
+
         </div>
     </section>
 @endsection
