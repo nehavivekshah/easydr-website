@@ -893,6 +893,6 @@
 }
 
 .card-table-wrap {
-    padding: 10px;
-    background: #fff;
+    padding: 10px !important;
+    background: #ffffff !important;
 }
