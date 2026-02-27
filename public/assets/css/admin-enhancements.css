@@ -602,7 +602,7 @@
     .table-responsive {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        margin-bottom: 1rem;
+        margin-bottom: 0px;
     }
 
     table.dataTable {
