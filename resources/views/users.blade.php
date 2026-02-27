@@ -254,6 +254,139 @@
                     transform: translateY(0);
                 }
             }
+
+            /* ---- Premium Card Table ---- */
+            #lists thead th {
+                background: #f8f9fb;
+                font-size: .75rem;
+                font-weight: 700;
+                letter-spacing: .07em;
+                text-transform: uppercase;
+                color: #2563eb;
+                border-bottom: 2px solid #dbeafe;
+                padding: 14px 16px;
+                white-space: nowrap;
+            }
+
+            #lists tbody td {
+                padding: 12px 16px;
+                vertical-align: middle;
+                font-size: .88rem;
+                color: #374151;
+            }
+
+            #lists tbody tr:hover {
+                background: #f8f9fb;
+            }
+
+            #lists tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            /* ---- Profile avatar ---- */
+            .user-avatar {
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #dbeafe;
+                box-shadow: 0 2px 6px rgba(37, 99, 235, .15);
+            }
+
+            /* ---- Status badges ---- */
+            .badge-active {
+                background: #dcfce7;
+                color: #16a34a;
+                border: 1px solid #bbf7d0;
+                border-radius: 50px;
+                padding: 4px 12px;
+                font-size: .76rem;
+                font-weight: 700;
+            }
+
+            .badge-inactive {
+                background: #f1f5f9;
+                color: #64748b;
+                border: 1px solid #e2e8f0;
+                border-radius: 50px;
+                padding: 4px 12px;
+                font-size: .76rem;
+                font-weight: 700;
+            }
+
+            /* ---- Action buttons ---- */
+            .btn-tbl-view {
+                background: #f0f9ff;
+                color: #0ea5e9;
+                border: 1.5px solid #bae6fd;
+                border-radius: 50px;
+                padding: 5px 12px;
+                font-size: .8rem;
+                font-weight: 600;
+                transition: all .18s;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            .btn-tbl-view:hover {
+                background: #e0f2fe;
+            }
+
+            .btn-tbl-edit {
+                background: #eff6ff;
+                color: #2563eb;
+                border: 1.5px solid #bfdbfe;
+                border-radius: 50px;
+                padding: 5px 12px;
+                font-size: .8rem;
+                font-weight: 600;
+                transition: all .18s;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                text-decoration: none;
+            }
+
+            .btn-tbl-edit:hover {
+                background: #dbeafe;
+                color: #1d4ed8;
+            }
+
+            .btn-tbl-del {
+                background: #fff1f2;
+                color: #dc2626;
+                border: 1.5px solid #fecaca;
+                border-radius: 50px;
+                padding: 5px 12px;
+                font-size: .8rem;
+                font-weight: 600;
+                transition: all .18s;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .btn-tbl-del:hover {
+                background: #fee2e2;
+                color: #b91c1c;
+            }
+
+            /* ---- Role chip ---- */
+            .role-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                background: #f0f4ff;
+                border: 1px solid #c7d2fe;
+                border-radius: 6px;
+                padding: 3px 10px;
+                font-size: .78rem;
+                font-weight: 600;
+                color: #4338ca;
+            }
         </style>
     @endpush
     <section class="task__section">
@@ -282,12 +415,15 @@
                         || in_array('admin_accounts_add', $roleArray) || in_array('staff_accounts_add', $roleArray) || in_array('All', $roleArray)
                         || $pagename[0] == 'pharmacy'
                     )
-                    <a href="/admin/manage-user/{{$type}}" class="btn btn-default rounded-pill shadow-sm px-4">
-                        <i class="bx bx-plus me-1 border-0 bg-transparent text-white p-0"></i> <span>Add New</span>
+                    <a href="/admin/manage-user/{{$type}}"
+                        style="background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border:none;border-radius:50px;padding:9px 22px;font-weight:600;font-size:.88rem;box-shadow:0 4px 12px rgba(37,99,235,.3);transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;">
+                        <i class="bx bx-plus"></i> Add New
                     </a>
                 @endif
-                <button class="btn btn-outline-secondary rounded-pill shadow-sm px-4" title="Export to CSV">
-                    <i class="bx bx-download me-1"></i> Export
+                <button
+                    style="background:#fff;color:#374151;border:1.5px solid #d1d5db;border-radius:50px;padding:9px 20px;font-weight:600;font-size:.88rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px;"
+                    title="Export to CSV">
+                    <i class="bx bx-download"></i> Export
                 </button>
             </div>
         </div>
@@ -295,9 +431,9 @@
         <div class="container-fluid p-0">
             <div class="row">
                 <div class="col-md-12 pb-3">
-                    <div class="card border-0 shadow-sm rounded-4 w-100">
-                        <div class="card-body p-3 table-responsive">
-                            <table id="lists" class="table table-striped table-bordered m-table" style="width:100%">
+                    <div class="card border-0 shadow-sm rounded-4 w-100" style="overflow:hidden;">
+                        <div class="card-body p-0 table-responsive">
+                            <table id="lists" class="table mb-0" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th width="50px">Sr. No.</th>
@@ -325,9 +461,11 @@
                                 <tbody>
                                     @foreach($users as $k => $user)
                                         <tr>
-                                            <td class="text-center">{{ $k + 1 }}</td>
-                                            <td><img src="/public/assets/images/profiles/{{$user->photo ?? '--'}}"
-                                                    class="media-icon" />
+                                            <td class="text-center fw-semibold text-muted">{{ $k + 1 }}</td>
+                                            <td>
+                                                <img src="/public/assets/images/profiles/{{$user->photo ?? 'default.png'}}"
+                                                    class="user-avatar"
+                                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->first_name . ' ' . $user->last_name) }}&background=2563eb&color=fff&size=38'" />
                                             </td>
                                             <td>{{$user->first_name . ' ' . $user->last_name ?? '--'}}<br>
                                                 <span class="small font-weight-bold">
@@ -380,47 +518,57 @@
 
                                             @endif
                                             <td>{{$user->city . ' - ' . $user->country ?? '--'}}</td>
-                                            @if($user->role != '4' && $user->role != '5')
+                                            @if($type != 'patient-directory' && $type != 'doctor-directory')
                                                 <td class="m-none">
-                                                    {{ $user->title ?? '--' }}
-                                                    @if(!empty($user->subtitle)) - {{ $user->subtitle }} @endif
+                                                    <span class="role-chip">
+                                                        <i class="bx bx-shield-alt-2"></i>
+                                                        {{ $user->title ?? '--' }}
+                                                        @if(!empty($user->subtitle)) &mdash; {{ $user->subtitle }} @endif
+                                                    </span>
                                                 </td>
                                             @endif
-                                            <td class="text-center">@if($user->status == '1')<span
-                                            class="font-weight-bold badge bg-success">Active</span>@else<span
-                                                    class="font-weight-bold badge bg-danger">Deactive</span>@endif</td>
                                             <td class="text-center">
-                                                @if($type == 'patient-directory')
-                                                    <button
-                                                        class="btn btn-primary btn-sm view-patient-btn rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center"
-                                                        data-user="{{ json_encode($user) }}" title="View Profile">
-                                                        <i class="bx bx-show me-1"></i>
-                                                    </button>
-                                                @elseif($type == 'doctor-directory')
-                                                    <button
-                                                        class="btn btn-primary btn-sm view-doctor-btn rounded-pill shadow-sm mb-1 px-3 d-inline-flex align-items-center"
-                                                        data-user="{{ json_encode($user) }}" title="View Profile">
-                                                        <i class="bx bx-show me-1"></i>
-                                                    </button>
+                                                @if($user->status == '1')
+                                                    <span class="badge-active">Active</span>
+                                                @else
+                                                    <span class="badge-inactive">Inactive</span>
                                                 @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="d-flex justify-content-center align-items-center gap-1 flex-wrap">
+                                                    @if($type == 'patient-directory')
+                                                        <button class="btn-tbl-view view-patient-btn"
+                                                            data-user="{{ json_encode($user) }}" title="View Profile">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                    @elseif($type == 'doctor-directory')
+                                                        <button class="btn-tbl-view view-doctor-btn"
+                                                            data-user="{{ json_encode($user) }}" title="View Profile">
+                                                            <i class="bx bx-show"></i>
+                                                        </button>
+                                                    @endif
 
-                                                @if(
-                                                        in_array('users_edit', $roleArray) || in_array('patients_edit', $roleArray) || in_array('doctors_edit', $roleArray)
-                                                        || in_array('admin_accounts_edit', $roleArray) || in_array('staff_accounts_edit', $roleArray) || in_array('All', $roleArray)
-                                                    )
-                                                    <a href="/admin/manage-user/{{$type}}/{{ $user->id }}"
-                                                        class="btn btn-info btn-sm" title="Edit"><i class="bx bx-edit"></i></a>
-                                                @endif
+                                                    @if(
+                                                            in_array('users_edit', $roleArray) || in_array('patients_edit', $roleArray) || in_array('doctors_edit', $roleArray)
+                                                            || in_array('admin_accounts_edit', $roleArray) || in_array('staff_accounts_edit', $roleArray) || in_array('All', $roleArray)
+                                                        )
+                                                        <a href="/admin/manage-user/{{$type}}/{{ $user->id }}" class="btn-tbl-edit"
+                                                            title="Edit">
+                                                            <i class="bx bx-edit-alt"></i>
+                                                        </a>
+                                                    @endif
 
-                                                @if(
-                                                        in_array('users_delete', $roleArray) || in_array('patients_delete', $roleArray) || in_array('doctors_delete', $roleArray)
-                                                        || in_array('admin_accounts_delete', $roleArray) || in_array('staff_accounts_delete', $roleArray) || in_array('All', $roleArray)
-                                                    )
-                                                    <a href="/admin/users/delete/{{ $user->id }}" class="btn btn-danger btn-sm"
-                                                        title="Delete"
-                                                        onclick="return confirm('Are you sure you want to delete this user? This action cannot be undone.');"><i
-                                                            class="bx bx-trash"></i></a>
-                                                @endif
+                                                    @if(
+                                                            in_array('users_delete', $roleArray) || in_array('patients_delete', $roleArray) || in_array('doctors_delete', $roleArray)
+                                                            || in_array('admin_accounts_delete', $roleArray) || in_array('staff_accounts_delete', $roleArray) || in_array('All', $roleArray)
+                                                        )
+                                                        <a href="/admin/users/delete/{{ $user->id }}" class="btn-tbl-del"
+                                                            title="Delete"
+                                                            onclick="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
+                                                            <i class="bx bx-trash"></i>
+                                                        </a>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -798,38 +946,38 @@
             }
 
             list.innerHTML = data.prescriptions.map((p, idx) => `
-                                                                                <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
-                                                                                    <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                                                                        <div>
-                                                                                            <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
-                                                                                            <div class="text-dark fw-bold small">
-                                                                                                <i class="bx bx-calendar me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
-                                                                                            <i class="bx bx-download me-1"></i> PDF
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div class="card-body p-0">
-                                                                                        <div class="list-group list-group-flush">
-                                                                                            ${(p.medicines || []).map(m => `
-                                                                                                <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                                                                                    <div class="d-flex align-items-center">
-                                                                                                        <div class="bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                                                                            <i class="bx bx-capsule h3"></i>
-                                                                                                        </div>
-                                                                                                        <div>
-                                                                                                            <div class="fw-bold text-dark">${m.medicine_name}</div>
-                                                                                                            <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
-                                                                                                        </div>
+                                                                                        <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
+                                                                                            <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                                                                                <div>
+                                                                                                    <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
+                                                                                                    <div class="text-dark fw-bold small">
+                                                                                                        <i class="bx bx-calendar me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                                                                                                     </div>
                                                                                                 </div>
-                                                                                            `).join('')}
-                                                                                            ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                                                                                                <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                                                                                    <i class="bx bx-download me-1"></i> PDF
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div class="card-body p-0">
+                                                                                                <div class="list-group list-group-flush">
+                                                                                                    ${(p.medicines || []).map(m => `
+                                                                                                        <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                                                                                            <div class="d-flex align-items-center">
+                                                                                                                <div class="bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                                                                                    <i class="bx bx-capsule h3"></i>
+                                                                                                                </div>
+                                                                                                                <div>
+                                                                                                                    <div class="fw-bold text-dark">${m.medicine_name}</div>
+                                                                                                                    <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    `).join('')}
+                                                                                                    ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            `).join('');
+                                                                                    `).join('');
         }
 
         async function loadPatientHistory() {
@@ -843,22 +991,22 @@
             }
 
             list.innerHTML = data.appointments.map((a, idx) => `
-                                                                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                    <div class="history-info">
-                                                                                        <div class="history-icon icon-blue"><i class="bx bx-plus-medical"></i></div>
-                                                                                        <div class="history-content">
-                                                                                            <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
-                                                                                            <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
-                                                                                            <div class="history-date">
-                                                                                                <i class="bx bx-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                            <div class="history-info">
+                                                                                                <div class="history-icon icon-blue"><i class="bx bx-plus-medical"></i></div>
+                                                                                                <div class="history-content">
+                                                                                                    <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
+                                                                                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                                                                                    <div class="history-date">
+                                                                                                        <i class="bx bx-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                                                                    </div>
+                                                                                                </div>
                                                                                             </div>
+                                                                                            <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
+                                                                                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                                                                                            </span>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : 'bg-info'}">
-                                                                                        ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
-                                                                                    </span>
-                                                                                </div>
-                                                                            `).join('');
+                                                                                    `).join('');
         }
 
         async function loadPatientPayments() {
@@ -874,22 +1022,22 @@
             }
 
             list.innerHTML = paid.map((a, idx) => `
-                                                                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                                                                    <div class="history-info">
-                                                                                        <div class="history-icon icon-green"><i class="bx bx-receipt"></i></div>
-                                                                                        <div class="history-content">
-                                                                                            <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
-                                                                                            <h6>Amount: $${a.fees || '0'}</h6>
-                                                                                            <div class="history-date">
-                                                                                                <i class="bx bx-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                                                                            <div class="history-info">
+                                                                                                <div class="history-icon icon-green"><i class="bx bx-receipt"></i></div>
+                                                                                                <div class="history-content">
+                                                                                                    <div class="text-primary fw-bold small mb-1">${currentPatientName}</div>
+                                                                                                    <h6>Amount: $${a.fees || '0'}</h6>
+                                                                                                    <div class="history-date">
+                                                                                                        <i class="bx bx-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                                                                    </div>
+                                                                                                </div>
                                                                                             </div>
+                                                                                            <span class="badge bg-success text-white bg-opacity-10 border border-success rounded-pill px-3 py-1 text-uppercase border-opacity-25">
+                                                                                                ${a.payment_status.replace('_', ' ')}
+                                                                                            </span>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <span class="badge bg-success text-white bg-opacity-10 border border-success rounded-pill px-3 py-1 text-uppercase border-opacity-25">
-                                                                                        ${a.payment_status.replace('_', ' ')}
-                                                                                    </span>
-                                                                                </div>
-                                                                            `).join('');
+                                                                                    `).join('');
         }
 
         async function fetchDoctorHistory() {
@@ -909,22 +1057,22 @@
             }
 
             list.innerHTML = data.appointments.map((a, idx) => `
-                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                    <div class="history-info">
-                                        <div class="history-icon icon-blue"><i class="bx bx-stethoscope"></i></div>
-                                        <div class="history-content">
-                                            <div class="text-primary fw-bold small mb-1">Dr. ${currentAdminDoctorName}</div>
-                                            <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
-                                            <div class="history-date">
-                                                <i class="bx bx-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                            <div class="history-info">
+                                                <div class="history-icon icon-blue"><i class="bx bx-stethoscope"></i></div>
+                                                <div class="history-content">
+                                                    <div class="text-primary fw-bold small mb-1">Dr. ${currentAdminDoctorName}</div>
+                                                    <h6>${a.note ? (a.note.length > 40 ? a.note.substring(0, 40) + '...' : a.note) : 'General Consultation'}</h6>
+                                                    <div class="history-date">
+                                                        <i class="bx bx-calendar-check mt-1"></i> ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} at ${a.time}
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : (a.status == '2' ? 'bg-danger' : 'bg-info')}">
+                                                ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
+                                            </span>
                                         </div>
-                                    </div>
-                                    <span class="badge rounded-pill px-3 py-2 text-white ${a.status == '3' ? 'bg-success' : (a.status == '2' ? 'bg-danger' : 'bg-info')}">
-                                        ${a.status == '3' ? 'Completed' : (a.status == '2' ? 'Cancelled' : (a.status == '1' ? 'Confirmed' : 'Pending'))}
-                                    </span>
-                                </div>
-                            `).join('');
+                                    `).join('');
         }
 
         async function loadAdminDoctorPrescriptions() {
@@ -938,38 +1086,38 @@
             }
 
             list.innerHTML = data.prescriptions.map((p, idx) => `
-                                <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
-                                    <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
-                                            <div class="text-dark fw-bold small">
-                                                <i class="bx bx-calendar me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                                            </div>
-                                        </div>
-                                        <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
-                                            <i class="bx bx-download me-1"></i> PDF
-                                        </a>
-                                    </div>
-                                    <div class="card-body p-0">
-                                        <div class="list-group list-group-flush">
-                                            ${(p.medicines || []).map(m => `
-                                                <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                                            <i class="bx bx-capsule h3"></i>
-                                                        </div>
-                                                        <div>
-                                                            <div class="fw-bold text-dark">${m.medicine_name}</div>
-                                                            <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
-                                                        </div>
+                                        <div class="card border-0 shadow-sm rounded-4 mb-3 overflow-hidden" style="animation: slideInUp 0.3s ease-out forwards; animation-delay: ${idx * 0.1}s">
+                                            <div class="card-header bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span class="text-uppercase fw-bold text-muted small" style="letter-spacing: 1px;">Prescription #${p.id}</span>
+                                                    <div class="text-dark fw-bold small">
+                                                        <i class="bx bx-calendar me-1 text-primary"></i> ${new Date(p.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                                                     </div>
                                                 </div>
-                                            `).join('')}
-                                            ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                                                <a href="/download-prescription/${p.id}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                                    <i class="bx bx-download me-1"></i> PDF
+                                                </a>
+                                            </div>
+                                            <div class="card-body p-0">
+                                                <div class="list-group list-group-flush">
+                                                    ${(p.medicines || []).map(m => `
+                                                        <div class="list-group-item border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                                    <i class="bx bx-capsule h3"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-bold text-dark">${m.medicine_name}</div>
+                                                                    <div class="text-muted small">${m.dosage} • ${m.frequency} • ${m.duration}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    `).join('')}
+                                                    ${(p.medicines || []).length === 0 ? '<div class="p-4 text-center text-muted small">No medicines added yet</div>' : ''}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            `).join('');
+                                    `).join('');
         }
 
         async function loadAdminDoctorPayments() {
@@ -985,22 +1133,22 @@
             }
 
             list.innerHTML = paid.map((a, idx) => `
-                                <div class="history-item" style="animation-delay: ${idx * 0.1}s">
-                                    <div class="history-info">
-                                        <div class="history-icon icon-green"><i class="bx bx-receipt"></i></div>
-                                        <div class="history-content">
-                                            <div class="text-primary fw-bold small mb-1">Dr. ${currentAdminDoctorName}</div>
-                                            <h6>Amount: ₹${a.fees || '0'}</h6>
-                                            <div class="history-date">
-                                                <i class="bx bx-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                        <div class="history-item" style="animation-delay: ${idx * 0.1}s">
+                                            <div class="history-info">
+                                                <div class="history-icon icon-green"><i class="bx bx-receipt"></i></div>
+                                                <div class="history-content">
+                                                    <div class="text-primary fw-bold small mb-1">Dr. ${currentAdminDoctorName}</div>
+                                                    <h6>Amount: ₹${a.fees || '0'}</h6>
+                                                    <div class="history-date">
+                                                        <i class="bx bx-wallet mt-1"></i> ${a.payment_mode || 'Online'} Payment on ${new Date(a.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <span class="badge bg-success text-white bg-opacity-10 border border-success rounded-pill px-3 py-1 text-uppercase border-opacity-25">
+                                                ${a.payment_status.replace('_', ' ')}
+                                            </span>
                                         </div>
-                                    </div>
-                                    <span class="badge bg-success text-white bg-opacity-10 border border-success rounded-pill px-3 py-1 text-uppercase border-opacity-25">
-                                        ${a.payment_status.replace('_', ' ')}
-                                    </span>
-                                </div>
-                            `).join('');
+                                    `).join('');
         }
     </script>
 @endpush
