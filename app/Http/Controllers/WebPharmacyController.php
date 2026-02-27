@@ -175,7 +175,7 @@ class WebPharmacyController extends Controller
         $user->username = explode('@', $request->email)[0] . rand(100, 999);
         $user->mobile = $request->mobile ?? '';
         $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
-        $user->role = 6; // Role 6 denotes Pharmacy
+        $user->role = 6; // Role 6 denotes Pharmacy Master
         $user->branch = $request->pharmacy_id; // Using branch to store PharmacyID
         $user->status = 1;
 
@@ -184,13 +184,52 @@ class WebPharmacyController extends Controller
         return back()->with('success', 'Pharmacy login account created successfully.');
     }
 
+    // Create Store Location Login
+    public function createStoreLogin(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:255',
+            'password' => 'required|string|min:6',
+            'name' => 'required|string|max:255',
+            'store_id' => 'required'
+        ]);
+
+        $exists = \App\Models\User::where('email', $request->email)->first();
+        if ($exists) {
+            return back()->with('error', 'A user with this email already exists.');
+        }
+
+        $user = new \App\Models\User();
+
+        $nameParts = explode(' ', $request->name, 2);
+
+        $user->first_name = $nameParts[0] ?? '';
+        $user->last_name = $nameParts[1] ?? '';
+        $user->email = $request->email;
+        $user->username = explode('@', $request->email)[0] . rand(100, 999);
+        $user->mobile = $request->mobile ?? '';
+        $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        $user->role = 7; // Role 7 denotes Store Location User
+        $user->branch = $request->store_id; // Using branch to store LocationID
+        $user->status = 1;
+
+        $user->save();
+
+        return back()->with('success', 'Store Location login account created successfully.');
+    }
+
     // List All Stores
     public function stores()
     {
         $user = Auth::user();
         if ($user && $user->role == 6) {
+            // Pharmacy Master sees all their stores
             $stores = Store_locations::where('PharmacyID', $user->branch)->paginate(10);
+        } else if ($user && $user->role == 7) {
+            // Store Manager sees ONLY their assigned store
+            $stores = Store_locations::where('LocationID', $user->branch)->paginate(10);
         } else {
+            // Admin sees everything
             $stores = Store_locations::paginate(10);
         }
 
@@ -473,6 +512,8 @@ class WebPharmacyController extends Controller
         $user = Auth::user();
         if ($user && $user->role == 6) {
             $store = Store_locations::where('PharmacyID', $user->branch)->first();
+        } else if ($user && $user->role == 7) {
+            $store = Store_locations::where('LocationID', $user->branch)->first();
         } else {
             $store = Store_locations::first();
         }
@@ -494,6 +535,10 @@ class WebPharmacyController extends Controller
             $isOwner = Store_locations::where('LocationID', $store_id)->where('PharmacyID', $user->branch)->exists();
             if (!$isOwner) {
                 return back()->with('error', 'Unauthorized access to this store inventory.');
+            }
+        } else if ($user && $user->role == 7) {
+            if ($store_id != $user->branch) {
+                return back()->with('error', 'Unauthorized access. You can only manage your assigned store inventory.');
             }
         }
 
@@ -533,6 +578,10 @@ class WebPharmacyController extends Controller
         if ($user && $user->role == 6) {
             $isOwner = Store_locations::where('LocationID', $request->store_id)->where('PharmacyID', $user->branch)->exists();
             if (!$isOwner) {
+                return back()->with('error', 'Unauthorized to update this store inventory.');
+            }
+        } else if ($user && $user->role == 7) {
+            if ($request->store_id != $user->branch) {
                 return back()->with('error', 'Unauthorized to update this store inventory.');
             }
         }

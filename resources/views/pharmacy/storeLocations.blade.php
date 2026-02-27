@@ -372,6 +372,15 @@
                                                 title="Manage Inventory">
                                                 <i class="bx bx-layer"></i>
                                             </a>
+                                            <a href="#" class="btn-tbl-view"
+                                                style="color:#8b5cf6; background:#f5f3ff; border-color:#ddd6fe;"
+                                                title="Create Login" data-bs-toggle="modal" data-bs-target="#createLoginModal"
+                                                data-store-id="{{ $store->LocationID }}"
+                                                data-store-name="{{ $store->LocationName }}"
+                                                data-store-email="{{ $store->EmailAddress }}"
+                                                data-store-phone="{{ $store->PhoneNumber }}">
+                                                <i class="bx bx-user-plus"></i>
+                                            </a>
                                             <a href="/admin/manage-store?id={{ $store->LocationID ?? '' }}" class="btn-tbl-edit"
                                                 title="Edit">
                                                 <i class="bx bx-edit-alt"></i>
@@ -415,4 +424,73 @@
 
         </div>
     </section>
+
+    <!-- Create Login Modal -->
+    <div class="modal fade" id="createLoginModal" tabindex="-1" aria-labelledby="createLoginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="createLoginModalLabel">Create Store Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Note: The form points to createStoreLogin -->
+                <form action="{{ route('createStoreLogin') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="store_id" id="modal_store_id">
+                    <div class="modal-body">
+                        <p class="text-muted small mb-4">Create a dedicated login account for <strong id="display_store_name"></strong>. This will allow the store manager to independently access inventory and orders.</p>
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold small text-muted">Manager Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="name" id="modal_store_name" required placeholder="John Doe">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold small text-muted">Login Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="email" id="modal_store_email" required placeholder="store@example.com">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label fw-semibold small text-muted">Mobile Number</label>
+                            <input type="text" class="form-control" name="mobile" id="modal_store_mobile" placeholder="Leave blank if none">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold small text-muted">Set Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" name="password" required minlength="6" placeholder="Minimum 6 characters">
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm" style="background:var(--color-primary); border:none;">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var createLoginModal = document.getElementById('createLoginModal');
+        createLoginModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            
+            var storeId = button.getAttribute('data-store-id');
+            var storeName = button.getAttribute('data-store-name');
+            var storeEmail = button.getAttribute('data-store-email');
+            var storePhone = button.getAttribute('data-store-phone');
+            
+            // Populate modal hidden field
+            document.getElementById('modal_store_id').value = storeId;
+            // Update UI text
+            document.getElementById('display_store_name').textContent = storeName;
+            
+            // Optionally prefill fields if data exists
+            document.getElementById('modal_store_email').value = storeEmail ? storeEmail : '';
+            document.getElementById('modal_store_mobile').value = storePhone ? storePhone : '';
+        });
+    });
+</script>
+@endpush

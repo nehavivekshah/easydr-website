@@ -128,6 +128,7 @@ Route::group(['middleware' => ['auth', 'role.check']], function () {
     Route::post('/admin/manage-pharmacy', [WebPharmacyController::class, 'managePharmacyPost'])->name('managePharmacy');
     Route::delete('/admin/pharmacy/{id}', [WebPharmacyController::class, 'destroyPharmacy'])->name('pharmacy.destroy');
     Route::post('/admin/pharmacy/create-login', [WebPharmacyController::class, 'createPharmacyLogin'])->name('createPharmacyLogin');
+    Route::post('/admin/create-store-login', [WebPharmacyController::class, 'createStoreLogin'])->name('createStoreLogin');
 
     /*Store Management Router*/
     Route::get('/admin/store-locations', [WebPharmacyController::class, 'stores']);
