@@ -275,6 +275,13 @@
                                 <td class="m-none" style="font-size:.82rem;">{{ $pharmacy->PhoneNumber ?? '--' }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center align-items-center gap-1">
+                                        <button type="button" class="btn-tbl-view rounded-pill px-3 shadow-sm"
+                                            style="background:var(--color-primary); color:#fff; border:none;"
+                                            data-bs-toggle="modal" data-bs-target="#createLoginModal"
+                                            data-id="{{ $pharmacy->PharmacyID }}" data-name="{{ $pharmacy->PharmacyName }}"
+                                            data-email="{{ $pharmacy->EmailAddress }}">
+                                            <i class="bx bx-key"></i> Login
+                                        </button>
                                         <a href="/admin/medicine-listings?PharmacyID={{ $pharmacy->PharmacyID ?? '' }}"
                                             class="btn-tbl-view" title="View Medicines">
                                             <i class="bx bx-show"></i>
@@ -321,4 +328,75 @@
 
         </div>
     </section>
+
+    <!-- Create Login Modal -->
+    <div class="modal fade" id="createLoginModal" tabindex="-1" aria-labelledby="createLoginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="createLoginModalLabel">Create Pharmacy Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('createPharmacyLogin') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="pharmacy_id" id="modal_pharmacy_id">
+                    <div class="modal-body">
+                        <p class="text-muted small mb-4">Create a dedicated login account for <strong id="display_pharmacy_name"></strong>. This will allow them to access the pharmacy portal independently.</p>
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold small text-muted">Primary Contact Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="name" id="modal_pharmacy_name" required placeholder="John Doe">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold small text-muted">Login Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="email" id="modal_pharmacy_email" required placeholder="pharmacy@example.com">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label fw-semibold small text-muted">Mobile Number</label>
+                            <input type="text" class="form-control" name="mobile" id="modal_pharmacy_mobile" placeholder="Leave blank if none">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold small text-muted">Set Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" name="password" required minlength="6" placeholder="Minimum 6 characters">
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm" style="background:var(--color-primary); border:none;">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var createLoginModal = document.getElementById('createLoginModal');
+        createLoginModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id = button.getAttribute('data-id');
+            var name = button.getAttribute('data-name');
+            var email = button.getAttribute('data-email');
+            
+            // For the visual display
+            document.getElementById('display_pharmacy_name').textContent = name;
+            
+            // For the form inputs
+            document.getElementById('modal_pharmacy_id').value = id;
+            document.getElementById('modal_pharmacy_name').value = name;
+            
+            // Only set email if it's a valid string and not "--"
+            if(email && email.trim() !== '' && email.trim() !== '--') {
+                document.getElementById('modal_pharmacy_email').value = email;
+            } else {
+                document.getElementById('modal_pharmacy_email').value = '';
+            }
+        });
+    });
+</script>
+@endpush

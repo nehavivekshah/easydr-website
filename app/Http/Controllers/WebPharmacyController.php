@@ -145,6 +145,40 @@ class WebPharmacyController extends Controller
         return back()->with('success', 'Store deleted successfully.');
     }
 
+    // Create Pharmacy Login
+    public function createPharmacyLogin(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:255',
+            'password' => 'required|string|min:6',
+            'name' => 'required|string|max:255',
+            'pharmacy_id' => 'required'
+        ]);
+
+        $exists = \App\Models\User::where('email', $request->email)->first();
+        if ($exists) {
+            return back()->with('error', 'A user with this email already exists.');
+        }
+
+        $user = new \App\Models\User();
+
+        $nameParts = explode(' ', $request->name, 2);
+
+        $user->first_name = $nameParts[0] ?? '';
+        $user->last_name = $nameParts[1] ?? '';
+        $user->email = $request->email;
+        $user->username = explode('@', $request->email)[0] . rand(100, 999);
+        $user->mobile = $request->mobile ?? '';
+        $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+        $user->role = 5; // Use 5 to denote a Pharmacy Role based on context
+        $user->branch = $request->pharmacy_id; // Using branch to store PharmacyID
+        $user->status = 1;
+
+        $user->save();
+
+        return back()->with('success', 'Pharmacy login account created successfully.');
+    }
+
     // List All Stores
     public function stores()
     {

@@ -127,6 +127,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/manage-pharmacy', [WebPharmacyController::class, 'managePharmacy'])->name('managePharmacy');
     Route::post('/admin/manage-pharmacy', [WebPharmacyController::class, 'managePharmacyPost'])->name('managePharmacy');
     Route::delete('/admin/pharmacy/{id}', [WebPharmacyController::class, 'destroyPharmacy'])->name('pharmacy.destroy');
+    Route::post('/admin/pharmacy/create-login', [WebPharmacyController::class, 'createPharmacyLogin'])->name('createPharmacyLogin');
 
     /*Store Management Router*/
     Route::get('/admin/store-locations', [WebPharmacyController::class, 'stores']);
