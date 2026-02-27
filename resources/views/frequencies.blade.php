@@ -1,59 +1,219 @@
 @extends('layout')
-@section('title','Frequencies - Easy Doctor')
+@section('title', 'Frequencies - Easy Doctor')
+
+@push('styles')
+    <style>
+        .page-header-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
+        /* ---- Card Table ---- */
+        .card-table-wrap {
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+            overflow: hidden;
+        }
+
+        .card-table-wrap .table {
+            margin: 0;
+        }
+
+        .card-table-wrap .table thead th {
+            background: #f8f9fb;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: #2563eb;
+            border-bottom: 2px solid #dbeafe;
+            padding: 14px 18px;
+            white-space: nowrap;
+        }
+
+        .card-table-wrap .table tbody td {
+            padding: 13px 18px;
+            vertical-align: middle;
+            font-size: .88rem;
+            color: #374151;
+        }
+
+        .card-table-wrap .table tbody tr:hover {
+            background: #f8f9fb;
+        }
+
+        .card-table-wrap .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ---- Frequency chip ---- */
+        .freq-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ede9fe;
+            border: 1px solid #c4b5fd;
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-size: .85rem;
+            font-weight: 700;
+            color: #6d28d9;
+        }
+
+        /* ---- Buttons ---- */
+        .btn-add {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 9px 22px;
+            font-weight: 600;
+            font-size: .88rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, .3);
+            transition: all .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-add:hover {
+            background: linear-gradient(135deg, #1e40af, #1d4ed8);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-tbl-edit {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1.5px solid #bfdbfe;
+            border-radius: 50px;
+            padding: 5px 13px;
+            font-size: .8rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all .18s;
+        }
+
+        .btn-tbl-edit:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .btn-tbl-del {
+            background: #fff1f2;
+            color: #dc2626;
+            border: 1.5px solid #fecaca;
+            border-radius: 50px;
+            padding: 5px 13px;
+            font-size: .8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all .18s;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-tbl-del:hover {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+    </style>
+@endpush
 
 @section('content')
     @php
         $roles = session('roles');
         $roleArray = explode(',', ($roles->permissions ?? ''));
+        $canAdd = in_array('frequency_add', $roleArray) || in_array('All', $roleArray);
+        $canEdit = in_array('frequency_edit', $roleArray) || in_array('All', $roleArray);
+        $canDelete = in_array('frequency_delete', $roleArray) || in_array('All', $roleArray);
     @endphp
 
     <section class="task__section">
-        <div class="text">
-            Frequencies
-
-            @if(in_array('frequency_add', $roleArray) || in_array('All', $roleArray))
-            <div class="btn-group m-0">
-                <a href="/admin/manage-frequency" class="btn btn-default btn-sm">
-                    <i class="bx bx-plus"></i> <span>Add New</span>
-                </a>
-            </div>
-            @endif
-        </div>
-
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 pb-3 table-responsive">
-                    <table id="lists" class="table table-striped table-bordered m-table" style="width:100%">
-                        <thead>
+
+            {{-- Page Header --}}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">Frequencies</h4>
+                    <nav aria-label="breadcrumb" class="mt-1">
+                        <ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard"
+                                    class="text-decoration-none text-muted">Dashboard</a></li>
+                            <li class="breadcrumb-item active text-muted">Frequencies</li>
+                        </ol>
+                    </nav>
+                </div>
+                @if($canAdd)
+                    <a href="/admin/manage-frequency" class="btn-add">
+                        <i class="bx bx-plus"></i> Add Frequency
+                    </a>
+                @endif
+            </div>
+
+            {{-- Table Card --}}
+            <div class="card-table-wrap">
+                <table id="lists" class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width:6%">#</th>
+                            <th>Frequency Name</th>
+                            <th style="width:12%" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($frequencies as $k => $frequency)
                             <tr>
-                                <th>#</th>
-                                <th>Frequency Name</th>
-                                <th class="wpx-100 text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($frequencies as $k => $frequency)
-                            <tr>
-                                <td>{{ $k+1 }}</td>
-                                <td>{{ $frequency->name ?? '--' }}</td>
+                                <td class="fw-semibold text-muted">{{ $k + 1 }}</td>
+                                <td>
+                                    <span class="freq-chip">
+                                        <i class="bx bx-time-five"></i>
+                                        {{ $frequency->name ?? '--' }}
+                                    </span>
+                                </td>
                                 <td class="text-center">
-                                    @if(in_array('frequency_edit', $roleArray) || in_array('All', $roleArray))
-                                    <a href="/admin/manage-frequency?id={{ $frequency->id }}" class="btn btn-info btn-sm" title="Edit">
-                                        <i class="bx bx-edit"></i>
-                                    </a>
-                                    @endif
-                                    @if(in_array('frequency_delete', $roleArray) || in_array('All', $roleArray))
-                                    <a class="btn btn-danger btn-sm m-none delete" data-id="{{ $frequency->id }}" data-page="frequency" title="Delete">
-                                        <i class="bx bx-trash"></i>
-                                    </a>
+                                    <div class="d-flex justify-content-center align-items-center gap-1">
+                                        @if($canEdit)
+                                            <a href="/admin/manage-frequency?id={{ $frequency->id }}" class="btn-tbl-edit"
+                                                title="Edit">
+                                                <i class="bx bx-edit-alt"></i>
+                                            </a>
+                                        @endif
+                                        @if($canDelete)
+                                            <a class="btn-tbl-del delete" data-id="{{ $frequency->id }}" data-page="frequency"
+                                                title="Delete">
+                                                <i class="bx bx-trash"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-5 text-muted">
+                                    <i class="bx bx-time-five" style="font-size:2.5rem;color:#bfdbfe;"></i>
+                                    <p class="mt-2 mb-0 fw-semibold">No frequencies found.</p>
+                                    @if($canAdd)
+                                        <a href="/admin/manage-frequency" class="btn-add mt-3 d-inline-flex mx-auto">
+                                            <i class="bx bx-plus"></i> Add First Frequency
+                                        </a>
                                     @endif
                                 </td>
                             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
+
         </div>
     </section>
 @endsection
