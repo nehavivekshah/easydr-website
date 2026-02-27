@@ -91,25 +91,59 @@
         }
 
         /* ---- Card ---- */
+        .page-header-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
         .wizard-card {
             background: #fff;
             border-radius: 16px;
             border: 1px solid #e5e7eb;
             box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
-            padding: 30px 36px;
+            overflow: hidden;
         }
 
-        .wizard-page-header {
+        .wizard-banner {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            padding: 22px 32px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .wizard-banner-icon {
+            width: 46px;
+            height: 46px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .wizard-banner-title {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .wizard-banner-sub {
+            color: rgba(255, 255, 255, .8);
+            font-size: .78rem;
+            margin: 2px 0 0;
         }
 
         .wizard-back-btn {
             width: 36px;
             height: 36px;
-            background: #2563eb;
+            background: rgba(255, 255, 255, .18);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -119,18 +153,16 @@
             font-size: 1rem;
             flex-shrink: 0;
             transition: background .2s;
+            margin-right: 4px;
         }
 
         .wizard-back-btn:hover {
-            background: #1d4ed8;
+            background: rgba(255, 255, 255, .3);
             color: #fff;
         }
 
-        .wizard-page-header h5 {
-            margin: 0;
-            font-weight: 700;
-            font-size: 1.15rem;
-            color: #111827;
+        .wizard-card-body {
+            padding: 28px 32px 32px;
         }
 
         .form-section-title {
@@ -290,173 +322,185 @@
 
     <section class="task__section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1 my-4 p-0">
-
-                    {{-- Page Header --}}
-                    <div class="wizard-page-header">
-                        <a href="/admin/video-call-gateway-configs" class="wizard-back-btn" title="Back">
-                            <i class="bx bx-chevron-left"></i>
-                        </a>
-                        <h5>{{ $isEdit ? 'Edit Video Call Gateway' : 'Add New Video Call Gateway' }}</h5>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">{{ $isEdit ? 'Edit Video Call Gateway' : 'Add New Video Call Gateway' }}
+                    </h4>
+                    <nav aria-label="breadcrumb" class="mt-1">
+                        <ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard"
+                                    class="text-decoration-none text-muted">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/video-call-gateway-configs"
+                                    class="text-decoration-none text-muted">Video Call Gateways</a></li>
+                            <li class="breadcrumb-item active text-muted">{{ $isEdit ? 'Edit' : 'Add' }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="wizard-card">
+                <div class="wizard-banner">
+                    <a href="/admin/video-call-gateway-configs" class="wizard-back-btn" title="Back"><i
+                            class="bx bx-arrow-back"></i></a>
+                    <div class="wizard-banner-icon"><i class="bx bx-video"></i></div>
+                    <div>
+                        <p class="wizard-banner-title">
+                            {{ $isEdit ? 'Edit Video Call Gateway' : 'Add New Video Call Gateway' }}</p>
+                        <p class="wizard-banner-sub">Configure provider identity and API credentials across 2 steps</p>
+                    </div>
+                </div>
+                <div class="wizard-card-body">
+                    {{-- Stepper --}}
+                    <div class="wizard-stepper">
+                        <div class="wizard-step active" data-step="1">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Provider Identity</div>
+                        </div>
+                        <div class="wizard-step" data-step="2">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">API Credentials</div>
+                        </div>
                     </div>
 
-                    <div class="wizard-card">
+                    <form action="{{ route('manageVideoCallGatewayConfig') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $_GET['id'] ?? '' }}">
 
-                        {{-- Stepper --}}
-                        <div class="wizard-stepper">
-                            <div class="wizard-step active" data-step="1">
-                                <div class="step-circle">1</div>
-                                <div class="step-label">Provider Identity</div>
+                        {{-- ============================
+                        STEP 1: Provider Identity
+                        ============================ --}}
+                        <div class="wizard-panel active" id="step-1">
+                            <div class="form-section-title"><i class="bx bx-video me-2"></i>Provider Information</div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Provider Name <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-video-plus"></i></span>
+                                        <input type="text" name="provider_name" class="form-control"
+                                            placeholder="e.g. Agora, Twilio, Zegocloud"
+                                            value="{{ $vcgc->provider_name ?? '' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">App ID</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-barcode"></i></span>
+                                        <input type="text" name="app_id" class="form-control" placeholder="Enter App ID"
+                                            value="{{ $vcgc->app_id ?? '' }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Environment</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-server"></i></span>
+                                        <select name="environment" class="form-select">
+                                            <option value="sandbox" {{ (isset($vcgc) && $vcgc->environment == 'sandbox') ? 'selected' : '' }}>🟡 Sandbox (Testing)</option>
+                                            <option value="production" {{ (isset($vcgc) && $vcgc->environment == 'production') ? 'selected' : '' }}>🔴 Production
+                                                (Live)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Status</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
+                                        <select name="is_active" class="form-select">
+                                            <option value="1" {{ (isset($vcgc) && $vcgc->is_active == 1) ? 'selected' : '' }}>
+                                                ✅ Active</option>
+                                            <option value="0" {{ (isset($vcgc) && $vcgc->is_active == 0) ? 'selected' : '' }}>
+                                                ⛔ Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="wizard-step" data-step="2">
-                                <div class="step-circle">2</div>
-                                <div class="step-label">API Credentials</div>
+
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="button" class="btn-wizard-next" onclick="goToStep(2)">
+                                    Next <i class="bx bx-right-arrow-alt ms-1"></i>
+                                </button>
                             </div>
                         </div>
 
-                        <form action="{{ route('manageVideoCallGatewayConfig') }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $_GET['id'] ?? '' }}">
+                        {{-- ============================
+                        STEP 2: API Credentials
+                        ============================ --}}
+                        <div class="wizard-panel" id="step-2">
+                            <div class="form-section-title"><i class="bx bx-key me-2"></i>API Credentials</div>
 
-                            {{-- ============================
-                            STEP 1: Provider Identity
-                            ============================ --}}
-                            <div class="wizard-panel active" id="step-1">
-                                <div class="form-section-title"><i class="bx bx-video me-2"></i>Provider Information</div>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">Provider Name <span
-                                                class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="bx bx-video-plus"></i></span>
-                                            <input type="text" name="provider_name" class="form-control"
-                                                placeholder="e.g. Agora, Twilio, Zegocloud"
-                                                value="{{ $vcgc->provider_name ?? '' }}" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">App ID</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="bx bx-barcode"></i></span>
-                                            <input type="text" name="app_id" class="form-control" placeholder="Enter App ID"
-                                                value="{{ $vcgc->app_id ?? '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">Environment</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="bx bx-server"></i></span>
-                                            <select name="environment" class="form-select">
-                                                <option value="sandbox" {{ (isset($vcgc) && $vcgc->environment == 'sandbox') ? 'selected' : '' }}>🟡 Sandbox (Testing)</option>
-                                                <option value="production" {{ (isset($vcgc) && $vcgc->environment == 'production') ? 'selected' : '' }}>🔴 Production
-                                                    (Live)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">Status</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
-                                            <select name="is_active" class="form-select">
-                                                <option value="1" {{ (isset($vcgc) && $vcgc->is_active == 1) ? 'selected' : '' }}>✅ Active</option>
-                                                <option value="0" {{ (isset($vcgc) && $vcgc->is_active == 0) ? 'selected' : '' }}>⛔ Inactive</option>
-                                            </select>
-                                        </div>
+                            <div class="security-note mb-4">
+                                <i class="bx bx-shield-quarter text-warning"></i>
+                                <span>App secrets and API keys are sensitive. Copy these directly from your provider's
+                                    dashboard. They will be securely stored.</span>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">App Secret</label>
+                                    <div class="input-group secret-wrap">
+                                        <span class="input-group-text"><i class="bx bx-lock-alt"></i></span>
+                                        <input type="password" name="app_secret" id="app_secret" class="form-control pe-5"
+                                            placeholder="Enter App Secret" value="{{ $vcgc->app_secret ?? '' }}">
+                                        <i class="bx bx-hide secret-toggle" data-target="app_secret"></i>
                                     </div>
                                 </div>
-
-                                <div class="d-flex justify-content-end mt-4">
-                                    <button type="button" class="btn-wizard-next" onclick="goToStep(2)">
-                                        Next <i class="bx bx-right-arrow-alt ms-1"></i>
-                                    </button>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">API Key</label>
+                                    <div class="input-group secret-wrap">
+                                        <span class="input-group-text"><i class="bx bx-key"></i></span>
+                                        <input type="password" name="api_key" id="api_key" class="form-control pe-5"
+                                            placeholder="Enter API Key" value="{{ $vcgc->api_key ?? '' }}">
+                                        <i class="bx bx-hide secret-toggle" data-target="api_key"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">API Secret</label>
+                                    <div class="input-group secret-wrap">
+                                        <span class="input-group-text"><i class="bx bx-lock-open-alt"></i></span>
+                                        <input type="password" name="api_secret" id="api_secret" class="form-control pe-5"
+                                            placeholder="Enter API Secret" value="{{ $vcgc->api_secret ?? '' }}">
+                                        <i class="bx bx-hide secret-toggle" data-target="api_secret"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Webhook Secret</label>
+                                    <div class="input-group secret-wrap">
+                                        <span class="input-group-text"><i class="bx bx-link-alt"></i></span>
+                                        <input type="password" name="webhook_secret" id="webhook_secret"
+                                            class="form-control pe-5" placeholder="Enter Webhook Secret"
+                                            value="{{ $vcgc->webhook_secret ?? '' }}">
+                                        <i class="bx bx-hide secret-toggle" data-target="webhook_secret"></i>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold d-flex justify-content-between">
+                                        <span>Additional Config <span class="text-muted fw-normal">(JSON)</span></span>
+                                        <small class="text-muted">e.g. {"region": "ap-south-1"}</small>
+                                    </label>
+                                    <textarea name="additional_config" class="form-control json-textarea" rows="5"
+                                        placeholder='{"key": "value"}'>{{ $vcgc->additional_config ?? '' }}</textarea>
                                 </div>
                             </div>
 
-                            {{-- ============================
-                            STEP 2: API Credentials
-                            ============================ --}}
-                            <div class="wizard-panel" id="step-2">
-                                <div class="form-section-title"><i class="bx bx-key me-2"></i>API Credentials</div>
-
-                                <div class="security-note mb-4">
-                                    <i class="bx bx-shield-quarter text-warning"></i>
-                                    <span>App secrets and API keys are sensitive. Copy these directly from your provider's
-                                        dashboard. They will be securely stored.</span>
-                                </div>
-
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">App Secret</label>
-                                        <div class="input-group secret-wrap">
-                                            <span class="input-group-text"><i class="bx bx-lock-alt"></i></span>
-                                            <input type="password" name="app_secret" id="app_secret"
-                                                class="form-control pe-5" placeholder="Enter App Secret"
-                                                value="{{ $vcgc->app_secret ?? '' }}">
-                                            <i class="bx bx-hide secret-toggle" data-target="app_secret"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">API Key</label>
-                                        <div class="input-group secret-wrap">
-                                            <span class="input-group-text"><i class="bx bx-key"></i></span>
-                                            <input type="password" name="api_key" id="api_key" class="form-control pe-5"
-                                                placeholder="Enter API Key" value="{{ $vcgc->api_key ?? '' }}">
-                                            <i class="bx bx-hide secret-toggle" data-target="api_key"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">API Secret</label>
-                                        <div class="input-group secret-wrap">
-                                            <span class="input-group-text"><i class="bx bx-lock-open-alt"></i></span>
-                                            <input type="password" name="api_secret" id="api_secret"
-                                                class="form-control pe-5" placeholder="Enter API Secret"
-                                                value="{{ $vcgc->api_secret ?? '' }}">
-                                            <i class="bx bx-hide secret-toggle" data-target="api_secret"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label small fw-semibold">Webhook Secret</label>
-                                        <div class="input-group secret-wrap">
-                                            <span class="input-group-text"><i class="bx bx-link-alt"></i></span>
-                                            <input type="password" name="webhook_secret" id="webhook_secret"
-                                                class="form-control pe-5" placeholder="Enter Webhook Secret"
-                                                value="{{ $vcgc->webhook_secret ?? '' }}">
-                                            <i class="bx bx-hide secret-toggle" data-target="webhook_secret"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label small fw-semibold d-flex justify-content-between">
-                                            <span>Additional Config <span class="text-muted fw-normal">(JSON)</span></span>
-                                            <small class="text-muted">e.g. {"region": "ap-south-1"}</small>
-                                        </label>
-                                        <textarea name="additional_config" class="form-control json-textarea" rows="5"
-                                            placeholder='{"key": "value"}'>{{ $vcgc->additional_config ?? '' }}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mt-4 pt-3" style="border-top:1px solid #e9ecef;">
-                                    <button type="button" class="btn-wizard-back" onclick="goToStep(1)">
-                                        <i class="bx bx-left-arrow-alt me-1"></i> Back
+                            <div class="d-flex justify-content-between mt-4 pt-3" style="border-top:1px solid #e9ecef;">
+                                <button type="button" class="btn-wizard-back" onclick="goToStep(1)">
+                                    <i class="bx bx-left-arrow-alt me-1"></i> Back
+                                </button>
+                                <div class="d-flex gap-2">
+                                    <button type="reset" class="btn-wizard-reset">
+                                        <i class="bx bx-reset me-1"></i> Reset
                                     </button>
-                                    <div class="d-flex gap-2">
-                                        <button type="reset" class="btn-wizard-reset">
-                                            <i class="bx bx-reset me-1"></i> Reset
-                                        </button>
-                                        <button type="submit" class="btn-wizard-submit">
-                                            <i class="bx bx-save me-1"></i>
-                                            {{ $isEdit ? 'Update Gateway' : 'Save Gateway' }}
-                                        </button>
-                                    </div>
+                                    <button type="submit" class="btn-wizard-submit">
+                                        <i class="bx bx-save me-1"></i>
+                                        {{ $isEdit ? 'Update Gateway' : 'Save Gateway' }}
+                                    </button>
                                 </div>
                             </div>
+                        </div>
 
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </form>
+                </div>{{-- /.wizard-card-body --}}
+            </div>{{-- /.wizard-card --}}
+        </div>{{-- /.container-fluid --}}
     </section>
 @endsection
 
@@ -483,7 +527,7 @@
                 if (i + 1 < stepNum) s.classList.add('done');
                 if (i + 1 === stepNum) s.classList.add('active');
             });
-            document.querySelector('.wizard-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelector('.wizard-banner').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         document.querySelectorAll('[required]').forEach(f => f.addEventListener('input', () => f.classList.remove('is-invalid')));
 

@@ -16,12 +16,15 @@
     .wizard-panel { display:none; }
     .wizard-panel.active { display:block; }
 
-    /* ---- Form Card ---- */
-    .wizard-card { background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 24px rgba(0,0,0,.07); padding:30px 36px; }
-    .wizard-page-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
-    .wizard-back-btn { width:36px; height:36px; background:#2563eb; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; font-size:1rem; flex-shrink:0; transition:background .2s; }
-    .wizard-back-btn:hover { background:#1d4ed8; color:#fff; }
-    .wizard-page-header h5 { margin:0; font-weight:700; font-size:1.15rem; color:#111827; }
+    .page-header-title { font-size:1.35rem; font-weight:700; color:#111827; margin:0; }
+    .wizard-card { background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 24px rgba(0,0,0,.07); overflow:hidden; }
+    .wizard-banner { background:linear-gradient(135deg,#1d4ed8,#2563eb); padding:22px 32px; display:flex; align-items:center; gap:16px; }
+    .wizard-banner-icon { width:46px; height:46px; background:rgba(255,255,255,.18); border-radius:13px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; flex-shrink:0; }
+    .wizard-banner-title { color:#fff; font-size:1.05rem; font-weight:700; margin:0; }
+    .wizard-banner-sub   { color:rgba(255,255,255,.8); font-size:.78rem; margin:2px 0 0; }
+    .wizard-back-btn { width:36px; height:36px; background:rgba(255,255,255,.18); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; font-size:1rem; flex-shrink:0; transition:background .2s; margin-right:4px; }
+    .wizard-back-btn:hover { background:rgba(255,255,255,.3); color:#fff; }
+    .wizard-card-body { padding:28px 32px 32px; }
     .form-section-title { font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#6c757d; margin:8px 0 18px; padding-bottom:8px; border-bottom:1px solid #e9ecef; }
 
     /* ---- Inputs ---- */
@@ -55,30 +58,31 @@
 @section('content')
     <section class="task__section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-10 col-md-12 col-sm-12 offset-lg-1 my-4 p-0">
-
-                    {{-- Page Header --}}
-                    <div class="wizard-page-header">
-                        <a href="{{ route('orders.index') }}" class="wizard-back-btn" title="Back">
-                            <i class="bx bx-chevron-left"></i>
-                        </a>
-                        <h5>{{ isset($order) ? 'Edit Order #' . $order->id : 'Place New Order' }}</h5>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">{{ isset($order) ? 'Edit Order #' . $order->id : 'Place New Order' }}</h4>
+                    <nav aria-label="breadcrumb" class="mt-1"><ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                        <li class="breadcrumb-item"><a href="/admin/dashboard" class="text-decoration-none text-muted">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('orders.index') }}" class="text-decoration-none text-muted">Orders</a></li>
+                        <li class="breadcrumb-item active text-muted">{{ isset($order) ? 'Edit Order' : 'Place Order' }}</li>
+                    </ol></nav>
+                </div>
+            </div>
+            <div class="wizard-card">
+                <div class="wizard-banner">
+                    <a href="{{ route('orders.index') }}" class="wizard-back-btn" title="Back"><i class="bx bx-arrow-back"></i></a>
+                    <div class="wizard-banner-icon"><i class="bx bx-receipt"></i></div>
+                    <div>
+                        <p class="wizard-banner-title">{{ isset($order) ? 'Edit Order #' . $order->id : 'Place New Order' }}</p>
+                        <p class="wizard-banner-sub">Set order details and add medicine items across 2 steps</p>
                     </div>
-
-                    <div class="wizard-card">
-
-                        {{-- Stepper --}}
-                        <div class="wizard-stepper">
-                            <div class="wizard-step active" data-step="1">
-                                <div class="step-circle">1</div>
-                                <div class="step-label">Order Details</div>
-                            </div>
-                            <div class="wizard-step" data-step="2">
-                                <div class="step-circle">2</div>
-                                <div class="step-label">Order Items</div>
-                            </div>
-                        </div>
+                </div>
+                <div class="wizard-card-body">
+                {{-- Stepper --}}
+                <div class="wizard-stepper">
+                    <div class="wizard-step active" data-step="1"><div class="step-circle">1</div><div class="step-label">Order Details</div></div>
+                    <div class="wizard-step" data-step="2"><div class="step-circle">2</div><div class="step-label">Order Items</div></div>
+                </div>
 
                         <form action="{{ route('orders.place') }}" method="POST" id="manageOrderForm">
                             @csrf
@@ -251,11 +255,10 @@
                                 </div>
                             </div>
 
-                        </form>
-                    </div>{{-- /.wizard-card --}}
-                </div>
-            </div>
-        </div>
+                    </form>
+                </div>{{-- /.wizard-card-body --}}
+            </div>{{-- /.wizard-card --}}
+        </div>{{-- /.container-fluid --}}
     </section>
 @endsection
 
@@ -280,7 +283,7 @@
             if (i + 1 < stepNum) s.classList.add('done');
             if (i + 1 === stepNum) s.classList.add('active');
         });
-        document.querySelector('.wizard-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector('.wizard-banner').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     document.querySelectorAll('[required]').forEach(f => f.addEventListener('input', () => f.classList.remove('is-invalid')));
 

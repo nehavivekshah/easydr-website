@@ -4,30 +4,16 @@
 @push('styles')
 <style>
     /* ---- Wizard Stepper ---- */
-    .wizard-stepper { display:flex; align-items:center; justify-content:center; background:#f8f9fa; border-radius:12px; padding:20px 30px; margin-bottom:28px; gap:0; }
-    .wizard-step { display:flex; flex-direction:column; align-items:center; flex:1; position:relative; cursor:pointer; }
-    .wizard-step:not(:last-child)::after { content:''; position:absolute; top:18px; left:calc(50% + 22px); width:calc(100% - 44px); height:2px; background:#dee2e6; z-index:0; }
-    .wizard-step.active:not(:last-child)::after, .wizard-step.done:not(:last-child)::after { background:#2563eb; }
-    .step-circle { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.9rem; border:2px solid #dee2e6; background:#fff; color:#adb5bd; z-index:1; transition:all .25s; }
-    .wizard-step.active .step-circle { background:#2563eb; border-color:#2563eb; color:#fff; box-shadow:0 4px 12px rgba(37,99,235,.35); }
-    .wizard-step.done .step-circle { background:#2563eb; border-color:#2563eb; color:#fff; }
-    .step-label { font-size:.7rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#adb5bd; margin-top:8px; }
-    .wizard-step.active .step-label, .wizard-step.done .step-label { color:#2563eb; }
-    .wizard-panel { display:none; }
-    .wizard-panel.active { display:block; }
+    .page-header-title { font-size:1.35rem; font-weight:700; color:#111827; margin:0; }
+    .wizard-card { background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 24px rgba(0,0,0,.07); overflow:hidden; }
+    .wizard-banner { background:linear-gradient(135deg,#1d4ed8,#2563eb); padding:22px 32px; display:flex; align-items:center; gap:16px; }
+    .wizard-banner-icon { width:46px; height:46px; background:rgba(255,255,255,.18); border-radius:13px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; flex-shrink:0; }
+    .wizard-banner-title { color:#fff; font-size:1.05rem; font-weight:700; margin:0; }
+    .wizard-banner-sub   { color:rgba(255,255,255,.8); font-size:.78rem; margin:2px 0 0; }
+    .wizard-back-btn { width:36px; height:36px; background:rgba(255,255,255,.18); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; font-size:1rem; flex-shrink:0; transition:background .2s; margin-right:4px; }
+    .wizard-back-btn:hover { background:rgba(255,255,255,.3); color:#fff; }
+    .wizard-card-body { padding:28px 32px 32px; }
     .form-section-title { font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#6c757d; margin:8px 0 18px; padding-bottom:8px; border-bottom:1px solid #e9ecef; }
-    .input-group-text { background:#f0f4ff; border-right:none; color:#2563eb; min-width:42px; justify-content:center; }
-    .input-group .form-control, .input-group .form-select { border-left:none; background:#f8f9fb; }
-    .input-group .form-control:focus, .input-group .form-select:focus { border-color:#2563eb; box-shadow:none; background:#fff; }
-    .btn-wizard-next, .btn-wizard-submit { background:linear-gradient(135deg,#1d4ed8,#2563eb); color:#fff; border:none; border-radius:50px; padding:10px 32px; font-weight:600; font-size:.92rem; box-shadow:0 4px 14px rgba(37,99,235,.3); transition:all .2s; }
-    .btn-wizard-next:hover, .btn-wizard-submit:hover { background:linear-gradient(135deg,#1e40af,#1d4ed8); box-shadow:0 6px 20px rgba(37,99,235,.4); transform:translateY(-1px); color:#fff; }
-    .btn-wizard-back { background:#fff; color:#374151; border:1.5px solid #d1d5db; border-radius:50px; padding:10px 28px; font-weight:600; font-size:.92rem; transition:all .2s; }
-    .btn-wizard-back:hover { background:#f3f4f6; border-color:#9ca3af; }
-    .wizard-card { background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 24px rgba(0,0,0,.07); padding:30px 36px; }
-    .wizard-page-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
-    .wizard-back-btn { width:36px; height:36px; background:#2563eb; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; font-size:1rem; flex-shrink:0; transition:background .2s; }
-    .wizard-back-btn:hover { background:#1d4ed8; color:#fff; }
-    .wizard-page-header h5 { margin:0; font-weight:700; font-size:1.15rem; color:#111827; }
 </style>
 @endpush
 
@@ -40,29 +26,31 @@
 
     <section class="task__section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-9 col-md-11 col-sm-12 offset-lg-1 my-4 p-0">
-
-                    <div class="wizard-page-header">
-                        <a href="/admin/store-locations" class="wizard-back-btn" title="Back">
-                            <i class="bx bx-chevron-left"></i>
-                        </a>
-                        <h5>{{ $isEdit ? 'Edit Store' : 'Add New Store' }}</h5>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">{{ $isEdit ? 'Edit Store' : 'Add New Store' }}</h4>
+                    <nav aria-label="breadcrumb" class="mt-1"><ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                        <li class="breadcrumb-item"><a href="/admin/dashboard" class="text-decoration-none text-muted">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/store-locations" class="text-decoration-none text-muted">Store Locations</a></li>
+                        <li class="breadcrumb-item active text-muted">{{ $isEdit ? 'Edit Store' : 'Add Store' }}</li>
+                    </ol></nav>
+                </div>
+            </div>
+            <div class="wizard-card">
+                <div class="wizard-banner">
+                    <a href="/admin/store-locations" class="wizard-back-btn" title="Back"><i class="bx bx-arrow-back"></i></a>
+                    <div class="wizard-banner-icon"><i class="bx bx-store-alt"></i></div>
+                    <div>
+                        <p class="wizard-banner-title">{{ $isEdit ? 'Edit Store' : 'Add New Store' }}</p>
+                        <p class="wizard-banner-sub">Configure store information, contact details and operating hours</p>
                     </div>
-
-                    <div class="wizard-card">
-
-                        {{-- Stepper --}}
-                        <div class="wizard-stepper">
-                            <div class="wizard-step active" data-step="1">
-                                <div class="step-circle">1</div>
-                                <div class="step-label">Store Info</div>
-                            </div>
-                            <div class="wizard-step" data-step="2">
-                                <div class="step-circle">2</div>
-                                <div class="step-label">Contact &amp; Hours</div>
-                            </div>
-                        </div>
+                </div>
+                <div class="wizard-card-body">
+                {{-- Stepper --}}
+                <div class="wizard-stepper">
+                    <div class="wizard-step active" data-step="1"><div class="step-circle">1</div><div class="step-label">Store Info</div></div>
+                    <div class="wizard-step" data-step="2"><div class="step-circle">2</div><div class="step-label">Contact &amp; Hours</div></div>
+                </div>
 
                         <form action="{{ route('manageStore') }}" method="POST" id="storeWizardForm">
                             @csrf
@@ -243,11 +231,10 @@
                                 </div>
                             </div>
 
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </form>
+                </div>{{-- /.wizard-card-body --}}
+            </div>{{-- /.wizard-card --}}
+        </div>{{-- /.container-fluid --}}
     </section>
 @endsection
 
@@ -268,7 +255,7 @@
             if (i + 1 < stepNum) s.classList.add('done');
             if (i + 1 === stepNum) s.classList.add('active');
         });
-        document.querySelector('.wizard-card').scrollIntoView({ behavior:'smooth', block:'start' });
+        document.querySelector('.wizard-banner').scrollIntoView({ behavior:'smooth', block:'start' });
     }
     document.querySelectorAll('[required]').forEach(f => f.addEventListener('input', () => f.classList.remove('is-invalid')));
 </script>

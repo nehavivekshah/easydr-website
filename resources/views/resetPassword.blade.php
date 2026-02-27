@@ -3,27 +3,60 @@
 
 @push('styles')
     <style>
+        .page-header-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
         .wizard-card {
             background: #fff;
             border-radius: 16px;
             border: 1px solid #e5e7eb;
             box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
-            padding: 30px 36px;
+            overflow: hidden;
         }
 
-        .wizard-page-header {
+        .wizard-banner {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            padding: 22px 32px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 16px;
         }
 
-        .wizard-page-header h5 {
-            margin: 0;
-            font-weight: 700;
-            font-size: 1.15rem;
-            color: #111827;
+        .wizard-banner-icon {
+            width: 46px;
+            height: 46px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.4rem;
+            flex-shrink: 0;
         }
+
+        .wizard-banner-title {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .wizard-banner-sub {
+            color: rgba(255, 255, 255, .8);
+            font-size: .78rem;
+            margin: 2px 0 0;
+        }
+
+        .wizard-card-body {
+            padding: 28px 32px 32px;
+        }
+
+
 
         .form-section-title {
             font-size: .8rem;
@@ -175,99 +208,105 @@
 
     <section class="task__section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-5 col-md-7 col-sm-12 offset-lg-3 offset-md-2 my-4 p-0">
-
-                    {{-- Page Header --}}
-                    <div class="wizard-page-header">
-                        <div
-                            style="width:36px;height:36px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="bx bx-lock-alt" style="color:#fff;font-size:1rem;"></i>
-                        </div>
-                        <h5>Reset Password</h5>
-                    </div>
-
-                    <div class="wizard-card">
-                        <div class="form-section-title"><i class="bx bx-shield-alt-2 me-2"></i>Change Your Password</div>
-
-                        <form action="{{ route('resetPassword') }}" method="POST">
-                            @csrf
-                            <div class="row g-3">
-
-                                {{-- Current Password --}}
-                                <div class="col-12">
-                                    <label class="form-label small fw-semibold">Current Password <span
-                                            class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-lock"></i></span>
-                                        <input type="password" name="cur_password" id="cur_password"
-                                            class="form-control pe-5" placeholder="Enter current password" required>
-                                        <i class="bx bx-hide pw-toggle" data-target="cur_password"></i>
-                                    </div>
-                                </div>
-
-                                {{-- New Password --}}
-                                <div class="col-12">
-                                    <label class="form-label small fw-semibold">New Password <span
-                                            class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-lock-open-alt"></i></span>
-                                        <input type="password" name="new_password" id="new_password"
-                                            class="form-control pe-5" placeholder="Enter new password" required>
-                                        <i class="bx bx-hide pw-toggle" data-target="new_password"></i>
-                                    </div>
-                                    <div class="strength-bar mt-2">
-                                        <div class="strength-fill" id="strengthFill"></div>
-                                    </div>
-                                    <small id="strengthLabel" class="text-muted" style="font-size:.75rem;"></small>
-                                </div>
-
-                                {{-- Confirm Password --}}
-                                <div class="col-12">
-                                    <label class="form-label small fw-semibold">Confirm New Password <span
-                                            class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-check-shield"></i></span>
-                                        <input type="password" name="new_password_confirmation" id="cn_password"
-                                            class="form-control pe-5" placeholder="Re-enter new password" required>
-                                        <i class="bx bx-hide pw-toggle" data-target="cn_password"></i>
-                                    </div>
-                                    <div class="match-msg ok" id="matchOk"><i class="bx bx-check me-1"></i>Passwords match
-                                    </div>
-                                    <div class="match-msg err" id="matchErr"><i class="bx bx-x me-1"></i>Passwords do not
-                                        match</div>
-                                </div>
-
-                                {{-- Security Tips --}}
-                                <div class="col-12">
-                                    <div class="security-tip">
-                                        <strong class="d-block mb-1">💡 Tips for a strong password:</strong>
-                                        <ul class="mb-0 ps-3">
-                                            <li>At least 8 characters long</li>
-                                            <li>Mix of uppercase &amp; lowercase letters</li>
-                                            <li>Include numbers and special characters (!@#$...)</li>
-                                            <li>Avoid reusing previous passwords</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- Actions --}}
-                            <div class="d-flex justify-content-between align-items-center mt-4 pt-3"
-                                style="border-top:1px solid #e9ecef;">
-                                <button type="reset" class="btn-wizard-reset" onclick="resetForm()">
-                                    <i class="bx bx-reset me-1"></i> Clear
-                                </button>
-                                <button type="submit" id="submitButtonv" class="btn-wizard-submit">
-                                    <i class="bx bx-save me-1"></i> Update Password
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">Reset Password</h4>
+                    <nav aria-label="breadcrumb" class="mt-1">
+                        <ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard"
+                                    class="text-decoration-none text-muted">Dashboard</a></li>
+                            <li class="breadcrumb-item active text-muted">Reset Password</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
-        </div>
+            <div class="wizard-card">
+                <div class="wizard-banner">
+                    <div class="wizard-banner-icon"><i class="bx bx-lock-alt"></i></div>
+                    <div>
+                        <p class="wizard-banner-title">Reset Password</p>
+                        <p class="wizard-banner-sub">Update your account password securely</p>
+                    </div>
+                </div>
+                <div class="wizard-card-body">
+                    <div class="form-section-title"><i class="bx bx-shield-alt-2 me-2"></i>Change Your Password</div>
+
+                    <form action="{{ route('resetPassword') }}" method="POST">
+                        @csrf
+                        <div class="row g-3">
+
+                            {{-- Current Password --}}
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Current Password <span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bx bx-lock"></i></span>
+                                    <input type="password" name="cur_password" id="cur_password" class="form-control pe-5"
+                                        placeholder="Enter current password" required>
+                                    <i class="bx bx-hide pw-toggle" data-target="cur_password"></i>
+                                </div>
+                            </div>
+
+                            {{-- New Password --}}
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">New Password <span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bx bx-lock-open-alt"></i></span>
+                                    <input type="password" name="new_password" id="new_password" class="form-control pe-5"
+                                        placeholder="Enter new password" required>
+                                    <i class="bx bx-hide pw-toggle" data-target="new_password"></i>
+                                </div>
+                                <div class="strength-bar mt-2">
+                                    <div class="strength-fill" id="strengthFill"></div>
+                                </div>
+                                <small id="strengthLabel" class="text-muted" style="font-size:.75rem;"></small>
+                            </div>
+
+                            {{-- Confirm Password --}}
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Confirm New Password <span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bx bx-check-shield"></i></span>
+                                    <input type="password" name="new_password_confirmation" id="cn_password"
+                                        class="form-control pe-5" placeholder="Re-enter new password" required>
+                                    <i class="bx bx-hide pw-toggle" data-target="cn_password"></i>
+                                </div>
+                                <div class="match-msg ok" id="matchOk"><i class="bx bx-check me-1"></i>Passwords match
+                                </div>
+                                <div class="match-msg err" id="matchErr"><i class="bx bx-x me-1"></i>Passwords do not
+                                    match</div>
+                            </div>
+
+                            {{-- Security Tips --}}
+                            <div class="col-12">
+                                <div class="security-tip">
+                                    <strong class="d-block mb-1">💡 Tips for a strong password:</strong>
+                                    <ul class="mb-0 ps-3">
+                                        <li>At least 8 characters long</li>
+                                        <li>Mix of uppercase &amp; lowercase letters</li>
+                                        <li>Include numbers and special characters (!@#$...)</li>
+                                        <li>Avoid reusing previous passwords</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Actions --}}
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3"
+                            style="border-top:1px solid #e9ecef;">
+                            <button type="reset" class="btn-wizard-reset" onclick="resetForm()">
+                                <i class="bx bx-reset me-1"></i> Clear
+                            </button>
+                            <button type="submit" id="submitButtonv" class="btn-wizard-submit">
+                                <i class="bx bx-save me-1"></i> Update Password
+                            </button>
+                        </div>
+                    </form>
+                </div>{{-- /.wizard-card-body --}}
+            </div>{{-- /.wizard-card --}}
+        </div>{{-- /.container-fluid --}}
     </section>
 @endsection
 

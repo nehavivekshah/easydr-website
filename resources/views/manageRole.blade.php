@@ -4,25 +4,59 @@
 @push('styles')
     <style>
         /* ---- Card ---- */
+        .page-header-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
         .wizard-card {
             background: #fff;
             border-radius: 16px;
             border: 1px solid #e5e7eb;
             box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
-            padding: 30px 36px;
+            overflow: hidden;
         }
 
-        .wizard-page-header {
+        .wizard-banner {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            padding: 22px 32px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .wizard-banner-icon {
+            width: 46px;
+            height: 46px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .wizard-banner-title {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .wizard-banner-sub {
+            color: rgba(255, 255, 255, .8);
+            font-size: .78rem;
+            margin: 2px 0 0;
         }
 
         .wizard-back-btn {
             width: 36px;
             height: 36px;
-            background: #2563eb;
+            background: rgba(255, 255, 255, .18);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -32,18 +66,16 @@
             font-size: 1rem;
             flex-shrink: 0;
             transition: background .2s;
+            margin-right: 4px;
         }
 
         .wizard-back-btn:hover {
-            background: #1d4ed8;
+            background: rgba(255, 255, 255, .3);
             color: #fff;
         }
 
-        .wizard-page-header h5 {
-            margin: 0;
-            font-weight: 700;
-            font-size: 1.15rem;
-            color: #111827;
+        .wizard-card-body {
+            padding: 28px 32px 32px;
         }
 
         .form-section-title {
@@ -289,122 +321,131 @@
 
     <section class="task__section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-10 col-md-12 offset-lg-1 my-4 p-0">
-
-                    {{-- Page Header --}}
-                    <div class="wizard-page-header">
-                        <a href="/admin/role-settings" class="wizard-back-btn" title="Back to Roles">
-                            <i class="bx bx-chevron-left"></i>
-                        </a>
-                        <h5>{{ $isEdit ? 'Edit Role' : 'Add New Role' }}</h5>
-                    </div>
-
-                    <div class="wizard-card">
-                        <form action="manage-role-setting" method="POST">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ request()->get('id') ?? '' }}">
-
-                            {{-- Section: Role Info --}}
-                            <div class="form-section-title"><i class="bx bx-shield-alt-2 me-2"></i>Role Information</div>
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-semibold">Role Name <span
-                                            class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-user"></i></span>
-                                        <input type="text" class="form-control" name="role" placeholder="e.g. Receptionist"
-                                            value="{{ $roles->title ?? '' }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-semibold">Designation</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
-                                        <input type="text" class="form-control" name="subrole"
-                                            placeholder="e.g. Front Desk Staff" value="{{ $roles->subtitle ?? '' }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-semibold">Status <span
-                                            class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
-                                        <select class="form-select" name="status" required>
-                                            <option value="1" @if(($roles->status ?? '1') == '1') selected @endif>Active
-                                            </option>
-                                            <option value="2" @if(($roles->status ?? '') == '2') selected @endif>Inactive
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- Section: Permissions --}}
-                            <div class="form-section-title"><i class="bx bx-key me-2"></i>Features &amp; Access Permissions
-                            </div>
-
-                            <div class="perm-header-actions">
-                                <button type="button" class="btn-all" onclick="toggleAll(true)">
-                                    <i class="bx bx-check-double me-1"></i> Select All
-                                </button>
-                                <button type="button" class="btn-none" onclick="toggleAll(false)">
-                                    <i class="bx bx-x me-1"></i> Clear All
-                                </button>
-                            </div>
-
-                            <table class="permissions-table mb-4">
-                                <thead>
-                                    <tr>
-                                        <th style="width:40%">Module</th>
-                                        <th style="width:20%">➕ Add</th>
-                                        <th style="width:20%">✏️ Edit</th>
-                                        <th style="width:20%">🗑️ Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($modules as $key => $module)
-                                        <tr>
-                                            <td>
-                                                <div class="feature-name">
-                                                    <i class="bx {{ $module['icon'] }} text-primary"
-                                                        style="font-size:1.1rem;"></i>
-                                                    <span>{{ $module['label'] }}</span>
-                                                    <button type="button" class="btn-row-toggle"
-                                                        onclick="toggleRow('{{ $key }}')">Toggle Row</button>
-                                                </div>
-                                            </td>
-                                            @foreach(['add', 'edit', 'delete'] as $action)
-                                                <td class="perm-cell">
-                                                    <input type="checkbox" class="perm-toggle perm-{{ $key }}"
-                                                        id="perm_{{ $key }}_{{ $action }}" name="permissions[{{ $key }}][]"
-                                                        value="{{ $action }}" @if(in_array("{$key}_{$action}", $permissions))
-                                                        checked @endif>
-                                                    <label for="perm_{{ $key }}_{{ $action }}"></label>
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
-                            {{-- Actions --}}
-                            <div class="d-flex justify-content-between align-items-center pt-3"
-                                style="border-top:1px solid #e9ecef;">
-                                <button type="reset" class="btn-wizard-reset">
-                                    <i class="bx bx-reset me-1"></i> Reset
-                                </button>
-                                <button type="submit" class="btn-wizard-submit">
-                                    <i class="bx bx-save me-1"></i>
-                                    {{ $isEdit ? 'Update Role' : 'Create Role' }}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">{{ $isEdit ? 'Edit Role' : 'Add New Role' }}</h4>
+                    <nav aria-label="breadcrumb" class="mt-1">
+                        <ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard"
+                                    class="text-decoration-none text-muted">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/role-settings"
+                                    class="text-decoration-none text-muted">Role Settings</a></li>
+                            <li class="breadcrumb-item active text-muted">{{ $isEdit ? 'Edit Role' : 'Add Role' }}</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
-        </div>
+            <div class="wizard-card">
+                <div class="wizard-banner">
+                    <a href="/admin/role-settings" class="wizard-back-btn" title="Back"><i class="bx bx-arrow-back"></i></a>
+                    <div class="wizard-banner-icon"><i class="bx bx-shield-alt-2"></i></div>
+                    <div>
+                        <p class="wizard-banner-title">{{ $isEdit ? 'Edit Role' : 'Add New Role' }}</p>
+                        <p class="wizard-banner-sub">Define role name, designation, and feature access permissions</p>
+                    </div>
+                </div>
+                <div class="wizard-card-body">
+                    <form action="manage-role-setting" method="POST">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ request()->get('id') ?? '' }}">
+
+                        {{-- Section: Role Info --}}
+                        <div class="form-section-title"><i class="bx bx-shield-alt-2 me-2"></i>Role Information</div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Role Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bx bx-user"></i></span>
+                                    <input type="text" class="form-control" name="role" placeholder="e.g. Receptionist"
+                                        value="{{ $roles->title ?? '' }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Designation</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
+                                    <input type="text" class="form-control" name="subrole"
+                                        placeholder="e.g. Front Desk Staff" value="{{ $roles->subtitle ?? '' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Status <span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
+                                    <select class="form-select" name="status" required>
+                                        <option value="1" @if(($roles->status ?? '1') == '1') selected @endif>Active
+                                        </option>
+                                        <option value="2" @if(($roles->status ?? '') == '2') selected @endif>Inactive
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Section: Permissions --}}
+                        <div class="form-section-title"><i class="bx bx-key me-2"></i>Features &amp; Access Permissions
+                        </div>
+
+                        <div class="perm-header-actions">
+                            <button type="button" class="btn-all" onclick="toggleAll(true)">
+                                <i class="bx bx-check-double me-1"></i> Select All
+                            </button>
+                            <button type="button" class="btn-none" onclick="toggleAll(false)">
+                                <i class="bx bx-x me-1"></i> Clear All
+                            </button>
+                        </div>
+
+                        <table class="permissions-table mb-4">
+                            <thead>
+                                <tr>
+                                    <th style="width:40%">Module</th>
+                                    <th style="width:20%">➕ Add</th>
+                                    <th style="width:20%">✏️ Edit</th>
+                                    <th style="width:20%">🗑️ Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($modules as $key => $module)
+                                    <tr>
+                                        <td>
+                                            <div class="feature-name">
+                                                <i class="bx {{ $module['icon'] }} text-primary" style="font-size:1.1rem;"></i>
+                                                <span>{{ $module['label'] }}</span>
+                                                <button type="button" class="btn-row-toggle"
+                                                    onclick="toggleRow('{{ $key }}')">Toggle Row</button>
+                                            </div>
+                                        </td>
+                                        @foreach(['add', 'edit', 'delete'] as $action)
+                                            <td class="perm-cell">
+                                                <input type="checkbox" class="perm-toggle perm-{{ $key }}"
+                                                    id="perm_{{ $key }}_{{ $action }}" name="permissions[{{ $key }}][]"
+                                                    value="{{ $action }}" @if(in_array("{$key}_{$action}", $permissions)) checked
+                                                    @endif>
+                                                <label for="perm_{{ $key }}_{{ $action }}"></label>
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                        {{-- Actions --}}
+                        <div class="d-flex justify-content-between align-items-center pt-3"
+                            style="border-top:1px solid #e9ecef;">
+                            <button type="reset" class="btn-wizard-reset">
+                                <i class="bx bx-reset me-1"></i> Reset
+                            </button>
+                            <button type="submit" class="btn-wizard-submit">
+                                <i class="bx bx-save me-1"></i>
+                                {{ $isEdit ? 'Update Role' : 'Create Role' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>{{-- /.wizard-card-body --}}
+            </div>{{-- /.wizard-card --}}
+        </div>{{-- /.container-fluid --}}
     </section>
 @endsection
 

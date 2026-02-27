@@ -4,7 +4,7 @@
 @push('styles')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
 <style>
-    /* ---- Wizard Stepper ---- */
+    .page-header-title { font-size:1.35rem; font-weight:700; color:#111827; margin:0; }
     .wizard-stepper { display:flex; align-items:center; justify-content:center; background:#f8f9fa; border-radius:12px; padding:20px 30px; margin-bottom:28px; }
     .wizard-step { display:flex; flex-direction:column; align-items:center; flex:1; position:relative; cursor:pointer; }
     .wizard-step:not(:last-child)::after { content:''; position:absolute; top:18px; left:calc(50% + 22px); width:calc(100% - 44px); height:2px; background:#dee2e6; z-index:0; }
@@ -24,11 +24,14 @@
     .btn-wizard-next:hover, .btn-wizard-submit:hover { background:linear-gradient(135deg,#1e40af,#1d4ed8); box-shadow:0 6px 20px rgba(37,99,235,.4); transform:translateY(-1px); color:#fff; }
     .btn-wizard-back { background:#fff; color:#374151; border:1.5px solid #d1d5db; border-radius:50px; padding:10px 28px; font-weight:600; font-size:.92rem; transition:all .2s; }
     .btn-wizard-back:hover { background:#f3f4f6; border-color:#9ca3af; }
-    .wizard-card { background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 24px rgba(0,0,0,.07); padding:30px 36px; }
-    .wizard-page-header { display:flex; align-items:center; gap:12px; margin-bottom:24px; }
-    .wizard-back-btn { width:36px; height:36px; background:#2563eb; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; font-size:1rem; flex-shrink:0; transition:background .2s; }
-    .wizard-back-btn:hover { background:#1d4ed8; color:#fff; }
-    .wizard-page-header h5 { margin:0; font-weight:700; font-size:1.15rem; color:#111827; }
+    .wizard-card { background:#fff; border-radius:16px; border:1px solid #e5e7eb; box-shadow:0 4px 24px rgba(0,0,0,.07); overflow:hidden; }
+    .wizard-banner { background:linear-gradient(135deg,#1d4ed8,#2563eb); padding:22px 32px; display:flex; align-items:center; gap:16px; }
+    .wizard-banner-icon { width:46px; height:46px; background:rgba(255,255,255,.18); border-radius:13px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; flex-shrink:0; }
+    .wizard-banner-title { color:#fff; font-size:1.05rem; font-weight:700; margin:0; }
+    .wizard-banner-sub   { color:rgba(255,255,255,.8); font-size:.78rem; margin:2px 0 0; }
+    .wizard-back-btn { width:36px; height:36px; background:rgba(255,255,255,.18); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; text-decoration:none; font-size:1rem; flex-shrink:0; transition:background .2s; margin-right:4px; }
+    .wizard-back-btn:hover { background:rgba(255,255,255,.3); color:#fff; }
+    .wizard-card-body { padding:28px 32px 32px; }
 
     /* Gallery preview */
     .gallery-preview { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
@@ -58,29 +61,31 @@
 
     <section class="task__section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-10 col-md-12 col-sm-12 offset-lg-1 my-4 p-0">
-
-                    <div class="wizard-page-header">
-                        <a href="/admin/medicine-listings" class="wizard-back-btn" title="Back">
-                            <i class="bx bx-chevron-left"></i>
-                        </a>
-                        <h5>{{ $isEdit ? 'Edit Medicine' : 'Add New Medicine' }}</h5>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="page-header-title">{{ $isEdit ? 'Edit Medicine' : 'Add New Medicine' }}</h4>
+                    <nav aria-label="breadcrumb" class="mt-1"><ol class="breadcrumb mb-0" style="font-size:.8rem;">
+                        <li class="breadcrumb-item"><a href="/admin/dashboard" class="text-decoration-none text-muted">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/medicine-listings" class="text-decoration-none text-muted">Medicine Listings</a></li>
+                        <li class="breadcrumb-item active text-muted">{{ $isEdit ? 'Edit Medicine' : 'Add Medicine' }}</li>
+                    </ol></nav>
+                </div>
+            </div>
+            <div class="wizard-card">
+                <div class="wizard-banner">
+                    <a href="/admin/medicine-listings" class="wizard-back-btn" title="Back"><i class="bx bx-arrow-back"></i></a>
+                    <div class="wizard-banner-icon"><i class="bx bx-capsule"></i></div>
+                    <div>
+                        <p class="wizard-banner-title">{{ $isEdit ? 'Edit Medicine' : 'Add New Medicine' }}</p>
+                        <p class="wizard-banner-sub">Configure medicine details, availability and images across 2 steps</p>
                     </div>
-
-                    <div class="wizard-card">
-
-                        {{-- Stepper --}}
-                        <div class="wizard-stepper">
-                            <div class="wizard-step active" data-step="1">
-                                <div class="step-circle">1</div>
-                                <div class="step-label">Basic Info</div>
-                            </div>
-                            <div class="wizard-step" data-step="2">
-                                <div class="step-circle">2</div>
-                                <div class="step-label">Details &amp; Availability</div>
-                            </div>
-                        </div>
+                </div>
+                <div class="wizard-card-body">
+                {{-- Stepper --}}
+                <div class="wizard-stepper">
+                    <div class="wizard-step active" data-step="1"><div class="step-circle">1</div><div class="step-label">Basic Info</div></div>
+                    <div class="wizard-step" data-step="2"><div class="step-circle">2</div><div class="step-label">Details &amp; Availability</div></div>
+                </div>
 
                         <form action="{{ route('manageMedicine') }}" method="POST" enctype="multipart/form-data" id="medicineWizardForm">
                             @csrf
@@ -282,11 +287,10 @@
                                 </div>
                             </div>
 
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </form>
+                </div>{{-- /.wizard-card-body --}}
+            </div>{{-- /.wizard-card --}}
+        </div>{{-- /.container-fluid --}}
     </section>
 @endsection
 
@@ -344,7 +348,7 @@
             if (i + 1 < stepNum) s.classList.add('done');
             if (i + 1 === stepNum) s.classList.add('active');
         });
-        document.querySelector('.wizard-card').scrollIntoView({ behavior:'smooth', block:'start' });
+        document.querySelector('.wizard-banner').scrollIntoView({ behavior:'smooth', block:'start' });
     }
 
     document.querySelectorAll('[required]').forEach(f => f.addEventListener('input', () => f.classList.remove('is-invalid')));
