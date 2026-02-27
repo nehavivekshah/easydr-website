@@ -311,13 +311,13 @@
 
         $modules = [
             'appointments' => ['icon' => 'bx-calendar', 'label' => 'Appointments Management'],
-            'patients' => ['icon' => 'bx-user-heart', 'label' => 'Patients Management'],
+            'patients' => ['icon' => 'bx-user', 'label' => 'Patients Management'],
             'doctors' => ['icon' => 'bx-user-check', 'label' => 'Doctors Management'],
             'doctor_slots' => ['icon' => 'bx-time-five', 'label' => 'Doctor Availability Slots'],
             'pharmacy' => ['icon' => 'bx-plus-medical', 'label' => 'Pharmacy Management'],
             'stores' => ['icon' => 'bx-store', 'label' => 'Stores Management'],
             'inventory' => ['icon' => 'bx-package', 'label' => 'Inventory Management'],
-            'suppliers' => ['icon' => 'bx-truck', 'label' => 'Suppliers Management'],
+            'suppliers' => ['icon' => 'bx-store-alt', 'label' => 'Suppliers Management'],
             'orders' => ['icon' => 'bx-cart', 'label' => 'Orders Management'],
             'users' => ['icon' => 'bx-group', 'label' => 'Users & Staff Management'],
             'settings' => ['icon' => 'bx-cog', 'label' => 'General Settings'],
@@ -325,7 +325,7 @@
         ];
     @endphp
     <!-- 'billing' => ['icon' => 'bx-receipt', 'label' => 'Billing & Payments'],
-            'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'], -->
+                                    'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'], -->
     <section class="task__section">
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-4">
