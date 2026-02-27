@@ -310,12 +310,20 @@
         $isEdit = !empty(request()->get('id'));
 
         $modules = [
+            'appointments' => ['icon' => 'bx-calendar', 'label' => 'Appointments Management'],
             'doctors' => ['icon' => 'bx-user-check', 'label' => 'Doctors Management'],
+            'doctor_slots' => ['icon' => 'bx-time-five', 'label' => 'Doctor Availability Slots'],
             'patients' => ['icon' => 'bx-user-heart', 'label' => 'Patients Management'],
+            'pharmacy' => ['icon' => 'bx-plus-medical', 'label' => 'Pharmacy Management'],
             'stores' => ['icon' => 'bx-store', 'label' => 'Stores Management'],
-            'users' => ['icon' => 'bx-group', 'label' => 'Users Management'],
-            'setting' => ['icon' => 'bx-cog', 'label' => 'Settings Management'],
-            'listing' => ['icon' => 'bx-list-ul', 'label' => 'Listing Management'],
+            'inventory' => ['icon' => 'bx-package', 'label' => 'Inventory Management'],
+            'suppliers' => ['icon' => 'bx-truck', 'label' => 'Suppliers Management'],
+            'orders' => ['icon' => 'bx-cart', 'label' => 'Orders Management'],
+            'billing' => ['icon' => 'bx-receipt', 'label' => 'Billing & Payments'],
+            'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'],
+            'users' => ['icon' => 'bx-group', 'label' => 'Users & Staff Management'],
+            'setting' => ['icon' => 'bx-cog', 'label' => 'General Settings'],
+            'listing' => ['icon' => 'bx-list-ul', 'label' => 'Data Listing (Cities, Categories)'],
         ];
     @endphp
 

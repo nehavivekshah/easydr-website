@@ -19,6 +19,13 @@ class WebHomeController extends Controller
     function home()
     {
         $user = Auth::user();
+
+        // Hard block for Doctor and Patient roles
+        if ($user && in_array($user->role, ['4', '5'])) {
+            Auth::logout();
+            return redirect('/admin/login')->with('error', 'Unauthorized access! Doctors and Patients must use the main website login.');
+        }
+
         $roles = \App\Models\Roles::find($user->role);
         $rolePermissions = explode(',', $roles->features ?? '');
 

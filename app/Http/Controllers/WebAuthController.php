@@ -100,6 +100,11 @@ class WebAuthController extends Controller
             session(['companies' => $company]);
             session(['roles' => $roles]);
 
+            if (in_array($user->role, ['4', '5'])) {
+                Auth::logout();
+                return redirect('/admin/login')->with('error', 'Unauthorized access! Doctors and Patients must use the main website login.');
+            }
+
             if ($user->role == '6') {
                 return redirect('/admin/pharmacy')->with('success', 'Successfully Logged In to Pharmacy Panel.');
             }
