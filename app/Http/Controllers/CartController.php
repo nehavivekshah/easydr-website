@@ -14,6 +14,7 @@ use App\Models\OrderItems;
 use App\Models\PaymentGatewayConfig;
 use App\Models\Store_locations;
 use App\Models\Patients;
+use App\Models\Usermetas;
 
 class CartController extends Controller
 {
@@ -199,8 +200,8 @@ class CartController extends Controller
         $paymentGateways = PaymentGatewayConfig::where('is_active', 1)->get();
         $storeLocations = Store_locations::all();
 
-        // Fetch patient profile for pre-filling the address
-        $patient = Patients::where('uid', $user->id)->first();
+        // Fetch user meta for pre-filling the address
+        $patient = Usermetas::where('uid', $user->id)->first();
 
         return view('frontend.checkout', compact('cartItems', 'subtotal', 'paymentGateways', 'storeLocations', 'cartStoreId', 'patient'));
     }

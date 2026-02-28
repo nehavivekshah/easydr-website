@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label class="form-label fw-bold" style="font-size: 0.85rem;">ZIP Code <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="zip" value="{{ old('zip', $patient->zip ?? '') }}" required placeholder="10001">
+                                        <input type="text" class="form-control" name="zip" value="{{ old('zip', $patient->pincode ?? '') }}" required placeholder="10001">
                                         @error('zip')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                     </div>
                                 </div>
