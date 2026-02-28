@@ -600,6 +600,12 @@
                                                     {{-- Col 3: Unit Price --}}
                                                     <div class="col-price-cell">
                                                         @if($hasPrice)
+                                                            <div class="d-flex justify-content-center
+                                                            items-align-center">
+                                                                <div class="price-val">₹{{ number_format($price, 2) }}</div>
+                                                                <small class="text-muted" style="font-size:0.65rem;">/ unit</small>
+                                                            </div>
+                                                            
                                                             @if($hasDiscount)
                                                                 <div class="price-discount-line">
                                                                     <span style="text-decoration:line-through;color:#aaa;font-size:0.78rem;white-space:nowrap;">
@@ -610,11 +616,6 @@
                                                                     </span> -->
                                                                 </div>
                                                             @endif
-                                                            <div class="d-flex justify-content-center
-                                                            items-align-center">
-<div class="price-val">₹{{ number_format($price, 2) }}</div>
-                                                            <small class="text-muted" style="font-size:0.65rem;">/ unit</small>
-                                                            </div>
                                                         @else
                                                             <span class="na-text">—</span>
                                                         @endif
