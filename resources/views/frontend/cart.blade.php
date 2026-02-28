@@ -1,8 +1,5 @@
 @extends('frontend.layout')
 
-@push('styles')
-@endpush
-
 @section('content')
     <main>
         <section class="pt-100 pb-40">
