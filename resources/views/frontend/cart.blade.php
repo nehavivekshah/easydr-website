@@ -605,13 +605,16 @@
                                                                     <span style="text-decoration:line-through;color:#aaa;font-size:0.78rem;white-space:nowrap;">
                                                                         ₹{{ number_format($originalCost, 2) }}
                                                                     </span>
-                                                                    <span class="disc-badge">
+                                                                    <!-- <span class="disc-badge">
                                                                         {{ round((($originalCost - $discountCost) / $originalCost) * 100) }}% off
-                                                                    </span>
+                                                                    </span> -->
                                                                 </div>
                                                             @endif
-                                                            <div class="price-val">₹{{ number_format($price, 2) }}</div>
+                                                            <div class="d-flex justify-content-center
+                                                            items-align-center">
+<div class="price-val">₹{{ number_format($price, 2) }}</div>
                                                             <small class="text-muted" style="font-size:0.65rem;">/ unit</small>
+                                                            </div>
                                                         @else
                                                             <span class="na-text">—</span>
                                                         @endif
