@@ -169,7 +169,7 @@
                                     <span style="font-size: 1.25rem; font-weight: 800; color: #1E0B9B;">₹{{ number_format($subtotal, 2) }}</span>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary w-100 py-3" style="border-radius: 8px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(30, 11, 155, 0.2);">
+                                <button type="submit" id="btn-place-order" class="btn btn-primary w-100 py-3" style="border-radius: 8px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(30, 11, 155, 0.2);">
                                     PLACE ORDER <i class="fas fa-lock ms-2"></i>
                                 </button>
                                 
@@ -202,6 +202,14 @@
             
             // Initialize on load
             toggleGateways();
+
+            document.getElementById('checkout-form').addEventListener('submit', function() {
+                var btn = document.getElementById('btn-place-order');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+                }
+            });
         </script>
     @endpush
 @endsection

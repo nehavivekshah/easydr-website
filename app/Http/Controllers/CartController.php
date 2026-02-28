@@ -228,6 +228,14 @@ class CartController extends Controller
             'zip' => 'required|string|max:20',
         ]);
 
+        $lockKey = 'checkout_lock_user_' . $user->id;
+        if (\Illuminate\Support\Facades\Cache::has($lockKey)) {
+            return redirect('/cart')->with('error', 'Your order is currently being processed. Please wait a moment.');
+        }
+
+        // Lock for 15 seconds to prevent double clicks and duplicate submissions
+        \Illuminate\Support\Facades\Cache::put($lockKey, true, 15);
+
         $shipping_address = $request->fullName . "\n" .
             $request->phone . "\n" .
             $request->street . "\n" .
@@ -283,15 +291,19 @@ class CartController extends Controller
             // Clear Cart if Cash on Delivery
             if ($request->payment_method === 'cod') {
                 Carts::where('user_id', $user->id)->delete();
+                // We can release the lock immediately since COD order is fully placed
+                \Illuminate\Support\Facades\Cache::forget($lockKey);
             }
 
             DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
+            \Illuminate\Support\Facades\Cache::forget($lockKey);
             return redirect('/cart')->with('error', 'An error occurred during checkout: ' . $e->getMessage());
         }
 
         if ($request->payment_method === 'online' && $request->payment_gateway_id) {
+            \Illuminate\Support\Facades\Cache::forget($lockKey);
             return $this->processOnlinePayment($order);
         }
 
