@@ -109,14 +109,28 @@
                                                         @endif
                                                         
                                                         @if(count($p->medicines) > 0)
-                                                        <div class="list-group-item px-4 py-3 border-0 bg-light text-end">
-                                                            <form action="{{ route('cart.addPrescription') }}" method="POST" class="d-inline-block">
-                                                                @csrf
-                                                                <input type="hidden" name="prescription_id" value="{{ $p->id }}">
-                                                                <button type="submit" class="btn btn-primary rounded-pill fw-bold shadow-sm px-4">
-                                                                    <i class="fas fa-shopping-basket me-2"></i> Buy Available Medicines
-                                                                </button>
-                                                            </form>
+                                                        <div class="list-group-item px-4 py-3 border-0 text-end"
+                                                            style="background: linear-gradient(to right, #f7f9ff, #eef2ff);">
+                                                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                                                <small class="text-muted">
+                                                                    <i class="fas fa-pills text-primary me-1"></i>
+                                                                    <strong>{{ count($p->medicines) }}</strong>
+                                                                    medicine(s) in this prescription
+                                                                </small>
+                                                                <form action="{{ route('cart.addPrescription') }}" method="POST" class="d-inline-block buy-form">
+                                                                    @csrf
+                                                                    <input type="hidden" name="prescription_id" value="{{ $p->id }}">
+                                                                    <button type="submit" class="btn fw-bold shadow-sm px-4 py-2 rounded-pill buy-btn"
+                                                                        style="background: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%); color: #fff; border: none; font-size: 0.88rem;">
+                                                                        <span class="btn-text">
+                                                                            <i class="fas fa-shopping-basket me-2"></i> Buy Available Medicines
+                                                                        </span>
+                                                                        <span class="btn-loading d-none">
+                                                                            <span class="spinner-border spinner-border-sm me-2"></span> Adding to Cart...
+                                                                        </span>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                         @endif
                                                     </div>
@@ -150,4 +164,17 @@
             </div>
         </section>
     </main>
+
+    <script>
+        document.querySelectorAll('.buy-form').forEach(function(form) {
+            form.addEventListener('submit', function() {
+                var btn = form.querySelector('.buy-btn');
+                if (btn) {
+                    btn.querySelector('.btn-text').classList.add('d-none');
+                    btn.querySelector('.btn-loading').classList.remove('d-none');
+                    btn.disabled = true;
+                }
+            });
+        });
+    </script>
 @endsection
