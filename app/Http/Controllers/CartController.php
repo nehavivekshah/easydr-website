@@ -34,21 +34,7 @@ class CartController extends Controller
             }
         }
 
-        // Auto-fetch Processing Store from the first medicine in the cart
-        $cartStoreId = null;
-        if ($cartItems->isNotEmpty()) {
-            $firstMedicine = $cartItems->first()->medicine;
-            if ($firstMedicine) {
-                // Using property fetch, assuming `store_id` is a column on medicines
-                $cartStoreId = $firstMedicine->store_id;
-            }
-        }
-
-        // Fetch active payment gateways and store locations
-        $paymentGateways = PaymentGatewayConfig::where('is_active', 1)->get();
-        $storeLocations = Store_locations::all();
-
-        return view('frontend.cart', compact('cartItems', 'subtotal', 'paymentGateways', 'storeLocations', 'cartStoreId'));
+        return view('frontend.cart', compact('cartItems', 'subtotal'));
     }
 
     public function addPrescription(Request $request)
@@ -180,6 +166,41 @@ class CartController extends Controller
         return redirect()->back()->with('error', 'Item not found.');
     }
 
+    public function viewCheckout()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login')->with('error', 'Please login to checkout.');
+        }
+
+        $cartItems = Carts::with('medicine')->where('user_id', $user->id)->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect('/cart')->with('warning', 'Your cart is empty.');
+        }
+
+        $subtotal = 0;
+        foreach ($cartItems as $item) {
+            if ($item->medicine) {
+                $price = $item->medicine->discount_cost ?? $item->medicine->cost ?? 0;
+                $subtotal += $price * $item->quantity;
+            }
+        }
+
+        // Auto-fetch Processing Store from the first medicine in the cart
+        $cartStoreId = null;
+        $firstMedicine = $cartItems->first()->medicine;
+        if ($firstMedicine) {
+            $cartStoreId = $firstMedicine->store_id;
+        }
+
+        // Fetch active payment gateways and store locations
+        $paymentGateways = PaymentGatewayConfig::where('is_active', 1)->get();
+        $storeLocations = Store_locations::all();
+
+        return view('frontend.checkout', compact('cartItems', 'subtotal', 'paymentGateways', 'storeLocations', 'cartStoreId'));
+    }
+
     public function checkout(Request $request)
     {
         $user = Auth::user();
@@ -190,9 +211,19 @@ class CartController extends Controller
         $request->validate([
             'payment_method' => 'required|in:cod,online',
             'payment_gateway_id' => 'required_if:payment_method,online|nullable|exists:payment_gateway_configs,id',
-            'shipping_address' => 'required|string|max:500',
             'store_id' => 'required|integer',
+            'fullName' => 'required|string|max:100',
+            'phone' => 'required|string|max:20',
+            'street' => 'required|string|max:200',
+            'city' => 'required|string|max:100',
+            'state' => 'required|string|max:100',
+            'zip' => 'required|string|max:20',
         ]);
+
+        $shipping_address = $request->fullName . "\n" .
+            $request->phone . "\n" .
+            $request->street . "\n" .
+            $request->city . ", " . $request->state . " " . $request->zip;
 
         $cartItems = Carts::with('medicine')->where('user_id', $user->id)->get();
         if ($cartItems->isEmpty()) {
@@ -214,7 +245,7 @@ class CartController extends Controller
                 'status' => 0, // 0 = Pending
                 'total_amount' => $totalAmount,
                 'store_id' => $request->store_id,
-                'shipping_address' => $request->shipping_address,
+                'shipping_address' => $shipping_address,
                 'payment_method' => $request->payment_method,
                 'payment_gateway_id' => $request->payment_method === 'online' ? $request->payment_gateway_id : null,
             ]);

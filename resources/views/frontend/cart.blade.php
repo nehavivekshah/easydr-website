@@ -682,120 +682,20 @@
 
                                                 <div class="divider"></div>
 
-                                                <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
-                                                    @csrf
-                                                    
-                                                    {{-- Shipping & Delivery Settings --}}
-                                                    <div class="shipping-box mb-4">
-                                                        <h6 class="fw-bold mb-3" style="font-size: 0.9rem; color: #1E0B9B;">Delivery Details</h6>
-                                                        
-                                                        {{-- Store Selection (Hidden) --}}
-                                                        <div class="form-group mb-3 d-none">
-                                                            <label for="store_id" class="form-label" style="font-size: 0.85rem; font-weight: 600;">Select Processing Store <span class="text-danger">*</span></label>
-                                                            
-                                                            @if(isset($cartStoreId) && $cartStoreId)
-                                                                {{-- Hidden input to submit the auto-fetched store_id --}}
-                                                                <input type="hidden" name="store_id" value="{{ $cartStoreId }}">
-                                                                <input type="hidden" id="auto_fetched_store" value="1">
-                                                            @endif
+                                                <div class="sum-total">
+                                                    <span>Total Amount</span>
+                                                    <span class="sum-total-val">
+                                                        @if($subtotal > 0)
+                                                            ₹{{ number_format($subtotal, 2) }}
+                                                        @else
+                                                            —
+                                                        @endif
+                                                    </span>
+                                                </div>
 
-                                                            <select class="form-select @if(isset($cartStoreId) && $cartStoreId) bg-light @endif" 
-                                                                    @if(!isset($cartStoreId) || !$cartStoreId) name="store_id" @endif 
-                                                                    id="store_id" required 
-                                                                    style="font-size: 0.85rem; border-color: #e4e8f5; @if(isset($cartStoreId) && $cartStoreId) pointer-events: none; opacity: 0.8; @endif"
-                                                                    @if(isset($cartStoreId) && $cartStoreId) tabindex="-1" readonly @endif>
-                                                                
-                                                                <option value="">-- Choose Nearest Store --</option>
-                                                                @isset($storeLocations)
-                                                                    @foreach($storeLocations as $store)
-                                                                        @php
-                                                                            $isSelected = old('store_id', $cartStoreId ?? '') == $store->LocationID;
-                                                                        @endphp
-                                                                        <option value="{{ $store->LocationID }}" {{ $isSelected ? 'selected' : '' }}>
-                                                                            {{ $store->LocationName }} ({{ $store->City }})
-                                                                        </option>
-                                                                    @endforeach
-                                                                @endisset
-                                                            </select>
-                                                            @if(isset($cartStoreId) && $cartStoreId)
-                                                                <div class="ms-1 mt-1 text-success" style="font-size: 0.70rem;">
-                                                                    <i class="fas fa-check-circle"></i> Auto-selected based on items in your cart
-                                                                </div>
-                                                            @endif
-                                                            @error('store_id')
-                                                                <div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-
-                                                        {{-- Shipping Address --}}
-                                                        <div class="form-group mb-0">
-                                                            <label for="shipping_address" class="form-label" style="font-size: 0.85rem; font-weight: 600;">Shipping Address <span class="text-danger">*</span></label>
-                                                            <textarea class="form-control" name="shipping_address" id="shipping_address" rows="3" required placeholder="Enter full delivery address" style="font-size: 0.85rem; border-color: #e4e8f5; resize: none;">{{ old('shipping_address') }}</textarea>
-                                                            @error('shipping_address')
-                                                                <div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="divider"></div>
-
-                                                    {{-- Payment Method Selection --}}
-                                                    <div class="payment-method-box mb-4">
-                                                        <h6 class="fw-bold mb-3" style="font-size: 0.9rem; color: #1E0B9B;">Payment Method</h6>
-                                                        
-                                                        {{-- Cash on Delivery --}}
-                                                        <div class="form-check custom-radio mb-2">
-                                                            <input class="form-check-input" type="radio" name="payment_method" id="pay_cod" value="cod" checked onchange="toggleGateways()">
-                                                            <label class="form-check-label d-flex align-items-center gap-2" for="pay_cod" style="cursor: pointer; font-size: 0.85rem; font-weight: 600;">
-                                                                <i class="fas fa-hand-holding-usd text-success"></i> Cash on Delivery (COD)
-                                                            </label>
-                                                        </div>
-
-                                                        {{-- Online Payment --}}
-                                                        <div class="form-check custom-radio mb-2">
-                                                            <input class="form-check-input" type="radio" name="payment_method" id="pay_online" value="online" onchange="toggleGateways()">
-                                                            <label class="form-check-label d-flex align-items-center gap-2" for="pay_online" style="cursor: pointer; font-size: 0.85rem; font-weight: 600;">
-                                                                <i class="fas fa-credit-card text-primary"></i> Online Payment
-                                                            </label>
-                                                        </div>
-
-                                                        {{-- Gateways Wrapper (Hidden by default) --}}
-                                                        <div id="gateways_wrapper" class="mt-3 p-3 bg-light rounded-3" style="display: none; border: 1px solid #e4e8f5;">
-                                                            @if(isset($paymentGateways) && count($paymentGateways) > 0)
-                                                                <p class="text-muted mb-2" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Select Gateway</p>
-                                                                @foreach($paymentGateways as $index => $gateway)
-                                                                    <div class="form-check mb-2">
-                                                                        <input class="form-check-input" type="radio" name="payment_gateway_id" id="gw_{{ $gateway->id }}" value="{{ $gateway->id }}" {{ $index === 0 ? 'checked' : '' }}>
-                                                                        <label class="form-check-label" for="gw_{{ $gateway->id }}" style="font-size: 0.85rem; cursor: pointer;">
-                                                                            {{ $gateway->gateway_name }}
-                                                                        </label>
-                                                                    </div>
-                                                                @endforeach
-                                                            @else
-                                                                <div class="alert alert-warning py-2 px-3 mb-0" style="font-size: 0.8rem;">
-                                                                    <i class="fas fa-exclamation-triangle mr-1"></i> No active payment gateways available. Please use COD.
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="divider"></div>
-
-                                                    <div class="sum-total">
-                                                        <span>Total Amount</span>
-                                                        <span class="sum-total-val">
-                                                            @if($subtotal > 0)
-                                                                ₹{{ number_format($subtotal, 2) }}
-                                                            @else
-                                                                —
-                                                            @endif
-                                                        </span>
-                                                    </div>
-
-                                                    <button type="submit" class="checkout-btn">
-                                                        Proceed to Checkout &nbsp;<i class="fas fa-arrow-right"></i>
-                                                    </button>
-                                                </form>
+                                                <a href="{{ route('cart.checkout.view') }}" class="checkout-btn text-center text-decoration-none">
+                                                    Proceed to Checkout &nbsp;<i class="fas fa-arrow-right"></i>
+                                                </a>
 
                                                 <div class="trust-badges">
                                                     <span class="trust-item"><i class="fas fa-shield-alt text-success"></i>
@@ -908,22 +808,6 @@
                     });
                 });
             });
-            
-            // Toggle payment gateways UI
-            window.toggleGateways = function() {
-                const onlineRadio = document.getElementById('pay_online');
-                const wrapper = document.getElementById('gateways_wrapper');
-                if (wrapper) {
-                    if (onlineRadio && onlineRadio.checked) {
-                        wrapper.style.display = 'block';
-                    } else {
-                        wrapper.style.display = 'none';
-                    }
-                }
-            };
-            
-            // Initialize on load
-            toggleGateways();
         </script>
     @endpush
 @endsection

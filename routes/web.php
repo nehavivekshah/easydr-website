@@ -73,6 +73,7 @@ Route::post('/cart/add-prescription', [CartController::class, 'addPrescription']
 Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 Route::get('/cart/remove/{id}', [CartController::class, 'removeCart'])->name('cart.remove');
+Route::get('/checkout', [CartController::class, 'viewCheckout'])->name('cart.checkout.view');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 // Common Routes
