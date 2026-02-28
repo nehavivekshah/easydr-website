@@ -55,23 +55,23 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold" style="font-size: 0.85rem;">Street Address / Apartment <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="street" value="{{ old('street') }}" required placeholder="123 Main St, Apt 4B">
+                                    <input type="text" class="form-control" name="street" value="{{ old('street', $patient->address ?? '') }}" required placeholder="123 Main St, Apt 4B">
                                     @error('street')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-md-5 mb-3">
                                         <label class="form-label fw-bold" style="font-size: 0.85rem;">City <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="city" value="{{ old('city') }}" required placeholder="New York">
+                                        <input type="text" class="form-control" name="city" value="{{ old('city', $patient->city ?? '') }}" required placeholder="New York">
                                         @error('city')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label fw-bold" style="font-size: 0.85rem;">State/Province <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="state" value="{{ old('state') }}" required placeholder="NY">
+                                        <input type="text" class="form-control" name="state" value="{{ old('state', $patient->state ?? '') }}" required placeholder="NY">
                                         @error('state')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-3 mb-3">
                                         <label class="form-label fw-bold" style="font-size: 0.85rem;">ZIP Code <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="zip" value="{{ old('zip') }}" required placeholder="10001">
+                                        <input type="text" class="form-control" name="zip" value="{{ old('zip', $patient->zip ?? '') }}" required placeholder="10001">
                                         @error('zip')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                     </div>
                                 </div>
