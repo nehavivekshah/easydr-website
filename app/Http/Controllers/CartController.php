@@ -244,6 +244,17 @@ class CartController extends Controller
             $totalAmount += $price * $item->quantity;
         }
 
+        // Clean up any old unpaid online orders for this user to prevent duplicates
+        $oldUnpaidOrders = Orders::where('user_id', $user->id)
+            ->where('status', 0)
+            ->where('payment_method', 'online')
+            ->get();
+
+        foreach ($oldUnpaidOrders as $oldOrder) {
+            OrderItems::where('order_id', $oldOrder->id)->delete();
+            $oldOrder->delete();
+        }
+
         DB::beginTransaction();
 
         try {
@@ -269,8 +280,10 @@ class CartController extends Controller
                 ]);
             }
 
-            // Clear Cart
-            Carts::where('user_id', $user->id)->delete();
+            // Clear Cart if Cash on Delivery
+            if ($request->payment_method === 'cod') {
+                Carts::where('user_id', $user->id)->delete();
+            }
 
             DB::commit();
         } catch (\Throwable $e) {
@@ -397,7 +410,7 @@ class CartController extends Controller
 
     public function paymentCancel()
     {
-        return redirect('/cart')->with('error', 'You have canceled the payment. Your order is pending.');
+        return redirect('/checkout')->with('error', 'You have canceled the payment. Please try again to complete your order.');
     }
 
     public function paymentSuccess(Request $request)
@@ -450,6 +463,10 @@ class CartController extends Controller
                 if (isset($response['status']) && $response['status'] == 'COMPLETED') {
                     $order->status = 1; // 1 = Paid/Processing
                     $order->save();
+
+                    // Clear the user's cart now that payment is successful
+                    Carts::where('user_id', $order->user_id)->delete();
+
                     session()->forget('checkout_order_id');
                     return view('frontend.checkout_success', compact('order'));
                 }
@@ -465,6 +482,10 @@ class CartController extends Controller
                 if ($session->payment_status === 'paid') {
                     $order->status = 1;
                     $order->save();
+
+                    // Clear the user's cart now that payment is successful
+                    Carts::where('user_id', $order->user_id)->delete();
+
                     session()->forget('checkout_order_id');
                     return view('frontend.checkout_success', compact('order'));
                 }
@@ -473,6 +494,6 @@ class CartController extends Controller
             }
         }
 
-        return redirect('/cart')->with('error', 'Payment failed or was not verified. Contact support if you were charged.');
+        return redirect('/checkout')->with('error', 'Payment failed or was not verified. Contact support if you were charged.');
     }
 }
