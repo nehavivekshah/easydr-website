@@ -44,12 +44,12 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold" style="font-size: 0.85rem;">Full Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="fullName" value="{{ old('fullName', Auth::user()->name ?? '') }}" required placeholder="John Doe">
+                                        <input type="text" class="form-control" name="fullName" value="{{ old('fullName', Auth::user()->first_name . ' ' . Auth::user()->last_name ?? '') }}" required placeholder="John Doe">
                                         @error('fullName')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label fw-bold" style="font-size: 0.85rem;">Phone Number <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="phone" value="{{ old('phone', Auth::user()->phone ?? '') }}" required placeholder="+1 234 567 8900">
+                                        <label class="form-label fw-bold" style="font-size: 0.85rem;">Mobile Number <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="phone" value="{{ old('phone', Auth::user()->mobile ?? '') }}" required placeholder="+1 234 567 8900">
                                         @error('phone')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@
                                     <input type="text" class="form-control" name="street" value="{{ old('street', $patient->address ?? '') }}" required placeholder="123 Main St, Apt 4B">
                                     @error('street')<div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>@enderror
                                 </div>
-                                <div class="row">
+                                <div class="row">   
                                     <div class="col-md-5 mb-3">
                                         <label class="form-label fw-bold" style="font-size: 0.85rem;">City <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="city" value="{{ old('city', $patient->city ?? '') }}" required placeholder="New York">
