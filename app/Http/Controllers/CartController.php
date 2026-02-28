@@ -336,6 +336,7 @@ class CartController extends Controller
         ];
 
         try {
+            config(['paypal' => $payPalConfig]);
             $provider->setApiCredentials($payPalConfig);
             $provider->getAccessToken();
         } catch (\Exception $e) {
@@ -440,6 +441,7 @@ class CartController extends Controller
             ];
 
             try {
+                config(['paypal' => $payPalConfig]);
                 $provider = new PayPalClient;
                 $provider->setApiCredentials($payPalConfig);
                 $provider->getAccessToken();
