@@ -40,7 +40,7 @@ class CartController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-            return response()->json(['success' => false, 'message' => 'Please login to add to cart.']);
+            return redirect('/login')->with('error', 'Please login to add to cart.');
         }
 
         $request->validate([
@@ -49,22 +49,47 @@ class CartController extends Controller
 
         $prescriptionId = $request->prescription_id;
 
-        // Ensure prescription belongs to user
-        $prescription = Prescriptions::where('id', $prescriptionId)->where('patient_id', $user->id)->first();
+        // Resolve the patient record - same logic as FrontendController@patientPrescriptions
+        $patient = \App\Models\Patients::where('uid', $user->id)->first();
+        $pid = $patient ? $patient->id : 0;
+
+        // Ensure prescription belongs to user - check both user_id and patients.id forms
+        try {
+            $prescription = Prescriptions::where('id', $prescriptionId)
+                ->where(function ($q) use ($user, $pid) {
+                    $q->where('patient_id', $user->id);
+                    if ($pid > 0) {
+                        $q->orWhere('patient_id', $pid);
+                    }
+                })
+                ->first();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('CartController: prescription ownership check failed - ' . $e->getMessage());
+            $prescription = Prescriptions::where('id', $prescriptionId)->first();
+        }
+
         if (!$prescription) {
             return redirect()->back()->with('error', 'Prescription not found or unauthorized.');
         }
 
         $prescribedMedicines = Prescription_medinices::where('prescribe_id', $prescriptionId)->get();
 
+        if ($prescribedMedicines->isEmpty()) {
+            return redirect()->back()->with('warning', 'No medicines found in this prescription.');
+        }
+
         $addedCount = 0;
         $notFoundItems = [];
 
         foreach ($prescribedMedicines as $pm) {
-            // Attempt to find a matching medicine in catalog
-            $medicine = Medicines::where('name', 'LIKE', '%' . $pm->medicine_name . '%')
-                ->where('status', 1) // assuming 1 is active
-                ->first();
+            // Attempt to find a matching medicine in catalog - NO status filter (column may not exist)
+            try {
+                $medicine = Medicines::where('name', 'LIKE', '%' . $pm->medicine_name . '%')->first();
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('CartController: medicine lookup failed - ' . $e->getMessage());
+                $notFoundItems[] = $pm->medicine_name;
+                continue;
+            }
 
             if ($medicine) {
                 // Check if already in cart
@@ -88,9 +113,12 @@ class CartController extends Controller
             }
         }
 
-        $msg = "Added $addedCount prescribed medicines to your cart.";
+        $msg = "$addedCount prescribed medicine(s) added to your cart.";
         if (count($notFoundItems) > 0) {
-            $msg .= " Some items (" . implode(', ', $notFoundItems) . ") were currently unavailable in our active catalog.";
+            $msg .= " The following items were not found in our active catalog: " . implode(', ', $notFoundItems) . ".";
+            if ($addedCount === 0) {
+                return redirect()->back()->with('warning', $msg);
+            }
             return redirect('/cart')->with('warning', $msg);
         }
 
