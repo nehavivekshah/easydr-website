@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="breadcrumb-bar" style="background-color: #f7f9fa; padding: 15px 0; border-bottom: 1px solid #e4e8f5;">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-12 col-12">
                     <nav aria-label="breadcrumb" class="page-breadcrumb">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="content" style="background-color: #f0f3f8; padding: 40px 0;">
-        <div class="container-fluid">
+        <div class="container">
             <h3 class="mb-4" style="color: #1E0B9B; font-weight: 700;">Complete Your Order</h3>
 
             <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
