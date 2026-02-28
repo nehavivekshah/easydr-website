@@ -492,7 +492,7 @@
                                     My Cart
                                     @if(count($cartItems) > 0)
                                         <span class="badge rounded-pill ms-2"
-                                            style="color:#fff;background:linear-gradient(90deg,#1E0B9B,#07CCEC);font-size:0.7rem;vertical-align:middle;color:#000;">
+                                            style="background:linear-gradient(90deg,#1E0B9B,#07CCEC);font-size:0.7rem;vertical-align:middle;color:#fff;">
                                             {{ count($cartItems) }} Items
                                         </span>
                                     @endif
