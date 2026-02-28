@@ -462,14 +462,8 @@
         <section class="pt-100 pb-40">
             <div class="container">
                 <div class="row">
-
-                    {{-- ===== Sidebar ===== --}}
-                    <div class="col-lg-3 mb-4">
-                        @include('frontend.inc.user_sidebar')
-                    </div>
-
                     {{-- ===== Main Content ===== --}}
-                    <div class="col-lg-9">
+                    <div class="col-lg-12">
                         <div class="dashboard_content p-4">
 
                             {{-- Page Header --}}
