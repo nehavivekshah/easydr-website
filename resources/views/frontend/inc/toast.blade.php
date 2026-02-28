@@ -148,9 +148,21 @@
 
     // Auto close PHP toasts after 5 seconds
     document.addEventListener('DOMContentLoaded', function () {
+        let toastElList = [].slice.call(document.querySelectorAll('.toast-container .toast'));
+        toastElList.map(function (toastEl) {
+            // Explicitly show the toast via Bootstrap JS
+            if (typeof bootstrap !== 'undefined') {
+                let bsToast = new bootstrap.Toast(toastEl, { autohide: false });
+                bsToast.show();
+            } else {
+                // Fallback if bootstrap JS failed to load
+                toastEl.classList.add('show');
+                toastEl.style.opacity = '1';
+            }
+        });
+
         setTimeout(function () {
-            let toasts = document.querySelectorAll('.toast-container .toast');
-            toasts.forEach(function (toast) {
+            toastElList.forEach(function (toast) {
                 toast.classList.remove('show');
                 toast.style.opacity = '0';
                 setTimeout(() => toast.remove(), 300);
