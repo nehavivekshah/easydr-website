@@ -75,6 +75,8 @@ Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.u
 Route::get('/cart/remove/{id}', [CartController::class, 'removeCart'])->name('cart.remove');
 Route::get('/checkout', [CartController::class, 'viewCheckout'])->name('cart.checkout.view');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::get('/cart/payment/success', [CartController::class, 'paymentSuccess'])->name('cart.payment.success');
+Route::get('/cart/payment/cancel', [CartController::class, 'paymentCancel'])->name('cart.payment.cancel');
 
 // Common Routes
 Route::get('/change-password', [FrontendController::class, 'changePassword']);

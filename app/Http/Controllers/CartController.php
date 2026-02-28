@@ -15,6 +15,9 @@ use App\Models\PaymentGatewayConfig;
 use App\Models\Store_locations;
 use App\Models\Patients;
 use App\Models\Usermetas;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use Stripe\Stripe;
+use Stripe\Checkout\Session as StripeSession;
 
 class CartController extends Controller
 {
@@ -270,12 +273,204 @@ class CartController extends Controller
             Carts::where('user_id', $user->id)->delete();
 
             DB::commit();
-
-            return view('frontend.checkout_success', compact('order'));
-
         } catch (\Throwable $e) {
             DB::rollBack();
             return redirect('/cart')->with('error', 'An error occurred during checkout: ' . $e->getMessage());
         }
+
+        if ($request->payment_method === 'online' && $request->payment_gateway_id) {
+            return $this->processOnlinePayment($order);
+        }
+
+        return view('frontend.checkout_success', compact('order'));
+    }
+
+    private function processOnlinePayment($order)
+    {
+        $gateway = PaymentGatewayConfig::find($order->payment_gateway_id);
+        if (!$gateway || !$gateway->is_active) {
+            return redirect('/cart')->with('error', 'Selected payment gateway is not available.');
+        }
+
+        $gatewayName = strtolower($gateway->gateway_name);
+        $amount = $order->total_amount;
+
+        // Save order ID to session for success callback
+        session(['checkout_order_id' => $order->id]);
+
+        if ($gatewayName === 'paypal') {
+            return $this->payPalPayment($gateway, $amount, $order);
+        } elseif ($gatewayName === 'stripe') {
+            return $this->stripePayment($gateway, $amount, $order);
+        }
+
+        return redirect('/cart')->with('error', 'Unsupported payment gateway: ' . $gateway->gateway_name);
+    }
+
+    private function payPalPayment($config, $amount, $order)
+    {
+        if (empty($config->api_key) || empty($config->api_secret)) {
+            return redirect('/cart')->with('error', 'PayPal is not configured properly. Missing API credentials.');
+        }
+
+        $provider = new PayPalClient;
+        $mode = strtolower($config->environment) === 'production' ? 'live' : 'sandbox';
+
+        $payPalConfig = [
+            'mode' => $mode,
+            'sandbox' => [
+                'client_id' => $config->api_key,
+                'client_secret' => $config->api_secret,
+                'app_id' => 'APP-80W284485P519543T',
+            ],
+            'live' => [
+                'client_id' => $config->api_key,
+                'client_secret' => $config->api_secret,
+                'app_id' => $config->additional_config['app_id'] ?? '',
+            ],
+            'payment_action' => 'Sale',
+            'currency' => 'USD',
+            'notify_url' => '',
+            'locale' => 'en_US',
+            'validate_ssl' => true,
+        ];
+
+        try {
+            $provider->setApiCredentials($payPalConfig);
+            $provider->getAccessToken();
+        } catch (\Exception $e) {
+            return redirect('/cart')->with('error', 'PayPal Configuration Error: ' . $e->getMessage());
+        }
+
+        $response = $provider->createOrder([
+            "intent" => "CAPTURE",
+            "application_context" => [
+                "return_url" => route('cart.payment.success', ['gateway' => 'paypal']),
+                "cancel_url" => route('cart.payment.cancel'),
+            ],
+            "purchase_units" => [
+                0 => [
+                    "amount" => [
+                        "currency_code" => "USD",
+                        "value" => $amount
+                    ]
+                ]
+            ]
+        ]);
+
+        if (isset($response['id']) && $response['id'] != null) {
+            foreach ($response['links'] as $links) {
+                if ($links['rel'] == 'approve') {
+                    return redirect()->away($links['href']);
+                }
+            }
+        }
+        return redirect('/cart')->with('error', $response['message'] ?? 'Something went wrong with PayPal init.');
+    }
+
+    private function stripePayment($config, $amount, $order)
+    {
+        Stripe::setApiKey($config->api_secret);
+
+        $session = StripeSession::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'inr',
+                        'product_data' => [
+                            'name' => 'Pharmacy Order #' . $order->id,
+                        ],
+                        'unit_amount' => $amount * 100, // Stripe expects cents/paise
+                    ],
+                    'quantity' => 1,
+                ]
+            ],
+            'mode' => 'payment',
+            'success_url' => route('cart.payment.success', ['gateway' => 'stripe']) . '&session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('cart.payment.cancel'),
+        ]);
+
+        return redirect()->away($session->url);
+    }
+
+    public function paymentCancel()
+    {
+        return redirect('/cart')->with('error', 'You have canceled the payment. Your order is pending.');
+    }
+
+    public function paymentSuccess(Request $request)
+    {
+        $orderId = session('checkout_order_id');
+        $gatewayName = $request->query('gateway');
+
+        if (!$orderId) {
+            return redirect('/cart')->with('error', 'Order not found in session.');
+        }
+
+        $order = Orders::find($orderId);
+        if (!$order) {
+            return redirect('/cart')->with('error', 'Order not found.');
+        }
+
+        $config = PaymentGatewayConfig::where('gateway_name', $gatewayName)->where('is_active', true)->first();
+        if (!$config) {
+            return redirect('/cart')->with('error', 'Gateway configuration not found.');
+        }
+
+        if ($gatewayName === 'paypal') {
+            $mode = strtolower($config->environment) === 'production' ? 'live' : 'sandbox';
+            $payPalConfig = [
+                'mode' => $mode,
+                'sandbox' => [
+                    'client_id' => $config->api_key,
+                    'client_secret' => $config->api_secret,
+                    'app_id' => 'APP-80W284485P519543T',
+                ],
+                'live' => [
+                    'client_id' => $config->api_key,
+                    'client_secret' => $config->api_secret,
+                    'app_id' => $config->additional_config['app_id'] ?? '',
+                ],
+                'payment_action' => 'Sale',
+                'currency' => 'USD',
+                'notify_url' => '',
+                'locale' => 'en_US',
+                'validate_ssl' => true,
+            ];
+
+            try {
+                $provider = new PayPalClient;
+                $provider->setApiCredentials($payPalConfig);
+                $provider->getAccessToken();
+                $response = $provider->capturePaymentOrder($request['token']);
+
+                if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+                    $order->status = 1; // 1 = Paid/Processing
+                    $order->save();
+                    session()->forget('checkout_order_id');
+                    return view('frontend.checkout_success', compact('order'));
+                }
+            } catch (\Exception $e) {
+                return redirect('/cart')->with('error', 'PayPal Callback Error: ' . $e->getMessage());
+            }
+
+        } elseif ($gatewayName === 'stripe') {
+            try {
+                Stripe::setApiKey($config->api_secret);
+                $session = StripeSession::retrieve($request->get('session_id'));
+
+                if ($session->payment_status === 'paid') {
+                    $order->status = 1;
+                    $order->save();
+                    session()->forget('checkout_order_id');
+                    return view('frontend.checkout_success', compact('order'));
+                }
+            } catch (\Exception $e) {
+                return redirect('/cart')->with('error', 'Stripe Callback Error: ' . $e->getMessage());
+            }
+        }
+
+        return redirect('/cart')->with('error', 'Payment failed or was not verified. Contact support if you were charged.');
     }
 }
