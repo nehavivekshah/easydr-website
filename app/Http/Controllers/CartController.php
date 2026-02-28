@@ -26,9 +26,8 @@ class CartController extends Controller
         $subtotal = 0;
         foreach ($cartItems as $item) {
             if ($item->medicine) {
-                // Assuming price is in medicine or we pull from a designated field.
-                // Our schema might have 'price' or 'mrp' in Medicines table. Let's use 'mrp' or 'price'.
-                $price = $item->medicine->price ?? $item->medicine->mrp ?? 0;
+                // Use discount_cost if set, otherwise fall back to cost
+                $price = $item->medicine->discount_cost ?? $item->medicine->cost ?? 0;
                 $subtotal += $price * $item->quantity;
             }
         }
@@ -179,7 +178,7 @@ class CartController extends Controller
 
         $totalAmount = 0;
         foreach ($cartItems as $item) {
-            $price = $item->medicine->price ?? $item->medicine->mrp ?? 0;
+            $price = $item->medicine->discount_cost ?? $item->medicine->cost ?? 0;
             $totalAmount += $price * $item->quantity;
         }
 
@@ -198,7 +197,7 @@ class CartController extends Controller
 
             // Create OrderItems
             foreach ($cartItems as $item) {
-                $price = $item->medicine->price ?? $item->medicine->mrp ?? 0;
+                $price = $item->medicine->discount_cost ?? $item->medicine->cost ?? 0;
                 OrderItems::create([
                     'order_id' => $order->id,
                     'medicine_id' => $item->medicine_id,

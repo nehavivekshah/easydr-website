@@ -1,6 +1,19 @@
 @extends('frontend.layout')
 
 @section('content')
+    <style>
+        .disc-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #1E0B9B, #07CCEC);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 30px;
+            padding: 1px 6px;
+            vertical-align: middle;
+            letter-spacing: 0.02em;
+        }
+    </style>
     <main>
         <section class="pt-100 pb-40">
             <div class="container">
@@ -64,12 +77,16 @@
 
                                             @foreach($cartItems as $item)
                                                 @php
-                                                    $price = $item->medicine->price ?? $item->medicine->mrp ?? 0;
-                                                    $hasPrice = $price > 0;
-                                                    $itemTotal = $hasPrice ? ($price * $item->quantity) : 0;
-                                                    $img = $item->medicine->img ?? null;
-                                                    $medName = $item->medicine->name ?? 'Unknown Product';
-                                                    $typeName = $item->medicine->type_name ?? $item->medicine->category ?? 'Rx Medicine';
+                                                    $originalCost  = $item->medicine->cost ?? 0;
+                                                    $discountCost  = $item->medicine->discount_cost ?? 0;
+                                                    // Use discount price if it's set and less than original; otherwise use cost
+                                                    $price = ($discountCost > 0 && $discountCost < $originalCost) ? $discountCost : ($originalCost > 0 ? $originalCost : $discountCost);
+                                                    $hasDiscount   = ($discountCost > 0 && $discountCost < $originalCost);
+                                                    $hasPrice      = $price > 0;
+                                                    $itemTotal     = $hasPrice ? ($price * $item->quantity) : 0;
+                                                    $img           = $item->medicine->img ?? null;
+                                                    $medName       = $item->medicine->name ?? 'Unknown Product';
+                                                    $typeName      = $item->medicine->medicine_category ?? $item->medicine->type_name ?? 'Rx Medicine';
                                                 @endphp
                                                 <div class="cart-med-row">
                                                     
@@ -119,7 +136,15 @@
                                                         <!-- Unit Price (Hidden on mobile) -->
                                                         <div class="col-price d-none d-md-block">
                                                             @if($hasPrice)
-                                                                <div class="price-val">₹{{ number_format($price, 2) }}</div>
+                                                                @if($hasDiscount)
+                                                                    <div style="line-height:1.2;">
+                                                                        <span style="text-decoration:line-through; color:#aaa; font-size:0.78rem;">₹{{ number_format($originalCost, 2) }}</span>
+                                                                        <span class="disc-badge ms-1">{{ round((($originalCost - $discountCost) / $originalCost) * 100) }}% off</span>
+                                                                    </div>
+                                                                    <div class="price-val">₹{{ number_format($price, 2) }}</div>
+                                                                @else
+                                                                    <div class="price-val">₹{{ number_format($price, 2) }}</div>
+                                                                @endif
                                                                 <small class="text-muted" style="font-size:0.65rem;">/ unit</small>
                                                             @else
                                                                 <span class="na-text">—</span>
