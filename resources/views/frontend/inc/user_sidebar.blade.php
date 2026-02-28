@@ -43,6 +43,8 @@
                         class="fas fa-file-medical-alt mr-2"></i> Medical Reports</a></li>
             <li><a class="{{ Request::is('patient-prescriptions*') ? 'active' : '' }}" href="/patient-prescriptions"><i
                         class="fas fa-prescription mr-2"></i> Prescriptions</a></li>
+            <li><a class="{{ Request::is('medicine-orders*') ? 'active' : '' }}" href="/medicine-orders"><i
+                        class="fas fa-box mr-2"></i> Medicine Orders</a></li>
             <li><a class="{{ Request::is('billing*') ? 'active' : '' }}" href="/billing"><i class="fas fa-history mr-2"></i>
                     Transaction History</a></li>
             <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages"><i class="fas fa-envelope mr-2"></i>

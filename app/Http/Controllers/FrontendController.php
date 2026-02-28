@@ -1256,6 +1256,22 @@ class FrontendController extends Controller
         return view('frontend.account.patient_prescriptions', compact('prescriptions'));
     }
 
+    public function medicineOrders()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        // Fetch medicine orders placed by this user
+        $orders = \App\Models\Orders::where('user_id', $user->id)
+            ->with(['items.medicine'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('frontend.account.medicine_orders', compact('orders'));
+    }
+
     public function billing()
     {
         $user = Auth::user();
