@@ -68,7 +68,7 @@
         }
 
         .cart-header-row .col-del {
-            flex: 0 0 54px;
+            flex: 0 0 35px;
         }
 
         /* ----- Single Cart Row ----- */
@@ -155,7 +155,7 @@
             flex: 0 0 150px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: end;
             gap: 5px;
         }
 
@@ -278,7 +278,7 @@
 
         /* --- Remove button --- */
         .col-del-cell {
-            flex: 0 0 54px;
+            flex: 0 0 35px;
             display: flex;
             justify-content: center;
         }
