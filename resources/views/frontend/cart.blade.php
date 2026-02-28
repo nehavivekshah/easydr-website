@@ -685,8 +685,42 @@
                                                 <form action="{{ route('cart.checkout') }}" method="POST" id="checkout-form">
                                                     @csrf
                                                     
+                                                    {{-- Shipping & Delivery Settings --}}
+                                                    <div class="shipping-box mb-4">
+                                                        <h6 class="fw-bold mb-3" style="font-size: 0.9rem; color: #1E0B9B;">Delivery Details</h6>
+                                                        
+                                                        {{-- Store Selection --}}
+                                                        <div class="form-group mb-3">
+                                                            <label for="store_id" class="form-label" style="font-size: 0.85rem; font-weight: 600;">Select Processing Store <span class="text-danger">*</span></label>
+                                                            <select class="form-select" name="store_id" id="store_id" required style="font-size: 0.85rem; border-color: #e4e8f5;">
+                                                                <option value="">-- Choose Nearest Store --</option>
+                                                                @isset($storeLocations)
+                                                                    @foreach($storeLocations as $store)
+                                                                        <option value="{{ $store->LocationID }}" {{ old('store_id') == $store->LocationID ? 'selected' : '' }}>
+                                                                            {{ $store->LocationName }} ({{ $store->City }})
+                                                                        </option>
+                                                                    @endforeach
+                                                                @endisset
+                                                            </select>
+                                                            @error('store_id')
+                                                                <div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        {{-- Shipping Address --}}
+                                                        <div class="form-group mb-0">
+                                                            <label for="shipping_address" class="form-label" style="font-size: 0.85rem; font-weight: 600;">Shipping Address <span class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="shipping_address" id="shipping_address" rows="3" required placeholder="Enter full delivery address" style="font-size: 0.85rem; border-color: #e4e8f5; resize: none;">{{ old('shipping_address') }}</textarea>
+                                                            @error('shipping_address')
+                                                                <div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="divider"></div>
+
                                                     {{-- Payment Method Selection --}}
-                                                    <div class="payment-method-box mt-3 mb-4">
+                                                    <div class="payment-method-box mb-4">
                                                         <h6 class="fw-bold mb-3" style="font-size: 0.9rem; color: #1E0B9B;">Payment Method</h6>
                                                         
                                                         {{-- Cash on Delivery --}}

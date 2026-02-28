@@ -12,6 +12,7 @@ use App\Models\Prescription_medinices;
 use App\Models\Orders;
 use App\Models\OrderItems;
 use App\Models\PaymentGatewayConfig;
+use App\Models\Store_locations;
 
 class CartController extends Controller
 {
@@ -33,10 +34,11 @@ class CartController extends Controller
             }
         }
 
-        // Fetch active payment gateways
+        // Fetch active payment gateways and store locations
         $paymentGateways = PaymentGatewayConfig::where('is_active', 1)->get();
+        $storeLocations = Store_locations::all();
 
-        return view('frontend.cart', compact('cartItems', 'subtotal', 'paymentGateways'));
+        return view('frontend.cart', compact('cartItems', 'subtotal', 'paymentGateways', 'storeLocations'));
     }
 
     public function addPrescription(Request $request)
@@ -177,7 +179,9 @@ class CartController extends Controller
 
         $request->validate([
             'payment_method' => 'required|in:cod,online',
-            'payment_gateway_id' => 'required_if:payment_method,online|nullable|exists:payment_gateway_configs,id'
+            'payment_gateway_id' => 'required_if:payment_method,online|nullable|exists:payment_gateway_configs,id',
+            'shipping_address' => 'required|string|max:500',
+            'store_id' => 'required|integer',
         ]);
 
         $cartItems = Carts::with('medicine')->where('user_id', $user->id)->get();
@@ -199,9 +203,8 @@ class CartController extends Controller
                 'user_id' => $user->id,
                 'status' => 0, // 0 = Pending
                 'total_amount' => $totalAmount,
-                // Defaults for address/store if necessary
-                'store_id' => 0,
-                'address' => 'Customer Registered Address',
+                'store_id' => $request->store_id,
+                'shipping_address' => $request->shipping_address,
                 'payment_method' => $request->payment_method,
                 'payment_gateway_id' => $request->payment_method === 'online' ? $request->payment_gateway_id : null,
             ]);
