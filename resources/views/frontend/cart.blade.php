@@ -489,7 +489,7 @@
                                     My Cart
                                     @if(count($cartItems) > 0)
                                         <span class="badge rounded-pill ms-2"
-                                            style="background:linear-gradient(90deg,#1E0B9B,#07CCEC);font-size:0.7rem;vertical-align:middle;">
+                                            style="background:linear-gradient(90deg,#1E0B9B,#07CCEC);font-size:0.7rem;vertical-align:middle;color:#000;">
                                             {{ count($cartItems) }} Items
                                         </span>
                                     @endif
@@ -658,7 +658,7 @@
                                     <div class="col-lg-4">
                                         <div class="cart-summary-box">
                                             <div class="cart-summary-header">
-                                                <h5><i class="fas fa-receipt me-2"></i>Order Summary</h5>
+                                                <h5><i class="fas fa-receipt mr-2"></i>Order Summary</h5>
                                             </div>
                                             <div class="cart-summary-body">
                                                 <div class="sum-row">
