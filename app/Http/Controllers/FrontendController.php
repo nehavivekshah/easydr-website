@@ -76,7 +76,75 @@ class FrontendController extends Controller
 
         $specialists = Specialists::where('status', 1)->limit(12)->get();
 
-        return view('frontend/home', ['specialists' => $specialists, 'doctors' => $doctors]);
+        $notifications = [];
+        $unreadCount = 0;
+
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Common: Unread Messages
+            $unreadChats = Chats::where('did', $user->id)->where('status', 0)->count();
+            if ($unreadChats > 0) {
+                $notifications[] = [
+                    'icon' => 'fa-envelope text-primary',
+                    'text' => "You have {$unreadChats} unread message(s).",
+                    'link' => '/messages'
+                ];
+                $unreadCount += $unreadChats;
+            }
+
+            if ($user->role == 4) { // Doctor
+                // Pending Appointments
+                $pendingAppts = \App\Models\Appointments::where('did', $user->id)->where('status', 0)->count();
+                if ($pendingAppts > 0) {
+                    $notifications[] = [
+                        'icon' => 'fa-calendar-alt text-warning',
+                        'text' => "You have {$pendingAppts} pending appointment request(s).",
+                        'link' => '/appointments'
+                    ];
+                    $unreadCount += $pendingAppts;
+                }
+            } elseif ($user->role == 5) { // Patient
+                $patient = \App\Models\Patients::where('uid', $user->id)->first();
+                $pid = $patient ? $patient->id : 0;
+
+                // Pending/Approved Appointments
+                $upcomingAppts = \App\Models\Appointments::where(function ($q) use ($user, $pid) {
+                    $q->where('pid', $user->id);
+                    if ($pid > 0)
+                        $q->orWhere('pid', $pid);
+                })->whereIn('status', [0, 1])->count();
+
+                if ($upcomingAppts > 0) {
+                    $notifications[] = [
+                        'icon' => 'fa-calendar-check text-info',
+                        'text' => "You have {$upcomingAppts} upcoming/pending appointment(s).",
+                        'link' => '/appointments'
+                    ];
+                    $unreadCount += $upcomingAppts;
+                }
+
+                // Unpaid Medicine Orders
+                $unpaidOrders = \App\Models\Orders::where('user_id', $user->id)
+                    ->where('status', 0)
+                    ->count();
+                if ($unpaidOrders > 0) {
+                    $notifications[] = [
+                        'icon' => 'fa-box text-danger',
+                        'text' => "You have {$unpaidOrders} unpaid medicine order(s).",
+                        'link' => '/medicine-orders'
+                    ];
+                    $unreadCount += $unpaidOrders;
+                }
+            }
+        }
+
+        return view('frontend/home', [
+            'specialists' => $specialists,
+            'doctors' => $doctors,
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount
+        ]);
     }
     public function doctors(Request $request, $specialty = null)
     {
