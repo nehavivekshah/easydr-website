@@ -741,19 +741,73 @@
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                document.querySelectorAll('.cart-med-row').forEach(function (row) {
-                    const minus = row.querySelector('.qty-minus');
-                    const plus = row.querySelector('.qty-plus');
-                    const input = row.querySelector('.qty-num');
-                    if (!minus || !plus || !input) return;
 
+                // Hide "Update" buttons — updates are now automatic
+                document.querySelectorAll('.btn-update-qty').forEach(function (btn) {
+                    btn.style.display = 'none';
+                });
+
+                document.querySelectorAll('.cart-med-row').forEach(function (row) {
+                    const minus  = row.querySelector('.qty-minus');
+                    const plus   = row.querySelector('.qty-plus');
+                    const input  = row.querySelector('.qty-num');
+                    const form   = row.querySelector('form');
+                    if (!minus || !plus || !input || !form) return;
+
+                    let debounceTimer = null;
+
+                    // ── Submit helper ──────────────────────────────────────
+                    function submitQty() {
+                        clearTimeout(debounceTimer);
+                        let v = parseInt(input.value) || 1;
+                        if (v < 1)  v = 1;
+                        if (v > 99) v = 99;
+                        input.value = v;
+
+                        // Visual feedback: dim the row while saving
+                        row.style.opacity = '0.55';
+                        row.style.pointerEvents = 'none';
+                        form.submit();
+                    }
+
+                    // ── Debounced version for typing ───────────────────────
+                    function debouncedSubmit() {
+                        clearTimeout(debounceTimer);
+                        debounceTimer = setTimeout(submitQty, 600);
+                    }
+
+                    // ── + / - buttons ──────────────────────────────────────
                     minus.addEventListener('click', function () {
                         let v = parseInt(input.value) || 1;
-                        if (v > 1) input.value = v - 1;
+                        if (v > 1) {
+                            input.value = v - 1;
+                            submitQty();
+                        }
                     });
+
                     plus.addEventListener('click', function () {
                         let v = parseInt(input.value) || 1;
-                        if (v < 99) input.value = v + 1;
+                        if (v < 99) {
+                            input.value = v + 1;
+                            submitQty();
+                        }
+                    });
+
+                    // ── Direct keyboard input ──────────────────────────────
+                    input.removeAttribute('readonly');   // allow direct typing
+                    input.addEventListener('keyup', function (e) {
+                        if (e.key === 'Enter') {
+                            clearTimeout(debounceTimer);
+                            submitQty();
+                        } else {
+                            debouncedSubmit();
+                        }
+                    });
+
+                    // ── Blur / change (e.g. mobile spinner) ───────────────
+                    input.addEventListener('change', function () {
+                        clearTimeout(debounceTimer);
+                        submitQty();
                     });
                 });
             });
