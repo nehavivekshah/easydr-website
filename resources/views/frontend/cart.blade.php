@@ -492,15 +492,15 @@
                                     My Cart
                                     @if(count($cartItems) > 0)
                                         <span class="badge rounded-pill ms-2"
-                                            style="background:linear-gradient(90deg,#1E0B9B,#07CCEC);font-size:0.7rem;vertical-align:middle;color:#000;">
+                                            style="color:#fff;background:linear-gradient(90deg,#1E0B9B,#07CCEC);font-size:0.7rem;vertical-align:middle;color:#000;">
                                             {{ count($cartItems) }} Items
                                         </span>
                                     @endif
                                 </h4>
-                                <a href="/patient-prescriptions"
+                                <!-- <a href="/patient-prescriptions"
                                     class="btn btn-outline-primary btn-sm rounded-pill px-4 py-2 fw-bold">
                                     <i class="fas fa-plus me-1"></i> Add More Medicines
-                                </a>
+                                </a> -->
                             </div>
 
                             {{-- Alerts --}}
