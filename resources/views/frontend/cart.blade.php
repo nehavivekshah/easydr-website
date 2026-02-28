@@ -692,16 +692,36 @@
                                                         {{-- Store Selection --}}
                                                         <div class="form-group mb-3">
                                                             <label for="store_id" class="form-label" style="font-size: 0.85rem; font-weight: 600;">Select Processing Store <span class="text-danger">*</span></label>
-                                                            <select class="form-select" name="store_id" id="store_id" required style="font-size: 0.85rem; border-color: #e4e8f5;">
+                                                            
+                                                            @if(isset($cartStoreId) && $cartStoreId)
+                                                                {{-- Hidden input to submit the auto-fetched store_id --}}
+                                                                <input type="hidden" name="store_id" value="{{ $cartStoreId }}">
+                                                                <input type="hidden" id="auto_fetched_store" value="1">
+                                                            @endif
+
+                                                            <select class="form-select @if(isset($cartStoreId) && $cartStoreId) bg-light @endif" 
+                                                                    @if(!isset($cartStoreId) || !$cartStoreId) name="store_id" @endif 
+                                                                    id="store_id" required 
+                                                                    style="font-size: 0.85rem; border-color: #e4e8f5; @if(isset($cartStoreId) && $cartStoreId) pointer-events: none; opacity: 0.8; @endif"
+                                                                    @if(isset($cartStoreId) && $cartStoreId) tabindex="-1" readonly @endif>
+                                                                
                                                                 <option value="">-- Choose Nearest Store --</option>
                                                                 @isset($storeLocations)
                                                                     @foreach($storeLocations as $store)
-                                                                        <option value="{{ $store->LocationID }}" {{ old('store_id') == $store->LocationID ? 'selected' : '' }}>
+                                                                        @php
+                                                                            $isSelected = old('store_id', $cartStoreId ?? '') == $store->LocationID;
+                                                                        @endphp
+                                                                        <option value="{{ $store->LocationID }}" {{ $isSelected ? 'selected' : '' }}>
                                                                             {{ $store->LocationName }} ({{ $store->City }})
                                                                         </option>
                                                                     @endforeach
                                                                 @endisset
                                                             </select>
+                                                            @if(isset($cartStoreId) && $cartStoreId)
+                                                                <div class="ms-1 mt-1 text-success" style="font-size: 0.70rem;">
+                                                                    <i class="fas fa-check-circle"></i> Auto-selected based on items in your cart
+                                                                </div>
+                                                            @endif
                                                             @error('store_id')
                                                                 <div class="text-danger mt-1" style="font-size: 0.75rem;">{{ $message }}</div>
                                                             @enderror

@@ -34,11 +34,21 @@ class CartController extends Controller
             }
         }
 
+        // Auto-fetch Processing Store from the first medicine in the cart
+        $cartStoreId = null;
+        if ($cartItems->isNotEmpty()) {
+            $firstMedicine = $cartItems->first()->medicine;
+            if ($firstMedicine) {
+                // Using property fetch, assuming `store_id` is a column on medicines
+                $cartStoreId = $firstMedicine->store_id;
+            }
+        }
+
         // Fetch active payment gateways and store locations
         $paymentGateways = PaymentGatewayConfig::where('is_active', 1)->get();
         $storeLocations = Store_locations::all();
 
-        return view('frontend.cart', compact('cartItems', 'subtotal', 'paymentGateways', 'storeLocations'));
+        return view('frontend.cart', compact('cartItems', 'subtotal', 'paymentGateways', 'storeLocations', 'cartStoreId'));
     }
 
     public function addPrescription(Request $request)
