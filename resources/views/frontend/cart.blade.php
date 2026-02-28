@@ -47,32 +47,35 @@
 
         .cart-header-row .col-info {
             flex: 2;
+            padding-right: 12px;
         }
 
         .cart-header-row .col-qty {
-            flex: 0 0 130px;
+            flex: 0 0 150px;
             text-align: center;
         }
 
         .cart-header-row .col-price {
-            flex: 0 0 100px;
+            flex: 0 0 150px;
             text-align: right;
+            padding-right: 8px;
         }
 
         .cart-header-row .col-total {
-            flex: 0 0 100px;
+            flex: 0 0 120px;
             text-align: right;
+            padding-right: 8px;
         }
 
         .cart-header-row .col-del {
-            flex: 0 0 44px;
+            flex: 0 0 54px;
         }
 
         /* ----- Single Cart Row ----- */
         .cart-med-row {
             display: flex;
             align-items: center;
-            gap: 0;
+            gap: 8px;
             padding: 18px 20px;
             border-bottom: 1px solid #f0f2f7;
             transition: background 0.15s;
@@ -93,6 +96,7 @@
             align-items: center;
             gap: 14px;
             min-width: 0;
+            padding-right: 12px;
         }
 
         .cart-med-icon {
@@ -148,7 +152,7 @@
 
         /* --- Quantity column --- */
         .col-qty-cell {
-            flex: 0 0 130px;
+            flex: 0 0 150px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -220,8 +224,20 @@
 
         /* --- Price column --- */
         .col-price-cell {
-            flex: 0 0 100px;
+            flex: 0 0 150px;
             text-align: right;
+            padding-right: 8px;
+            /* prevent badge+strikethrough from overflowing */
+            overflow: visible;
+        }
+        /* Ensure the discount line wraps cleanly */
+        .price-discount-line {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 4px;
+            line-height: 1.3;
         }
 
         .price-val {
@@ -249,8 +265,9 @@
 
         /* --- Total column --- */
         .col-total-cell {
-            flex: 0 0 100px;
+            flex: 0 0 120px;
             text-align: right;
+            padding-right: 8px;
         }
 
         .total-val {
@@ -261,7 +278,7 @@
 
         /* --- Remove button --- */
         .col-del-cell {
-            flex: 0 0 44px;
+            flex: 0 0 54px;
             display: flex;
             justify-content: center;
         }
@@ -584,14 +601,12 @@
                                                     <div class="col-price-cell">
                                                         @if($hasPrice)
                                                             @if($hasDiscount)
-                                                                <div style="line-height:1.3;">
-                                                                    <span
-                                                                        style="text-decoration:line-through;color:#aaa;font-size:0.78rem;">
+                                                                <div class="price-discount-line">
+                                                                    <span style="text-decoration:line-through;color:#aaa;font-size:0.78rem;white-space:nowrap;">
                                                                         ₹{{ number_format($originalCost, 2) }}
                                                                     </span>
-                                                                    <span class="disc-badge ms-1">
-                                                                        {{ round((($originalCost - $discountCost) / $originalCost) * 100) }}%
-                                                                        off
+                                                                    <span class="disc-badge">
+                                                                        {{ round((($originalCost - $discountCost) / $originalCost) * 100) }}% off
                                                                     </span>
                                                                 </div>
                                                             @endif
