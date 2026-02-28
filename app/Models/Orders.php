@@ -26,6 +26,16 @@ class Orders extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function store()
+    {
+        return $this->belongsTo(Store_locations::class, 'store_id', 'LocationID');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Suppliers::class, 'supplier_id', 'id');
+    }
+
     public function items()
     {
         return $this->hasMany(OrderItems::class, 'order_id');

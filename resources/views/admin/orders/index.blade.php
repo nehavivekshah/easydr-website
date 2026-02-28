@@ -287,13 +287,13 @@
                                     <td>
                                         <span class="ref-chip">
                                             <i class="bx bx-store-alt"></i>
-                                            {{ $order->store_id }}
+                                            {{ $order->store->LocationName ?? 'Unknown Store' }}
                                         </span>
                                     </td>
                                     <td>
                                         <span class="ref-chip">
                                             <i class="bx bx-package"></i>
-                                            {{ $order->supplier_id }}
+                                            {{ $order->supplier->name ?? 'Unknown Supplier' }}
                                         </span>
                                     </td>
                                     <td class="text-center">
