@@ -11,6 +11,7 @@ use App\Models\Prescriptions;
 use App\Models\Prescription_medinices;
 use App\Models\Orders;
 use App\Models\OrderItems;
+use App\Models\PaymentGatewayConfig;
 
 class CartController extends Controller
 {
@@ -32,7 +33,10 @@ class CartController extends Controller
             }
         }
 
-        return view('frontend.cart', compact('cartItems', 'subtotal'));
+        // Fetch active payment gateways
+        $paymentGateways = PaymentGatewayConfig::where('is_active', 1)->get();
+
+        return view('frontend.cart', compact('cartItems', 'subtotal', 'paymentGateways'));
     }
 
     public function addPrescription(Request $request)
@@ -164,12 +168,17 @@ class CartController extends Controller
         return redirect()->back()->with('error', 'Item not found.');
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
         $user = Auth::user();
         if (!$user) {
             return redirect('/login');
         }
+
+        $request->validate([
+            'payment_method' => 'required|in:cod,online',
+            'payment_gateway_id' => 'required_if:payment_method,online|nullable|exists:payment_gateway_configs,id'
+        ]);
 
         $cartItems = Carts::with('medicine')->where('user_id', $user->id)->get();
         if ($cartItems->isEmpty()) {
@@ -192,7 +201,9 @@ class CartController extends Controller
                 'total_amount' => $totalAmount,
                 // Defaults for address/store if necessary
                 'store_id' => 0,
-                'address' => 'Customer Registered Address'
+                'address' => 'Customer Registered Address',
+                'payment_method' => $request->payment_method,
+                'payment_gateway_id' => $request->payment_method === 'online' ? $request->payment_gateway_id : null,
             ]);
 
             // Create OrderItems
