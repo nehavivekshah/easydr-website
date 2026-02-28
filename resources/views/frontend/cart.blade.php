@@ -689,8 +689,8 @@
                                                     <div class="shipping-box mb-4">
                                                         <h6 class="fw-bold mb-3" style="font-size: 0.9rem; color: #1E0B9B;">Delivery Details</h6>
                                                         
-                                                        {{-- Store Selection --}}
-                                                        <div class="form-group mb-3">
+                                                        {{-- Store Selection (Hidden) --}}
+                                                        <div class="form-group mb-3 d-none">
                                                             <label for="store_id" class="form-label" style="font-size: 0.85rem; font-weight: 600;">Select Processing Store <span class="text-danger">*</span></label>
                                                             
                                                             @if(isset($cartStoreId) && $cartStoreId)
