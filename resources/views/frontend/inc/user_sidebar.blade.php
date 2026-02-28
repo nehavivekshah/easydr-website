@@ -6,6 +6,27 @@
             ->count();
     }
 @endphp
+
+<style>
+    @keyframes pulseBadge {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+        50% { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(220, 53, 69, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+    }
+    .pulse-badge {
+        animation: pulseBadge 1.5s infinite;
+    }
+
+    @keyframes pulseAlertBox {
+        0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.5); }
+        70% { box-shadow: 0 0 0 12px rgba(255, 193, 7, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+    }
+    .pulse-alert {
+        animation: pulseAlertBox 2s infinite;
+        border-color: #ffc107 !important;
+    }
+</style>
 @if(Auth::check())
     <div class="user_profile shadow-sm mb-4">
         <div class="user_profile_img">
@@ -50,7 +71,7 @@
             <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages"><i class="fas fa-envelope mr-2"></i>
                     Messages
                     @if($totalUnreadCount > 0)
-                        <span class="badge badge-danger rounded-pill ml-2">{{ $totalUnreadCount }}</span>
+                        <span class="badge badge-danger rounded-pill ml-2 pulse-badge">{{ $totalUnreadCount }}</span>
                     @endif
                 </a></li>
             <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password"><i
@@ -71,7 +92,7 @@
             <li><a class="{{ Request::is('messages*') ? 'active' : '' }}" href="/messages"><i
                         class="fas fa-comment-medical mr-2"></i> Messages
                     @if($totalUnreadCount > 0)
-                        <span class="badge badge-danger rounded-pill ml-2">{{ $totalUnreadCount }}</span>
+                        <span class="badge badge-danger rounded-pill ml-2 pulse-badge">{{ $totalUnreadCount }}</span>
                     @endif
                 </a></li>
             <li><a class="{{ Request::is('change-password*') ? 'active' : '' }}" href="/change-password"><i
@@ -84,7 +105,7 @@
 
     @if(Auth::user()->role == 4 || Auth::user()->role == 5)
         <!-- Global Appointment Alert -->
-        <div id="global-appointment-alert" class="d-none mt-4 p-3 shadow-sm border-0"
+        <div id="global-appointment-alert" class="d-none mt-4 p-3 shadow-sm border-0 pulse-alert"
             style="border-radius: 12px; background: #fff3cd; border-left: 4px solid #ffc107 !important;">
             <div class="d-flex align-items-center mb-2">
                 <i class="fas fa-exclamation-circle text-warning me-2"></i>

@@ -125,6 +125,29 @@
         .transition-all {
             transition: all 0.2s ease;
         }
+
+        @keyframes pulseAlert {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(220, 53, 69, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+
+        .notify-pulse {
+            animation: pulseAlert 2s infinite;
+            border-color: #dc3545 !important;
+        }
+
+        .highlight-alert {
+            background-color: #fff5f5 !important;
+        }
     </style>
 
     <main class="dashboard-container">
@@ -225,14 +248,16 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <a href="/messages" class="text-decoration-none">
-                                            <div class="stat-card-modern p-4" style="cursor: pointer;">
+                                            <div class="stat-card-modern p-4 {{ ($totalUnreadCount ?? 0) > 0 ? 'notify-pulse highlight-alert' : '' }}"
+                                                style="cursor: pointer;">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                                    <div class="icon-box icon-yellow mb-0"
+                                                    <div class="icon-box mb-0 {{ ($totalUnreadCount ?? 0) > 0 ? 'bg-danger text-white' : 'icon-yellow' }}"
                                                         style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;">
-                                                        <i class="fas fa-envelope"></i>
+                                                        <i
+                                                            class="fas fa-envelope {{ ($totalUnreadCount ?? 0) > 0 ? 'fa-shake' : '' }}"></i>
                                                     </div>
                                                     <h3 class="mb-0 text-truncate"
-                                                        style="font-size: 20px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                        style="font-size: 24px; font-weight: 900; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
                                                         {{ $totalUnreadCount ?? 0 }}
                                                     </h3>
                                                 </div>
@@ -319,14 +344,16 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <a href="/messages" class="text-decoration-none">
-                                            <div class="stat-card-modern p-4" style="cursor: pointer;">
+                                            <div class="stat-card-modern p-4 {{ ($totalUnreadCount ?? 0) > 0 ? 'notify-pulse highlight-alert' : '' }}"
+                                                style="cursor: pointer;">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                                    <div class="icon-box icon-yellow mb-0"
+                                                    <div class="icon-box mb-0 {{ ($totalUnreadCount ?? 0) > 0 ? 'bg-danger text-white' : 'icon-yellow' }}"
                                                         style="width: 50px; height: 50px; font-size: 24px; border-radius: 16px;">
-                                                        <i class="fas fa-envelope"></i>
+                                                        <i
+                                                            class="fas fa-envelope {{ ($totalUnreadCount ?? 0) > 0 ? 'fa-shake' : '' }}"></i>
                                                     </div>
                                                     <h3 class="mb-0 text-truncate"
-                                                        style="font-size: 20px; font-weight: 800; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
+                                                        style="font-size: 24px; font-weight: 900; color: {{ ($totalUnreadCount ?? 0) > 0 ? '#dc3545' : '#1a4b8c' }} !important;">
                                                         {{ $totalUnreadCount ?? 0 }}
                                                     </h3>
                                                 </div>
@@ -556,7 +583,7 @@
                         }
                     });
                 @endif
-                                                                                                                                                                        });
+                                                                                                                                                                                });
 
             function updateCountdowns() {
                 document.querySelectorAll('.timer-countdown').forEach(el => {

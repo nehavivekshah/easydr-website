@@ -37,31 +37,6 @@
         </section>
         <!-- slider-area-end -->
 
-        <!-- Notifications Area -->
-        @if(isset($notifications) && count($notifications) > 0)
-            <section class="notifications-area pt-40 pb-0">
-                <div class="container">
-                    <div class="alert alert-warning shadow-sm border-0 d-flex flex-column gap-2" role="alert"
-                        style="border-radius: 12px; border-left: 5px solid #ffba00 !important;">
-                        <h5 class="alert-heading mb-1 text-dark fw-bold"><i class="fas fa-bell text-warning me-2"></i> Action
-                            Required</h5>
-
-                        @foreach($notifications as $notif)
-                            <div class="d-flex align-items-center justify-content-between p-2 rounded"
-                                style="background: rgba(255,255,255,0.6);">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="fas {{ $notif['icon'] }} fs-5"></i>
-                                    <span class="text-dark fw-500">{{ $notif['text'] }}</span>
-                                </div>
-                                <a href="{{ $notif['link'] }}" class="btn btn-sm btn-dark rounded-pill px-3 py-1">View</a>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </section>
-        @endif
-        <!-- Notifications Area End -->
-
         <!-- doctors-area -->
         <section id="doctors" class="doctors-area pt-80 pb-80">
             <div class="container">

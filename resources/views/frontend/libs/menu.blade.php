@@ -89,40 +89,6 @@
                         @if(!empty(Auth::User()->role))
                             <div class="main-menu text-right">
                                 <ul>
-                                    @if(isset($notifications))
-                                        <li class="has-sub">
-                                            <a href="javascript:void(0)" class="position-relative">
-                                                <i class="fas fa-bell pe-1" style="font-size:1.1rem;"></i>
-                                                @if($unreadCount > 0)
-                                                    <span class="position-absolute translate-middle badge rounded-pill bg-danger"
-                                                        style="top:5px; right:-15px; font-size:0.65rem; padding: 0.25em 0.5em;">
-                                                        {{ $unreadCount }}
-                                                    </span>
-                                                @endif
-                                            </a>
-                                            <ul class="has-right"
-                                                style="min-width: 320px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 8px;">
-                                                <li class="text-muted fw-bold border-bottom pb-2 mb-2"
-                                                    style="font-size:0.85rem; text-transform:uppercase;">Notifications</li>
-                                                @if(count($notifications) > 0)
-                                                    @foreach($notifications as $notif)
-                                                        <li style="line-height:1.4;">
-                                                            <a href="{{ $notif['link'] }}"
-                                                                class="d-flex align-items-start gap-2 text-wrap"
-                                                                style="padding: 8px 10px; border-radius: 6px;">
-                                                                <i class="fas {{ $notif['icon'] }} mt-1"></i>
-                                                                <span style="font-size:0.85rem; color:#333;">{{ $notif['text'] }}</span>
-                                                            </a>
-                                                        </li>
-                                                    @endforeach
-                                                @else
-                                                    <li class="text-center text-muted" style="padding: 10px 0;">No new notifications
-                                                    </li>
-                                                @endif
-                                            </ul>
-                                        </li>
-                                    @endif
-
                                     <li class="has-sub">
                                         <a href="javascript:void(0)"><span class="top-btn"><i class="fas fa-user pe-1"></i>
                                                 {{Auth::User()->first_name}}</span></a>
