@@ -26,8 +26,9 @@
         /* ----- Items Card ----- */
         .cart-items-card {
             background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 2px 16px rgba(30, 11, 155, 0.07);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             overflow: hidden;
         }
 
@@ -35,9 +36,9 @@
         .cart-header-row {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
-            background: linear-gradient(90deg, #f0f4ff, #e8f8fd);
-            border-bottom: 1px solid #e4e8f5;
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #f0f0f0;
             font-size: 0.78rem;
             font-weight: 700;
             color: #6c7a99;
@@ -307,23 +308,25 @@
         /* ----- Order Summary ----- */
         .cart-summary-box {
             background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 2px 16px rgba(30, 11, 155, 0.07);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             overflow: hidden;
             position: sticky;
             top: 100px;
         }
 
         .cart-summary-header {
-            background: linear-gradient(90deg, #1E0B9B, #07CCEC);
-            padding: 16px 22px;
+            background: #fff;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px;
         }
 
         .cart-summary-header h5 {
-            color: #fff;
-            font-weight: 700;
+            color: #333;
+            font-weight: 600;
             margin: 0;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .cart-summary-body {
@@ -476,12 +479,12 @@
     </style>
 
     <main>
-        <section class="pt-100 pb-40">
+        <div class="content" style="background-color: #f0f3f8; padding: 40px 0; min-height: 80vh;">
             <div class="container">
                 <div class="row">
                     {{-- ===== Main Content ===== --}}
                     <div class="col-lg-12">
-                        <div class="dashboard_content p-4">
+                        <div class="cart_content">
 
                             {{-- Page Header --}}
                             <div class="cart-section-header">
@@ -658,7 +661,7 @@
                                     <div class="col-lg-4">
                                         <div class="cart-summary-box">
                                             <div class="cart-summary-header">
-                                                <h5><i class="fas fa-receipt mr-2"></i>Order Summary</h5>
+                                                <h5><i class="fas fa-receipt text-info me-2"></i> Order Summary</h5>
                                             </div>
                                             <div class="cart-summary-body">
                                                 <div class="sum-row">
@@ -728,11 +731,11 @@
                                 </div>
                             @endif
 
-                        </div>{{-- /dashboard_content --}}
-                    </div>{{-- /col-lg-9 --}}
-                </div>{{-- /row --}}
-            </div>{{-- /container --}}
-        </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     @push('scripts')
