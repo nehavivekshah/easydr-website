@@ -600,7 +600,7 @@
                                                     {{-- Col 3: Unit Price --}}
                                                     <div class="col-price-cell">
                                                         @if($hasPrice)
-                                                            <div class="d-flex justify-content-center
+                                                            <div class="d-flex justify-content-end
                                                             items-align-center">
                                                                 <div class="price-val">₹{{ number_format($price, 2) }}</div>
                                                                 <small class="text-muted" style="font-size:0.65rem;">/ unit</small>
