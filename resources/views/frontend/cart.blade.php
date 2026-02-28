@@ -2,33 +2,74 @@
 
 @push('styles')
     <style>
-        /* ---- Cart UI: matches existing dashboard_content card style ---- */
+        /* ==============================
+           Cart Specific Styles
+           ============================== */
+        
+        :root {
+            --primary-grad: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
+            --bg-light: #f4f7fc;
+            --text-dark: #1a1a2e;
+            --text-muted: #6c757d;
+        }
+
+        .dashboard_content {
+            background: #fff;
+            border-radius: 16px;
+            /* Ensure content fits well */
+        }
+
+        /* ---- Header ---- */
         .cart-section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .cart-section-header h4 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1a1a2e;
-            letter-spacing: -0.5px;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-dark);
             margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ---- Cart Items Card ---- */
+        .cart-items-card {
+            border: 1px solid #f0f2f8;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .cart-header-row {
+            background: #f8fafc;
+            padding: 12px 20px;
+            border-bottom: 1px solid #eef2f6;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Medicine Row */
         .cart-med-row {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 20px;
+            padding: 20px;
             border-bottom: 1px solid #f2f4f8;
-            transition: background 0.15s;
+            transition: background 0.2s ease;
+            flex-wrap: wrap; /* Allows stacking on mobile */
         }
 
-        .cart-med-row:last-of-type {
+        .cart-med-row:last-child {
             border-bottom: none;
         }
 
@@ -36,283 +77,286 @@
             background: #fafbff;
         }
 
+        /* Product Info Area */
+        .med-info-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 2; /* Takes more space */
+            min-width: 280px;
+        }
+
         .cart-med-icon {
-            width: 54px;
-            height: 54px;
+            width: 60px;
+            height: 60px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #eef2ff, #e0f7ff);
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 4px;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
-            flex-shrink: 0;
-            border: 1px solid #e0e8ff;
             overflow: hidden;
         }
 
         .cart-med-icon img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
-        .cart-med-name {
+        .cart-med-details h5 {
+            font-size: 1rem;
             font-weight: 700;
-            font-size: 0.92rem;
-            color: #1a1a2e;
-            margin-bottom: 3px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            line-height: 1.3;
         }
 
-        .cart-med-tag {
+        .tag-rx {
             display: inline-flex;
             align-items: center;
             gap: 4px;
             background: #eef2ff;
-            color: #1E0B9B;
-            border-radius: 5px;
-            padding: 1px 7px;
+            color: #4f46e5;
+            padding: 2px 8px;
+            border-radius: 6px;
             font-size: 0.7rem;
             font-weight: 600;
         }
 
-        .cart-price-na {
-            font-size: 0.75rem;
-            color: #bbb;
-            font-style: italic;
-        }
-
-        .cart-poi {
+        .tag-poi {
             display: inline-flex;
             align-items: center;
-            gap: 3px;
-            background: #fef3c7;
-            color: #92400e;
-            border-radius: 5px;
-            padding: 1px 7px;
+            gap: 4px;
+            background: #fffbeb;
+            color: #b45309;
+            padding: 2px 8px;
+            border-radius: 6px;
             font-size: 0.7rem;
             font-weight: 600;
         }
 
-        /* Qty inline controls */
+        /* Controls Area (Qty, Price, Total) */
+        .med-controls-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex: 3;
+            gap: 15px;
+        }
+
+        /* Quantity */
+        .qty-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .qty-group {
             display: flex;
             align-items: center;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            overflow: hidden;
+            background: #f1f5f9;
+            border-radius: 50rem;
+            padding: 2px;
             width: fit-content;
         }
 
         .qty-btn {
-            width: 30px;
-            height: 30px;
-            background: #f8fafc;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             border: none;
-            cursor: pointer;
+            background: #fff;
+            color: #1a1a2e;
+            font-size: 0.7rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
-            color: #1E0B9B;
-            transition: background 0.15s;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s;
         }
-
-        .qty-btn:hover {
-            background: #e8ecff;
-        }
+        .qty-btn:hover { background: #4f46e5; color: #fff; }
 
         .qty-num {
-            width: 38px;
+            width: 36px;
             text-align: center;
+            background: transparent;
+            border: none;
             font-weight: 700;
-            font-size: 0.88rem;
-            color: #1a1a2e;
-            border: none;
-            outline: none;
-            background: #fff;
+            font-size: 0.9rem;
+            color: #334155;
+            -moz-appearance: textfield;
         }
+        .qty-num::-webkit-outer-spin-button, .qty-num::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-        .qty-save-btn {
-            background: linear-gradient(90deg, #1E0B9B, #07CCEC);
-            color: #fff;
+        .btn-update-qty {
             border: none;
-            border-radius: 7px;
-            padding: 5px 10px;
-            font-size: 0.73rem;
+            background: none;
+            color: #0ea5e9;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: opacity .2s;
-            margin-left: 7px;
-            white-space: nowrap;
+            margin-top: 4px;
+            text-decoration: underline;
+            transition: color 0.2s;
         }
+        .btn-update-qty:hover { color: #0284c7; }
 
-        .qty-save-btn:hover {
-            opacity: .85;
-        }
-
-        .cart-row-total {
-            font-weight: 800;
-            font-size: 0.95rem;
-            color: #1E0B9B;
-            min-width: 58px;
+        /* Price Columns */
+        .col-price, .col-total {
             text-align: right;
+            min-width: 80px;
         }
 
-        .cart-remove-btn {
+        .price-val {
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .total-val {
+            font-weight: 800;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .na-text {
+            color: #cbd5e1;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        /* Remove Button */
+        .btn-remove {
             width: 32px;
             height: 32px;
-            background: #fff5f5;
-            color: #dc3545;
-            border: 1px solid #ffd6d6;
-            border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            flex-shrink: 0;
-            transition: all .2s;
+            color: #ef4444;
+            background: #fef2f2;
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin-left: 10px;
+        }
+        .btn-remove:hover {
+            background: #ef4444;
+            color: white;
+            transform: scale(1.05);
         }
 
-        .cart-remove-btn:hover {
-            background: #dc3545;
-            color: #fff;
-            border-color: #dc3545;
-        }
-
-        .cart-remove-btn i {
-            font-size: 0.75rem;
-        }
-
-        /* Summary Card inside dashboard_content */
+        /* ---- Summary Box ---- */
         .cart-summary-box {
             background: #fff;
             border-radius: 16px;
-            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 100px; /* Sticky on scroll */
         }
 
         .cart-summary-header {
-            background: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
-            padding: 16px 20px;
-        }
-
-        .cart-summary-header h6 {
+            background: var(--primary-grad);
+            padding: 18px 24px;
+            border-radius: 16px 16px 0 0;
             color: #fff;
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin: 0;
         }
+        .cart-summary-header h5 { margin: 0; font-weight: 700; font-size: 1.1rem; }
 
-        .cart-summary-body {
-            padding: 20px;
-        }
+        .cart-summary-body { padding: 24px; }
 
         .sum-row {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .sum-val { font-weight: 700; color: var(--text-dark); }
+        .text-free { color: #10b981; }
+
+        .divider { border-top: 1px dashed #e2e8f0; margin: 15px 0; }
+
+        .sum-total {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px dashed #f0f2f8;
-            font-size: 0.87rem;
-        }
-
-        .sum-row:last-of-type {
-            border-bottom: none;
-        }
-
-        .sum-label {
-            color: #888;
-        }
-
-        .sum-val {
-            font-weight: 700;
-            color: #1a1a2e;
-        }
-
-        .sum-total-label {
-            color: #1a1a2e;
-            font-weight: 700;
-            font-size: 0.97rem;
-        }
-
-        .sum-total-val {
-            color: #1E0B9B;
-            font-weight: 800;
             font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-dark);
         }
+        .sum-total-val { color: #4f46e5; font-size: 1.25rem; }
 
         .checkout-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
             width: 100%;
-            padding: 13px;
-            background: linear-gradient(90deg, #1E0B9B 0%, #07CCEC 100%);
-            color: #fff;
+            padding: 14px;
+            background: var(--primary-grad);
             border: none;
             border-radius: 12px;
+            color: #fff;
             font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(30, 11, 155, 0.25);
-            transition: opacity .2s, transform .2s;
-        }
-
-        .checkout-btn:hover {
-            opacity: .9;
-            transform: translateY(-1px);
-        }
-
-        .trust-row {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 14px;
-        }
-
-        .trust-item {
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 0.72rem;
-            color: #aaa;
+            justify-content: center;
+            gap: 10px;
+        }
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 11, 155, 0.3);
         }
 
-        .trust-item i {
-            color: #28a745;
-            font-size: 0.65rem;
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #94a3b8;
         }
+        .trust-item { display: flex; align-items: center; gap: 4px; }
 
         /* Empty State */
-        .cart-empty {
+        .cart-empty-state {
             text-align: center;
-            padding: 50px 20px;
+            padding: 60px 20px;
         }
-
-        .cart-empty .e-icon {
-            width: 90px;
-            height: 90px;
+        .empty-icon {
+            width: 100px;
+            height: 100px;
+            background: #f1f5f9;
             border-radius: 50%;
-            background: #f0f4ff;
-            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 3rem;
+            color: #cbd5e1;
         }
 
-        /* Info hint */
-        .cart-hint {
-            background: #f7f9ff;
-            border-radius: 0 0 16px 16px;
-            padding: 12px 20px;
-            font-size: 0.78rem;
-            color: #888;
-            border-top: 1px solid #f0f2f8;
+        /* Responsive Tweaks */
+        @media (max-width: 768px) {
+            .cart-med-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .med-info-area { width: 100%; }
+            .med-controls-area {
+                width: 100%;
+                justify-content: space-between;
+                border-top: 1px dashed #f1f5f9;
+                padding-top: 15px;
+            }
+            .cart-header-row { display: none; } /* Hide table headers on mobile */
+            .col-price { display: none; } /* Hide unit price on mobile to save space */
+            .col-total { text-align: right; }
         }
     </style>
 @endpush
@@ -330,61 +374,55 @@
 
                     <!-- ===== Main Content ===== -->
                     <div class="col-lg-9">
-                        <div class="dashboard_content">
+                        <div class="dashboard_content p-4">
 
                             <!-- Page Header -->
                             <div class="cart-section-header">
                                 <h4>
-                                    <i class="fas fa-shopping-basket me-2" style="color:#07CCEC;"></i>
                                     My Cart
-                                    <span class="badge rounded-pill ms-1"
-                                        style="background:linear-gradient(90deg,#1E0B9B,#07CCEC);font-size:0.72rem;vertical-align:middle;">
-                                        {{ count($cartItems) }}
-                                    </span>
+                                    @if(count($cartItems) > 0)
+                                        <span class="badge rounded-pill ms-2"
+                                              style="background: linear-gradient(90deg, #1E0B9B, #07CCEC); font-size: 0.7rem; vertical-align: middle;">
+                                            {{ count($cartItems) }} Items
+                                        </span>
+                                    @endif
                                 </h4>
                                 <a href="/patient-prescriptions"
-                                    class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-bold"
-                                    style="font-size:0.8rem;">
-                                    <i class="fas fa-prescription me-1"></i> Back to Prescriptions
+                                   class="btn btn-outline-primary btn-sm rounded-pill px-4 py-2 fw-bold">
+                                    <i class="fas fa-plus me-1"></i> Add More Medicines
                                 </a>
                             </div>
 
                             <!-- Alerts -->
                             @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
+                                <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4 shadow-sm border-0 bg-success-subtle text-success" role="alert">
                                     <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             @endif
-                            @if(session('warning'))
-                                <div class="alert alert-warning alert-dismissible fade show rounded-3 mb-4" role="alert">
-                                    <i class="fas fa-exclamation-triangle me-2"></i> {{ session('warning') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                            @endif
                             @if(session('error'))
-                                <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
+                                <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4 shadow-sm border-0 bg-danger-subtle text-danger" role="alert">
                                     <i class="fas fa-times-circle me-2"></i> {{ session('error') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             @endif
 
-                            <div class="row g-4 align-items-start">
 
-                                <!-- ===== Cart Items ===== -->
-                                <div class="col-lg-8">
-                                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                                        <div
-                                            class="card-header bg-white border-bottom px-4 py-3 d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0 fw-bold text-dark">
-                                                Items in Cart
-                                            </h6>
-                                            @if(count($cartItems) > 0)
-                                                <small class="text-muted">{{ count($cartItems) }} product(s)</small>
-                                            @endif
-                                        </div>
+                            @if(count($cartItems) > 0)
+                                <div class="row g-4">
+                                    <!-- ===== Cart Items List ===== -->
+                                    <div class="col-lg-8">
+                                        <div class="cart-items-card">
+                                            <!-- Desktop Headers -->
+                                            <div class="cart-header-row d-none d-md-flex">
+                                                <div style="flex: 2;">Product Details</div>
+                                                <div style="flex: 3; display: flex; justify-content: space-between; padding-right: 40px;">
+                                                    <span class="text-center" style="width: 80px;">Quantity</span>
+                                                    <span class="text-end" style="width: 80px;">Price</span>
+                                                    <span class="text-end" style="width: 80px;">Total</span>
+                                                </div>
+                                            </div>
 
-                                        @if(count($cartItems) > 0)
                                             @foreach($cartItems as $item)
                                                 @php
                                                     $price = $item->medicine->price ?? $item->medicine->mrp ?? 0;
@@ -395,178 +433,158 @@
                                                     $typeName = $item->medicine->type_name ?? $item->medicine->category ?? 'Rx Medicine';
                                                 @endphp
                                                 <div class="cart-med-row">
-                                                    <!-- Icon -->
-                                                    <div class="cart-med-icon">
-                                                        @if($img)
-                                                            <img src="{{ asset('public/assets/images/medicines/' . $img) }}"
-                                                                alt="{{ $medName }}"
-                                                                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                                                            <span class="fallback"
-                                                                style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:1.5rem;">💊</span>
-                                                        @else
-                                                            💊
-                                                        @endif
-                                                    </div>
-
-                                                    <!-- Info -->
-                                                    <div class="flex-grow-1">
-                                                        <div class="cart-med-name">{{ $medName }}</div>
-                                                        <div class="d-flex align-items-center gap-2 mt-1 flex-wrap">
-                                                            <span class="cart-med-tag">
-                                                                <i class="fas fa-tag" style="font-size:0.6rem;"></i>
-                                                                {{ $typeName }}
-                                                            </span>
-                                                            @if(!$hasPrice)
-                                                                <span class="cart-poi">
-                                                                    <i class="fas fa-info-circle"></i> Price on inquiry
-                                                                </span>
+                                                    
+                                                    <!-- Section 1: Image & Name -->
+                                                    <div class="med-info-area">
+                                                        <div class="cart-med-icon">
+                                                            @if($img)
+                                                                <img src="{{ asset('public/assets/images/medicines/' . $img) }}"
+                                                                     alt="{{ $medName }}"
+                                                                     onerror="this.onerror=null;this.parentElement.innerHTML='<i class=\'fas fa-capsules fa-lg text-primary\'></i>';">
+                                                            @else
+                                                                <i class="fas fa-capsules fa-lg text-primary"></i>
                                                             @endif
                                                         </div>
-                                                    </div>
-
-                                                    <!-- Per unit price (md+) -->
-                                                    <div class="text-center d-none d-md-block" style="min-width:65px;">
-                                                        @if($hasPrice)
-                                                            <div style="font-weight:700;font-size:0.88rem;color:#1a1a2e;">
-                                                                ₹{{ number_format($price, 2) }}</div>
-                                                            <div style="font-size:0.68rem;color:#bbb;">per unit</div>
-                                                        @else
-                                                            <span class="cart-price-na">—</span>
-                                                        @endif
-                                                    </div>
-
-                                                    <!-- Qty Controls -->
-                                                    <form action="{{ route('cart.update') }}" method="POST"
-                                                        class="d-flex align-items-center">
-                                                        @csrf
-                                                        <input type="hidden" name="cart_id" value="{{ $item->id }}">
-                                                        <div class="qty-group">
-                                                            <button type="button" class="qty-btn qty-minus"><i
-                                                                    class="fas fa-minus"></i></button>
-                                                            <input type="number" name="quantity" class="qty-num"
-                                                                value="{{ $item->quantity }}" min="1" max="99">
-                                                            <button type="button" class="qty-btn qty-plus"><i
-                                                                    class="fas fa-plus"></i></button>
+                                                        <div class="cart-med-details">
+                                                            <h5>{{ $medName }}</h5>
+                                                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                                <span class="tag-rx">{{ $typeName }}</span>
+                                                                @if(!$hasPrice)
+                                                                    <span class="tag-poi" title="Pharmacy will update price">
+                                                                        <i class="fas fa-info-circle"></i> Price on inquiry
+                                                                    </span>
+                                                                @endif
+                                                            </div>
                                                         </div>
-                                                        <button type="submit" class="qty-save-btn" title="Update">
-                                                            <i class="fas fa-sync-alt"></i> Update
-                                                        </button>
-                                                    </form>
-
-                                                    <!-- Row Total -->
-                                                    <div class="cart-row-total">
-                                                        @if($hasPrice)
-                                                            ₹{{ number_format($itemTotal, 2) }}
-                                                        @else
-                                                            <span class="cart-price-na">—</span>
-                                                        @endif
                                                     </div>
 
-                                                    <!-- Remove -->
-                                                    <a href="{{ route('cart.remove', $item->id) }}" class="cart-remove-btn"
-                                                        onclick="return confirm('Remove {{ $medName }}?');" title="Remove">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </a>
+                                                    <!-- Section 2: Controls & Price -->
+                                                    <div class="med-controls-area">
+                                                        
+                                                        <!-- Quantity -->
+                                                        <form action="{{ route('cart.update') }}" method="POST" class="qty-wrapper">
+                                                            @csrf
+                                                            <input type="hidden" name="cart_id" value="{{ $item->id }}">
+                                                            
+                                                            <div class="qty-group">
+                                                                <button type="button" class="qty-btn qty-minus"><i class="fas fa-minus"></i></button>
+                                                                <input type="number" name="quantity" class="qty-num" value="{{ $item->quantity }}" min="1" max="99" readonly>
+                                                                <button type="button" class="qty-btn qty-plus"><i class="fas fa-plus"></i></button>
+                                                            </div>
+                                                            <!-- Subtle update button that users click after changing qty -->
+                                                            <button type="submit" class="btn-update-qty" title="Save Quantity">
+                                                                Update
+                                                            </button>
+                                                        </form>
+
+                                                        <!-- Unit Price (Hidden on mobile) -->
+                                                        <div class="col-price d-none d-md-block">
+                                                            @if($hasPrice)
+                                                                <div class="price-val">₹{{ number_format($price, 2) }}</div>
+                                                                <small class="text-muted" style="font-size:0.65rem;">/ unit</small>
+                                                            @else
+                                                                <span class="na-text">—</span>
+                                                            @endif
+                                                        </div>
+
+                                                        <!-- Total Price -->
+                                                        <div class="col-total">
+                                                            @if($hasPrice)
+                                                                <div class="total-val">₹{{ number_format($itemTotal, 2) }}</div>
+                                                            @else
+                                                                <span class="na-text">TBD</span>
+                                                            @endif
+                                                        </div>
+
+                                                        <!-- Remove Action -->
+                                                        <a href="{{ route('cart.remove', $item->id) }}" 
+                                                           class="btn-remove" 
+                                                           onclick="return confirm('Are you sure you want to remove {{ $medName }}?');" 
+                                                           title="Remove Item">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             @endforeach
-
-                                            <div class="cart-hint">
-                                                <i class="fas fa-info-circle text-primary me-1"></i>
-                                                Items with <strong>"Price on inquiry"</strong> will be confirmed by our pharmacy
-                                                team before dispatch.
-                                            </div>
-
-                                        @else
-                                            <div class="cart-empty">
-                                                <div class="e-icon">
-                                                    <i class="fas fa-shopping-basket"
-                                                        style="font-size:2.4rem;color:#1E0B9B;opacity:0.25;"></i>
-                                                </div>
-                                                <h5 class="fw-bold text-dark mb-2">Your cart is empty</h5>
-                                                <p class="text-secondary mb-4"
-                                                    style="max-width:320px;margin:auto;font-size:0.88rem;">
-                                                    Go to your prescriptions and click "Buy Available Medicines" to add items
-                                                    here.
-                                                </p>
-                                                <a href="/patient-prescriptions"
-                                                    class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
-                                                    <i class="fas fa-prescription me-2"></i> View My Prescriptions
-                                                </a>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <!-- ===== Order Summary ===== -->
-                                <div class="col-lg-4">
-                                    <div class="cart-summary-box" style="position:sticky;top:90px;">
-                                        <div class="cart-summary-header">
-                                            <h6><i class="fas fa-receipt me-2"></i>Order Summary</h6>
                                         </div>
-                                        <div class="cart-summary-body">
-                                            <div class="sum-row">
-                                                <span class="sum-label">Subtotal</span>
-                                                <span class="sum-val">
-                                                    @if($subtotal > 0) ₹{{ number_format($subtotal, 2) }}
-                                                    @else <span class="cart-price-na">To be confirmed</span>
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="sum-row">
-                                                <span class="sum-label">Delivery</span>
-                                                <span class="sum-val text-success fw-bold">Free</span>
-                                            </div>
-                                            <div class="sum-row">
-                                                <span class="sum-label">Tax</span>
-                                                <span class="sum-val">Inclusive</span>
-                                            </div>
-                                            <div class="sum-row mt-1 pt-2"
-                                                style="border-top:2px solid #eef2ff;border-bottom:none;">
-                                                <span class="sum-total-label">Total</span>
-                                                <span class="sum-total-val">
-                                                    @if($subtotal > 0) ₹{{ number_format($subtotal, 2) }}
-                                                    @else —
-                                                    @endif
-                                                </span>
-                                            </div>
+                                        
+                                        <!-- Info Hint -->
+                                        <div class="d-flex align-items-start gap-2 mt-3 p-3 rounded-3 bg-info-subtle text-info-emphasis">
+                                            <i class="fas fa-info-circle mt-1"></i>
+                                            <small>Items marked as <strong>"Price on inquiry"</strong> need verification from our pharmacists. The final bill amount will be communicated to you before order confirmation.</small>
+                                        </div>
+                                    </div>
 
-                                            @if(count($cartItems) > 0)
-                                                <form action="{{ route('cart.checkout') }}" method="POST" class="mt-3">
+                                    <!-- ===== Order Summary ===== -->
+                                    <div class="col-lg-4">
+                                        <div class="cart-summary-box">
+                                            <div class="cart-summary-header">
+                                                <h5>Order Summary</h5>
+                                            </div>
+                                            <div class="cart-summary-body">
+                                                <div class="sum-row">
+                                                    <span>Subtotal</span>
+                                                    <span class="sum-val">
+                                                        @if($subtotal > 0) ₹{{ number_format($subtotal, 2) }}
+                                                        @else <span class="text-muted" style="font-weight:400;">To be calculated</span>
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                                <div class="sum-row">
+                                                    <span>Delivery Charges</span>
+                                                    <span class="sum-val text-free">FREE</span>
+                                                </div>
+                                                <div class="sum-row">
+                                                    <span>Estimated Tax</span>
+                                                    <span class="sum-val">Inclusive</span>
+                                                </div>
+
+                                                <div class="divider"></div>
+
+                                                <div class="sum-total">
+                                                    <span>Total Amount</span>
+                                                    <span class="sum-total-val">
+                                                        @if($subtotal > 0) ₹{{ number_format($subtotal, 2) }}
+                                                        @else —
+                                                        @endif
+                                                    </span>
+                                                </div>
+
+                                                <form action="{{ route('cart.checkout') }}" method="POST">
                                                     @csrf
                                                     <button type="submit" class="checkout-btn">
-                                                        <i class="fas fa-lock" style="font-size:0.85rem;"></i>
-                                                        Place Order
-                                                        <i class="fas fa-chevron-right" style="font-size:0.8rem;"></i>
+                                                        Proceed to Checkout <i class="fas fa-arrow-right"></i>
                                                     </button>
                                                 </form>
-                                            @endif
 
-                                            <!-- Trust -->
-                                            <div class="trust-row">
-                                                <span class="trust-item"><i class="fas fa-shield-alt"></i> Secure</span>
-                                                <span class="trust-item"><i class="fas fa-check-circle"></i> Verified</span>
-                                                <span class="trust-item"><i class="fas fa-undo"></i> Easy Returns</span>
-                                            </div>
-
-                                            <!-- Help -->
-                                            <div class="mt-3 p-3 rounded-3 d-flex align-items-center gap-2"
-                                                style="background:#f7f9fc;">
-                                                <i class="fas fa-headset" style="color:#1E0B9B;font-size:1.1rem;"></i>
-                                                <div>
-                                                    <div style="font-size:0.78rem;font-weight:700;color:#1a1a2e;">Need help?
-                                                    </div>
-                                                    <div style="font-size:0.72rem;color:#aaa;">Our pharmacy team is ready to
-                                                        assist.</div>
+                                                <div class="trust-badges">
+                                                    <span class="trust-item"><i class="fas fa-shield-alt text-success"></i> Secure</span>
+                                                    <span class="trust-item"><i class="fas fa-check-circle text-primary"></i> Verified</span>
+                                                    <span class="trust-item"><i class="fas fa-truck text-info"></i> Fast</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {{-- end row --}}
+                            @else
+                                <!-- ===== Empty State ===== -->
+                                <div class="cart-empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <h3 class="fw-bold text-dark">Your Cart is Empty</h3>
+                                    <p class="text-secondary mb-4">
+                                        Looks like you haven't added any medicines yet.<br>
+                                        Browse your prescriptions to add prescribed items.
+                                    </p>
+                                    <a href="/patient-prescriptions"
+                                       class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow">
+                                        View My Prescriptions
+                                    </a>
+                                </div>
+                            @endif
 
                         </div>
-                        {{-- end dashboard_content --}}
                     </div>
                 </div>
             </div>
@@ -575,18 +593,29 @@
 
     @push('scripts')
         <script>
-            document.querySelectorAll('.cart-med-row').forEach(function (row) {
-                var minus = row.querySelector('.qty-minus');
-                var plus = row.querySelector('.qty-plus');
-                var inp = row.querySelector('.qty-num');
-                if (!minus || !plus || !inp) return;
-                minus.addEventListener('click', function () {
-                    var v = parseInt(inp.value) || 1;
-                    if (v > 1) inp.value = v - 1;
-                });
-                plus.addEventListener('click', function () {
-                    var v = parseInt(inp.value) || 1;
-                    if (v < 99) inp.value = v + 1;
+            document.addEventListener('DOMContentLoaded', function() {
+                // Handle Quantity Buttons
+                document.querySelectorAll('.cart-med-row').forEach(function (row) {
+                    const minusBtn = row.querySelector('.qty-minus');
+                    const plusBtn = row.querySelector('.qty-plus');
+                    const input = row.querySelector('.qty-num');
+
+                    if (!minusBtn || !plusBtn || !input) return;
+
+                    minusBtn.addEventListener('click', function () {
+                        let v = parseInt(input.value) || 1;
+                        if (v > 1) {
+                            input.value = v - 1;
+                            // Optional: Automatically highlight update button or trigger form submit
+                        }
+                    });
+
+                    plusBtn.addEventListener('click', function () {
+                        let v = parseInt(input.value) || 1;
+                        if (v < 99) {
+                            input.value = v + 1;
+                        }
+                    });
                 });
             });
         </script>
