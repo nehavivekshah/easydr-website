@@ -247,7 +247,7 @@
     @php
         $roles = session('roles');
         $roleArray = explode(',', ($roles->permissions ?? ''));
-        $canEdit = in_array('permission_edit', $roleArray) || in_array('All', $roleArray);
+        $canEdit = in_array('patients_edit', $roleArray) || in_array('All', $roleArray);
     @endphp
 
     <section class="task__section">

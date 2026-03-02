@@ -163,9 +163,9 @@
     @php
         $roles = session('roles');
         $roleArray = explode(',', ($roles->permissions ?? ''));
-        $canAdd = in_array('medicinetype_add', $roleArray) || in_array('All', $roleArray);
-        $canEdit = in_array('medicinetype_edit', $roleArray) || in_array('All', $roleArray);
-        $canDelete = in_array('medicinetype_delete', $roleArray) || in_array('All', $roleArray);
+        $canAdd = in_array('medicine_add', $roleArray) || in_array('All', $roleArray);
+        $canEdit = in_array('medicine_edit', $roleArray) || in_array('All', $roleArray);
+        $canDelete = in_array('medicine_delete', $roleArray) || in_array('All', $roleArray);
     @endphp
 
     <section class="task__section">

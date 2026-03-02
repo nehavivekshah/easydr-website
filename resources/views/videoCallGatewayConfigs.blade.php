@@ -187,9 +187,9 @@
     @php
         $roles = session('roles');
         $roleArray = explode(',', ($roles->permissions ?? ''));
-        $canAdd = in_array('vcgc_add', $roleArray) || in_array('All', $roleArray);
-        $canEdit = in_array('vcgc_edit', $roleArray) || in_array('All', $roleArray);
-        $canDelete = in_array('vcgc_delete', $roleArray) || in_array('All', $roleArray);
+        $canAdd = in_array('settings_add', $roleArray) || in_array('All', $roleArray);
+        $canEdit = in_array('settings_edit', $roleArray) || in_array('All', $roleArray);
+        $canDelete = in_array('settings_delete', $roleArray) || in_array('All', $roleArray);
     @endphp
 
     <section class="task__section">

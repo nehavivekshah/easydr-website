@@ -133,9 +133,9 @@
     @php
         $roles = session('roles');
         $roleArray = explode(',', ($roles->permissions ?? ''));
-        $canAdd = in_array('frequency_add', $roleArray) || in_array('All', $roleArray);
-        $canEdit = in_array('frequency_edit', $roleArray) || in_array('All', $roleArray);
-        $canDelete = in_array('frequency_delete', $roleArray) || in_array('All', $roleArray);
+        $canAdd = in_array('listing_add', $roleArray) || in_array('All', $roleArray);
+        $canEdit = in_array('listing_edit', $roleArray) || in_array('All', $roleArray);
+        $canDelete = in_array('listing_delete', $roleArray) || in_array('All', $roleArray);
     @endphp
 
     <section class="task__section">

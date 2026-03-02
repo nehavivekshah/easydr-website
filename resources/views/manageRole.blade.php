@@ -326,7 +326,7 @@
         ];
     @endphp
     <!-- 'billing' => ['icon' => 'bx-receipt', 'label' => 'Billing & Payments'],
-            'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'], -->
+                'reports' => ['icon' => 'bx-chart', 'label' => 'Reports & Analytics'], -->
     <section class="task__section">
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -408,7 +408,8 @@
                         <table class="permissions-table mb-4">
                             <thead>
                                 <tr>
-                                    <th style="width:40%">Module</th>
+                                    <th style="width:20%">Module</th>
+                                    <th style="width:20%">👁️ View</th>
                                     <th style="width:20%">➕ Add</th>
                                     <th style="width:20%">✏️ Edit</th>
                                     <th style="width:20%">🗑️ Delete</th>
@@ -425,7 +426,7 @@
                                                     onclick="toggleRow('{{ $key }}')">Toggle Row</button>
                                             </div>
                                         </td>
-                                        @foreach(['add', 'edit', 'delete'] as $action)
+                                        @foreach(['view', 'add', 'edit', 'delete'] as $action)
                                             <td class="perm-cell">
                                                 <input type="checkbox" class="perm-toggle perm-{{ $key }}"
                                                     id="perm_{{ $key }}_{{ $action }}" name="permissions[{{ $key }}][]"
