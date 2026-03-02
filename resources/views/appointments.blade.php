@@ -299,8 +299,8 @@
         $isGeneral = in_array($seg, ['appointment-history', 'patient-appointment-history', 'upcoming-appointments']);
         $isDoctor = $seg === 'doctor-appointment-history';
         $isUpcoming = $seg === 'upcoming-appointments';
-        $canEdit = in_array('permission_edit', $roleArray) || in_array('All', $roleArray);
-        $canDelete = in_array('permission_delete', $roleArray) || in_array('All', $roleArray);
+        $canEdit = in_array('appointments_edit', $roleArray) || in_array('All', $roleArray);
+        $canDelete = in_array('appointments_delete', $roleArray) || in_array('All', $roleArray);
     @endphp
 
     <section class="task__section">
@@ -319,7 +319,7 @@
                     </nav>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    @if(in_array('permission_add', $roleArray) || in_array('All', $roleArray))
+                    @if(in_array('appointments_add', $roleArray) || in_array('All', $roleArray))
                         <a href="/admin/manage-appointment" class="btn-add">
                             <i class="bx bx-plus"></i> Add New
                         </a>

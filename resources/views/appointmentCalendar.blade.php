@@ -136,7 +136,7 @@
     @php
         $roles = session('roles');
         $roleArray = explode(',', ($roles->permissions ?? ''));
-        $canAdd = in_array('permission_add', $roleArray) || in_array('All', $roleArray);
+        $canAdd = in_array('appointments_add', $roleArray) || in_array('All', $roleArray);
 
         // Prepare calendar events
         $calendarEvents = $appointments->map(function ($appointment) {
