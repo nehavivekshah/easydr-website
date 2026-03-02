@@ -93,10 +93,17 @@
                                         <a href="javascript:void(0)"><span class="top-btn"><i class="fas fa-user pe-1"></i>
                                                 {{Auth::User()->first_name}}</span></a>
                                         <ul class="has-right">
-                                            <li><a href="/my-account"><i class="fas fa-user pe-1"></i> My Account</a></li>
-                                            <li><a href="/reset-posswprd"><i class="fas fa-key pe-1"></i> Reset Password</a>
-                                            </li>
-                                            <li><a href="/logout"><i class="fas fa-sign-out-alt pe-2"></i> Logout</a></li>
+                                            @if(Auth::User()->role == '6' || Auth::User()->role == '7')
+                                                <li><a href="/admin"><i class="fas fa-user pe-1"></i> My Account</a>
+                                                </li>
+                                                <li><a href="/admin/logout"><i class="fas fa-sign-out-alt pe-2"></i> Logout</a>
+                                                </li>
+                                            @else
+                                                <li><a href="/my-account"><i class="fas fa-user pe-1"></i> My Account</a></li>
+                                                <li><a href="/reset-posswprd"><i class="fas fa-key pe-1"></i> Reset Password</a>
+                                                </li>
+                                                <li><a href="/logout"><i class="fas fa-sign-out-alt pe-2"></i> Logout</a></li>
+                                            @endif
                                         </ul>
                                     </li>
                                 </ul>

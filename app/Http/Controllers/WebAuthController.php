@@ -106,7 +106,11 @@ class WebAuthController extends Controller
             }
 
             if ($user->role == '6') {
-                return redirect('/admin/pharmacy')->with('success', 'Successfully Logged In to Pharmacy Panel.');
+                return redirect('/admin')->with('success', 'Successfully Logged In to Pharmacy Panel.');
+            }
+
+            if ($user->role == '7') {
+                return redirect('/admin')->with('success', 'Successfully Logged In to Pharmacy Panel.');
             }
 
             return redirect('/admin')->with('success', 'Successfully Login.');
